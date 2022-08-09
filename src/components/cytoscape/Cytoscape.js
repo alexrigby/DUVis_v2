@@ -13,7 +13,7 @@ const data = {
   ],
 };
 
-export function Cytoscape({ setSideBarVis }) {
+export function Cytoscape({ setselectedNode }) {
   //sets state of cy
   const [cyState, setCyState] = useState({
     w: window.innerWidth,
@@ -22,19 +22,14 @@ export function Cytoscape({ setSideBarVis }) {
     elements: CytoscapeComponent.normalizeElements(data),
   });
 
-  //sets initial state for clicked node
-  const [clickedNode, setClickedNode] = useState("");
-
   //called every time setSideBarVis or cyState chanages
   useEffect(() => {
     const clickHandler = (event) => {
-      var node = event.target;
-      setClickedNode((prevState) => (node.id() === prevState ? "" : node.id())); // when new node is clicked sets clickedNode state too id of node, if same node clicked state set to ""
-      setSideBarVis((prevState) => (node.id() === clickedNode || node.id() !== "" ? !prevState : prevState)); // if the same node is clicked (or node == "") then side bar closes, else keep the side bar open
+      setselectedNode((prevState) => (event.target.id() === prevState.id ? { id: "" } : event.target.data())); // when new node is clicked sets selectedNode state too id of node, if same node clicked state set to ""
     };
     cyState.cy.on("click", "node", clickHandler);
     return () => cyState.cy.off("click", "node", clickHandler);
-  }, [setSideBarVis, cyState, setClickedNode, clickedNode]);
+  }, [setselectedNode, cyState]);
 
   const style = { width: cyState.w, height: cyState.h };
 

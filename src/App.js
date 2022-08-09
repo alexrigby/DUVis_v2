@@ -5,14 +5,14 @@ import SideBar from "./components/sideBar/SideBar";
 import Cytoscape from "./components/cytoscape/Cytoscape";
 
 export function App() {
-  //state determining weather the side bar is visible or not (default: not)
-  const [sideBarVis, setSideBarVis] = useState(false);
+  //sets initial state for clicked node
+  const [selectedNode, setselectedNode] = useState({ id: "" });
 
   return (
-    <div className="container" onDoubleClick={() => setSideBarVis(false)}>
+    <div className="container" onDoubleClick={() => setselectedNode({ id: "" })}>
       <Header />
-      <SideBar vis={sideBarVis} /> {/* pass state as prop to Side Bar*/}
-      <Cytoscape setSideBarVis={setSideBarVis} />
+      <SideBar selectedNode={selectedNode} /> {/* pass state as prop to Side Bar*/}
+      <Cytoscape setselectedNode={setselectedNode} />
     </div>
   );
 }
