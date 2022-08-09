@@ -1,23 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
 
-function App() {
+import Header from "./components/header/Header";
+import SideBar from "./components/sideBar/SideBar";
+import Cytoscape from "./components/cytoscape/Cytoscape";
+
+export function App() {
+  //state determining weather the side bar is visible or not (default: not)
+  const [sideBarVis, setSideBarVis] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container" onDoubleClick={() => setSideBarVis(false)}>
+      <Header />
+      <SideBar vis={sideBarVis} /> {/* pass state as prop to Side Bar*/}
+      <Cytoscape setSideBarVis={setSideBarVis} />
     </div>
   );
 }
