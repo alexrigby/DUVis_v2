@@ -2,7 +2,7 @@ export const stylesheet = [
   {
     selector: "node",
     style: {
-      label: "data(label)",
+      label: "data(id)",
       "text-valign": "center",
       shape: "rectangle",
     },

@@ -14,9 +14,6 @@ import makeCyElements from "./functions/makeCyElements";
 import dataset from "./data/TDR Matrix_Subset.txt";
 import links from "./data/links.txt";
 
-// const dataw = await parseData("../data/TDR Matrix_Subset.txt");
-// console.log(dataw);
-
 export function App() {
   //sets state of cy
   const [cyState, setCyState] = useState({
@@ -32,11 +29,16 @@ export function App() {
   useEffect(() => {
     async function parseAllData() {
       const cyElms = await makeCyElements(dataset, links);
-      console.log(cyElms);
+      setCyState((prevState) => ({
+        ...prevState,
+        elements: cyElms,
+      }));
     }
-    parseAllData();
+    parseAllData()
+      // make sure to catch any error
+      .catch(console.error);
   }, []);
-
+  console.log(cyState);
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
       <Cytoscape
