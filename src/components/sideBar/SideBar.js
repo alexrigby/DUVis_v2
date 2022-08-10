@@ -15,4 +15,3 @@ export function SideBar({ selectedNode }) {
 }
 
 export default SideBar;
-// setSideBarVis((prevState) => (node.id() === selectedNode || node.id() !== "" ? !prevState : prevState)); // if the same node is clicked (or node == "") then side bar closes, else keep the side bar open

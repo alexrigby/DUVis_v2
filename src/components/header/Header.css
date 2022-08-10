@@ -4,6 +4,6 @@
 }
 
 .headerSection {
-  margin: 15px;
+  padding: 15px;
+  z-index: 2;
 }
-
