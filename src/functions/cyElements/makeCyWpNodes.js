@@ -4,7 +4,6 @@ export function makeCyWpNodes(data) {
 
   for (let i = 0; i < data.length; i++) {
     let wp = data[i].id;
-
     const nodeOps = {
       group: "nodes",
       classes: "wpNodes",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 
 // import data from "./data";
@@ -15,12 +15,11 @@ import LAYOUTS from "./components/cytoscape/functions/cyLayouts";
 import dataset from "./data/TDR Matrix_Subset.txt";
 import links from "./data/links.txt";
 import wpDataset from "./data/wp_names.txt";
+import makeCyWpEdges from "./components/cytoscape/functions/makeCyWpEdges";
 
 export function App() {
   //sets state of cy
   const [cyState, setCyState] = useState({
-    w: window.innerWidth,
-    h: window.innerHeight,
     display: "none",
     cy: null,
     elements: CytoscapeComponent.normalizeElements(dummyData),
@@ -29,28 +28,25 @@ export function App() {
   //sets initial state for selected node
   const [selectedNode, setSelectedNode] = useState({ id: "" });
   useEffect(() => {
-    async function parseAllData() {
-      const cyElms = await makeCyElements(dataset, links, wpDataset); //combines parsing functions to make elements array
+    //updates cyytoscape state to include node and edge data
+    async function addDataToCytoscape() {
+      var { cyElms, wpEdgeData } = await makeCyElements(dataset, links, wpDataset); //combines parsing functions to make elements array
+      const wpEdge = makeCyWpEdges(cyState.cy, wpEdgeData.wpData, wpEdgeData.wpActivitiesIds); //creates wp Edges
       setCyState((prevState) => ({
         ...prevState,
-        elements: cyElms,
+        elements: wpEdge ? [...cyElms, ...wpEdge] : cyElms, //if wpEdges exist then add them, if not use cyElms
         display: "block",
       })); //sets elements array as the cytoscape elements
       cyState.cy.layout(LAYOUTS.COSE).run();
     }
-    parseAllData()
+    addDataToCytoscape()
       //  catch any error
       .catch(console.error);
   }, [cyState.cy]);
 
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
-      <Cytoscape
-        cyState={cyState}
-        setCyState={setCyState}
-        setSelectedNode={setSelectedNode}
-        selectedNode={selectedNode}
-      />
+      <Cytoscape cyState={cyState} setSelectedNode={setSelectedNode} />
       <Header cyState={cyState} />
       <SideBar selectedNode={selectedNode} /> {/* pass state as prop to Side Bar*/}
     </div>
