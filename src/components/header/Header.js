@@ -1,5 +1,5 @@
 import "./Header.css";
-import LAYOUTS from "../../configs/cyLayouts";
+import LAYOUTS from "../cytoscape/functions/cyLayouts";
 
 export function Header({ cyState }) {
   function changeLayout() {
@@ -9,9 +9,7 @@ export function Header({ cyState }) {
   return (
     <div className="headerSection">
       <h1>Dwr Uisce Work Package Visualiser</h1>
-      <button onClick={changeLayout} style={{ zIndex: "11111" }}>
-        Change Layout{" "}
-      </button>
+      <button onClick={changeLayout}>Change Layout </button>
       <button>Filter Options</button>
     </div>
   );

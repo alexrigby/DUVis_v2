@@ -1,4 +1,4 @@
-export const data = {
+export const dummyData = {
   nodes: [
     { data: { id: "1", label: "Node 1" } },
     { data: { id: "2", label: "Node 2" } },
@@ -18,4 +18,4 @@ export const data = {
   ],
 };
 
-export default data;
+export default dummyData;

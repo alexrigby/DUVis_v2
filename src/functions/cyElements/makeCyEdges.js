@@ -1,5 +1,3 @@
-// import stringToArray from "./stringToArray.js";
-
 export function makeCyEdges(links) {
   return links.map((el, i) => {
     let linkedActivities = links[i];
@@ -8,13 +6,12 @@ export function makeCyEdges(links) {
       //map linked activites (n)
       ...linkedActivities
         .map((n) => ({
-          // group: "edges",
-          // classes: "hide",
+          group: "edges",
           data: {
             id: `g${i + 1}e${n}`,
             source: `${i + 1}`,
             target: `${n}`,
-            // type: "activityEdge",
+            type: "activityEdge",
           },
         }))
         // filter out edges with no value (Node has no 'Linked Activities' in dataset)
