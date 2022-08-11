@@ -1,9 +1,0 @@
-id	name	category	Technology platfroms
-wp1	Micro-hydro power	Technology platfroms
-wp2	Drain Water Heat Recovery	Technology platfroms
-wp3	Smart Network Control	Policy Support and Guidance
-wp4	Economic and Environmental Impact Assessment	Policy Support and Guidance
-wp5	Benchmarking of Energy Efficiency Measures	Policy Support and Guidance
-wp6	Energy Auditing and Rating	Policy Support and Guidance
-wp7	Climate Change Impacts and Adaptation	Policy Support and Guidance
-wp8	Smart Specialisation Cluster 	Dissemination and Collaboration
