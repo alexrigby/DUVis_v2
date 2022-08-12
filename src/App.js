@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
-
-// import data from "./data";
 
 import Header from "./components/header/Header";
 import SideBar from "./components/sideBar/SideBar";
 import Cytoscape from "./components/cytoscape/Cytoscape";
+import Legend from "./components/legend/Legend";
 
-import dummyData from "./dummyData"; //at the mment using dummy data so cytoscape dosent error when main data is being parsed
+import dummyData from "./dummyData"; //at the moment using dummy data so cytoscape dosent error when main data is being parsed
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeCyElements from "./functions/makeCyElements";
 import LAYOUTS from "./components/cytoscape/functions/cyLayouts";
@@ -27,10 +26,11 @@ export function App() {
 
   //sets initial state for selected node
   const [selectedNode, setSelectedNode] = useState({ id: "" });
+
   useEffect(() => {
     //updates cyytoscape state to include node and edge data
     async function addDataToCytoscape() {
-      var { cyElms, wpData } = await makeCyElements(dataset, links, wpDataset); //combines parsing functions to make elements array
+      const { cyElms, wpData } = await makeCyElements(dataset, links, wpDataset); //combines parsing functions to make elements array
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
 
@@ -51,6 +51,7 @@ export function App() {
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
       <Cytoscape cyState={cyState} setSelectedNode={setSelectedNode} />
       <Header cyState={cyState} />
+      <Legend cyState={cyState} />
       <SideBar selectedNode={selectedNode} /> {/* pass state as prop to Side Bar*/}
     </div>
   );

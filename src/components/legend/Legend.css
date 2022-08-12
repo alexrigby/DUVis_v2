@@ -1,0 +1,27 @@
+.legend {
+  padding: 10px 0px 5px 15px;
+}
+
+.legend h2 {
+  margin-bottom: 5px;
+}
+.box {
+  height: 16px;
+  width: 16px;
+  border: 2px solid;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.7;
+  border: solid 3px;
+}
+
+.legendLable {
+  margin: 0px;
+  padding: 5px;
+  font-size: 10pt;
+}
+
+.boxContainer {
+  display: flex;
+  align-items: center;
+}

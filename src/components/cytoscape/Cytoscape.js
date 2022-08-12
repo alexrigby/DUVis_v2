@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 
 import LAYOUTS from "./functions/cyLayouts";

@@ -1,8 +1,8 @@
-.headerSection h1 {
+header h1 {
   margin-top: 0px;
   margin-bottom: 10px;
 }
 
-.headerSection {
-  padding: 15px;
+header {
+  padding: 15px 0px 0px 15px;
 }

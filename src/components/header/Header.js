@@ -7,11 +7,11 @@ export function Header({ cyState }) {
   }
 
   return (
-    <div className="headerSection">
+    <header>
       <h1>Dwr Uisce Work Package Visualiser</h1>
       <button onClick={changeLayout}>Change Layout </button>
       <button>Filter Options</button>
-    </div>
+    </header>
   );
 }
 
