@@ -30,15 +30,18 @@ export function App() {
   useEffect(() => {
     //updates cyytoscape state to include node and edge data
     async function addDataToCytoscape() {
-      var { cyElms, wpEdgeData } = await makeCyElements(dataset, links, wpDataset); //combines parsing functions to make elements array
-      const wpEdge = makeCyWpEdges(cyState.cy, wpEdgeData.wpData, wpEdgeData.wpActivitiesIds); //creates wp Edges
+      var { cyElms, wpData } = await makeCyElements(dataset, links, wpDataset); //combines parsing functions to make elements array
+
+      const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
+
       setCyState((prevState) => ({
         ...prevState,
         elements: wpEdge ? [...cyElms, ...wpEdge] : cyElms, //if wpEdges exist then add them, if not use cyElms
         display: "block",
-      })); //sets elements array as the cytoscape elements
+      })); //sets elements array as the cytoscape element
       cyState.cy.layout(LAYOUTS.COSE).run();
     }
+
     addDataToCytoscape()
       //  catch any error
       .catch(console.error);

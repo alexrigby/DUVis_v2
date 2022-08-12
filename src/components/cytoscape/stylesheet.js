@@ -52,17 +52,16 @@ export const stylesheet = [
     selector: ".connectedEdge",
     style: {
       "line-color": "red",
+      display: "element",
     },
   },
   {
     selector: "edge[type = 'wpEdge']",
     style: {
       display: "element",
-
       label: "data(weight)",
       width: "data(weight)",
       "line-color": "mapData(weight, 0, 40, #ffcba4, #cb410b)",
-
       "line-cap": "round",
       "line-opacity": 0.5,
     },

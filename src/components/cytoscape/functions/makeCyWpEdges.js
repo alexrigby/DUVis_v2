@@ -1,18 +1,21 @@
-export function makeCyWpEdges(cy, wpData, wpActIds) {
+export function makeCyWpEdges(cy, wpData) {
   // loops over all WPs and returns an array of targets of the outgoing edges from that WP
   const wpTargetNodes = [];
-
-  for (var i = 0; i < wpData.length; i++) {
+  for (let i = 0; i < wpData.length; i++) {
     var targetNodes = getOutgoingEdgeTargets(cy, wpData[i].id);
     wpTargetNodes[wpData[i].id] = targetNodes;
+  }
+
+  const wpActIds = [];
+  for (let i = 0; i < wpData.length; i++) {
+    var d = getWpChildren(cy, wpData[i].id);
+    wpActIds[wpData[i].id] = d;
   }
 
   //Finds all connections between workpackages and returns a weighted edge
   const wpEdges = [];
 
-  // to iterate over the last element directly
   for (let i = 0; i < wpData.length - 1; i++) {
-    // This is where you'll capture that last value
     for (let j = i + 1; j < wpData.length; j++) {
       wpEdges.push({
         group: "edges",
@@ -37,24 +40,25 @@ export function makeCyWpEdges(cy, wpData, wpActIds) {
 }
 
 //retunrs an array of edge targets from each wp
-function getOutgoingEdgeTargets(cy, wp) {
-  var et = [];
+function getWpChildren(cy, wp) {
+  var children = cy.nodes(`#${wp}`).children();
+  return children.map((e) => e.id()); // returns targets of outgoing edges
+}
 
+//retunrs an array of edge targets from each wp
+function getOutgoingEdgeTargets(cy, wp) {
   var edges = cy.nodes(`#${wp}`).children().connectedEdges();
-  for (var i = 0; i < edges.length; i++) {
-    var targets = edges[i].data("target");
-    et.push(targets);
-  }
-  return et;
+  return edges.map((e) => e.data("target")); // returns targets of outgoing edges
 }
 
 //gets nodes connecting WPa and WPb and returns there 'weight' (i.e. how many connection there are between WPs)
 function wpConectionWeight(array1, array2, array3, array4) {
-  const cros1 = getCrossover(array1, array2);
-  const cros2 = getCrossover(array3, array4);
-  return cros1.length + cros2.length;
+  const cross1 = getCrossover(array1, array2);
+  const cross2 = getCrossover(array3, array4);
+  return cross1.length + cross2.length;
 }
 
+//check to see if how many ids cross between arrays therfore links between wps
 function getCrossover(array1, array2) {
   return array1.filter((element) => array2.includes(element));
 }
