@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 
 import LAYOUTS from "./functions/cyLayouts";
-import stylesheet from "./stylesheet";
+import stylesheet from "./functions/stylesheet";
 
 export function Cytoscape({ cyState, setSelectedNode }) {
   //called every time setSideBarVis or cyState chanages
@@ -22,7 +22,6 @@ export function Cytoscape({ cyState, setSelectedNode }) {
     width: "100%",
     height: "100%",
     position: "absolute",
-    zIndex: -1,
   };
 
   return (

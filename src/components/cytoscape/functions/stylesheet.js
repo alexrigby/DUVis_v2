@@ -1,4 +1,4 @@
-import COLORS from "../../configs/wpColors";
+import COLORS from "../../../configs/wpColors";
 
 export const stylesheet = [
   {

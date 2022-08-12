@@ -15,6 +15,7 @@ import dataset from "./data/TDR Matrix_Subset.txt";
 import links from "./data/links.txt";
 import wpDataset from "./data/wp_names.txt";
 import makeCyWpEdges from "./components/cytoscape/functions/makeCyWpEdges";
+import addCategoryIcon from "./components/cytoscape/functions/addCategoryIcons";
 
 export function App() {
   //sets state of cy
@@ -33,6 +34,8 @@ export function App() {
       const { cyElms, wpData } = await makeCyElements(dataset, links, wpDataset); //combines parsing functions to make elements array
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
+
+      // addCategoryIcon(cyState.cy);
 
       setCyState((prevState) => ({
         ...prevState,
