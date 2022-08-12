@@ -11,8 +11,8 @@ export function makeCyNodes(data) {
         parent: `wp${data[i].WP}`,
         id: data[i].ID,
         label: "node",
-        name: data[i].ActivityName,
-        category: data[i].ActivityCategory,
+        name: data[i]["Activity Name"],
+        category: data[i]["Activity Category"],
         meta: {
           ...data[i],
         },
@@ -24,3 +24,5 @@ export function makeCyNodes(data) {
 }
 
 export default makeCyNodes;
+
+// function
