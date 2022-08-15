@@ -22,20 +22,20 @@ export function App() {
   const [cyState, setCyState] = useState({
     display: "none",
     cy: null,
-    elements: CytoscapeComponent.normalizeElements(dummyData),
+    elements: [],
   });
 
   //sets initial state for selected node
   const [selectedNode, setSelectedNode] = useState({ id: "" });
 
   useEffect(() => {
+    console.log(cyState.elements.length);
+    // if (cyState.elements.length === 0) {
     //updates cyytoscape state to include node and edge data
     async function addDataToCytoscape() {
       const { cyElms, wpData } = await makeCyElements(dataset, links, wpDataset); //combines parsing functions to make elements array
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
-
-      // addCategoryIcon(cyState.cy);
 
       setCyState((prevState) => ({
         ...prevState,
@@ -48,14 +48,18 @@ export function App() {
     addDataToCytoscape()
       //  catch any error
       .catch(console.error);
+    // addCategoryIcon(cyState.cy);
+    // }
   }, [cyState.cy]);
 
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
+      <div className="top-layer">
+        <Header cyState={cyState} />
+        <Legend cyState={cyState} />
+        <SideBar selectedNode={selectedNode} /> {/* pass state as prop to Side Bar*/}
+      </div>
       <Cytoscape cyState={cyState} setSelectedNode={setSelectedNode} />
-      <Header cyState={cyState} />
-      <Legend cyState={cyState} />
-      <SideBar selectedNode={selectedNode} /> {/* pass state as prop to Side Bar*/}
     </div>
   );
 }
