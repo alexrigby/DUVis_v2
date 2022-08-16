@@ -4,6 +4,7 @@ import CytoscapeComponent from "react-cytoscapejs";
 import LAYOUTS from "./functions/cyLayouts";
 import stylesheet from "./functions/stylesheet";
 import nodeTooltip from "./functions/nodeTooltips";
+import styleSelectedElements from "./functions/styleSelectedElements";
 
 export function Cytoscape({ cyState, setSelectedNode }) {
   //called every time setSideBarVis or cyState chanages
@@ -11,12 +12,11 @@ export function Cytoscape({ cyState, setSelectedNode }) {
     nodeTooltip(cyState.cy); //produces tooltips on mouuseover
     const nodeClickHandler = (event) => {
       setSelectedNode((prevState) => (event.target.id() === prevState.id ? { id: "" } : event.target.data())); //if same node is clicked twice clear 'selected node' state
-      cyState.cy.edges().removeClass("connectedEdge"); //sets all edges back to default
-      cyState.cy.nodes(`[id = "${event.target.id()}"]`).connectedEdges("edge").addClass("connectedEdge"); //adds class to edges connected to clicked node
+      styleSelectedElements(cyState.cy, event.target);
     };
 
-    cyState.cy.on("click", "node[type != 'wp']", nodeClickHandler); //add event listner to node
-    return () => cyState.cy.off("click", "node[type != 'wp']", nodeClickHandler); //clean up click handler to prevent memory leak
+    cyState.cy.on("click", "node", nodeClickHandler); //add event listner to node
+    return () => cyState.cy.off("click", "node", nodeClickHandler); //clean up click handler to prevent memory leak
   }, [setSelectedNode, cyState]);
 
   const style = {

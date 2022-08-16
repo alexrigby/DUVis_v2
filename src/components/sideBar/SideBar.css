@@ -51,3 +51,20 @@
   margin-top: 0px;
   margin-bottom: 5px;
 }
+
+.sideBar ul {
+  list-style-position: inside;
+  padding-left: 1em;
+}
+
+.sideBar li {
+  list-style: none;
+  padding-left: -1em;
+  margin-left: -1em;
+  padding-bottom: 0.75em;
+  cursor: pointer;
+}
+
+.sideBar li:hover {
+  color: gray;
+}

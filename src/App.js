@@ -53,7 +53,7 @@ export function App() {
       <div className="top-layer">
         <Header cyState={cyState} />
         <Legend cyState={cyState} />
-        <SideBar selectedNode={selectedNode} /> {/* pass state as prop to Side Bar*/}
+        <SideBar selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
       </div>
       <Cytoscape cyState={cyState} setSelectedNode={setSelectedNode} />
     </div>

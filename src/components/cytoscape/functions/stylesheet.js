@@ -2,7 +2,7 @@ import COLORS from "../../../configs/wpColors";
 
 export const stylesheet = [
   {
-    selector: "node[type != 'wp']",
+    selector: "node[type = 'activityNode']",
     style: {
       label: "data(id)",
       "text-valign": "center",
@@ -49,13 +49,6 @@ export const stylesheet = [
     },
   },
   {
-    selector: ".connectedEdge",
-    style: {
-      "line-color": "red",
-      display: "element",
-    },
-  },
-  {
     selector: "edge[type = 'wpEdge']",
     style: {
       display: "element",
@@ -64,6 +57,22 @@ export const stylesheet = [
       "line-color": "mapData(weight, 0, 40, #ffcba4, #cb410b)",
       "line-cap": "round",
       "line-opacity": 0.5,
+    },
+  },
+  {
+    selector: ".connectedEdge",
+    style: {
+      "line-color": "red",
+      "line-opacity": "0.7",
+      display: "element",
+    },
+  },
+  {
+    selector: ".selectedNode",
+    style: {
+      "border-color": "red",
+      "border-width": "6px",
+      display: "element",
     },
   },
 ];
