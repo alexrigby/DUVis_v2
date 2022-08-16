@@ -7,7 +7,7 @@ cytoscape.use(popper);
 // NODE TOOLTIP
 export function nodeTooltip(cy) {
   const activityNodes = cy.nodes("[type = 'activityNode']");
-  const wpNodes = cy.nodes("[type = 'wp']");
+  //   const wpNodes = cy.nodes("[type = 'wp']");
 
   makeTooltips(activityNodes, "mouseover", "mouseout");
   //   makeTooltips(wpNodes, "click", "click"); propbably dont need as already have legend

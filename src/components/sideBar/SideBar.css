@@ -15,4 +15,39 @@
   transition-property: opacity;
   transition-duration: 0.5s;
   transition-timing-function: ease-out;
+  pointer-events: all;
+}
+
+.sideBar h1 {
+  font-size: 15pt;
+  margin: 0 0 5px 0;
+  line-height: 1em;
+}
+
+.sideBar h2 {
+  font-size: 14pt;
+  margin: 0;
+}
+
+.sideBar p {
+  font-size: 14pt;
+  margin: 0 0 0 0;
+  margin-block-end: 4px;
+  writing-mode: horizontal-tb;
+  line-height: 1em;
+}
+
+.metaSection {
+  border-bottom: solid rgb(50, 50, 50);
+  padding-bottom: 15px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.completed {
+  opacity: 0.5;
+  font-size: 12pt;
+  font-weight: bold;
+  margin-top: 0px;
+  margin-bottom: 5px;
 }

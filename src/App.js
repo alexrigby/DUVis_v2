@@ -44,8 +44,9 @@ export function App() {
     addDataToCytoscape()
       //  catch any error
       .catch(console.error);
-    cyState.elements.length > 0 && addCategoryIcon(cyState.cy);
-  }, [cyState.cy]);
+
+    addCategoryIcon(cyState.cy);
+  }, [cyState.cy, cyState.elements.length]);
 
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
