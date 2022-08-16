@@ -3,10 +3,12 @@ import CytoscapeComponent from "react-cytoscapejs";
 
 import LAYOUTS from "./functions/cyLayouts";
 import stylesheet from "./functions/stylesheet";
+import nodeTooltip from "./functions/nodeTooltips";
 
 export function Cytoscape({ cyState, setSelectedNode }) {
   //called every time setSideBarVis or cyState chanages
   useEffect(() => {
+    nodeTooltip(cyState.cy); //produces tooltips on mouuseover
     const nodeClickHandler = (event) => {
       setSelectedNode((prevState) => (event.target.id() === prevState.id ? { id: "" } : event.target.data())); //if same node is clicked twice clear 'selected node' state
       cyState.cy.edges().removeClass("connectedEdge"); //sets all edges back to default

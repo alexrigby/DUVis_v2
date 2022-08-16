@@ -9,10 +9,12 @@
     "cytoscape": "^3.22.1",
     "cytoscape-cose-bilkent": "^4.1.0",
     "cytoscape-node-html-label": "^1.2.2",
+    "cytoscape-popper": "^2.0.0",
     "react": "^18.2.0",
     "react-cytoscapejs": "^1.2.1",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
+    "tippy.js": "^6.3.7",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-import iconByCategory from "../cytoscape/functions/categoryIcon";
+import iconByCategory from "../cytoscape/functions/iconByCategory";
 import styleActivitiesByWP from "../cytoscape/functions/styleActivitiesByWP";
 
 import "./Legend.css";

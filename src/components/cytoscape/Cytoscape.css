@@ -1,0 +1,12 @@
+.categoryIcon {
+  height: 18px;
+  width: 18px;
+  border: 2px solid;
+  border-radius: 50%;
+  opacity: 1;
+  z-index: 3;
+  color: white;
+  font-size: 10pt;
+  text-align: center;
+  line-height: 18px;
+}

@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import CytoscapeComponent from "react-cytoscapejs";
 
 import Header from "./components/header/Header";
 import SideBar from "./components/sideBar/SideBar";
 import Cytoscape from "./components/cytoscape/Cytoscape";
 import Legend from "./components/legend/Legend";
 
-import dummyData from "./dummyData"; //at the moment using dummy data so cytoscape dosent error when main data is being parsed
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeCyElements from "./functions/makeCyElements";
 import LAYOUTS from "./components/cytoscape/functions/cyLayouts";
@@ -29,8 +27,6 @@ export function App() {
   const [selectedNode, setSelectedNode] = useState({ id: "" });
 
   useEffect(() => {
-    console.log(cyState.elements.length);
-    // if (cyState.elements.length === 0) {
     //updates cyytoscape state to include node and edge data
     async function addDataToCytoscape() {
       const { cyElms, wpData } = await makeCyElements(dataset, links, wpDataset); //combines parsing functions to make elements array
@@ -48,8 +44,7 @@ export function App() {
     addDataToCytoscape()
       //  catch any error
       .catch(console.error);
-    // addCategoryIcon(cyState.cy);
-    // }
+    cyState.elements.length > 0 && addCategoryIcon(cyState.cy);
   }, [cyState.cy]);
 
   return (
