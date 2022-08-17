@@ -31,7 +31,10 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode }) 
         <h1>
           {meta.ID}. {meta["Activity Name"]}
         </h1>
-        <h1 onClick={() => nodeNavigationHandler(selectedNode.parent, selectedNode, cyState)} className="navigateToWp">
+        <h1
+          onClick={() => nodeNavigationHandler(selectedNode.parent, setSelectedNode, cyState)}
+          className="navigateToWp"
+        >
           WP: {selectedNode.parent.slice(2)}
         </h1>
         <p style={completedStyle} className="completed">

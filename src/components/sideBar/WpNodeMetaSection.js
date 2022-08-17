@@ -5,7 +5,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode }) {
   const wpActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).children();
 
   const activitiesList = wpActivities.map((activity) => (
-    <li key={activity.id()} onClick={() => nodeNavigationHandler(activity, selectedNode, cyState)}>
+    <li key={activity.id()} onClick={() => nodeNavigationHandler(activity.id(), setSelectedNode, cyState)}>
       {activity.id()}. {activity.data().name}
     </li>
   ));

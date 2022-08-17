@@ -10,7 +10,7 @@ export function Header({ cyState }) {
     <header>
       <h1>Dwr Uisce Work Package Visualiser</h1>
       <button onClick={changeLayout}>Change Layout </button>
-      <button>Filter Options</button>
+      {/* <button>Filter Options</button> */}
     </header>
   );
 }
