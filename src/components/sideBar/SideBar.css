@@ -68,3 +68,8 @@
 .sideBar li:hover {
   color: gray;
 }
+
+.navigateToWp:hover {
+  color: gray;
+  cursor: pointer;
+}

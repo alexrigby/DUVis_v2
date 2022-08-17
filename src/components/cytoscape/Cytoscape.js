@@ -12,7 +12,7 @@ export function Cytoscape({ cyState, setSelectedNode }) {
     nodeTooltip(cyState.cy); //produces tooltips on mouuseover
     const nodeClickHandler = (event) => {
       setSelectedNode((prevState) => (event.target.id() === prevState.id ? { id: "" } : event.target.data())); //if same node is clicked twice clear 'selected node' state
-      styleSelectedElements(cyState.cy, event.target);
+      styleSelectedElements(cyState.cy, event.target.id());
     };
 
     cyState.cy.on("click", "node", nodeClickHandler); //add event listner to node

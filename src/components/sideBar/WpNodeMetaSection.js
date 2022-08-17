@@ -1,17 +1,11 @@
 import styleActivitiesByWP from "../cytoscape/functions/styleActivitiesByWP";
-import styleSelectedElements from "../cytoscape/functions/styleSelectedElements";
+import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 
 export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode }) {
   const wpActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).children();
 
-  const activityClickHandler = (activity) => {
-    console.log(cyState.cy.nodes(`[id = "${activity.id()}"]`).data());
-    setSelectedNode(() => cyState.cy.nodes(`[id = "${activity.id()}"]`).data());
-    styleSelectedElements(cyState.cy, activity);
-  };
-
   const activitiesList = wpActivities.map((activity) => (
-    <li key={activity.id()} onClick={() => activityClickHandler(activity)}>
+    <li key={activity.id()} onClick={() => nodeNavigationHandler(activity, selectedNode, cyState)}>
       {activity.id()}. {activity.data().name}
     </li>
   ));

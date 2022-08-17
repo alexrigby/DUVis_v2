@@ -8,12 +8,13 @@ import Legend from "./components/legend/Legend";
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeCyElements from "./functions/makeCyElements";
 import LAYOUTS from "./components/cytoscape/functions/cyLayouts";
+import makeCyWpEdges from "./components/cytoscape/functions/makeCyWpEdges";
+import addCategoryIcon from "./components/cytoscape/functions/addCategoryIcons";
+import usePreviousState from "./AppFunctions/usePreviousState";
 
 import dataset from "./data/TDR Matrix_Subset.txt";
 import links from "./data/links.txt";
 import wpDataset from "./data/wp_names.txt";
-import makeCyWpEdges from "./components/cytoscape/functions/makeCyWpEdges";
-import addCategoryIcon from "./components/cytoscape/functions/addCategoryIcons";
 
 export function App() {
   //sets state of cy
@@ -48,6 +49,7 @@ export function App() {
     addCategoryIcon(cyState.cy);
   }, [cyState.cy, cyState.elements.length]);
 
+  // console.log(usePreviousState(selectedNode));
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
       <div className="top-layer">

@@ -1,15 +1,38 @@
-export function ActivityMetaSection({ selectedNode }) {
+import nodeNavigationHandler from "./functions/nodeNavigationHandler";
+
+export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode }) {
   const meta = selectedNode.meta;
+  const outgoingActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).outgoers().targets();
+  const incommingActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).incomers().sources();
+  const uniqueLinks = [...new Set(incommingActivities, outgoingActivities)];
 
   const completedStyle = {
     color: selectedNode.meta["Activity Status"] === "Completed" ? "#39ff14" : "#ffbf00",
   };
+
+  const hilightNodeOnLiHover = (activity) => {
+    cyState.cy.nodes(`[id = "${activity}"]`).toggleClass("selectedNode");
+  };
+
+  const linkedActivitiesList = uniqueLinks.map((activity) => (
+    <li
+      key={activity.id()}
+      onClick={() => nodeNavigationHandler(activity.id(), setSelectedNode, cyState)}
+      onMouseOver={() => hilightNodeOnLiHover(activity.id())}
+      onMouseOut={() => hilightNodeOnLiHover(activity.id())}
+    >
+      {activity.id()}. {activity.data().name}
+    </li>
+  ));
 
   return (
     <div>
       <div className="metaSection">
         <h1>
           {meta.ID}. {meta["Activity Name"]}
+        </h1>
+        <h1 onClick={() => nodeNavigationHandler(selectedNode.parent, selectedNode, cyState)} className="navigateToWp">
+          WP: {selectedNode.parent.slice(2)}
         </h1>
         <p style={completedStyle} className="completed">
           {meta["Activity Status"]}
@@ -52,6 +75,10 @@ export function ActivityMetaSection({ selectedNode }) {
         <h1>IERLAND WATER: </h1>
         <h2>Aims and Objectives: </h2> <p>{meta["IW Aims and Objectives"]}</p>
         <h2>Contribution:</h2> <p>{meta["Contributions to IW aims and objectives"]}</p>
+      </div>
+      <div className="metaSection">
+        <h1>LINKED ACTIVITIES: </h1>
+        <ul>{linkedActivitiesList}</ul>
       </div>
     </div>
   );

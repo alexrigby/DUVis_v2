@@ -14,7 +14,7 @@ export function SideBar({ selectedNode, cyState, setSelectedNode }) {
     return (
       <div className="sideBar" style={style}>
         {selectedNode.type === "activityNode" ? (
-          <ActivityMetaSection selectedNode={selectedNode} />
+          <ActivityMetaSection selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
         ) : (
           <WpNodeMetaSection selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
         )}
