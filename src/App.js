@@ -4,13 +4,13 @@ import Header from "./components/header/Header";
 import SideBar from "./components/sideBar/SideBar";
 import Cytoscape from "./components/cytoscape/Cytoscape";
 import Legend from "./components/legend/Legend";
+import Gantchart from "./components/gantchart/Gantchart";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeCyElements from "./functions/makeCyElements";
 import LAYOUTS from "./components/cytoscape/functions/cyLayouts";
 import makeCyWpEdges from "./components/cytoscape/functions/makeCyWpEdges";
 import addCategoryIcon from "./components/cytoscape/functions/addCategoryIcons";
-import usePreviousState from "./AppFunctions/usePreviousState";
 
 import dataset from "./data/TDR Matrix_Subset.txt";
 import links from "./data/links.txt";
@@ -56,6 +56,7 @@ export function App() {
         <Header cyState={cyState} />
         <Legend cyState={cyState} />
         <SideBar selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
+        <Gantchart />
       </div>
       <Cytoscape cyState={cyState} setSelectedNode={setSelectedNode} />
     </div>

@@ -11,6 +11,7 @@
     "cytoscape-node-html-label": "^1.2.2",
     "cytoscape-popper": "^2.0.0",
     "react": "^18.2.0",
+    "react-calendar-timeline": "^0.28.0",
     "react-cytoscapejs": "^1.2.1",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
