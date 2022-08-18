@@ -17,6 +17,7 @@ export function Gantchart({ gantchartData }) {
     button.forEach((el) => {
       el.classList.toggle("bottom");
     });
+
     // setGantchartDisplay((prevState) => !prevState);
   };
 
@@ -25,8 +26,16 @@ export function Gantchart({ gantchartData }) {
     showMajorLabels: true,
     showCurrentTime: true,
     verticalScroll: true,
-    zoomMin: 1000000,
+    zoomMin: 1000000000,
     type: "range",
+    margin: {
+      item: {
+        horizontal: 2,
+        vertical: 5,
+      },
+      axis: 6,
+    },
+    maxHeight: 1300,
   };
 
   // const style = {
