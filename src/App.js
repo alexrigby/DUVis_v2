@@ -4,7 +4,7 @@ import Header from "./components/header/Header";
 import SideBar from "./components/sideBar/SideBar";
 import Cytoscape from "./components/cytoscape/Cytoscape";
 import Legend from "./components/legend/Legend";
-import Gantchart from "./components/gantchart/time.js";
+import Gantchart from "./components/gantchart/Gantchart.js";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeCyElements from "./functions/makeCyElements";

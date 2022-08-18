@@ -12,7 +12,7 @@ export function makeGantchartacts(actData, wpData) {
 
   function handleNonDates(date) {
     if (date === "onGoing" || date === "undefined") {
-      return "2024-01-02";
+      return "2023-01-02";
     } else {
       return date;
     }

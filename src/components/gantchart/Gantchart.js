@@ -4,11 +4,21 @@ import Timeline from "react-vis-timeline-2";
 import "./Gantchart.css";
 
 export function Gantchart({ gantchartData }) {
-  //   const [gantchartDisplay, setGantchartDisplay] = useState(false);
+  // const [gantchartDisplay, setGantchartDisplay] = useState(false);
 
-  //   const toggleGantchartDisplay = () => {
-  //     setGantchartDisplay((prevState) => !prevState);
-  //   };
+  const toggleGantchartDisplay = () => {
+    const timeline = document.querySelectorAll(".vis-timeline");
+    timeline.forEach((el) => {
+      el.classList.toggle("show");
+    });
+
+    const button = document.querySelectorAll(".gantchartDisplayButton");
+
+    button.forEach((el) => {
+      el.classList.toggle("bottom");
+    });
+    // setGantchartDisplay((prevState) => !prevState);
+  };
 
   const options = {
     stack: true,
@@ -17,21 +27,20 @@ export function Gantchart({ gantchartData }) {
     verticalScroll: true,
     zoomMin: 1000000,
     type: "range",
-    // maxHeight: "1300px",
   };
 
-  //   const style = {
-  //     display: gantchartDisplay ? "block" : "none",
-  //   };
+  // const style = {
+  //   visibility: gantchartDisplay ? "visible !important" : "hidden !important",
+  // };
 
   if (gantchartData.current !== null) {
-    console.log("helllo");
+    console.log("component rerendered");
     return (
       <div>
         <div className="gantchart">
-          <button className="gantchartDisplayButton">
+          <button className="gantchartDisplayButton bottom" onClick={toggleGantchartDisplay}>
             Gantt Chart
-            <i className="fa fa-angle-down"></i>
+            <i className="fa fa-angle-up"></i>
           </button>
           <div>
             <Timeline
