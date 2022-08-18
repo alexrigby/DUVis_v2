@@ -11,7 +11,6 @@ function Gantchart() {
     { id: 2, title: "group 2" },
   ];
 
-  console.log(moment().add(1, "hour"));
   const items = [
     {
       id: 1,

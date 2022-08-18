@@ -11,6 +11,7 @@ import makeCyElements from "./functions/makeCyElements";
 import LAYOUTS from "./components/cytoscape/functions/cyLayouts";
 import makeCyWpEdges from "./components/cytoscape/functions/makeCyWpEdges";
 import addCategoryIcon from "./components/cytoscape/functions/addCategoryIcons";
+import uniqeMonths from "./components/gantchart/functions/uniqueMonths";
 
 import dataset from "./data/TDR Matrix_Subset.txt";
 import links from "./data/links.txt";
@@ -30,9 +31,11 @@ export function App() {
   useEffect(() => {
     //updates cyytoscape state to include node and edge data
     async function addDataToCytoscape() {
-      const { cyElms, wpData } = await makeCyElements(dataset, links, wpDataset); //combines parsing functions to make elements array
+      const { cyElms, wpData, activityData } = await makeCyElements(dataset, links, wpDataset); //combines parsing functions to make elements array
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
+
+      console.log(uniqeMonths(activityData));
 
       setCyState((prevState) => ({
         ...prevState,
