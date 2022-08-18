@@ -1,50 +1,35 @@
-import Timeline from "react-calendar-timeline";
-// make sure you include the timeline stylesheet or the timeline will not be styled
-import "react-calendar-timeline/lib/Timeline.css";
-import moment from "moment";
-
+import Timeline from "react-vis-timeline-2";
 import "./Gantchart.css";
 
-function Gantchart() {
-  const groups = [
-    { id: 1, title: "group 1" },
-    { id: 2, title: "group 2" },
-  ];
+export function Gantchart({ gantchartData }) {
+  console.log(gantchartData.current);
+  const options = {
+    width: "100%",
+    height: "100px",
+    stack: true,
+    showMajorLabels: true,
+    showCurrentTime: true,
+    zoomMin: 1000000,
+    type: "background",
+    format: {
+      minorLabels: {
+        minute: "h:mma",
+        hour: "ha",
+      },
+    },
+  };
 
-  const items = [
-    {
-      id: 1,
-      group: 1,
-      title: "item 1",
-      start_time: moment(),
-      end_time: moment().add(1, "hour"),
-    },
-    {
-      id: 2,
-      group: 2,
-      title: "item 2",
-      start_time: moment().add(-0.5, "hour"),
-      end_time: moment().add(0.5, "hour"),
-    },
-    {
-      id: 3,
-      group: 1,
-      title: "item 3",
-      start_time: moment().add(2, "hour"),
-      end_time: moment().add(3, "hour"),
-    },
-  ];
-
-  return (
-    <div className="gantchart">
-      <Timeline
-        groups={groups}
-        items={items}
-        defaultTimeStart={moment().add(-12, "hour")}
-        defaultTimeEnd={moment().add(12, "hour")}
-      />
-    </div>
-  );
+  if (gantchartData.current !== null) {
+    return (
+      <div className="gantchart">
+        <Timeline
+          initialOptions={options}
+          initialGroups={gantchartData.current.groups}
+          initialItems={gantchartData.current.items}
+        />
+      </div>
+    );
+  }
 }
 
 export default Gantchart;

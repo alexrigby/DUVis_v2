@@ -1,5 +1,5 @@
 //creats a Node object for each activity
-export function makeCyNodes(data) {
+export function makeCyNodes(data, dates) {
   const cyNodes = [];
   for (let i = 0; i < data.length; i++) {
     const nodeOps = {

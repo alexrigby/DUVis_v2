@@ -20,8 +20,8 @@ export function Cytoscape({ cyState, setSelectedNode }) {
   }, [setSelectedNode, cyState]);
 
   const style = {
-    display: cyState.display,
-    // display: "none",
+    // display: cyState.display,
+    display: "none",
     width: "100%",
     height: "100%",
     position: "absolute",
