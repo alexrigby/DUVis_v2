@@ -3,12 +3,24 @@
   position: fixed;
   bottom: 0px;
 } */
+
+/* .gantchart::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+.frame::-webkit-scrollbar:vertical {
+  width: 11px;
+} */
+
 .gantchart {
   position: absolute;
   bottom: 0;
+  left: 0;
   width: 100%;
-  z-index: 200;
+  height: auto;
+  overflow-y: auto;
   pointer-events: all;
+  /* visibility: "hidden" !important; */
 }
 
 .axis path,
@@ -47,7 +59,17 @@
 .vis-item {
   /* border-color: orange !important; */
 
-  font-size: 8pt !important;
-  border-width: 2.5px !important;
+  font-size: 8pt;
+  border-width: 2.5px;
   height: 20px;
+  line-height: 8px;
+}
+
+.gantchartDisplayButton {
+  margin-left: 10px !important;
+  font-size: 10pt;
+}
+
+.gantchartDisplayButton .fa {
+  padding-left: 5px;
 }
