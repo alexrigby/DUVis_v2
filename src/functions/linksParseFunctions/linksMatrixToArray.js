@@ -7,7 +7,7 @@ export function linksMatrixToArray(dataset) {
   dataset.splice(0, 3);
 
   const allLinks = [];
-  //returns index (+1) of al instances of 'Y' i.e. IDs of linked activities
+  //returns index (+1) of all instances of 'Y' i.e. IDs of linked activities
   for (let i = 0; i < dataset.length; i++) {
     var links = [];
     for (let j = 0; j < dataset[i].length; j++) {

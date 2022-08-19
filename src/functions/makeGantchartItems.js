@@ -10,13 +10,6 @@ export function makeGantchartacts(actData, wpData) {
     style: `${classActivitiesbyID(wp.id.slice(2))}; color: white`,
   }));
 
-  function handleNonDates(date) {
-    if (date === "onGoing" || date === "undefined") {
-      return "2023-03-01";
-    } else {
-      return date;
-    }
-  }
   const items = actData.map((act) => ({
     group: `wp${act.WP}`,
     id: act.ID,
@@ -51,6 +44,14 @@ function classActivitiesbyID(wp) {
     return `background-color: ${COLORS.bg.wp8}; border-color: ${COLORS.border.wp8}`;
   } else {
     return `background-color: ${COLORS.bg.other}; border-color: ${COLORS.border.other}`;
+  }
+}
+
+function handleNonDates(date) {
+  if (date === "onGoing" || date === "undefined") {
+    return "2023-03-01";
+  } else {
+    return date;
   }
 }
 

@@ -44,18 +44,3 @@ export function Cytoscape({ cyState, setSelectedNode }) {
 }
 
 export default Cytoscape;
-
-// useEffect(() => {
-//   function resizeCy() {
-//     setCyState((prevState) => ({
-//       ...prevState,
-//       h: window.innerHeight,
-//       w: window.innerWidth,
-//     }));
-//   }
-
-//   window.addEventListener("resize", resizeCy);
-//   return function () {
-//     window.removeEventListener("resize", resizeCy);
-//   };
-// }, [setCyState]);
