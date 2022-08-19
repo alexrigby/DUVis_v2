@@ -1,25 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import Timeline from "react-vis-timeline-2";
 import "./Gantchart.css";
 
-export function Gantchart({ gantchartData }) {
+import styleSelectedElements from "../cytoscape/functions/styleSelectedElements";
+
+export function Gantchart({ gantchartData, cyState, setSelectedNode }) {
   // const [gantchartDisplay, setGantchartDisplay] = useState(false);
+  const [buttonUp, setbuttonUp] = useState(false);
+
+  const buttonBottom = {
+    position: "absolute",
+    bottom: "0",
+    left: "0",
+  };
+
+  const buttonArrow = buttonUp ? <i className="fa fa-angle-down"></i> : <i className="fa fa-angle-up"></i>;
 
   const toggleGantchartDisplay = () => {
+    //CANT THINK OF STATE SOLUTION!!
     const timeline = document.querySelectorAll(".vis-timeline");
     timeline.forEach((el) => {
       el.classList.toggle("show");
     });
-
-    const button = document.querySelectorAll(".gantchartDisplayButton");
-
-    button.forEach((el) => {
-      el.classList.toggle("bottom");
-    });
+    setbuttonUp((prevState) => !prevState);
 
     // setGantchartDisplay((prevState) => !prevState);
   };
+
+  function itemClickHandler(props) {
+    props.item !== null &&
+      setSelectedNode((prevState) =>
+        props.item === prevState.id ? { id: "" } : cyState.cy.nodes(`#${props.item}`).data()
+      );
+
+    styleSelectedElements(cyState.cy, props.item);
+  }
 
   const options = {
     stack: true,
@@ -38,21 +54,20 @@ export function Gantchart({ gantchartData }) {
     maxHeight: 1300,
   };
 
-  // const style = {
-  //   visibility: gantchartDisplay ? "visible !important" : "hidden !important",
-  // };
-
   if (gantchartData.current !== null) {
-    console.log("component rerendered");
     return (
       <div>
         <div className="gantchart">
-          <button className="gantchartDisplayButton bottom" onClick={toggleGantchartDisplay}>
-            Gantt Chart
-            <i className="fa fa-angle-up"></i>
+          <button
+            className="gantchartDisplayButton"
+            style={buttonUp ? null : buttonBottom}
+            onClick={toggleGantchartDisplay}
+          >
+            Gantt Chart{buttonArrow}
           </button>
           <div>
             <Timeline
+              clickHandler={itemClickHandler}
               options={options}
               initialGroups={gantchartData.current.groups}
               initialItems={gantchartData.current.items}

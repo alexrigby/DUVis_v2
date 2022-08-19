@@ -1,19 +1,16 @@
 import styleActivitiesByWP from "../cytoscape/functions/styleActivitiesByWP";
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
+import hilightOnLiHover from "./functions/hilightOnLiHover";
 
 export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode }) {
   const wpActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).children();
-
-  const hilightNodeOnLiHover = (activityId) => {
-    cyState.cy.nodes(`[id = "${activityId}"]`).toggleClass("selectedNode");
-  };
 
   const activitiesList = wpActivities.map((activity) => (
     <li
       key={activity.id()}
       onClick={() => nodeNavigationHandler(activity.id(), setSelectedNode, cyState)}
-      onMouseOver={() => hilightNodeOnLiHover(activity.id())}
-      onMouseOut={() => hilightNodeOnLiHover(activity.id())}
+      onMouseOver={() => hilightOnLiHover(activity.id(), cyState)}
+      onMouseOut={() => hilightOnLiHover(activity.id(), cyState)}
     >
       {activity.id()}. {activity.data().name}
     </li>

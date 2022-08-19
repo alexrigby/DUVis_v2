@@ -1,4 +1,5 @@
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
+import hilightOnLiHover from "./functions/hilightOnLiHover";
 
 export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode }) {
   const meta = selectedNode.meta;
@@ -10,16 +11,12 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode }) 
     color: selectedNode.meta["Activity Status"] === "Completed" ? "#39ff14" : "#ffbf00",
   };
 
-  const hilightNodeOnLiHover = (activity) => {
-    cyState.cy.nodes(`[id = "${activity}"]`).toggleClass("selectedNode");
-  };
-
   const linkedActivitiesList = uniqueLinks.map((activity) => (
     <li
       key={activity.id()}
       onClick={() => nodeNavigationHandler(activity.id(), setSelectedNode, cyState)}
-      onMouseOver={() => hilightNodeOnLiHover(activity.id())}
-      onMouseOut={() => hilightNodeOnLiHover(activity.id())}
+      onMouseOver={() => hilightOnLiHover(activity.id(), cyState)}
+      onMouseOut={() => hilightOnLiHover(activity.id(), cyState)}
     >
       {activity.id()}. {activity.data().name}
     </li>

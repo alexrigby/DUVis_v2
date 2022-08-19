@@ -61,7 +61,7 @@ export function App() {
         <Header cyState={cyState} />
         <Legend cyState={cyState} />
         <SideBar selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
-        <Gantchart gantchartData={gantchartData} />
+        <Gantchart gantchartData={gantchartData} cyState={cyState} setSelectedNode={setSelectedNode} />
       </div>
       <Cytoscape cyState={cyState} setSelectedNode={setSelectedNode} />
     </div>
