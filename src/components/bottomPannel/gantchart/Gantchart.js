@@ -1,33 +1,9 @@
-import React, { useState, useRef, useEffect } from "react";
-
 import Timeline from "react-vis-timeline-2";
 import "./Gantchart.css";
 
-import styleSelectedElements from "../cytoscape/functions/styleSelectedElements";
+import styleSelectedElements from "../../cytoscape/functions/styleSelectedElements";
 
 export function Gantchart({ gantchartData, cyState, setSelectedNode }) {
-  // const [gantchartDisplay, setGantchartDisplay] = useState(false);
-  const [buttonUp, setbuttonUp] = useState(false);
-
-  const buttonBottom = {
-    position: "absolute",
-    bottom: "0",
-    left: "0",
-  };
-
-  const buttonArrow = buttonUp ? <i className="fa fa-angle-down"></i> : <i className="fa fa-angle-up"></i>;
-
-  const toggleGantchartDisplay = () => {
-    //CANT THINK OF STATE SOLUTION!!
-    const timeline = document.querySelectorAll(".vis-timeline");
-    timeline.forEach((el) => {
-      el.classList.toggle("show");
-    });
-    setbuttonUp((prevState) => !prevState);
-
-    // setGantchartDisplay((prevState) => !prevState);
-  };
-
   function itemClickHandler(props) {
     props.item !== null &&
       setSelectedNode((prevState) =>
@@ -58,13 +34,6 @@ export function Gantchart({ gantchartData, cyState, setSelectedNode }) {
     return (
       <div>
         <div className="gantchart">
-          <button
-            className="gantchartDisplayButton"
-            style={buttonUp ? null : buttonBottom}
-            onClick={toggleGantchartDisplay}
-          >
-            Gantt Chart{buttonArrow}
-          </button>
           <div>
             <Timeline
               clickHandler={itemClickHandler}
