@@ -16,7 +16,6 @@ export function Gantchart({ gantchartData, cyState, setSelectedNode, selectedBot
 
   // CANT THINK OF BETTER STATE SOLUTION!!
   useEffect(() => {
-    console.log(selectedBottomVis);
     const timeline = document.querySelectorAll(".vis-timeline");
     if (selectedBottomVis === "gantChartButton") {
       timeline.forEach((el) => {
