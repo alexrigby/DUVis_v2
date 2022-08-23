@@ -2,8 +2,9 @@ import Timeline from "react-vis-timeline-2";
 import "./Gantchart.css";
 
 import styleSelectedElements from "../../cytoscape/functions/styleSelectedElements";
+import { useEffect } from "react";
 
-export function Gantchart({ gantchartData, cyState, setSelectedNode }) {
+export function Gantchart({ gantchartData, cyState, setSelectedNode, selectedBottomVis }) {
   function itemClickHandler(props) {
     props.item !== null &&
       setSelectedNode((prevState) =>
@@ -12,6 +13,21 @@ export function Gantchart({ gantchartData, cyState, setSelectedNode }) {
 
     styleSelectedElements(cyState.cy, props.item);
   }
+
+  // CANT THINK OF BETTER STATE SOLUTION!!
+  useEffect(() => {
+    console.log(selectedBottomVis);
+    const timeline = document.querySelectorAll(".vis-timeline");
+    if (selectedBottomVis === "gantChartButton") {
+      timeline.forEach((el) => {
+        el.classList.add("show");
+      });
+    } else {
+      timeline.forEach((el) => {
+        el.classList.remove("show");
+      });
+    }
+  }, [selectedBottomVis]);
 
   const options = {
     stack: true,

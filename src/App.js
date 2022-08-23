@@ -28,15 +28,25 @@ export function App() {
   //stores parsed gantchart data
   const gantchartData = useRef(null);
 
+  const vegaAnalyticsData = useRef({ dates: null, actData: null });
+
   //sets initial state for selected node
   const [selectedNode, setSelectedNode] = useState({ id: "" });
 
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
     async function addDataToCytoscape() {
-      const { cyElms, wpData, gantChartItems } = await makeCyElements(dataset, links, wpDataset, datesData); //combines parsing functions to make elements array
+      const { cyElms, wpData, gantChartItems, activityData, dates } = await makeCyElements(
+        dataset,
+        links,
+        wpDataset,
+        datesData
+      ); //combines parsing functions to make elements array
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
+
+      vegaAnalyticsData.current.actData = activityData;
+      vegaAnalyticsData.current.dates = dates;
 
       gantchartData.current = gantChartItems; //asign gant chart data to the ref
 
@@ -55,14 +65,18 @@ export function App() {
     addCategoryIcon(cyState.cy);
   }, [cyState.cy, cyState.elements.length]);
 
-  // console.log(usePreviousState(selectedNode));
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
       <div className="top-layer">
         <Header cyState={cyState} />
         <Legend cyState={cyState} />
         <SideBar selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
-        <BottomPannel gantchartData={gantchartData} cyState={cyState} setSelectedNode={setSelectedNode} />
+        <BottomPannel
+          gantchartData={gantchartData}
+          cyState={cyState}
+          setSelectedNode={setSelectedNode}
+          vegaAnalyticsData={vegaAnalyticsData}
+        />
       </div>
       <Cytoscape cyState={cyState} setSelectedNode={setSelectedNode} />
     </div>

@@ -1,7 +1,9 @@
 .vegaAnalytics {
-  margin-left: 10px;
-  font-size: 10pt;
-  position: "absolute";
-  bottom: "0";
-  left: "0";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 900px;
+  width: 100%;
+  background-color: white;
+  border-top: 2px solid black;
 }
