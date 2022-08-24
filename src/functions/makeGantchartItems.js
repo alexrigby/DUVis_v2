@@ -14,8 +14,8 @@ export function makeGantchartacts(actData, wpData) {
     group: `wp${act.WP}`,
     id: act.ID,
     content: `${act.ID}. ${act["Activity Name"]}`,
-    start: act.startDate === "undefined" ? "2016-09-01" : act.startDate,
-    end: handleNonDates(act.endDate), //if the end date is not a date value then return last date of project
+    start: handleNonDates(act.startDate, "start"),
+    end: handleNonDates(act.endDate, "end"), //if the end date is not a date value then return last date of project
     title: act["Activity Name"],
     className: `item${act.ID}`,
     sMonth: act["Start Month"],
@@ -47,9 +47,9 @@ function classActivitiesbyID(wp) {
   }
 }
 
-function handleNonDates(date) {
+function handleNonDates(date, startOrEnd) {
   if (date === "onGoing" || date === "undefined") {
-    return "2023-03-01";
+    return startOrEnd === "start" ? "2016-09-01" : "2023-03-01";
   } else {
     return date;
   }

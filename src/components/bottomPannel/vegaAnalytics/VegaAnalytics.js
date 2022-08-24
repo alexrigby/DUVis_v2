@@ -6,31 +6,27 @@ import parseVegaData from "./functions/parseVegaData";
 import "./VegaAnalytics.css";
 
 export function VegaAnalytics({ selectedBottomVis, vegaAnalyticsData }) {
-  const actData = vegaAnalyticsData.current.actData;
-  const dates = vegaAnalyticsData.current.dates;
-
   if (vegaAnalyticsData.current.actData !== null) {
-    const { plotData, categorys } = parseVegaData(actData, dates);
-
-    const layers = categorys.map((cat) => ({
+    const { plotData, categorys } = parseVegaData(vegaAnalyticsData.current.actData, vegaAnalyticsData.current.dates);
+    console.log("render");
+    const layers = categorys.map((cat, i) => ({
       mark: { type: "line", strokeWidth: 3, interpolate: "monotone" },
       params: [
         {
-          name: cat,
-          select: { type: "point", field: "series" },
+          name: `param-${i}`,
+          select: { type: "point", fields: ["Categorys"] },
           bind: "legend",
         },
       ],
       encoding: {
         x: { timeUnit: "yearmonth", field: "date", title: "date", type: "temporal", axis: { title: "Date" } },
-        y: { field: cat, type: "quantitative", axis: { title: "category per month", tickMinStep: 1 } },
+        y: { field: cat, type: "quantitative", axis: { title: "", tickMinStep: 1 } },
         color: {
           field: "Categorys",
           datum: cat,
-          type: "nominal",
         },
         opacity: {
-          condition: { param: cat, value: 1 },
+          condition: { param: `param-${i}`, value: 1 },
           value: 0.2,
         },
       },
@@ -41,14 +37,15 @@ export function VegaAnalytics({ selectedBottomVis, vegaAnalyticsData }) {
       height: 400,
       layer: layers,
       data: { name: "values" },
+      strokeOpacity: 0.3,
       config: {
         legend: {
           field: "Categorys",
           fillColor: "white",
-          strokeColor: "lightgrey",
+          strokeColor: "grey",
           strokeWidth: 4,
           cornerRadius: 6,
-          padding: 3,
+          padding: 6,
           orient: "top-right",
           labelFontSize: 12,
           symbolStrokeWidth: 4,
