@@ -5,5 +5,11 @@
   height: 900px;
   width: 100%;
   background-color: white;
-  border-top: 2px solid black;
+  border-top: 2px solid grey;
+  pointer-events: all;
+}
+
+.vega-embed {
+  width: 50%;
+  height: 100%;
 }

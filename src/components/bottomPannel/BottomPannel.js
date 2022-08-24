@@ -7,7 +7,7 @@ import PannelButtons from "./pannelButtons/PannelButtons";
 import "./BottomPannel.css";
 
 export function BottomPannel({ gantchartData, cyState, setSelectedNode, vegaAnalyticsData }) {
-  const [selectedBottomVis, setSelectedBottomVis] = useState("");
+  const [selectedBottomVis, setSelectedBottomVis] = useState("vegaAnalyticsButton");
 
   return (
     <div className="bottomPannel">
