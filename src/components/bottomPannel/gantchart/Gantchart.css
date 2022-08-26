@@ -5,6 +5,7 @@
   width: 100%;
   height: auto;
   overflow-y: auto;
+  display: "inline-block";
   /* pointer-events: all; */
 }
 

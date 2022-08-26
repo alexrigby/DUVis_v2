@@ -1,7 +1,7 @@
 import "./PannelButtons.css";
 
 export function PannelButtons({ selectedBottomVis, setSelectedBottomVis }) {
-  const toggleGantchartDisplay = (event) => {
+  const toggleBottomPannelDisplay = (event) => {
     const target = event.currentTarget.id;
     setSelectedBottomVis((prevState) => (prevState === target ? "" : target)); //if the same button is  clicked twice set state to ""
   };
@@ -15,12 +15,16 @@ export function PannelButtons({ selectedBottomVis, setSelectedBottomVis }) {
       <i className="fa fa-angle-up"></i>
     );
 
+  const style = {
+    position: selectedBottomVis !== "" ? "relative" : "absolute",
+  };
+
   return (
-    <div className="pannelButtons">
-      <button onClick={toggleGantchartDisplay} id="gantChartButton">
+    <div className="pannelButtons" style={style}>
+      <button onClick={toggleBottomPannelDisplay} id="gantChartButton">
         Gantt Chart {gantButtonArrow}
       </button>
-      <button onClick={toggleGantchartDisplay} id="vegaAnalyticsButton">
+      <button onClick={toggleBottomPannelDisplay} id="vegaAnalyticsButton">
         Analytics {vegaButtonArrow}
       </button>
     </div>

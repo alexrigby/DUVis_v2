@@ -15,11 +15,11 @@ export function addCategoryIcon(cy) {
     {
       query: "node[type = 'activityNode']",
       //added myslef. might need to alter (-0.2) (mid-top)
-      valign: "top",
+      valign: "mid-top",
       halign: "left",
       valignBox: "center",
       //added myslef. might need to alter (0.3) (mid-center)
-      halignBox: "center",
+      halignBox: "mid-center",
       tpl(data) {
         return renderToString(
           <div className="categoryIcon" style={styleActivitiesByWP(data.parent)} value={data.id}>

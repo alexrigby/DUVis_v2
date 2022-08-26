@@ -2,7 +2,8 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 900px;
+  /* height: 600px; */
+  display: inline-block;
   width: 100%;
   background-color: white;
   border-top: 2px solid grey;

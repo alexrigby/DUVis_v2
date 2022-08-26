@@ -42,7 +42,7 @@ export function Gantchart({ gantchartData, cyState, setSelectedNode, selectedBot
       },
       axis: 6,
     },
-    maxHeight: 1300,
+    maxHeight: 500,
   };
 
   if (gantchartData.current !== null) {
