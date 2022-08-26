@@ -6,9 +6,6 @@ export function parseVegaData(actData, dates, brushRange) {
     endDate: handleNonDates(act.endDate, "end"),
   }));
 
-  const betweenBrushDates = numericDate.filter(
-    (act) => brushRange.current.start <= new Date(act.startDate) && brushRange.current.end >= new Date(act.endDate)
-  );
   //unique category names
   const categorys = [...new Set(numericDate.map((act) => act["Activity Category"]))];
 
@@ -17,7 +14,10 @@ export function parseVegaData(actData, dates, brushRange) {
     numericDate.filter((act) => act["Activity Category"] === category)
   );
 
-  //returns total activities per category
+  const betweenBrushDates = numericDate.filter(
+    (act) => brushRange.start <= new Date(act.startDate) && brushRange.end >= new Date(act.endDate)
+  );
+  //returns total activities per categor
   const barData = categorys.map((category) => ({
     category: category,
     count: betweenBrushDates.filter((act) => act["Activity Category"] === category).length,

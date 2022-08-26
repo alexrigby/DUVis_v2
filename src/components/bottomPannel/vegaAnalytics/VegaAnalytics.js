@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { VegaLite } from "react-vega";
 import { Handler } from "vega-tooltip";
 
@@ -9,25 +9,35 @@ import "./VegaAnalytics.css";
 export function VegaAnalytics({ selectedBottomVis, vegaAnalyticsData }) {
   const dates = vegaAnalyticsData.current.dates;
   const actData = vegaAnalyticsData.current.actData;
-  const brushRange = useRef("");
+  const [brush, setBrush] = useState("");
 
-  if (vegaAnalyticsData.current.actData !== null) {
-    brushRange.current = { start: new Date(dates[0].date), end: new Date(dates[dates.length - 1].date) };
+  useEffect(() => {
+    if (actData !== null) {
+      setBrush({ start: new Date(dates[0].date), end: new Date(dates[dates.length - 1].date) });
+    }
+  }, [actData, dates]);
 
+  if (brush !== "") {
+    let range = {};
     const signalListeners = {
       brush: (...args) => {
-        console.log(args);
-
-        brushRange.current = args;
+        range = args[1].yearmonth_date !== undefined && {
+          start: Object.values(args[1].yearmonth_date)[0],
+          end: Object.values(args[1].yearmonth_date)[1],
+        };
       },
     };
 
-    const { vegaData, categorys } = parseVegaData(actData, dates, brushRange);
+    const mouseUpHandler = (event) => {
+      setBrush(range);
+    };
+
+    const { vegaData, categorys } = parseVegaData(actData, dates, brush);
     const spec = vegaSpec(categorys);
 
     if (selectedBottomVis === "vegaAnalyticsButton") {
       return (
-        <div className="vegaAnalytics">
+        <div className="vegaAnalytics" onMouseUp={mouseUpHandler}>
           <VegaLite
             data={vegaData}
             spec={spec}

@@ -11,7 +11,14 @@ export function vegaSpec(categorys) {
       },
       {
         name: "brush",
-        select: { type: "interval", encodings: ["x"] },
+        select: {
+          type: "interval",
+          encodings: ["x"],
+          // on: {
+          //   type: "mousemove",
+          //   between: [{ type: "mousedown" }, { type: "mouseup" }],
+          // },
+        },
       },
     ],
     vconcat: [
