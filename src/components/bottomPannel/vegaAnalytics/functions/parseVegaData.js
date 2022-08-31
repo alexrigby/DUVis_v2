@@ -14,13 +14,14 @@ export function parseVegaData(actData, dates, brushRange) {
     numericDate.filter((act) => act["Activity Category"] === category)
   );
 
+  //finds all activitys whos start or end date extends into the brush range
   const withinBrushRange = numericDate.filter(
     (act) =>
       (brushRange.start < new Date(act.startDate) || brushRange.start < new Date(act.endDate)) &&
       (brushRange.end > new Date(act.endDate) || brushRange.end > new Date(act.startDate))
   );
 
-  //returns total activities per categor
+  //returns total activities per categor for bar chart
   const barData = categorys.map((category) => ({
     category: category,
     count: withinBrushRange.filter((act) => act["Activity Category"] === category).length,
@@ -30,7 +31,7 @@ export function parseVegaData(actData, dates, brushRange) {
   const categoryPerDate = activityByCategory.map((catAct) =>
     dates.map((date) => ({
       [catAct[0]["Activity Category"]]: catAct.filter(
-        (act) => new Date(date.date) >= new Date(act.startDate) && new Date(date.date) < new Date(act.endDate)
+        (act) => new Date(date.date) >= new Date(act.startDate) && new Date(date.date) <= new Date(act.endDate)
       ).length,
       ...date,
     }))

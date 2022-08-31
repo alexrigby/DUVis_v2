@@ -1,5 +1,4 @@
 export function vegaSpec(categorys, brushRange) {
-  console.log(brushRange);
   const startDate = new Date(brushRange.start);
   const endDate = new Date(brushRange.end);
   const spec = {
@@ -17,10 +16,6 @@ export function vegaSpec(categorys, brushRange) {
         select: {
           type: "interval",
           encodings: ["x"],
-          // on: {
-          //   type: "mousemove",
-          //   between: [{ type: "mousedown" }, { type: "mouseup" }],
-          // },
         },
       },
     ],
@@ -31,8 +26,34 @@ export function vegaSpec(categorys, brushRange) {
         transform: [{ fold: categorys, as: ["category", "y"] }], //adds all relivent input feilds to one layer
         mark: { type: "line", strokeWidth: 3, interpolate: "monotone" },
         encoding: {
-          x: { timeUnit: "yearmonth", field: "date", title: "date", type: "temporal", axis: { title: "Date" } },
-          y: { field: "y", type: "quantitative", axis: { title: "", tickMinStep: 1 } },
+          x: {
+            timeUnit: "yearmonth",
+            field: "date",
+            title: "date",
+            type: "temporal",
+            axis: {
+              title: null,
+              labelAlign: "left",
+              tickSize: 30,
+              gridDash: {
+                condition: { test: { field: "value", timeUnit: "month", equal: 1 }, value: [] },
+                value: [2, 2],
+              },
+              tickDash: {
+                condition: { test: { field: "value", timeUnit: "month", equal: 1 }, value: [] },
+                value: [2, 2],
+              },
+              labelOffset: 4,
+              labelPadding: -24,
+              labelExpr:
+                "[timeFormat(datum.value, '%b'), timeFormat(datum.value, '%m') == '01' ? timeFormat(datum.value, '%Y') : '']",
+            },
+          },
+          y: {
+            field: "y",
+            type: "quantitative",
+            axis: { title: "", tickMinStep: 1 },
+          },
           scale: { domain: { param: "brush" } },
           tooltip: { field: "y", type: "quantitative" },
           color: {
@@ -41,7 +62,6 @@ export function vegaSpec(categorys, brushRange) {
           },
           opacity: {
             condition: { param: "legendSelect", value: 1 },
-
             value: 0.2,
           },
         },
@@ -67,6 +87,7 @@ export function vegaSpec(categorys, brushRange) {
       },
     ],
     config: {
+      view: { stroke: null },
       legend: {
         field: "category",
         title: "",
@@ -79,15 +100,13 @@ export function vegaSpec(categorys, brushRange) {
         labelFontSize: 12,
         symbolStrokeWidth: 4,
         direction: "horizontal",
-        orient: "bottom",
+        orient: "top",
         cursor: "pointer",
         labelAlign: "middle",
         // legendX: 130,
         // legendY: 40,
       },
     },
-
-    // note: vega-lite data attribute is a plain object instead of an array
   };
 
   return spec;
