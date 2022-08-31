@@ -14,13 +14,16 @@ export function parseVegaData(actData, dates, brushRange) {
     numericDate.filter((act) => act["Activity Category"] === category)
   );
 
-  const betweenBrushDates = numericDate.filter(
-    (act) => brushRange.start <= new Date(act.startDate) && brushRange.end >= new Date(act.endDate)
+  const withinBrushRange = numericDate.filter(
+    (act) =>
+      (brushRange.start < new Date(act.startDate) || brushRange.start < new Date(act.endDate)) &&
+      (brushRange.end > new Date(act.endDate) || brushRange.end > new Date(act.startDate))
   );
+
   //returns total activities per categor
   const barData = categorys.map((category) => ({
     category: category,
-    count: betweenBrushDates.filter((act) => act["Activity Category"] === category).length,
+    count: withinBrushRange.filter((act) => act["Activity Category"] === category).length,
   }));
 
   //add Activity count per month to date array

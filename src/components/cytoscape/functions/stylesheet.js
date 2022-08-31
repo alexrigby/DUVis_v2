@@ -52,7 +52,7 @@ export const stylesheet = [
     selector: "edge[type = 'wpEdge']",
     style: {
       display: "element",
-      label: "data(weight)",
+      // label: "data(weight)",
       width: "data(weight)",
       "line-color": "mapData(weight, 0, 40, #ffcba4, #cb410b)",
       "line-cap": "round",

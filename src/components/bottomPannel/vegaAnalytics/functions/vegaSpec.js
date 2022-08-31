@@ -1,4 +1,7 @@
-export function vegaSpec(categorys) {
+export function vegaSpec(categorys, brushRange) {
+  console.log(brushRange);
+  const startDate = new Date(brushRange.start);
+  const endDate = new Date(brushRange.end);
   const spec = {
     padding: 20,
     data: { name: "vegaData" },
@@ -45,7 +48,9 @@ export function vegaSpec(categorys) {
       },
       {
         width: "container",
-        title: "Categorys Total",
+        title: `Categorys Total Between ${startDate.toLocaleDateString("en-GB")} and ${endDate.toLocaleDateString(
+          "en-GB"
+        )}`,
         mark: "bar",
         encoding: {
           x: { field: "category", type: "ordinal", axis: { title: "", labelAngle: 0 } },

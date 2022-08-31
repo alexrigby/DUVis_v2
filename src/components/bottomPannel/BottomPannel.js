@@ -14,13 +14,13 @@ export function BottomPannel({ gantchartData, cyState, setSelectedNode, vegaAnal
   return (
     <div className="bottomPannel">
       <PannelButtons selectedBottomVis={selectedBottomVis} setSelectedBottomVis={setSelectedBottomVis} />
+      <VegaAnalytics selectedBottomVis={selectedBottomVis} vegaAnalyticsData={vegaAnalyticsData} />
       <Gantchart
         gantchartData={gantchartData}
         cyState={cyState}
         setSelectedNode={setSelectedNode}
         selectedBottomVis={selectedBottomVis}
       />
-      <VegaAnalytics selectedBottomVis={selectedBottomVis} vegaAnalyticsData={vegaAnalyticsData} />
     </div>
   );
 }

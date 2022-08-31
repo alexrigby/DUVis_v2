@@ -20,7 +20,7 @@ export function PannelButtons({ selectedBottomVis, setSelectedBottomVis }) {
   };
 
   return (
-    <div className="pannelButtons" style={style}>
+    <div style={style} className="pannelButtons">
       <button onClick={toggleBottomPannelDisplay} id="gantChartButton">
         Gantt Chart {gantButtonArrow}
       </button>

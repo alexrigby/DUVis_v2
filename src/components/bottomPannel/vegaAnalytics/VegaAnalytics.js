@@ -33,7 +33,7 @@ export function VegaAnalytics({ selectedBottomVis, vegaAnalyticsData }) {
     };
 
     const { vegaData, categorys } = parseVegaData(actData, dates, brush);
-    const spec = vegaSpec(categorys);
+    const spec = vegaSpec(categorys, brush);
 
     if (selectedBottomVis === "vegaAnalyticsButton") {
       return (
