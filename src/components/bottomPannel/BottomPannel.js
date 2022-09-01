@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import Gantchart from "./gantchart/Gantchart";
+import GanttChart from "./ganttChart/GanttChart";
 import VegaAnalytics from "./vegaAnalytics/VegaAnalytics";
 import PannelButtons from "./pannelButtons/PannelButtons";
 
@@ -15,7 +15,7 @@ export function BottomPannel({ gantchartData, cyState, setSelectedNode, vegaAnal
     <div className="bottomPannel">
       <PannelButtons selectedBottomVis={selectedBottomVis} setSelectedBottomVis={setSelectedBottomVis} />
       <VegaAnalytics selectedBottomVis={selectedBottomVis} vegaAnalyticsData={vegaAnalyticsData} />
-      <Gantchart
+      <GanttChart
         gantchartData={gantchartData}
         cyState={cyState}
         setSelectedNode={setSelectedNode}

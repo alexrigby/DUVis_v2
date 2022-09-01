@@ -1,10 +1,11 @@
 import Timeline from "react-vis-timeline-2";
-import "./Gantchart.css";
+import "./GanttChart.css";
 
 import styleSelectedElements from "../../cytoscape/functions/styleSelectedElements";
 import { useEffect } from "react";
 
-export function Gantchart({ gantchartData, cyState, setSelectedNode, selectedBottomVis }) {
+export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBottomVis }) {
+  //when an item is clicked on the gantt chart it updates selected node id as well
   function itemClickHandler(props) {
     props.item !== null &&
       setSelectedNode((prevState) =>
@@ -63,4 +64,4 @@ export function Gantchart({ gantchartData, cyState, setSelectedNode, selectedBot
   }
 }
 
-export default Gantchart;
+export default GanttChart;

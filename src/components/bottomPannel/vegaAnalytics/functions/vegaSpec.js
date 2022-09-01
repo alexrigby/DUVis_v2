@@ -1,6 +1,9 @@
-export function vegaSpec(categorys, brushRange) {
-  const startDate = new Date(brushRange.start);
-  const endDate = new Date(brushRange.end);
+export function vegaSpec(options, brushRange, selectedMetric) {
+  // const selectedMetric = "Activity Category";
+
+  const startDate = brushRange.start;
+  const endDate = brushRange.end;
+
   const spec = {
     padding: 20,
     data: { name: "vegaData" },
@@ -8,7 +11,7 @@ export function vegaSpec(categorys, brushRange) {
     params: [
       {
         name: "legendSelect",
-        select: { type: "point", fields: ["category"] },
+        select: { type: "point", fields: [selectedMetric] },
         bind: "legend",
       },
       {
@@ -21,15 +24,14 @@ export function vegaSpec(categorys, brushRange) {
     ],
     vconcat: [
       {
-        title: "Categorys per Month",
+        title: `${selectedMetric} per Month`,
         width: "container",
-        transform: [{ fold: categorys, as: ["category", "y"] }], //adds all relivent input feilds to one layer
+        transform: [{ fold: options, as: [selectedMetric, "y"] }], //adds all relivent input feilds to one layer
         mark: { type: "line", strokeWidth: 3, interpolate: "monotone" },
         encoding: {
           x: {
             timeUnit: "yearmonth",
             field: "date",
-            title: "date",
             type: "temporal",
             axis: {
               title: null,
@@ -57,7 +59,7 @@ export function vegaSpec(categorys, brushRange) {
           scale: { domain: { param: "brush" } },
           tooltip: { field: "y", type: "quantitative" },
           color: {
-            field: "category",
+            field: selectedMetric,
             type: "nominal",
           },
           opacity: {
@@ -68,16 +70,16 @@ export function vegaSpec(categorys, brushRange) {
       },
       {
         width: "container",
-        title: `Categorys Total Between ${startDate.toLocaleDateString("en-GB")} and ${endDate.toLocaleDateString(
-          "en-GB"
-        )}`,
+        title: `${selectedMetric} Total Between ${new Date(startDate).toLocaleDateString("en-GB")} and ${new Date(
+          endDate
+        ).toLocaleDateString("en-GB")}`,
         mark: "bar",
         encoding: {
-          x: { field: "category", type: "ordinal", axis: { title: "", labelAngle: 0 } },
+          x: { field: selectedMetric, type: "ordinal", axis: { title: "", labelAngle: 0 } },
           y: { field: "count", type: "quantitative", axis: { title: "" } },
           tooltip: { field: "count", type: "quantitative" },
           color: {
-            field: "category",
+            field: selectedMetric,
           },
           opacity: {
             condition: { param: `legendSelect`, value: 1 },
@@ -89,7 +91,7 @@ export function vegaSpec(categorys, brushRange) {
     config: {
       view: { stroke: null },
       legend: {
-        field: "category",
+        field: selectedMetric,
         title: "",
         fillColor: "white",
         // strokeColor: "grey",

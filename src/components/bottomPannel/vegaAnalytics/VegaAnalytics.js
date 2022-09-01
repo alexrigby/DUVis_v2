@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { VegaLite } from "react-vega";
 import { Handler } from "vega-tooltip";
 
+import VegaSelect from "./VegaSelect";
+
 import vegaSpec from "./functions/vegaSpec";
 import parseVegaData from "./functions/parseVegaData";
 import "./VegaAnalytics.css";
@@ -9,18 +11,32 @@ import "./VegaAnalytics.css";
 export function VegaAnalytics({ selectedBottomVis, vegaAnalyticsData }) {
   const dates = vegaAnalyticsData.current.dates;
   const actData = vegaAnalyticsData.current.actData;
+
   const [brushRange, setBrushRange] = useState("");
 
+  const [selectedMetric, setSelectedMetric] = useState("Activity Category");
+  //sets brush range to full extent of project once the initial data is parsed
   useEffect(() => {
-    if (actData !== null) {
-      setBrushRange({ start: new Date(dates[0].date), end: new Date(dates[dates.length - 1].date) });
+    if (dates !== null) {
+      setBrushRange({
+        start: new Date(dates[0].date).getTime(),
+        end: new Date(dates[dates.length - 1].date).getTime(),
+      });
     }
-  }, [actData, dates]);
+  }, [dates]);
 
+  //once brush range is set generate component
   if (brushRange !== "") {
+    const fullRange = {
+      start: new Date(dates[0].date).getTime(),
+      end: new Date(dates[dates.length - 1].date).getTime(),
+    };
+
+    //returns the brush date range
     let range = {};
     const signalListeners = {
       brush: (...args) => {
+        //first click on brush returns 0 values therfore filter out undefined
         range = args[1].yearmonth_date !== undefined && {
           start: Object.values(args[1].yearmonth_date)[0],
           end: Object.values(args[1].yearmonth_date)[1],
@@ -28,6 +44,7 @@ export function VegaAnalytics({ selectedBottomVis, vegaAnalyticsData }) {
       },
     };
 
+    //when a mouseup event happens set brushRange to latest range
     const mouseUpHandler = (event) => {
       // if range is empty it means mousup event occured not on the graph so do Not set state again!
       if (Object.keys(range).length !== 0) {
@@ -36,16 +53,27 @@ export function VegaAnalytics({ selectedBottomVis, vegaAnalyticsData }) {
     };
 
     const resetDoubleClick = (event) => {
-      setBrushRange({ start: new Date(dates[0].date), end: new Date(dates[dates.length - 1].date) });
+      setBrushRange(fullRange);
     };
 
-    const { vegaData, categorys } = parseVegaData(actData, dates, brushRange);
-    const spec = vegaSpec(categorys, brushRange);
+    const { vegaData, options } = parseVegaData(actData, dates, brushRange, selectedMetric);
+    const spec = vegaSpec(options, brushRange, selectedMetric);
+
+    const title =
+      brushRange.start !== fullRange.start && brushRange.end !== fullRange.end
+        ? "double click to reset date range"
+        : "click and drag on the time series to specify a date range";
 
     if (selectedBottomVis === "vegaAnalyticsButton") {
       return (
-        <div className="vegaAnalytics" onMouseUp={mouseUpHandler} onDoubleClick={resetDoubleClick}>
-          <div>{/* <select></select> */}</div>
+        <div className="vegaAnalytics" onMouseUp={mouseUpHandler} onDoubleClick={resetDoubleClick} title={title}>
+          {/* <div className="vegaSelect">
+            <select>
+              <option value="volvo">Volvo</option>
+              <option value="saab">Saab</option>
+            </select>
+          </div> */}
+          <VegaSelect setSelectedMetric={setSelectedMetric} />
           <VegaLite
             data={vegaData}
             spec={spec}

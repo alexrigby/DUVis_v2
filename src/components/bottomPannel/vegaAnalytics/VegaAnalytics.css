@@ -12,3 +12,14 @@
   width: 90%;
   height: 100%;
 }
+
+.vegaSelect {
+  width: 20%;
+  right: 0;
+  z-index: 200;
+  position: absolute;
+  padding: 10px 10px 0 0;
+  font-size: 10pt;
+  font-weight: 300;
+  font-family: inherit;
+}
