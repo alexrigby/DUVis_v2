@@ -1,5 +1,5 @@
-import getTsvData from "./datasetParseFunctions/getTsvData";
-import tsvToJson from "./datasetParseFunctions/TsvToJson";
+import getTsvData from "./getTsvData";
+import tsvToJson from "./TsvToJson";
 
 export async function parseDataset(url) {
   const { dataset, headers } = await getTsvData(url);

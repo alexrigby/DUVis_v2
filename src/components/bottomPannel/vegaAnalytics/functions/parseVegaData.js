@@ -12,7 +12,7 @@ export function parseVegaData(actData, dates, brushRange, selectedMetric) {
   for (var i = 0; i < numericDate.length; i++) {
     for (var j = 0; j < vegaMetricFields.length; j++) {
       if (numericDate[i][vegaMetricFields[j]] === "") {
-        numericDate[i][vegaMetricFields[j]] = "Undefined";
+        numericDate[i][vegaMetricFields[j]] = "undefined";
       }
     }
   }

@@ -11,4 +11,32 @@ header {
 
 header button {
   pointer-events: all;
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
+.prSelection input {
+  pointer-events: all;
+  cursor: pointer;
+  accent-color: grey;
+}
+
+.prSelection {
+  font-size: 10pt;
+}
+
+/* .radio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+} */
+
+.radioGroup {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+header .fa {
+  padding-left: 5px;
 }

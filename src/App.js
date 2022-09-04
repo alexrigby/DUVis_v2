@@ -7,7 +7,7 @@ import Legend from "./components/legend/Legend";
 import BottomPannel from "./components/bottomPannel/BottomPannel";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
-import makeCyElements from "./functions/makeCyElements";
+import makeVisElements from "./functions/makeVisElements";
 import LAYOUTS from "./components/cytoscape/functions/cyLayouts";
 import makeCyWpEdges from "./components/cytoscape/functions/makeCyWpEdges";
 import addCategoryIcon from "./components/cytoscape/functions/addCategoryIcons";
@@ -30,13 +30,15 @@ export function App() {
 
   const vegaAnalyticsData = useRef({ dates: null, actData: null });
 
+  const dateTest = useRef(null);
+
   //sets initial state for selected node
   const [selectedNode, setSelectedNode] = useState({ id: "" });
 
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
     async function addDataToCytoscape() {
-      const { cyElms, wpData, gantChartItems, activityData, dates } = await makeCyElements(
+      const { cyElms, wpData, gantChartItems, activityData, dates } = await makeVisElements(
         dataset,
         links,
         wpDataset,
@@ -47,6 +49,8 @@ export function App() {
 
       vegaAnalyticsData.current.actData = activityData;
       vegaAnalyticsData.current.dates = dates;
+
+      dateTest.current = dates;
 
       gantchartData.current = gantChartItems; //asign gant chart data to the ref
 
@@ -68,7 +72,7 @@ export function App() {
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
       <div className="top-layer">
-        <Header cyState={cyState} />
+        <Header cyState={cyState} dates={dateTest} />
         <Legend cyState={cyState} />
         <SideBar selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
         <BottomPannel

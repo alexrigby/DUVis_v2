@@ -33,6 +33,7 @@ export function vegaSpec(options, brushRange, selectedMetric) {
             timeUnit: "yearmonth",
             field: "date",
             type: "temporal",
+
             axis: {
               title: null,
               labelAlign: "left",
@@ -57,8 +58,12 @@ export function vegaSpec(options, brushRange, selectedMetric) {
             axis: { title: "", tickMinStep: 1 },
           },
           scale: { domain: { param: "brush" } },
-          tooltip: { field: "y", type: "quantitative" },
           color: {
+            // condition: {
+            //   test: `datum['${selectedMetric}'] === '0'`,
+            //   value: "pink",
+            // },
+            // condition: { test: `datum['${selectedMetric}'] === "undefined" `, value: "grey" },
             field: selectedMetric,
             type: "nominal",
           },
@@ -67,7 +72,19 @@ export function vegaSpec(options, brushRange, selectedMetric) {
             value: 0.2,
           },
         },
+        // layer: [
+        //   {
+        //     data: {
+        //       values: [{ date: startDate }, { date: endDate }],
+        //     },
+        //     mark: { type: "rule", strokeDash: [2, 2], size: 2 },
+        //     encoding: {
+        //       x: { field: "date", type: "temporal", timeUnit: "yearmonth" },
+        //     },
+        //   },
+        // ],
       },
+
       {
         width: "container",
         title: `${selectedMetric} Total Between ${new Date(startDate).toLocaleDateString("en-GB")} and ${new Date(
@@ -79,6 +96,7 @@ export function vegaSpec(options, brushRange, selectedMetric) {
           y: { field: "count", type: "quantitative", axis: { title: "" } },
           tooltip: { field: "count", type: "quantitative" },
           color: {
+            condition: { test: `datum['${selectedMetric}'] === "undefined" `, value: "grey" },
             field: selectedMetric,
           },
           opacity: {
@@ -90,23 +108,19 @@ export function vegaSpec(options, brushRange, selectedMetric) {
     ],
     config: {
       view: { stroke: null },
+
       legend: {
-        field: selectedMetric,
+        symbolStrokeColor: "grey",
+        // "datum.label == 'undefind' ? 'grey' : 'pink'",
+        // field: selectedMetric,
         title: "",
         fillColor: "white",
-        // strokeColor: "grey",
-        // strokeWidth: 4,
-        // cornerRadius: 6,
-        // padding: 6,
-        // orient: "top-right",
         labelFontSize: 12,
-        symbolStrokeWidth: 4,
+        symbolStrokeWidth: 10,
         direction: "horizontal",
         orient: "top",
         cursor: "pointer",
         labelAlign: "middle",
-        // legendX: 130,
-        // legendY: 40,
       },
     },
   };

@@ -41,9 +41,9 @@ export function Legend({ cyState }) {
 
   return (
     <div className="legend">
-      <h2>Work Packages Legend:</h2>
+      <h2>Work Packages:</h2>
       {legendData.current.wps}
-      <h2>Category Legend:</h2>
+      <h2>Categorys:</h2>
       {legendData.current.categorys}
     </div>
   );
