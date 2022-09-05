@@ -26,7 +26,7 @@ export function Header({ cyState, dates }) {
   const prRadio =
     dates.current !== null &&
     prOptions.map((opt) => (
-      <div className="radioGroup">
+      <div className="radioGroup" key={opt}>
         <label htmlFor="prPeriod">{opt}</label>
         <input type="radio" id={opt} name="prPeriod" value={opt} onChange={prClickHandler}></input>
       </div>

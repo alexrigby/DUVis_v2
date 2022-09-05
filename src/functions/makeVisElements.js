@@ -7,6 +7,8 @@ import makeGantchartItems from "./makeGantchartItems";
 import convertDates from "./datasetParseFunctions/convertDates";
 import makeCyWpNodes from "./cyElements/makeCyWpNodes";
 import getPRPeriods from "./getPRPeriods";
+import giveActivityPrPeriod from "./giveActivtyPrPeriod";
+import trimDataByPr from "./trimDataByPr";
 
 export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesURL) {
   const activityDataNoDate = await parseDataset(datasetURL);
@@ -14,25 +16,33 @@ export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesU
   const wpData = await parseDataset(wpDatasetURL);
   const dates = await parseDataset(datesURL);
 
-  const convertedDates = dates.map((d) => ({
+  const convertedDates = dates.map((d, i) => ({
+    ...d,
     date: convertDates(d.date, null),
+    // prPeriod: getPRPeriods(dates, i),
   }));
+  // This function somehow mutes convertedDates-- works but might need chnaging!!!!
+  getPRPeriods(convertedDates);
 
-  //adds prPeriod to each date entry
-  const datesAndPRperiod = getPRPeriods(convertedDates);
-
-  //gets activity start and end dates converted to js format
-  const { startDates, endDates } = convertMonthsToDates(activityDataNoDate, dates);
   //adds js readble start and end dates to activity array
   const activityData = activityDataNoDate.map((act, i) => ({
     ...act,
-    startDate: startDates[i],
-    endDate: endDates[i],
+    startDate: convertMonthsToDates(act, dates, "start"),
+    endDate: convertMonthsToDates(act, dates, "end"),
+    startPrPeriod: giveActivityPrPeriod(act, convertedDates, "start"),
+    endPrPeriod: giveActivityPrPeriod(act, convertedDates, "end"),
   }));
 
+  const PR = 13;
+
+  const trimmedData = trimDataByPr(activityData, PR);
+
+  console.log(trimmedData);
+
+  console.log(activityData);
   const gantChartItems = makeGantchartItems(activityData, wpData);
 
-  const nodes = makeCyNodes(activityData, dates);
+  const nodes = makeCyNodes(activityData);
   const edges = makeCyEdges(links);
   const wpNodes = makeCyWpNodes(wpData);
 
@@ -43,7 +53,7 @@ export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesU
     wpData: wpData,
     gantChartItems: gantChartItems,
     activityData: activityData,
-    dates: datesAndPRperiod,
+    dates: convertedDates,
   };
 }
 

@@ -96,7 +96,7 @@ export function vegaSpec(options, brushRange, selectedMetric) {
           y: { field: "count", type: "quantitative", axis: { title: "" } },
           tooltip: { field: "count", type: "quantitative" },
           color: {
-            condition: { test: `datum['${selectedMetric}'] === "undefined" `, value: "grey" },
+            // condition: { test: `datum['${selectedMetric}'] === "undefined" `, value: "grey" },
             field: selectedMetric,
           },
           opacity: {
