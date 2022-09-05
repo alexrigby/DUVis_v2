@@ -18,7 +18,10 @@ export function linksMatrixToArray(dataset) {
     allLinks.push(links.flat());
   }
 
-  return allLinks;
+  return allLinks.map((link, i) => ({
+    act: i + 1,
+    links: link,
+  }));
 }
 
 export default linksMatrixToArray;

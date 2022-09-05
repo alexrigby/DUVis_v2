@@ -10,7 +10,7 @@ import getPRPeriods from "./getPRPeriods";
 import giveActivityPrPeriod from "./giveActivtyPrPeriod";
 import trimDataByPr from "./trimDataByPr";
 
-export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesURL) {
+export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesURL, prPeriod) {
   const activityDataNoDate = await parseDataset(datasetURL);
   const links = await parseLinks(linksURL);
   const wpData = await parseDataset(wpDatasetURL);
@@ -33,17 +33,14 @@ export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesU
     endPrPeriod: giveActivityPrPeriod(act, convertedDates, "end"),
   }));
 
-  const PR = 13;
+  const trimmedData = trimDataByPr(activityData, prPeriod);
 
-  const trimmedData = trimDataByPr(activityData, PR);
+  const gantChartItems = makeGantchartItems(trimmedData, wpData);
 
-  console.log(trimmedData);
+  const nodes = makeCyNodes(trimmedData);
 
-  console.log(activityData);
-  const gantChartItems = makeGantchartItems(activityData, wpData);
+  const edges = makeCyEdges(links, nodes);
 
-  const nodes = makeCyNodes(activityData);
-  const edges = makeCyEdges(links);
   const wpNodes = makeCyWpNodes(wpData);
 
   const cyElms = [nodes, edges.flat(), wpNodes].flat();
@@ -52,7 +49,7 @@ export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesU
     cyElms: cyElms,
     wpData: wpData,
     gantChartItems: gantChartItems,
-    activityData: activityData,
+    activityData: trimmedData,
     dates: convertedDates,
   };
 }

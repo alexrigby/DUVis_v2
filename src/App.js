@@ -24,17 +24,22 @@ export function App() {
     cy: null,
     elements: [],
   });
+  //sets initial state for selected node
+  const [selectedNode, setSelectedNode] = useState({ id: "" });
 
   //stores parsed gantchart data
   const gantchartData = useRef(null);
 
   const vegaAnalyticsData = useRef({ dates: null, actData: null });
 
-  const dateTest = useRef(null);
+  //stores date for headerProgress report radio button
+  const datePr = useRef(null);
 
-  //sets initial state for selected node
-  const [selectedNode, setSelectedNode] = useState({ id: "" });
+  const [prPeriod, setPrPeriod] = useState(
+    datePr.current !== null ? datePr.current[datePr.current.length - 1].prPeriod : null
+  );
 
+  console.log(prPeriod);
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
     async function addDataToCytoscape() {
@@ -42,7 +47,8 @@ export function App() {
         dataset,
         links,
         wpDataset,
-        datesData
+        datesData,
+        prPeriod
       ); //combines parsing functions to make elements array
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
@@ -50,7 +56,7 @@ export function App() {
       vegaAnalyticsData.current.actData = activityData;
       vegaAnalyticsData.current.dates = dates;
 
-      dateTest.current = dates;
+      datePr.current = dates;
 
       gantchartData.current = gantChartItems; //asign gant chart data to the ref
 
@@ -67,12 +73,12 @@ export function App() {
       .catch(console.error);
 
     addCategoryIcon(cyState.cy);
-  }, [cyState.cy, cyState.elements.length]);
+  }, [cyState.cy, cyState.elements.length, prPeriod]);
 
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
       <div className="top-layer">
-        <Header cyState={cyState} dates={dateTest} />
+        <Header cyState={cyState} datePr={datePr} setPrPeriod={setPrPeriod} />
         <Legend cyState={cyState} />
         <SideBar selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
         <BottomPannel
