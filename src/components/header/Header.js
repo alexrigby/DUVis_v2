@@ -14,8 +14,10 @@ export function Header({ cyState, datesRef, setPrPeriod }) {
   };
 
   const prClickHandler = (event) => {
-    setPrPeriod(event.target.value);
-    // console.log(event.target.value);
+    setPrPeriod((prevState) => ({
+      pr: event.target.type === "radio" ? event.target.value : prevState.pr,
+      undefined: event.target.type === "checkbox" ? !prevState.undefined : prevState.undefined,
+    }));
   };
 
   const prStyle = {
@@ -44,8 +46,15 @@ export function Header({ cyState, datesRef, setPrPeriod }) {
       <div className="prSelection" style={prStyle}>
         {prRadio}
         <div className="radioGroup">
-          <label htmlFor="prPeriod">UnDef</label>
-          <input type="checkBox" id="undDef" name="prPeriod" value="UnDef" onChange={prClickHandler} checked></input>
+          <label htmlFor="prPeriod">undef</label>
+          <input
+            type="checkBox"
+            id="undef"
+            name="prPeriod"
+            value="undef"
+            onChange={prClickHandler}
+            defaultChecked={true}
+          ></input>
         </div>
       </div>
     </header>

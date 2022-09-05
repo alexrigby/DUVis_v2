@@ -33,7 +33,7 @@ export function App() {
   const datesRef = useRef(null);
   const actDataRef = useRef(null);
 
-  const [prPeriod, setPrPeriod] = useState({});
+  const [prPeriod, setPrPeriod] = useState({ pr: "", undefined: true });
 
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
@@ -52,7 +52,10 @@ export function App() {
 
       gantchartData.current = gantChartItems; //asign gant chart data to the ref
 
-      setPrPeriod(dates[dates.length - 1].prPeriod); // sets pr period to latest (i.e. all data up till now)
+      setPrPeriod((prevState) => ({
+        ...prevState,
+        pr: dates[dates.length - 1].prPeriod,
+      })); // sets pr period to latest (i.e. all data up till now)
 
       setCyState((prevState) => ({
         ...prevState,
