@@ -8,9 +8,9 @@ import vegaSpec from "./functions/vegaSpec";
 import parseVegaData from "./functions/parseVegaData";
 import "./VegaAnalytics.css";
 
-export function VegaAnalytics({ selectedBottomVis, vegaAnalyticsData }) {
-  const dates = vegaAnalyticsData.current.dates;
-  const actData = vegaAnalyticsData.current.actData;
+export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef }) {
+  const dates = datesRef.current;
+  const actData = actDataRef.current;
 
   const [brushRange, setBrushRange] = useState("");
 

@@ -5,7 +5,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode }) 
   const meta = selectedNode.meta;
   const outgoingActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).outgoers().targets();
   const incommingActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).incomers().sources();
-  const uniqueLinks = [...new Set(incommingActivities, outgoingActivities)];
+  const uniqueLinks = [...new Set([...incommingActivities, ...outgoingActivities])];
 
   const completedStyle = {
     color: selectedNode.meta["Activity Status"] === "Completed" ? "#39ff14" : "#ffbf00",

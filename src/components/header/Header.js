@@ -2,7 +2,7 @@ import "./Header.css";
 import LAYOUTS from "../cytoscape/functions/cyLayouts";
 import { useState } from "react";
 
-export function Header({ cyState, datePr, setPrPeriod }) {
+export function Header({ cyState, datesRef, setPrPeriod }) {
   const [openPrSection, setOpenPrSection] = useState(false);
 
   function changeLayout() {
@@ -22,10 +22,10 @@ export function Header({ cyState, datePr, setPrPeriod }) {
     display: openPrSection ? "flex" : "none",
   };
 
-  const prOptions = datePr.current !== null && [...new Set(datePr.current.map((p) => p.prPeriod))];
+  const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
 
   const prRadio =
-    datePr.current !== null &&
+    datesRef.current !== null &&
     prOptions.map((opt) => (
       <div className="radioGroup" key={opt}>
         <label htmlFor="prPeriod">{opt}</label>
@@ -43,6 +43,10 @@ export function Header({ cyState, datePr, setPrPeriod }) {
       </button>
       <div className="prSelection" style={prStyle}>
         {prRadio}
+        <div className="radioGroup">
+          <label htmlFor="prPeriod">UnDef</label>
+          <input type="checkBox" id="undDef" name="prPeriod" value="UnDef" onChange={prClickHandler} checked></input>
+        </div>
       </div>
     </header>
   );

@@ -30,16 +30,11 @@ export function App() {
   //stores parsed gantchart data
   const gantchartData = useRef(null);
 
-  const vegaAnalyticsData = useRef({ dates: null, actData: null });
+  const datesRef = useRef(null);
+  const actDataRef = useRef(null);
 
-  //stores date for headerProgress report radio button
-  const datePr = useRef(null);
+  const [prPeriod, setPrPeriod] = useState({});
 
-  const [prPeriod, setPrPeriod] = useState(
-    datePr.current !== null ? datePr.current[datePr.current.length - 1].prPeriod : null
-  );
-
-  console.log(prPeriod);
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
     async function addDataToCytoscape() {
@@ -52,12 +47,12 @@ export function App() {
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
 
-      vegaAnalyticsData.current.actData = activityData;
-      vegaAnalyticsData.current.dates = dates;
-
-      datePr.current = dates;
+      actDataRef.current = activityData;
+      datesRef.current = dates;
 
       gantchartData.current = gantChartItems; //asign gant chart data to the ref
+
+      setPrPeriod(dates[dates.length - 1].prPeriod); // sets pr period to latest (i.e. all data up till now)
 
       setCyState((prevState) => ({
         ...prevState,
@@ -72,19 +67,21 @@ export function App() {
       .catch(console.error);
 
     addCategoryIcon(cyState.cy);
-  }, [cyState.cy, cyState.elements.length]);
+  }, [cyState.cy, cyState.elements.length, setPrPeriod]);
 
+  console.log(prPeriod);
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
       <div className="top-layer">
-        <Header cyState={cyState} datePr={datePr} setPrPeriod={setPrPeriod} />
+        <Header cyState={cyState} datesRef={datesRef} setPrPeriod={setPrPeriod} />
         <Legend cyState={cyState} />
         <SideBar selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
         <BottomPannel
           gantchartData={gantchartData}
           cyState={cyState}
           setSelectedNode={setSelectedNode}
-          vegaAnalyticsData={vegaAnalyticsData}
+          actDataRef={actDataRef}
+          datesRef={datesRef}
         />
       </div>
       <Cytoscape cyState={cyState} setSelectedNode={setSelectedNode} />
