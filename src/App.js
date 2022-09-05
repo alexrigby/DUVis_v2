@@ -47,8 +47,7 @@ export function App() {
         dataset,
         links,
         wpDataset,
-        datesData,
-        prPeriod
+        datesData
       ); //combines parsing functions to make elements array
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
@@ -73,7 +72,7 @@ export function App() {
       .catch(console.error);
 
     addCategoryIcon(cyState.cy);
-  }, [cyState.cy, cyState.elements.length, prPeriod]);
+  }, [cyState.cy, cyState.elements.length]);
 
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>

@@ -10,7 +10,7 @@ import getPRPeriods from "./getPRPeriods";
 import giveActivityPrPeriod from "./giveActivtyPrPeriod";
 import trimDataByPr from "./trimDataByPr";
 
-export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesURL, prPeriod) {
+export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesURL) {
   const activityDataNoDate = await parseDataset(datasetURL);
   const links = await parseLinks(linksURL);
   const wpData = await parseDataset(wpDatasetURL);
@@ -33,11 +33,12 @@ export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesU
     endPrPeriod: giveActivityPrPeriod(act, convertedDates, "end"),
   }));
 
-  const trimmedData = trimDataByPr(activityData, prPeriod);
+  //tried triming and re-rendering everything but iit is to slow and expencive
+  // const trimmedData = trimDataByPr(activityData, prPeriod);
 
-  const gantChartItems = makeGantchartItems(trimmedData, wpData);
+  const gantChartItems = makeGantchartItems(activityData, wpData);
 
-  const nodes = makeCyNodes(trimmedData);
+  const nodes = makeCyNodes(activityData);
 
   const edges = makeCyEdges(links, nodes);
 
@@ -49,7 +50,7 @@ export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesU
     cyElms: cyElms,
     wpData: wpData,
     gantChartItems: gantChartItems,
-    activityData: trimmedData,
+    activityData: activityData,
     dates: convertedDates,
   };
 }
