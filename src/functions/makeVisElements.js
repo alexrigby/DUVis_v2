@@ -34,7 +34,6 @@ export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesU
 
   //tried triming and re-rendering everything but iit is to slow and expencive
   const trimmedData = trimDataByPr(activityData, prPeriod);
-  console.log(trimmedData.length);
 
   const gantChartItems = makeGantchartItems(trimmedData, wpData);
 
