@@ -7,8 +7,11 @@ export const LAYOUTS = {
   COSE: {
     //cose-bilkent is a cytoscape plugin
     name: "cose-bilkent",
-    animationDuration: 1000,
+    // animate: false,s
+    animationDuration: 700,
+    animate: "end",
     nodeDimensionsIncludeLabels: true,
+    refresh: 200,
     nodeRepulsion: 10000,
     idealEdgeLength: 180,
     randomize: true,

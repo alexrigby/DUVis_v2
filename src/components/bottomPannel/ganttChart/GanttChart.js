@@ -5,6 +5,7 @@ import styleSelectedElements from "../../cytoscape/functions/styleSelectedElemen
 import { useEffect } from "react";
 
 export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBottomVis }) {
+  console.log(gantchartData.current);
   //when an item is clicked on the gantt chart it updates selected node id as well
   function itemClickHandler(props) {
     props.item !== null &&
@@ -51,6 +52,7 @@ export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBo
   };
 
   if (gantchartData.current !== null) {
+    console.log("hi");
     return (
       <div>
         <div className="gantchart">

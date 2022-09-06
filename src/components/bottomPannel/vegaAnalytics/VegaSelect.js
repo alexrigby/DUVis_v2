@@ -12,7 +12,6 @@ export function VegaSelect({ setSelectedMetric }) {
   }));
 
   const optionSelectHandler = (selected) => {
-    console.log(selected.value);
     setSelectedMetric((prevState) => (selected.value === prevState ? prevState : selected.value));
   };
 

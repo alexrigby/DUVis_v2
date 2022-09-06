@@ -26,12 +26,17 @@ export function App() {
   });
   //sets initial state for selected node
   const [selectedNode, setSelectedNode] = useState({ id: "" });
-  //sets state for pr period and weather undefined pr periods are included in veiw
-  const [prPeriod, setPrPeriod] = useState({ pr: "", undefined: true });
 
   const gantchartData = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
   const actDataRef = useRef(null); //stores activity data
+
+  //sets state for pr period and weather undefined pr periods are included in veiw
+  // NEED TO WORK OUT A WAY TO SET PR STATE DYNAMICALLY?
+  const [prPeriod, setPrPeriod] = useState({
+    pr: 13,
+    undefined: true,
+  });
 
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
@@ -40,7 +45,8 @@ export function App() {
         dataset,
         links,
         wpDataset,
-        datesData
+        datesData,
+        prPeriod
       ); //combines parsing functions to make elements array
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
@@ -49,28 +55,18 @@ export function App() {
       datesRef.current = dates; //assigns dates ro ref
       gantchartData.current = gantChartItems; //asign gant chart data to the ref
 
-      setPrPeriod((prevState) => ({
-        ...prevState,
-        pr: dates[dates.length - 1].prPeriod,
-      })); // sets pr period to latest (i.e. all data up till now)
-
       setCyState((prevState) => ({
         ...prevState,
         elements: wpEdge ? [...cyElms, ...wpEdge] : cyElms, //if wpEdges exist then add them, if not use cyElms
         display: "block",
       })); //sets elements array as the cytoscape element
-      cyState.cy.layout(LAYOUTS.COSE).run();
     }
 
-    addDataToCytoscape()
-      //  catch any error
-      .catch(console.error);
+    addDataToCytoscape();
 
     addCategoryIcon(cyState.cy);
-  }, [cyState.cy, cyState.elements.length, setPrPeriod]);
+  }, [cyState.cy, cyState.elements.length, prPeriod]);
 
-  console.log(prPeriod);
-  console.log("rendered");
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
       <div className="top-layer">

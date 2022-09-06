@@ -11,16 +11,24 @@ export function Header({ cyState, datesRef, setPrPeriod }) {
 
   const displayPrOptions = (event) => {
     setOpenPrSection((prevState) => !prevState);
+    setPrPeriod({
+      pr: 13,
+      undefined: true,
+    });
   };
 
   const prClickHandler = (event) => {
     setPrPeriod((prevState) => ({
-      pr: event.target.type === "radio" ? event.target.value : prevState.pr,
+      pr: event.target.type === "radio" ? parseFloat(event.target.value) : prevState.pr,
       undefined: event.target.type === "checkbox" ? !prevState.undefined : prevState.undefined,
     }));
   };
 
   const prStyle = {
+    display: openPrSection ? "flex" : "none",
+  };
+
+  const undefCheckStyle = {
     display: openPrSection ? "flex" : "none",
   };
 
@@ -43,19 +51,20 @@ export function Header({ cyState, datesRef, setPrPeriod }) {
         Progress Report Period
         {openPrSection ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
       </button>
+
       <div className="prSelection" style={prStyle}>
         {prRadio}
-        <div className="radioGroup">
-          <label htmlFor="prPeriod">undef</label>
-          <input
-            type="checkBox"
-            id="undef"
-            name="prPeriod"
-            value="undef"
-            onChange={prClickHandler}
-            defaultChecked={true}
-          ></input>
-        </div>
+      </div>
+      <div className="undefinedCheck" style={undefCheckStyle}>
+        <label htmlFor="prPeriod">Include Undefined</label>
+        <input
+          type="checkBox"
+          id="undef"
+          name="prPeriod"
+          value="undef"
+          onChange={prClickHandler}
+          defaultChecked={true}
+        ></input>
       </div>
     </header>
   );

@@ -10,7 +10,7 @@ import getPRPeriods from "./getPRPeriods";
 import giveActivityPrPeriod from "./giveActivtyPrPeriod";
 import trimDataByPr from "./trimDataByPr";
 
-export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesURL) {
+export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesURL, prPeriod) {
   const activityDataNoDate = await parseDataset(datasetURL);
   const links = await parseLinks(linksURL);
   const wpData = await parseDataset(wpDatasetURL);
@@ -19,7 +19,6 @@ export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesU
   const convertedDates = dates.map((d, i) => ({
     ...d,
     date: convertDates(d.date, null),
-    // prPeriod: getPRPeriods(dates, i),
   }));
   // This function somehow mutes convertedDates-- works but might need chnaging!!!!
   getPRPeriods(convertedDates);
@@ -34,11 +33,12 @@ export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesU
   }));
 
   //tried triming and re-rendering everything but iit is to slow and expencive
-  // const trimmedData = trimDataByPr(activityData, prPeriod);
+  const trimmedData = trimDataByPr(activityData, prPeriod);
+  console.log(trimmedData.length);
 
-  const gantChartItems = makeGantchartItems(activityData, wpData);
+  const gantChartItems = makeGantchartItems(trimmedData, wpData);
 
-  const nodes = makeCyNodes(activityData);
+  const nodes = makeCyNodes(trimmedData);
 
   const edges = makeCyEdges(links, nodes);
 
@@ -50,7 +50,7 @@ export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesU
     cyElms: cyElms,
     wpData: wpData,
     gantChartItems: gantChartItems,
-    activityData: activityData,
+    activityData: trimmedData,
     dates: convertedDates,
   };
 }
