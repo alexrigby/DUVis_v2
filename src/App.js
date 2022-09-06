@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import Header from "./components/header/Header";
 import SideBar from "./components/sideBar/SideBar";
-import Cytoscape from "./components/cytoscape/Cytoscape";
+import CytoscapeVis from "./components/cytoscape/CytoscapeVis";
 import Legend from "./components/legend/Legend";
 import BottomPannel from "./components/bottomPannel/BottomPannel";
 
@@ -26,14 +26,12 @@ export function App() {
   });
   //sets initial state for selected node
   const [selectedNode, setSelectedNode] = useState({ id: "" });
-
-  //stores parsed gantchart data
-  const gantchartData = useRef(null);
-
-  const datesRef = useRef(null);
-  const actDataRef = useRef(null);
-
+  //sets state for pr period and weather undefined pr periods are included in veiw
   const [prPeriod, setPrPeriod] = useState({ pr: "", undefined: true });
+
+  const gantchartData = useRef(null); //stores parsed gantchart data
+  const datesRef = useRef(null); //stores dates
+  const actDataRef = useRef(null); //stores activity data
 
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
@@ -47,9 +45,8 @@ export function App() {
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
 
-      actDataRef.current = activityData;
-      datesRef.current = dates;
-
+      actDataRef.current = activityData; //ssigns activity data to ref
+      datesRef.current = dates; //assigns dates ro ref
       gantchartData.current = gantChartItems; //asign gant chart data to the ref
 
       setPrPeriod((prevState) => ({
@@ -87,7 +84,7 @@ export function App() {
           datesRef={datesRef}
         />
       </div>
-      <Cytoscape cyState={cyState} setSelectedNode={setSelectedNode} />
+      <CytoscapeVis cyState={cyState} setSelectedNode={setSelectedNode} />
     </div>
   );
 }

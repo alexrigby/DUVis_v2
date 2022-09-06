@@ -29,6 +29,10 @@ export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBo
     }
   }, [selectedBottomVis]);
 
+  // const style = {
+  //   display: selectedBottomVis === "gantChartButton" ? "block" : "none",
+  // };
+
   const options = {
     stack: true,
     showMajorLabels: true,
