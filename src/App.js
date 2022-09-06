@@ -70,6 +70,7 @@ export function App() {
   }, [cyState.cy, cyState.elements.length, setPrPeriod]);
 
   console.log(prPeriod);
+  console.log("rendered");
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
       <div className="top-layer">
