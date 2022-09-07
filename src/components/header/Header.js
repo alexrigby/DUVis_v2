@@ -1,6 +1,6 @@
 import "./Header.css";
 import LAYOUTS from "../cytoscape/functions/cyLayouts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function Header({ cyState, datesRef, setPrPeriod }) {
   const [openPrSection, setOpenPrSection] = useState(false);

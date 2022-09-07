@@ -8,7 +8,7 @@ import BottomPannel from "./components/bottomPannel/BottomPannel";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
-import LAYOUTS from "./components/cytoscape/functions/cyLayouts";
+
 import makeCyWpEdges from "./components/cytoscape/functions/makeCyWpEdges";
 import addCategoryIcon from "./components/cytoscape/functions/addCategoryIcons";
 

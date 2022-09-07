@@ -9,7 +9,6 @@ import styleSelectedElements from "./functions/styleSelectedElements";
 export function CytoscapeVis({ cyState, setSelectedNode }) {
   //called every time setSideBarVis or cyState chanages
   useEffect(() => {
-    cyState.cy.layout(LAYOUTS.COSE).run();
     nodeTooltip(cyState.cy); //produces tooltips on mouuseover
     const nodeClickHandler = (event) => {
       setSelectedNode((prevState) => (event.target.id() === prevState.id ? { id: "" } : event.target.data())); //if same node is clicked twice clear 'selected node' state
@@ -28,19 +27,31 @@ export function CytoscapeVis({ cyState, setSelectedNode }) {
     position: "absolute",
   };
 
+  useEffect(() => {
+    //only runs when the elements length chnages--- hakey but works
+    cyState.cy.layout(LAYOUTS.COSE).run();
+  }, [cyState.elements.length]);
+
+  useEffect(() => {
+    //fits the graph to the window when cy sate is created
+    cyState.cy.fit();
+  }, [cyState]);
+
   return (
-    <div>
-      <CytoscapeComponent
-        // cy prop allows acess to cy elements/functions
-        cy={(cy) => {
-          cyState.cy = cy;
-        }}
-        elements={cyState.elements}
-        style={style}
-        stylesheet={stylesheet}
-        layout={LAYOUTS.COSE}
-      />
-    </div>
+    <CytoscapeComponent
+      // cy prop allows acess to cy elements/functions
+      cy={(cy) => {
+        cyState.cy = cy;
+        cy.on("resize", (_evt) => {
+          // fits the cy graph to the window when the window is resized
+          cy.fit();
+        });
+      }}
+      elements={cyState.elements}
+      style={style}
+      stylesheet={stylesheet}
+      layout={LAYOUTS.COSE}
+    />
   );
 }
 
