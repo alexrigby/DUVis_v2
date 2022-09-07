@@ -30,10 +30,13 @@ export function CytoscapeVis({ cyState, setSelectedNode }) {
   useEffect(() => {
     //only runs when the elements length chnages--- hakey but works
     cyState.cy.layout(LAYOUTS.COSE).run();
+    cyState.cy.center();
+    cyState.cy.fit();
   }, [cyState.elements.length]);
 
   useEffect(() => {
     //fits the graph to the window when cy sate is created
+    // cyState.cy.center();
     cyState.cy.fit();
   }, [cyState]);
 
@@ -44,7 +47,8 @@ export function CytoscapeVis({ cyState, setSelectedNode }) {
         cyState.cy = cy;
         cy.on("resize", (_evt) => {
           // fits the cy graph to the window when the window is resized
-          cy.fit();
+          // cyState.cy.center();
+          cyState.cy.fit();
         });
       }}
       elements={cyState.elements}

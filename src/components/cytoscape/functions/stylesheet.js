@@ -4,7 +4,9 @@ export const stylesheet = [
   {
     selector: "node[type = 'activityNode']",
     style: {
+      // "font-family": "FontAwesome, sans-serif",
       label: "data(id)",
+      "text-wrap": "wrap",
       "text-valign": "center",
       color: "white",
       "border-width": 4,

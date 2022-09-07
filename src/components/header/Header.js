@@ -1,10 +1,11 @@
 import "./Header.css";
 import LAYOUTS from "../cytoscape/functions/cyLayouts";
 import { useEffect, useState } from "react";
+import { useRef } from "react";
 
-export function Header({ cyState, datesRef, setPrPeriod }) {
+export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
   const [openPrSection, setOpenPrSection] = useState(false);
-
+  const prRadio = useRef(null);
   function changeLayout() {
     cyState.cy.layout(LAYOUTS.COSE).run();
   }
@@ -24,6 +25,22 @@ export function Header({ cyState, datesRef, setPrPeriod }) {
     }));
   };
 
+  const scrollHandler = (event) => {
+    // console.log(event.currentTarget.id);
+    if (event.currentTarget.id === "forwardButton") {
+      console.log("hi");
+      setPrPeriod((prevState) => ({
+        ...prevState,
+        pr: prevState.pr >= 13 ? 13 : prevState.pr + 1,
+      }));
+    } else if (event.currentTarget.id === "backButton") {
+      setPrPeriod((prevState) => ({
+        ...prevState,
+        pr: prevState.pr <= 1 ? 1 : prevState.pr - 1,
+      }));
+    }
+  };
+
   const prStyle = {
     display: openPrSection ? "flex" : "none",
   };
@@ -33,15 +50,23 @@ export function Header({ cyState, datesRef, setPrPeriod }) {
   };
 
   const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
-
-  const prRadio =
-    datesRef.current !== null &&
-    prOptions.map((opt) => (
-      <div className="radioGroup" key={opt}>
-        <label htmlFor="prPeriod">{opt}</label>
-        <input type="radio" id={opt} name="prPeriod" value={opt} onChange={prClickHandler}></input>
-      </div>
-    ));
+  useEffect(() => {
+    prRadio.current =
+      datesRef.current !== null &&
+      prOptions.map((opt, i) => (
+        <div className="radioGroup" key={opt}>
+          <label htmlFor="prPeriod">{opt}</label>
+          <input
+            type="radio"
+            id={opt}
+            name="prPeriod"
+            value={opt}
+            onChange={prClickHandler}
+            defaultChecked={prPeriod.pr - 1 === i ? true : false} //default check the latest option
+          ></input>
+        </div>
+      ));
+  }, [prPeriod]);
 
   return (
     <header>
@@ -53,7 +78,13 @@ export function Header({ cyState, datesRef, setPrPeriod }) {
       </button>
 
       <div className="prSelection" style={prStyle}>
-        {prRadio}
+        {prRadio.current}
+        <button id="backButton" onClick={scrollHandler}>
+          <i className="fa fa-angles-left"></i>
+        </button>
+        <button id="forwardButton" onClick={scrollHandler}>
+          <i className="fa fa-angles-right"></i>
+        </button>
       </div>
       <div className="undefinedCheck" style={undefCheckStyle}>
         <label htmlFor="prPeriod">Include Undefined</label>

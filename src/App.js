@@ -63,14 +63,13 @@ export function App() {
     }
 
     addDataToCytoscape();
-
-    addCategoryIcon(cyState.cy);
+    // addCategoryIcon(cyState.cy);
   }, [cyState.cy, cyState.elements.length, prPeriod]);
 
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
       <div className="top-layer">
-        <Header cyState={cyState} datesRef={datesRef} setPrPeriod={setPrPeriod} />
+        <Header cyState={cyState} datesRef={datesRef} setPrPeriod={setPrPeriod} prPeriod={prPeriod} />
         <Legend cyState={cyState} />
         <SideBar selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
         <BottomPannel

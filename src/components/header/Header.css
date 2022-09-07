@@ -41,3 +41,12 @@ header .fa {
   display: flex;
   padding-left: 5px;
 }
+
+.prSelection button {
+  margin: 2px;
+  padding: 4px;
+}
+
+.prSelection .fa {
+  padding-left: 0px;
+}
