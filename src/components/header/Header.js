@@ -5,9 +5,9 @@ import { useRef } from "react";
 
 export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
   const [openPrSection, setOpenPrSection] = useState(false);
-  const prRadio = useRef(null);
+
   function changeLayout() {
-    cyState.cy.layout(LAYOUTS.COSE).run();
+    cyState.cy.layout(LAYOUTS.FCOSERandom).run();
   }
 
   const displayPrOptions = (event) => {
@@ -50,23 +50,22 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
   };
 
   const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
-  useEffect(() => {
-    prRadio.current =
-      datesRef.current !== null &&
-      prOptions.map((opt, i) => (
-        <div className="radioGroup" key={opt}>
-          <label htmlFor="prPeriod">{opt}</label>
-          <input
-            type="radio"
-            id={opt}
-            name="prPeriod"
-            value={opt}
-            onChange={prClickHandler}
-            defaultChecked={prPeriod.pr - 1 === i ? true : false} //default check the latest option
-          ></input>
-        </div>
-      ));
-  }, [prPeriod]);
+
+  const prRadio =
+    datesRef.current !== null &&
+    prOptions.map((opt, i) => (
+      <div className="radioGroup" key={opt}>
+        <label htmlFor="prPeriod">{opt}</label>
+        <input
+          type="radio"
+          id={opt}
+          name="prPeriod"
+          value={opt}
+          onChange={prClickHandler}
+          checked={prPeriod.pr - 1 === i} //check the current pr period
+        ></input>
+      </div>
+    ));
 
   return (
     <header>
@@ -78,7 +77,7 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
       </button>
 
       <div className="prSelection" style={prStyle}>
-        {prRadio.current}
+        {prRadio}
         <button id="backButton" onClick={scrollHandler}>
           <i className="fa fa-angles-left"></i>
         </button>

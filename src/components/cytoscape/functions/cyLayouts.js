@@ -1,26 +1,33 @@
 import COSEBilkent from "cytoscape-cose-bilkent";
+import fcose from "cytoscape-fcose";
 import Cytoscape from "cytoscape";
 
 Cytoscape.use(COSEBilkent);
 
+Cytoscape.use(fcose);
+
 export const LAYOUTS = {
-  COSE: {
+  FCOSE: {
     //cose-bilkent is a cytoscape plugin
-    name: "cose-bilkent",
+    name: "fcose",
     // animate: false
-    animationDuration: 800,
-    animate: "end",
+    animationDuration: 500,
     nodeDimensionsIncludeLabels: true,
-    refresh: 400,
-    nodeRepulsion: 8000,
-    idealEdgeLength: 180,
+    // refresh: 400,
+    // nodeRepulsion: (node) => 4500,
+    idealEdgeLength: (edge) => 170,
+    randomize: false,
+    fit: true,
+  },
+  //run when chnage layout button is clicked, creates more 'drastic' layout chnage
+  FCOSERandom: {
+    name: "fcose",
+    animationDuration: 1000,
+    nodeDimensionsIncludeLabels: true,
+    // nodeRepulsion: (node) => 4500,
+    idealEdgeLength: (edge) => 170,
     randomize: true,
     fit: true,
-    edgeElasticity: 0.9,
-    nestingFactor: 0,
-    gravity: 0.9,
-    gravityRangeCompound: 10,
-    initialEnergyOnIncremental: 0.9,
   },
 };
 
