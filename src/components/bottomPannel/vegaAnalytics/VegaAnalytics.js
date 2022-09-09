@@ -66,8 +66,6 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
         ? "double click to reset date range"
         : "click and drag on the time series to specify a date range";
 
-    console.log(vegaData);
-
     if (selectedBottomVis === "vegaAnalyticsButton") {
       return (
         <div className="vegaAnalytics" onMouseUp={mouseUpHandler} onDoubleClick={resetDoubleClick} title={title}>

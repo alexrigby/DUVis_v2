@@ -3,7 +3,6 @@ export function vegaSpec(options, brushRange, selectedMetric) {
 
   const startDate = brushRange.start;
   const endDate = brushRange.end;
-  console.log({ values: [{ date: new Date("2022-01-01").getTime() }, { date: new Date("2023-01-01").getTime() }] });
 
   const spec = {
     padding: 20,
