@@ -78,6 +78,7 @@ export function App() {
           setSelectedNode={setSelectedNode}
           actDataRef={actDataRef}
           datesRef={datesRef}
+          prPeriod={prPeriod}
         />
       </div>
       <CytoscapeVis cyState={cyState} setSelectedNode={setSelectedNode} />

@@ -8,9 +8,11 @@ import vegaSpec from "./functions/vegaSpec";
 import parseVegaData from "./functions/parseVegaData";
 import "./VegaAnalytics.css";
 
-export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef }) {
+export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPeriod }) {
   const dates = datesRef.current;
   const actData = actDataRef.current;
+
+  const trimmedDates = dates !== null && dates.filter((date) => date.prPeriod <= prPeriod.pr); //trimes dates data down to pr period
 
   const [brushRange, setBrushRange] = useState("");
 
@@ -19,8 +21,8 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef }) {
   useEffect(() => {
     if (dates !== null) {
       setBrushRange({
-        start: new Date(dates[0].date).getTime(),
-        end: new Date(dates[dates.length - 1].date).getTime(),
+        start: new Date(trimmedDates[0].date).getTime(),
+        end: new Date(trimmedDates[trimmedDates.length - 1].date).getTime(),
       });
     }
   }, [dates]);
@@ -28,8 +30,8 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef }) {
   //once brush range is set generate component
   if (brushRange !== "") {
     const fullRange = {
-      start: new Date(dates[0].date).getTime(),
-      end: new Date(dates[dates.length - 1].date).getTime(),
+      start: new Date(trimmedDates[0].date).getTime(),
+      end: new Date(trimmedDates[trimmedDates.length - 1].date).getTime(),
     };
 
     //returns the brush date range
@@ -56,13 +58,15 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef }) {
       setBrushRange(fullRange);
     };
 
-    const { vegaData, options } = parseVegaData(actData, dates, brushRange, selectedMetric);
+    const { vegaData, options } = parseVegaData(actData, trimmedDates, brushRange, selectedMetric);
     const spec = vegaSpec(options, brushRange, selectedMetric);
 
     const title =
       brushRange.start !== fullRange.start && brushRange.end !== fullRange.end
         ? "double click to reset date range"
         : "click and drag on the time series to specify a date range";
+
+    console.log(vegaData);
 
     if (selectedBottomVis === "vegaAnalyticsButton") {
       return (

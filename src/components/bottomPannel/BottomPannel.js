@@ -6,13 +6,18 @@ import PannelButtons from "./pannelButtons/PannelButtons";
 
 import "./BottomPannel.css";
 
-export function BottomPannel({ gantchartData, cyState, setSelectedNode, actDataRef, datesRef }) {
+export function BottomPannel({ gantchartData, cyState, setSelectedNode, actDataRef, datesRef, prPeriod }) {
   const [selectedBottomVis, setSelectedBottomVis] = useState("");
 
   return (
     <div className="bottomPannel">
       <PannelButtons selectedBottomVis={selectedBottomVis} setSelectedBottomVis={setSelectedBottomVis} />
-      <VegaAnalytics selectedBottomVis={selectedBottomVis} actDataRef={actDataRef} datesRef={datesRef} />
+      <VegaAnalytics
+        selectedBottomVis={selectedBottomVis}
+        actDataRef={actDataRef}
+        datesRef={datesRef}
+        prPeriod={prPeriod}
+      />
       <GanttChart
         gantchartData={gantchartData}
         cyState={cyState}

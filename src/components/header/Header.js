@@ -1,7 +1,6 @@
 import "./Header.css";
 import LAYOUTS from "../cytoscape/functions/cyLayouts";
-import { useEffect, useState } from "react";
-import { useRef } from "react";
+import { useState } from "react";
 
 export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
   const [openPrSection, setOpenPrSection] = useState(false);
@@ -28,7 +27,6 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
   const scrollHandler = (event) => {
     // console.log(event.currentTarget.id);
     if (event.currentTarget.id === "forwardButton") {
-      console.log("hi");
       setPrPeriod((prevState) => ({
         ...prevState,
         pr: prevState.pr >= 13 ? 13 : prevState.pr + 1,
@@ -42,10 +40,6 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
   };
 
   const prStyle = {
-    display: openPrSection ? "flex" : "none",
-  };
-
-  const undefCheckStyle = {
     display: openPrSection ? "flex" : "none",
   };
 
@@ -76,6 +70,11 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
         {openPrSection ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
       </button>
 
+      {datesRef.current !== null && (
+        <p style={prStyle}>
+          {prStartAndEndDate(datesRef, prPeriod).start} - {prStartAndEndDate(datesRef, prPeriod).end}
+        </p>
+      )}
       <div className="prSelection" style={prStyle}>
         {prRadio}
         <button id="backButton" onClick={scrollHandler}>
@@ -85,7 +84,7 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
           <i className="fa fa-angles-right"></i>
         </button>
       </div>
-      <div className="undefinedCheck" style={undefCheckStyle}>
+      <div className="undefinedCheck" style={prStyle}>
         <label htmlFor="prPeriod">Include Undefined</label>
         <input
           type="checkBox"
@@ -101,3 +100,20 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
 }
 
 export default Header;
+
+function prStartAndEndDate(datesRef, prPeriod) {
+  const prDates = datesRef.current.filter((date) => prPeriod.pr === date.prPeriod);
+
+  const start = String(new Date(prDates[0].date).toLocaleDateString("en-GB", { month: "short", year: "numeric" }));
+  const end = String(
+    new Date(prDates[prDates.length - 1].date).toLocaleDateString("en-GB", {
+      month: "short",
+      year: "numeric",
+    })
+  );
+
+  return {
+    start: start,
+    end: end,
+  };
+}
