@@ -41,7 +41,7 @@ export const stylesheet = [
     selector: "edge",
     style: {
       width: 1.5,
-      "line-color": "#ffcba4",
+      "line-color": "#ffb37a",
       display: "none",
       "source-endpoint": "outside-to-line",
       "source-distance-from-node": "4px",
@@ -75,6 +75,18 @@ export const stylesheet = [
       "border-color": "red",
       "border-width": "6px",
       display: "element",
+    },
+  },
+  {
+    selector: ".show",
+    style: {
+      display: "element",
+    },
+  },
+  {
+    selector: ".hide",
+    style: {
+      display: "none",
     },
   },
 ];

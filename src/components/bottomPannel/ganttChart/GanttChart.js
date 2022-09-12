@@ -58,7 +58,7 @@ export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBo
       ganttChartRef.current.timeline.setOptions(options);
     }
   }, [gantchartData.current, ganttChartRef.current, gantchartData]);
-
+  console.log(gantchartData.current);
   if (gantchartData.current !== null) {
     return (
       <div>

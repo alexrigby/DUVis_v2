@@ -40,6 +40,7 @@ header .fa {
   align-items: center;
   display: flex;
   padding-left: 5px;
+  padding-bottom: 5px;
 }
 
 .prSelection button {
@@ -56,4 +57,14 @@ p {
   font-size: 10pt;
   padding-left: 5px;
   /* font-weight: 500; */
+}
+
+.storyButtons {
+  pointer-events: all;
+  padding-bottom: 5px;
+}
+
+.storyButtons p:hover {
+  color: gray;
+  cursor: pointer;
 }

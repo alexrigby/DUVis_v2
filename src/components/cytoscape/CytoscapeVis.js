@@ -10,6 +10,7 @@ export function CytoscapeVis({ cyState, setSelectedNode }) {
   //called every time setSideBarVis or cyState chanages
   useEffect(() => {
     nodeTooltip(cyState.cy); //produces tooltips on mouuseover
+
     const nodeClickHandler = (event) => {
       setSelectedNode((prevState) => (event.target.id() === prevState.id ? { id: "" } : event.target.data())); //if same node is clicked twice clear 'selected node' state
       styleSelectedElements(cyState.cy, event.target.id());
