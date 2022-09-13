@@ -6,11 +6,10 @@ import stylesheet from "./functions/stylesheet";
 import nodeTooltip from "./functions/nodeTooltips";
 import styleSelectedElements from "./functions/styleSelectedElements";
 
-export function CytoscapeVis({ cyState, setSelectedNode }) {
+export function CytoscapeVis({ cyState, setSelectedNode, activityEdgeDisplay }) {
   //called every time setSideBarVis or cyState chanages
   useEffect(() => {
     nodeTooltip(cyState.cy); //produces tooltips on mouuseover
-
     const nodeClickHandler = (event) => {
       setSelectedNode((prevState) => (event.target.id() === prevState.id ? { id: "" } : event.target.data())); //if same node is clicked twice clear 'selected node' state
       styleSelectedElements(cyState.cy, event.target.id());
@@ -47,7 +46,7 @@ export function CytoscapeVis({ cyState, setSelectedNode }) {
       }}
       elements={cyState.elements}
       style={style}
-      stylesheet={stylesheet}
+      stylesheet={stylesheet(activityEdgeDisplay)}
       layout={LAYOUTS.COSE}
     />
   );

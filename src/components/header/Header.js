@@ -3,7 +3,7 @@ import LAYOUTS from "../cytoscape/functions/cyLayouts";
 import STORIES from "../../configs/stories";
 import { useState } from "react";
 
-export function Header({ cyState, datesRef, setPrPeriod, prPeriod, setStoryIds, storyIds }) {
+export function Header({ cyState, datesRef, setPrPeriod, prPeriod, setStoryIds, storyIds, setActivityEdgeDisplay }) {
   const [filterOptionsDisplay, setFilterOptionsDisplay] = useState(false);
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
   const [storySectionDisplay, setStorySectionDisplay] = useState(false);
@@ -27,8 +27,7 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod, setStoryIds, 
 
   //hides/displays wpedges/ activity edges when button is clicked
   const changeEdgeDisplay = (event) => {
-    cyState.cy.edges("[type != 'wpEdge']").toggleClass("show");
-    cyState.cy.edges("[type = 'wpEdge']").toggleClass("hide");
+    setActivityEdgeDisplay((prevState) => !prevState);
   };
 
   const displayFilterOptions = (event) => {
@@ -122,7 +121,7 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod, setStoryIds, 
     <header>
       <h1>Dwr Uisce Work Package Visualiser</h1>
       <button onClick={changeLayout}>Change Layout </button>
-      <button onClick={changeEdgeDisplay}>Activity Connections</button>
+      <button onClick={changeEdgeDisplay}>Toggle Connections</button>
 
       <div>
         <div>

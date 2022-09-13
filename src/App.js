@@ -26,16 +26,13 @@ export function App() {
   });
   //sets initial state for selected node
   const [selectedNode, setSelectedNode] = useState({ id: "" });
+  const [prPeriod, setPrPeriod] = useState({ pr: null, undefined: true }); //sets state for pr period
+  const [storyIds, setStoryIds] = useState(null); //sets story ids state
+  const [activityEdgeDisplay, setActivityEdgeDisplay] = useState(false);
 
   const gantchartData = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
   const actDataRef = useRef(null); //stores activity data
-
-  //sets state for pr period and weather undefined pr periods are included in veiw
-  // NEED TO WORK OUT A WAY TO SET PR STATE DYNAMICALLY?
-  const [prPeriod, setPrPeriod] = useState({ pr: null, undefined: true });
-
-  const [storyIds, setStoryIds] = useState(null);
 
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
@@ -76,6 +73,7 @@ export function App() {
           prPeriod={prPeriod}
           setStoryIds={setStoryIds}
           storyIds={storyIds}
+          setActivityEdgeDisplay={setActivityEdgeDisplay}
         />
         <Legend cyState={cyState} />
         <SideBar selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
@@ -88,7 +86,7 @@ export function App() {
           prPeriod={prPeriod}
         />
       </div>
-      <CytoscapeVis cyState={cyState} setSelectedNode={setSelectedNode} />
+      <CytoscapeVis cyState={cyState} setSelectedNode={setSelectedNode} activityEdgeDisplay={activityEdgeDisplay} />
     </div>
   );
 }

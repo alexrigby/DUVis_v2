@@ -1,95 +1,97 @@
 import COLORS from "../../../configs/wpColors";
 
-export const stylesheet = [
-  {
-    selector: "node[type = 'activityNode']",
-    style: {
-      // "font-family": "FontAwesome, sans-serif",
-      label: "data(id)",
-      "text-wrap": "wrap",
-      "text-valign": "center",
-      color: "white",
-      "border-width": 4,
-      "background-opacity": 0.9,
-      "background-color": function (ele) {
-        return nodeBackgroundColor(ele, "parent");
-      },
-      "border-color": function (ele) {
-        return nodeBorderColor(ele, "parent");
-      },
-      //width and height displayed in accepted bubble area scale 'D2 = D1 * SQRT(X2/X1)' https://infonewt.com/circles/
-      //+1 gives value to nodes with no connecting edges,
-      width: function (ele) {
-        return 1 * Math.sqrt((ele.connectedEdges().length + 1) / 1) * 20;
-      },
-      height: function (ele) {
-        return 1 * Math.sqrt((ele.connectedEdges().length + 1) / 1) * 20;
-      },
-    },
-  },
-  {
-    selector: "node[type = 'wp']",
-    style: {
-      label: "data(id)",
-      "background-opacity": 0.4,
-      "background-color": function (ele) {
-        return nodeBackgroundColor(ele, "id");
+export function stylesheet(activityEdgeDisplay) {
+  return [
+    {
+      selector: "node[type = 'activityNode']",
+      style: {
+        // "font-family": "FontAwesome, sans-serif",
+        label: "data(id)",
+        "text-wrap": "wrap",
+        "text-valign": "center",
+        color: "white",
+        "border-width": 4,
+        "background-opacity": 0.9,
+        "background-color": function (ele) {
+          return nodeBackgroundColor(ele, "parent");
+        },
+        "border-color": function (ele) {
+          return nodeBorderColor(ele, "parent");
+        },
+        //width and height displayed in accepted bubble area scale 'D2 = D1 * SQRT(X2/X1)' https://infonewt.com/circles/
+        //+1 gives value to nodes with no connecting edges,
+        width: function (ele) {
+          return 1 * Math.sqrt((ele.connectedEdges().length + 1) / 1) * 20;
+        },
+        height: function (ele) {
+          return 1 * Math.sqrt((ele.connectedEdges().length + 1) / 1) * 20;
+        },
       },
     },
-  },
-  {
-    selector: "edge",
-    style: {
-      width: 1.5,
-      "line-color": "#ffb37a",
-      display: "none",
-      "source-endpoint": "outside-to-line",
-      "source-distance-from-node": "4px",
-      "target-distance-from-node": "4px",
-      "target-endpoint": "outside-to-line",
-      "curve-style": "straight",
+    {
+      selector: "node[type = 'wp']",
+      style: {
+        label: "data(id)",
+        "background-opacity": 0.4,
+        "background-color": function (ele) {
+          return nodeBackgroundColor(ele, "id");
+        },
+      },
     },
-  },
-  {
-    selector: "edge[type = 'wpEdge']",
-    style: {
-      display: "element",
-      // label: "data(weight)",
-      width: "data(weight)",
-      "line-color": "mapData(weight, 0, 40, #ffcba4, #cb410b)",
-      "line-cap": "round",
-      "line-opacity": 0.5,
+    {
+      selector: "edge",
+      style: {
+        width: 1.5,
+        "line-color": "#ffb37a",
+        display: activityEdgeDisplay === false ? "none" : "element",
+        "source-endpoint": "outside-to-line",
+        "source-distance-from-node": "4px",
+        "target-distance-from-node": "4px",
+        "target-endpoint": "outside-to-line",
+        "curve-style": "straight",
+      },
     },
-  },
-  {
-    selector: ".connectedEdge",
-    style: {
-      "line-color": "red",
-      "line-opacity": "0.7",
-      display: "element",
+    {
+      selector: "edge[type = 'wpEdge']",
+      style: {
+        display: activityEdgeDisplay === true ? "none" : "element",
+        // label: "data(weight)",
+        width: "data(weight)",
+        "line-color": "mapData(weight, 0, 40, #ffcba4, #cb410b)",
+        "line-cap": "round",
+        "line-opacity": 0.5,
+      },
     },
-  },
-  {
-    selector: ".selectedNode",
-    style: {
-      "border-color": "red",
-      "border-width": "6px",
-      display: "element",
+    {
+      selector: ".connectedEdge",
+      style: {
+        "line-color": "red",
+        "line-opacity": "0.7",
+        display: "element",
+      },
     },
-  },
-  {
-    selector: ".show",
-    style: {
-      display: "element",
+    {
+      selector: ".selectedNode",
+      style: {
+        "border-color": "red",
+        "border-width": "6px",
+        display: "element",
+      },
     },
-  },
-  {
-    selector: ".hide",
-    style: {
-      display: "none",
+    {
+      selector: ".show",
+      style: {
+        display: "element",
+      },
     },
-  },
-];
+    {
+      selector: ".hide",
+      style: {
+        display: "none",
+      },
+    },
+  ];
+}
 
 export default stylesheet;
 
