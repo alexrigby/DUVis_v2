@@ -39,7 +39,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode }) 
         </p>
         <h2>Start-End Months:</h2>
         <p>
-          {meta["Start Month"]}-{meta["End Month"]}
+          {meta["Start Month"]}-{meta["End Month/ Ongoing"]}
         </p>
         <h2> Category:</h2> <p>{meta["Activity Category"]}</p>
         <h2> End Users: </h2> <p>{meta["End Users"]}</p>

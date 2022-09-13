@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import Header from "./components/header/Header";
-import SideBar from "./components/sideBar/SideBar";
+import SidePannel from "./components/sidePannel/SidePannel";
 import CytoscapeVis from "./components/cytoscape/CytoscapeVis";
 import Legend from "./components/legend/Legend";
 import BottomPannel from "./components/bottomPannel/BottomPannel";
@@ -76,7 +76,7 @@ export function App() {
           setActivityEdgeDisplay={setActivityEdgeDisplay}
         />
         <Legend cyState={cyState} />
-        <SideBar selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
+        <SidePannel selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
         <BottomPannel
           gantchartData={gantchartData}
           cyState={cyState}

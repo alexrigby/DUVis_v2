@@ -1,10 +1,10 @@
 import React from "react";
-import "./SideBar.css";
+import "./SidePannel.css";
 
 import ActivityMetaSection from "./ActivityMetaSection";
 import WpNodeMetaSection from "./WpNodeMetaSection";
 
-export function SideBar({ selectedNode, cyState, setSelectedNode }) {
+export function SidePannel({ selectedNode, cyState, setSelectedNode }) {
   //if clicked node is "" display nothing
   const style = {
     opacity: selectedNode.id === "" ? "0" : "1",
@@ -23,4 +23,4 @@ export function SideBar({ selectedNode, cyState, setSelectedNode }) {
   }
 }
 
-export default SideBar;
+export default SidePannel;
