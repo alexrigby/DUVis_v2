@@ -37,7 +37,7 @@ export function Legend({ cyState }) {
     ));
 
     legendData.current = { wps: wpLegendItems, categorys: catLegendItems };
-  }, [cyState.cy]);
+  }, [cyState.cy, cyState.elements.length]);
 
   return (
     <div className="legend">

@@ -37,8 +37,6 @@ export function App() {
 
   const [storyIds, setStoryIds] = useState(null);
 
-  console.log(prPeriod);
-
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
     async function addDataToCytoscape() {

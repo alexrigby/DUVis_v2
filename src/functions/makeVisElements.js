@@ -32,24 +32,23 @@ export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesU
     endPrPeriod: giveActivityPrPeriod(act, convertedDates, "end"),
   }));
 
-  //trims the data by filter option
+  //trims the data by filter option, used instead of raw data
   const trimmedData = trimData(activityData, prPeriod, storyIds);
+  const trimmedWpData = wpData.filter((wp) => [...new Set(trimmedData.map((act) => act.WP))].includes(wp.id.slice(2)));
 
-  // const trimmedDates = convertedDates.filter((date) => date.prPeriod <= prPeriod.pr);
-
-  const gantChartItems = makeGantchartItems(trimmedData, wpData);
+  const gantChartItems = makeGantchartItems(trimmedData, trimmedWpData);
 
   const nodes = makeCyNodes(trimmedData);
 
   const edges = makeCyEdges(links, nodes);
 
-  const wpNodes = makeCyWpNodes(wpData);
+  const wpNodes = makeCyWpNodes(trimmedWpData);
 
   const cyElms = [nodes, edges.flat(), wpNodes].flat();
 
   return {
     cyElms: cyElms,
-    wpData: wpData,
+    wpData: trimmedWpData,
     gantChartItems: gantChartItems,
     activityData: trimmedData,
     dates: convertedDates,
