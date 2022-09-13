@@ -12,7 +12,8 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
   const dates = datesRef.current;
   const actData = actDataRef.current;
 
-  const trimmedDates = dates !== null && dates.filter((date) => date.prPeriod <= prPeriod.pr); //trimes dates data down to pr period
+  const trimmedDates =
+    dates !== null && prPeriod.pr !== null ? dates.filter((date) => date.prPeriod <= prPeriod.pr) : dates; //trimes dates data down to pr period
 
   const [brushRange, setBrushRange] = useState("");
 

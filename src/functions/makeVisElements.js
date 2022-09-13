@@ -8,9 +8,9 @@ import convertDates from "./datasetParseFunctions/convertDates";
 import makeCyWpNodes from "./cyElements/makeCyWpNodes";
 import getPRPeriods from "./getPRPeriods";
 import giveActivityPrPeriod from "./giveActivtyPrPeriod";
-import trimDataByPr from "./trimDataByPr";
+import trimData from "./trimData";
 
-export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesURL, prPeriod) {
+export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesURL, prPeriod, storyIds) {
   const activityDataNoDate = await parseDataset(datasetURL);
   const links = await parseLinks(linksURL);
   const wpData = await parseDataset(wpDatasetURL);
@@ -32,8 +32,8 @@ export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesU
     endPrPeriod: giveActivityPrPeriod(act, convertedDates, "end"),
   }));
 
-  //tried triming and re-rendering everything but iit is to slow and expencive
-  const trimmedData = trimDataByPr(activityData, prPeriod);
+  //trims the data by filter option
+  const trimmedData = trimData(activityData, prPeriod, storyIds);
 
   // const trimmedDates = convertedDates.filter((date) => date.prPeriod <= prPeriod.pr);
 

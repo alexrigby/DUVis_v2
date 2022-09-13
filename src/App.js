@@ -33,10 +33,11 @@ export function App() {
 
   //sets state for pr period and weather undefined pr periods are included in veiw
   // NEED TO WORK OUT A WAY TO SET PR STATE DYNAMICALLY?
-  const [prPeriod, setPrPeriod] = useState({
-    pr: 13,
-    undefined: true,
-  });
+  const [prPeriod, setPrPeriod] = useState({ pr: null, undefined: true });
+
+  const [storyIds, setStoryIds] = useState(null);
+
+  console.log(prPeriod);
 
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
@@ -46,7 +47,8 @@ export function App() {
         links,
         wpDataset,
         datesData,
-        prPeriod
+        prPeriod,
+        storyIds
       ); //combines parsing functions to make elements array
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
@@ -64,12 +66,19 @@ export function App() {
 
     addDataToCytoscape();
     // addCategoryIcon(cyState.cy);
-  }, [cyState.cy, cyState.elements.length, prPeriod]);
+  }, [cyState.cy, cyState.elements.length, prPeriod, storyIds]);
 
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
       <div className="top-layer">
-        <Header cyState={cyState} datesRef={datesRef} setPrPeriod={setPrPeriod} prPeriod={prPeriod} />
+        <Header
+          cyState={cyState}
+          datesRef={datesRef}
+          setPrPeriod={setPrPeriod}
+          prPeriod={prPeriod}
+          setStoryIds={setStoryIds}
+          storyIds={storyIds}
+        />
         <Legend cyState={cyState} />
         <SideBar selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
         <BottomPannel

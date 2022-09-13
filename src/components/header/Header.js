@@ -3,13 +3,20 @@ import LAYOUTS from "../cytoscape/functions/cyLayouts";
 import STORIES from "../../configs/stories";
 import { useState } from "react";
 
-export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
+export function Header({ cyState, datesRef, setPrPeriod, prPeriod, setStoryIds, storyIds }) {
   const [filterOptionsDisplay, setFilterOptionsDisplay] = useState(false);
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
   const [storySectionDisplay, setStorySectionDisplay] = useState(false);
 
+  const storyClickHandler = (event) => {
+    //set stte to array of id inn that story
+    setStoryIds(event.target.dataset.ids.split(",").map((i) => Number(i)));
+  };
+
+  const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
+
   const storyButtons = STORIES.map((story, i) => (
-    <p key={story.name} value={story.ids}>
+    <p key={story.name} data-ids={story.ids} onClick={storyClickHandler}>
       {i + 1}. {story.name}
     </p>
   ));
@@ -26,8 +33,8 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
 
   const displayFilterOptions = (event) => {
     setFilterOptionsDisplay((prevState) => !prevState);
-    setPrSectionDisplay(false); //hides open prperiod optons when filter optiosn is clicked
-    setStorySectionDisplay(false);
+    // setPrSectionDisplay(false); //hides open prperiod optons when filter optiosn is clicked
+    // setStorySectionDisplay(false);
   };
 
   const displayStoryOptions = (event) => {
@@ -36,19 +43,33 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
 
   const displayPrOptions = (event) => {
     setPrSectionDisplay((prevState) => !prevState);
+    setPrPeriod((prevState) => ({
+      ...prevState,
+      pr: prevState.pr === null ? prOptions.length : null,
+    }));
     //resets proptons when button is clicked
-    setPrPeriod({
-      pr: 13,
-      undefined: true,
-    });
   };
 
   //sets prperod to selected radio button
   const prClickHandler = (event) => {
-    setPrPeriod((prevState) => ({
-      pr: event.target.type === "radio" ? parseFloat(event.target.value) : prevState.pr,
-      undefined: event.target.type === "checkbox" ? !prevState.undefined : prevState.undefined,
-    }));
+    if (prPeriod.pr === null) {
+      setPrPeriod((prevState) => ({
+        pr: event.target.type === "radio" ? parseFloat(event.target.value) : null,
+        undefined: event.target.type === "checkbox" ? !prevState.undefined : prevState.undefined,
+      }));
+    } else {
+      setPrPeriod((prevState) => ({
+        pr: event.target.type === "radio" ? parseFloat(event.target.value) : prevState.pr,
+        undefined: event.target.type === "checkbox" ? !prevState.undefined : prevState.undefined,
+      }));
+    }
+  };
+
+  const resetFilter = (event) => {
+    setPrPeriod({ pr: null, undefined: true });
+    setStoryIds(null);
+    setPrSectionDisplay(false); //hides open prperiod optons when filter optiosn is clicked
+    setStorySectionDisplay(false);
   };
 
   //allows user to set pr period using the arrow buttons
@@ -77,7 +98,9 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
     display: prSectionDisplay ? "flex" : "none",
   };
 
-  const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
+  const resetStyle = {
+    display: prPeriod.pr === null && storyIds === null ? "none" : "inline-block",
+  };
 
   const prRadio =
     datesRef.current !== null &&
@@ -90,7 +113,7 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
           name="prPeriod"
           value={opt}
           onChange={prClickHandler}
-          checked={prPeriod.pr - 1 === i} //check the current pr period
+          checked={prPeriod.pr !== null && prPeriod.pr - 1 === i} //check the current pr period
         ></input>
       </div>
     ));
@@ -102,10 +125,15 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
       <button onClick={changeEdgeDisplay}>Activity Connections</button>
 
       <div>
-        <button onClick={displayFilterOptions}>
-          Filter Activities
-          {filterOptionsDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
-        </button>
+        <div>
+          <button onClick={displayFilterOptions}>
+            Filter Activities
+            {filterOptionsDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
+          </button>
+          <button onClick={resetFilter} style={resetStyle}>
+            Reset
+          </button>
+        </div>
         <div style={optionsStyle}>
           <button onClick={displayStoryOptions}>
             By Story {storySectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
@@ -114,7 +142,7 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod }) {
             By Progress Report Period
             {prSectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
           </button>
-          {datesRef.current !== null && (
+          {datesRef.current !== null && prPeriod.pr !== null && (
             <p style={prStyle}>
               {prStartAndEndDate(datesRef, prPeriod).start} - {prStartAndEndDate(datesRef, prPeriod).end}
             </p>
