@@ -14,10 +14,10 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
       if (selectedNode.meta.endPrPeriod === "undefined" || selectedNode.meta.endPrPeriod === "onGoing") {
         return { color: "#ffbf00" };
       } else {
-        return { color: selectedNode.meta.endPrPeriod < latestPrPeriod ? "#39ff14" : "#ffbf00" };
+        return { color: selectedNode.meta.endPrPeriod <= latestPrPeriod ? "#39ff14" : "#ffbf00" };
       }
     } else {
-      return { color: selectedNode.meta.endPrPeriod < prPeriod.pr ? "#39ff14" : "#ffbf00" };
+      return { color: selectedNode.meta.endPrPeriod <= prPeriod.pr ? "#39ff14" : "#ffbf00" };
     }
   }
 
@@ -26,20 +26,13 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
       if (selectedNode.meta.endPrPeriod === "undefined" || selectedNode.meta.endPrPeriod === "onGoing") {
         return "Ongoing";
       } else {
-        return selectedNode.meta.endPrPeriod < latestPrPeriod ? "Completed" : "Ongoing";
+        return selectedNode.meta.endPrPeriod <= latestPrPeriod ? "Completed" : "Ongoing";
       }
     } else {
-      return selectedNode.meta.endPrPeriod < prPeriod.pr ? "Completed" : "Ongoing";
+      return selectedNode.meta.endPrPeriod <= prPeriod.pr ? "Completed" : "Ongoing";
     }
   }
 
-  // const completedStyl = {
-  //   color: selectedNode.meta["Activity Status"] === "Completed" ? "#39ff14" : "#ffbf00",
-  // };
-
-  console.log(datesRef);
-  console.log(selectedNode);
-  console.log(prPeriod);
   const linkedActivitiesList = uniqueLinks.map((activity) => (
     <li
       key={activity.id()}
@@ -72,6 +65,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
           {meta["Start Month"]}-{meta["End Month/ Ongoing"]}
         </p>
         <h2> Category:</h2> <p>{meta["Activity Category"]}</p>
+        <h2> Researcher:</h2> <p>{meta.Name}</p>
         <h2> End Users: </h2> <p>{meta["End Users"]}</p>
         <h2> PDCA Cycle: </h2> <p>{meta["PDCA Cycle"]}</p>
         <h2> Contribution to DU: </h2> <p>{meta["Contribution to DU"]}</p>

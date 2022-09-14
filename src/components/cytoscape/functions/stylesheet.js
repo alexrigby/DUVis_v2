@@ -11,7 +11,8 @@ export function stylesheet(activityEdgeDisplay) {
         "text-valign": "center",
         color: "white",
         "border-width": 4,
-        "background-opacity": 0.9,
+        "background-opacity": "data(opacity)",
+        "border-opacity": "data(opacity)",
         "background-color": function (ele) {
           return nodeBackgroundColor(ele, "parent");
         },
@@ -32,7 +33,7 @@ export function stylesheet(activityEdgeDisplay) {
       selector: "node[type = 'wp']",
       style: {
         label: "data(id)",
-        "background-opacity": 0.4,
+        "background-opacity": 0.3,
         "background-color": function (ele) {
           return nodeBackgroundColor(ele, "id");
         },
@@ -74,6 +75,7 @@ export function stylesheet(activityEdgeDisplay) {
       selector: ".selectedNode",
       style: {
         "border-color": "red",
+        "border-opacity": 1,
         "border-width": "6px",
         display: "element",
       },

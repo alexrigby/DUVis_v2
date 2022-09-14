@@ -1,7 +1,19 @@
 import COLORS from "../configs/wpColors";
+import statusOpacity from "../configs/statusOpacity";
 
-export function makeGantchartacts(actData, wpData) {
-  //   const groups = wpData;
+export function makeGantchartacts(actData, wpData, prPeriod) {
+  function itemOpacity(act) {
+    if (prPeriod.pr === null) {
+      return statusOpacity.onGoing;
+    } else {
+      if (act.endPrPeriod === "undefined" || act.endPrPeriod === "onGoing") {
+        return statusOpacity.onGoing;
+      } else {
+        return act.endPrPeriod <= prPeriod.pr ? statusOpacity.completed : statusOpacity.completed;
+      }
+    }
+  }
+
   const groups = wpData.map((wp) => ({
     id: wp.id,
     content: wp.id,
@@ -19,7 +31,7 @@ export function makeGantchartacts(actData, wpData) {
     title: act["Activity Name"],
     className: `item${act.ID}`,
     sMonth: act["Start Month"],
-    style: `${classActivitiesbyID(act.WP)}; color: white`,
+    style: `${classActivitiesbyID(act.WP)}; color: white; opacity: ${itemOpacity(act)}`,
   }));
 
   return { items: items, groups: groups };

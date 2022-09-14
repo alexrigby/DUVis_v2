@@ -23,6 +23,8 @@ export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesU
   // This function somehow mutes convertedDates-- works but might need chnaging!!!!
   getPRPeriods(convertedDates);
 
+  const latestPrPeriod = convertedDates[convertedDates.length - 1].prPeriod;
+
   //adds js readble start and end dates to activity array
   const activityData = activityDataNoDate.map((act, i) => ({
     ...act,
@@ -36,9 +38,9 @@ export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesU
   const trimmedData = trimData(activityData, prPeriod, storyIds);
   const trimmedWpData = wpData.filter((wp) => [...new Set(trimmedData.map((act) => act.WP))].includes(wp.id.slice(2)));
 
-  const gantChartItems = makeGantchartItems(trimmedData, trimmedWpData);
+  const gantChartItems = makeGantchartItems(trimmedData, trimmedWpData, prPeriod);
 
-  const nodes = makeCyNodes(trimmedData);
+  const nodes = makeCyNodes(trimmedData, prPeriod);
 
   const edges = makeCyEdges(links, nodes);
 
