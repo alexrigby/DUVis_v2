@@ -1,16 +1,45 @@
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import hilightOnLiHover from "./functions/hilightOnLiHover";
 
-export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode }) {
+export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, datesRef, prPeriod }) {
   const meta = selectedNode.meta;
   const outgoingActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).outgoers().targets();
   const incommingActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).incomers().sources();
   const uniqueLinks = [...new Set([...incommingActivities, ...outgoingActivities])];
 
-  const completedStyle = {
-    color: selectedNode.meta["Activity Status"] === "Completed" ? "#39ff14" : "#ffbf00",
-  };
+  const latestPrPeriod = datesRef.current[datesRef.current.length - 1].prPeriod;
 
+  function completedStyle() {
+    if (prPeriod.pr === null) {
+      if (selectedNode.meta.endPrPeriod === "undefined" || selectedNode.meta.endPrPeriod === "onGoing") {
+        return { color: "#ffbf00" };
+      } else {
+        return { color: selectedNode.meta.endPrPeriod < latestPrPeriod ? "#39ff14" : "#ffbf00" };
+      }
+    } else {
+      return { color: selectedNode.meta.endPrPeriod < prPeriod.pr ? "#39ff14" : "#ffbf00" };
+    }
+  }
+
+  function completedText() {
+    if (prPeriod.pr === null) {
+      if (selectedNode.meta.endPrPeriod === "undefined" || selectedNode.meta.endPrPeriod === "onGoing") {
+        return "Ongoing";
+      } else {
+        return selectedNode.meta.endPrPeriod < latestPrPeriod ? "Completed" : "Ongoing";
+      }
+    } else {
+      return selectedNode.meta.endPrPeriod < prPeriod.pr ? "Completed" : "Ongoing";
+    }
+  }
+
+  // const completedStyl = {
+  //   color: selectedNode.meta["Activity Status"] === "Completed" ? "#39ff14" : "#ffbf00",
+  // };
+
+  console.log(datesRef);
+  console.log(selectedNode);
+  console.log(prPeriod);
   const linkedActivitiesList = uniqueLinks.map((activity) => (
     <li
       key={activity.id()}
@@ -34,8 +63,9 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode }) 
         >
           WP: {selectedNode.parent.slice(2)}
         </h1>
-        <p style={completedStyle} className="completed">
-          {meta["Activity Status"]}
+        <p style={completedStyle()} className="completed">
+          {/* {meta["Activity Status"]} */}
+          {completedText()}
         </p>
         <h2>Start-End Months:</h2>
         <p>

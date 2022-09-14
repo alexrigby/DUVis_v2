@@ -4,7 +4,7 @@ import "./GanttChart.css";
 import styleSelectedElements from "../../cytoscape/functions/styleSelectedElements";
 import { useEffect, useRef } from "react";
 
-export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBottomVis }) {
+export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBottomVis, datesRef }) {
   //sets ref to get access to timelineAPI
   const ganttChartRef = useRef(null);
   //when an item is clicked on the gantt chart it updates selected node id as well
@@ -36,6 +36,9 @@ export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBo
   // };
 
   const options = {
+    start: datesRef.current !== null ? new Date(datesRef.current[0].date).getTime() : "2022-01-01",
+    end:
+      datesRef.current !== null ? new Date(datesRef.current[datesRef.current.length - 1].date).getTime() : "2022-02-02",
     stack: true,
     showMajorLabels: true,
     showCurrentTime: true,

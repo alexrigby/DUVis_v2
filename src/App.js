@@ -76,7 +76,13 @@ export function App() {
           setActivityEdgeDisplay={setActivityEdgeDisplay}
         />
         <Legend cyState={cyState} />
-        <SidePannel selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
+        <SidePannel
+          selectedNode={selectedNode}
+          cyState={cyState}
+          setSelectedNode={setSelectedNode}
+          datesRef={datesRef}
+          prPeriod={prPeriod}
+        />
         <BottomPannel
           gantchartData={gantchartData}
           cyState={cyState}

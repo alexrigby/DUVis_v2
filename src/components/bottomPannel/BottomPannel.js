@@ -23,6 +23,7 @@ export function BottomPannel({ gantchartData, cyState, setSelectedNode, actDataR
         cyState={cyState}
         setSelectedNode={setSelectedNode}
         selectedBottomVis={selectedBottomVis}
+        datesRef={datesRef}
       />
     </div>
   );
