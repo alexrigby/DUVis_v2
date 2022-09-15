@@ -19,13 +19,13 @@ export function Header({
 
   const storyClickHandler = (event) => {
     //set stte to array of id inn that story
-    setStoryIds(event.target.dataset.ids.split(",").map((i) => Number(i)));
+    setStoryIds({ ids: event.target.dataset.ids.split(",").map((i) => Number(i)), name: event.target.title });
   };
 
   const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
 
   const storyButtons = STORIES.map((story, i) => (
-    <p key={story.name} data-ids={story.ids} onClick={storyClickHandler}>
+    <p key={story.name} title={story.name} data-ids={story.ids} onClick={storyClickHandler}>
       {i + 1}. {story.name}
     </p>
   ));
@@ -35,17 +35,17 @@ export function Header({
   }
 
   const toggleCompleted = (event) => {
+    event.target.classList.toggle("activeButton");
     setCompletedDisplay((prevState) => !prevState);
   };
   //hides/displays wpedges/ activity edges when button is clicked
   const toggleEdges = (event) => {
+    event.target.classList.toggle("activeButton");
     setActivityEdgeDisplay((prevState) => !prevState);
   };
 
   const displayFilterOptions = (event) => {
     setFilterOptionsDisplay((prevState) => !prevState);
-    // setPrSectionDisplay(false); //hides open prperiod optons when filter optiosn is clicked
-    // setStorySectionDisplay(false);
   };
 
   const displayStoryOptions = (event) => {
@@ -131,10 +131,20 @@ export function Header({
 
   return (
     <header>
-      <h1>Dwr Uisce Work Package Visualiser</h1>
-      <button onClick={changeLayout}>Change Layout </button>
-      <button onClick={toggleEdges}>Toggle Connections</button>
-      <button onClick={toggleCompleted}>Toggle Completed </button>
+      <div className="topLine">
+        <h1>Dwr Uisce Work Package Visualiser</h1>
+        <div className="displayButtons">
+          <button onClick={changeLayout}>Change Layout </button>
+          <button onClick={toggleEdges}>Toggle Connections</button>
+          <button onClick={toggleCompleted}>Toggle Completed </button>
+        </div>
+      </div>
+      <p className="subHeader">
+        {storyIds === null ? "All Activities" : storyIds.name}
+        {" || "}
+        {datesRef.current !== null && prStartAndEndDate(datesRef, prPeriod).start} -{" "}
+        {datesRef.current !== null && prStartAndEndDate(datesRef, prPeriod).end}
+      </p>
 
       <div>
         <div>
@@ -147,18 +157,10 @@ export function Header({
           </button>
         </div>
         <div style={optionsStyle}>
-          <button onClick={displayStoryOptions}>
-            By Story {storySectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
-          </button>
           <button onClick={displayPrOptions}>
             By Progress Report Period
             {prSectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
           </button>
-          {datesRef.current !== null && prPeriod.pr !== null && (
-            <p style={prStyle}>
-              {prStartAndEndDate(datesRef, prPeriod).start} - {prStartAndEndDate(datesRef, prPeriod).end}
-            </p>
-          )}
 
           <div className="prSelection" style={prStyle}>
             {prRadio}
@@ -180,6 +182,11 @@ export function Header({
               defaultChecked={true}
             ></input>
           </div>
+        </div>
+        <div style={optionsStyle}>
+          <button onClick={displayStoryOptions}>
+            By Story {storySectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
+          </button>
           <div className="storyButtons" style={storyStyle}>
             {storyButtons}
           </div>
@@ -192,9 +199,12 @@ export function Header({
 export default Header;
 
 function prStartAndEndDate(datesRef, prPeriod) {
-  const prDates = datesRef.current.filter((date) => prPeriod.pr === date.prPeriod);
+  const pr = prPeriod.pr === null ? datesRef.current[datesRef.current.length - 1].prPeriod : prPeriod.pr;
+  const prDates = datesRef.current.filter((date) => pr === date.prPeriod);
 
-  const start = String(new Date(prDates[0].date).toLocaleDateString("en-GB", { month: "short", year: "numeric" }));
+  const start = String(
+    new Date(datesRef.current[0].date).toLocaleDateString("en-GB", { month: "short", year: "numeric" })
+  );
   const end = String(
     new Date(prDates[prDates.length - 1].date).toLocaleDateString("en-GB", {
       month: "short",

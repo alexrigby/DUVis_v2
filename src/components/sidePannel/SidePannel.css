@@ -2,10 +2,9 @@
   /* opacity: 0; */
   height: 100%;
   overflow-y: auto;
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  position: relative;
+  float: right;
+
   width: 20em;
   background: #414a4c;
   box-sizing: border-box;

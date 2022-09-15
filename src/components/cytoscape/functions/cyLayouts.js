@@ -11,7 +11,7 @@ export const LAYOUTS = {
     //cose-bilkent is a cytoscape plugin
     name: "fcose",
     // animate: false
-    animationDuration: 500,
+    animationDuration: 1000,
     nodeDimensionsIncludeLabels: true,
     // refresh: 400,
     // nodeRepulsion: (node) => 4500,

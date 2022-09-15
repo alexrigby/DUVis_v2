@@ -4,8 +4,13 @@ header h1 {
 }
 
 header {
-  padding: 10px 0px 0px 15px;
+  padding: 10px 20px 0px 15px;
   display: block;
+}
+
+.topLine {
+  display: flex;
+  justify-content: space-between;
 }
 
 header button {
@@ -68,4 +73,15 @@ p {
 .storyButtons p:hover {
   color: gray;
   cursor: pointer;
+}
+
+.subHeader {
+  padding-bottom: 10px;
+  font-size: 10pt;
+  font-weight: 700;
+  opacity: 0.7;
+}
+
+.activeButton {
+  background-color: #cfcfcf;
 }

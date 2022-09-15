@@ -70,12 +70,6 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
     if (selectedBottomVis === "vegaAnalyticsButton") {
       return (
         <div className="vegaAnalytics" onMouseUp={mouseUpHandler} onDoubleClick={resetDoubleClick} title={title}>
-          {/* <div className="vegaSelect">
-            <select>
-              <option value="volvo">Volvo</option>
-              <option value="saab">Saab</option>
-            </select>
-          </div> */}
           <VegaSelect setSelectedMetric={setSelectedMetric} />
           <VegaLite
             data={vegaData}

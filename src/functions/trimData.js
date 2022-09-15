@@ -4,7 +4,7 @@ export function trimData(actData, prPeriod, storyIds) {
     return actData;
     //if story is selected but no pr return whole story
   } else if (storyIds !== null && prPeriod.pr === null) {
-    return filterStoryData(actData, storyIds);
+    return filterStoryData(actData, storyIds.ids);
   }
   //if no story is selected but a pr is selected then return progress report
   else if (storyIds === null && prPeriod.pr !== null) {
@@ -15,7 +15,7 @@ export function trimData(actData, prPeriod, storyIds) {
     }
     //if story and progress report are seleted return both
   } else {
-    let story = filterStoryData(actData, storyIds);
+    let story = filterStoryData(actData, storyIds.ids);
     if (prPeriod.undefined === true) {
       return story.filter((act) => act.startPrPeriod <= prPeriod.pr || act.startPrPeriod === "undefined");
     } else {

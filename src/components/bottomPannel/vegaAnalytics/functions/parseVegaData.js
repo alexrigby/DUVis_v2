@@ -42,7 +42,8 @@ export function parseVegaData(actData, dates, brushRange, selectedMetric) {
       [opAct[0][selectedMetric]]: opAct.filter(
         (act) => new Date(date.date) >= new Date(act.startDate) && new Date(date.date) <= new Date(act.endDate)
       ).length,
-      ...date,
+      date: new Date(date.date).getTime(),
+      // ...date,
     }))
   );
 
@@ -61,8 +62,8 @@ export default parseVegaData;
 
 function handleNonDates(date, startOrEnd) {
   if (date === "onGoing" || date === "undefined") {
-    return startOrEnd === "start" ? "2016-09-01" : "2023-02-01";
+    return startOrEnd === "start" ? new Date("2016-09-01").getTime() : new Date("2023-02-01").getTime();
   } else {
-    return date;
+    return new Date(date).getTime();
   }
 }

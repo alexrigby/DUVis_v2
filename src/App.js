@@ -68,6 +68,13 @@ export function App() {
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
       <div className="top-layer">
+        <SidePannel
+          selectedNode={selectedNode}
+          cyState={cyState}
+          setSelectedNode={setSelectedNode}
+          datesRef={datesRef}
+          prPeriod={prPeriod}
+        />
         <Header
           cyState={cyState}
           datesRef={datesRef}
@@ -79,13 +86,6 @@ export function App() {
           setCompletedDisplay={setCompletedDisplay}
         />
         <Legend cyState={cyState} />
-        <SidePannel
-          selectedNode={selectedNode}
-          cyState={cyState}
-          setSelectedNode={setSelectedNode}
-          datesRef={datesRef}
-          prPeriod={prPeriod}
-        />
         <BottomPannel
           gantchartData={gantchartData}
           cyState={cyState}
