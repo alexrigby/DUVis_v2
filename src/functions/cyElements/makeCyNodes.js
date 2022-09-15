@@ -1,19 +1,8 @@
 //creats a Node object for each activity
 import statusOpacity from "../../configs/statusOpacity";
+import activityOpacity from "../activityOpacity";
 
-export function makeCyNodes(data, prPeriod) {
-  function nodeOpacity(node) {
-    if (prPeriod.pr === null) {
-      return statusOpacity.onGoing;
-    } else {
-      if (node.endPrPeriod === "undefined" || node.endPrPeriod === "onGoing") {
-        return statusOpacity.onGoing;
-      } else {
-        return node.endPrPeriod <= prPeriod.pr ? statusOpacity.completed : statusOpacity.onGoing;
-      }
-    }
-  }
-
+export function makeCyNodes(data, prPeriod, completedDisplay, latestPrPeriod) {
   const cyNodes = [];
   for (let i = 0; i < data.length; i++) {
     const nodeOps = {
@@ -27,7 +16,7 @@ export function makeCyNodes(data, prPeriod) {
         label: "node",
         name: data[i]["Activity Name"],
         category: data[i]["Activity Category"],
-        opacity: nodeOpacity(data[i]),
+        opacity: activityOpacity(data[i], completedDisplay, latestPrPeriod, prPeriod),
         meta: {
           ...data[i],
         },

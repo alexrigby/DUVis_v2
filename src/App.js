@@ -28,7 +28,8 @@ export function App() {
   const [selectedNode, setSelectedNode] = useState({ id: "" });
   const [prPeriod, setPrPeriod] = useState({ pr: null, undefined: true }); //sets state for pr period
   const [storyIds, setStoryIds] = useState(null); //sets story ids state
-  const [activityEdgeDisplay, setActivityEdgeDisplay] = useState(false);
+  const [activityEdgeDisplay, setActivityEdgeDisplay] = useState(false); //sets if wp edges or activity edges are displayed
+  const [completedDisplay, setCompletedDisplay] = useState(false); //sets if nodes opacity is defined by completion status
 
   const gantchartData = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
@@ -43,7 +44,8 @@ export function App() {
         wpDataset,
         datesData,
         prPeriod,
-        storyIds
+        storyIds,
+        completedDisplay
       ); //combines parsing functions to make elements array
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
@@ -61,7 +63,7 @@ export function App() {
 
     addDataToCytoscape();
     // addCategoryIcon(cyState.cy);
-  }, [cyState.cy, cyState.elements.length, prPeriod, storyIds]);
+  }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, storyIds]);
 
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
@@ -74,6 +76,7 @@ export function App() {
           setStoryIds={setStoryIds}
           storyIds={storyIds}
           setActivityEdgeDisplay={setActivityEdgeDisplay}
+          setCompletedDisplay={setCompletedDisplay}
         />
         <Legend cyState={cyState} />
         <SidePannel

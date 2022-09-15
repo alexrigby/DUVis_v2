@@ -3,7 +3,16 @@ import LAYOUTS from "../cytoscape/functions/cyLayouts";
 import STORIES from "../../configs/stories";
 import { useState } from "react";
 
-export function Header({ cyState, datesRef, setPrPeriod, prPeriod, setStoryIds, storyIds, setActivityEdgeDisplay }) {
+export function Header({
+  cyState,
+  datesRef,
+  setPrPeriod,
+  prPeriod,
+  setStoryIds,
+  storyIds,
+  setActivityEdgeDisplay,
+  setCompletedDisplay,
+}) {
   const [filterOptionsDisplay, setFilterOptionsDisplay] = useState(false);
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
   const [storySectionDisplay, setStorySectionDisplay] = useState(false);
@@ -25,8 +34,11 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod, setStoryIds, 
     cyState.cy.layout(LAYOUTS.FCOSERandom).run();
   }
 
+  const toggleCompleted = (event) => {
+    setCompletedDisplay((prevState) => !prevState);
+  };
   //hides/displays wpedges/ activity edges when button is clicked
-  const changeEdgeDisplay = (event) => {
+  const toggleEdges = (event) => {
     setActivityEdgeDisplay((prevState) => !prevState);
   };
 
@@ -121,7 +133,8 @@ export function Header({ cyState, datesRef, setPrPeriod, prPeriod, setStoryIds, 
     <header>
       <h1>Dwr Uisce Work Package Visualiser</h1>
       <button onClick={changeLayout}>Change Layout </button>
-      <button onClick={changeEdgeDisplay}>Toggle Connections</button>
+      <button onClick={toggleEdges}>Toggle Connections</button>
+      <button onClick={toggleCompleted}>Toggle Completed </button>
 
       <div>
         <div>

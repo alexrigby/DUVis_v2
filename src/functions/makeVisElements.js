@@ -10,7 +10,15 @@ import getPRPeriods from "./getPRPeriods";
 import giveActivityPrPeriod from "./giveActivtyPrPeriod";
 import trimData from "./trimData";
 
-export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesURL, prPeriod, storyIds) {
+export async function makeVisElements(
+  datasetURL,
+  linksURL,
+  wpDatasetURL,
+  datesURL,
+  prPeriod,
+  storyIds,
+  completedDisplay
+) {
   const activityDataNoDate = await parseDataset(datasetURL);
   const links = await parseLinks(linksURL);
   const wpData = await parseDataset(wpDatasetURL);
@@ -38,9 +46,9 @@ export async function makeVisElements(datasetURL, linksURL, wpDatasetURL, datesU
   const trimmedData = trimData(activityData, prPeriod, storyIds);
   const trimmedWpData = wpData.filter((wp) => [...new Set(trimmedData.map((act) => act.WP))].includes(wp.id.slice(2)));
 
-  const gantChartItems = makeGantchartItems(trimmedData, trimmedWpData, prPeriod);
+  const gantChartItems = makeGantchartItems(trimmedData, trimmedWpData, prPeriod, completedDisplay, latestPrPeriod);
 
-  const nodes = makeCyNodes(trimmedData, prPeriod);
+  const nodes = makeCyNodes(trimmedData, prPeriod, completedDisplay, latestPrPeriod);
 
   const edges = makeCyEdges(links, nodes);
 
