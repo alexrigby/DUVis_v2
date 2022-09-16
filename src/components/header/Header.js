@@ -16,18 +16,20 @@ export function Header({
   const [filterOptionsDisplay, setFilterOptionsDisplay] = useState(false);
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
   const [storySectionDisplay, setStorySectionDisplay] = useState(false);
+  const [customStoryDisplay, setCustomStoryDisplay] = useState(false);
 
   const [stories, setStories] = useState(STORIES);
   const [customStory, setCustomStory] = useState({ name: "", ids: [] });
 
   const storyClickHandler = (event) => {
+    setCustomStoryDisplay(false);
     //set stte to array of id inn that story
     setCurrentStory({ ids: event.target.dataset.ids.split(",").map((i) => Number(i)), name: event.target.title });
   };
 
   const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
 
-  const storyButtons = stories.map((story, i) => (
+  const storyOptions = stories.map((story, i) => (
     <p key={story.name} title={story.name} data-ids={story.ids} onClick={storyClickHandler}>
       {i + 1}. {story.name}
     </p>
@@ -52,7 +54,12 @@ export function Header({
   };
 
   const displayStoryOptions = (event) => {
-    setStorySectionDisplay((preveState) => !preveState);
+    setStorySectionDisplay((prevState) => !prevState);
+  };
+
+  const displayCustomStoryOptions = (event) => {
+    setCurrentStory(null); // so all nodes are available to select from to make custom story
+    setCustomStoryDisplay((prevState) => !prevState);
   };
 
   const displayPrOptions = (event) => {
@@ -129,11 +136,15 @@ export function Header({
   const addCustomStoryToList = (event) => {
     setStories((prevState) => [...prevState, customStory]); //ads the new story to the list of stories
     setCustomStory({ name: "", ids: [] }); // resets the custom story to empty
+    setCustomStoryDisplay(false); //hides the current stroy options
   };
+
+  const sortedNodes =
+    cyState.cy !== null && cyState.cy.nodes("[type = 'activityNode']").sort((a, b) => a.id() - b.id()); //sorts nodes in oredr of ID
 
   const idSelectOptions =
     cyState.cy !== null &&
-    cyState.cy.nodes("[type = 'activityNode']").map((node) => (
+    sortedNodes.map((node) => (
       <option value={node.id()} key={node.id()}>
         {node.id()}
       </option>
@@ -156,6 +167,15 @@ export function Header({
   const addStoryButtonStyle = {
     display: customStory.ids.length === 0 || customStory.name === "" ? "none" : "flex",
   };
+
+  const customStoryStyle = () => {
+    if (currentStory === null && customStoryDisplay === true) {
+      return { display: "flex" };
+    } else {
+      return { display: "none" };
+    }
+  };
+
   const prRadio =
     datesRef.current !== null &&
     prOptions.map((opt, i) => (
@@ -200,8 +220,8 @@ export function Header({
           </button>
         </div>
         <div style={optionsStyle}>
-          <button onClick={displayPrOptions}>
-            By Progress Report Period
+          <button onClick={displayPrOptions} className="filterOptionButton">
+            Progress Report Period
             {prSectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
           </button>
 
@@ -227,21 +247,19 @@ export function Header({
           </div>
         </div>
         <div style={optionsStyle}>
-          <button onClick={displayStoryOptions}>
-            By Story {storySectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
+          <button onClick={displayStoryOptions} className="filterOptionButton">
+            Stories {storySectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
           </button>
-          <div className="storyButtons" style={storyStyle}>
-            {storyButtons}
-            <div className="customStory">
-              <label name="customStory">Custom Story</label>
+          <div className="storyFilter" style={storyStyle}>
+            <div className="storyOptions">
+              {storyOptions}
+              <button className="customStoryButton" onClick={displayCustomStoryOptions}>
+                Custom Story
+              </button>
+            </div>
+            <div className="customStory" style={customStoryStyle()}>
               <div className="customInput">
-                <input
-                  id="customName"
-                  name="customStory"
-                  placeholder="Custom Story 1"
-                  defaultValue="Custom Story 1"
-                  onKeyUp={addCustomStoryName}
-                ></input>
+                <input id="customName" name="customStory" placeholder="story name" onKeyUp={addCustomStoryName}></input>
                 <button type="button" onClick={addCustomStoryName}>
                   <i className="fa-solid fa-plus"></i>
                 </button>
@@ -251,7 +269,7 @@ export function Header({
                   id="customId"
                   name="customStory"
                   onKeyUp={addCustomStoryId}
-                  onKeyDown={(e) => e.preventDefault()}
+                  onKeyDown={(e) => e.preventDefault()} //prevents 'enter' opening select dropdown
                 >
                   {idSelectOptions}
                 </select>
@@ -259,13 +277,11 @@ export function Header({
                   <i className="fa-solid fa-plus"></i>
                 </button>
               </div>
-              <p>{customStory.name !== "" && customStory.name}</p>
-
-              <p>{customStory.ids.length !== 0 && String(customStory.ids)}</p>
+              <p className="customStoryName">Name: {customStory.name !== "" && customStory.name}</p>
+              <p className="customStoryIds">Activities: {customStory.ids.length !== 0 && String(customStory.ids)}</p>
             </div>
-            <button onClick={addCustomStoryToList} style={addStoryButtonStyle}>
-              {" "}
-              Add Story{" "}
+            <button onClick={addCustomStoryToList} style={addStoryButtonStyle} className="customStoryButton">
+              Add
             </button>
           </div>
         </div>
