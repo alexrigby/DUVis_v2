@@ -1,7 +1,7 @@
 import "./Header.css";
 import LAYOUTS from "../cytoscape/functions/cyLayouts";
 import STORIES from "../../configs/stories";
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 export function Header({
   cyState,
@@ -21,24 +21,12 @@ export function Header({
   const [stories, setStories] = useState(STORIES);
   const [customStory, setCustomStory] = useState({ name: "", ids: [] });
 
-  const storyClickHandler = (event) => {
-    setCustomStoryDisplay(false);
-    //set stte to array of id inn that story
-    setCurrentStory({ ids: event.target.dataset.ids.split(",").map((i) => Number(i)), name: event.target.title });
-  };
-
   const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
 
-  const storyOptions = stories.map((story, i) => (
-    <p key={story.name} title={story.name} data-ids={story.ids} onClick={storyClickHandler}>
-      {i + 1}. {story.name}
-    </p>
-  ));
-
+  // TOGGLE CONTROLS /////////////
   function changeLayout() {
     cyState.cy.layout(LAYOUTS.FCOSERandom).run();
   }
-
   const toggleCompleted = (event) => {
     event.target.classList.toggle("activeButton");
     setCompletedDisplay((prevState) => !prevState);
@@ -48,7 +36,9 @@ export function Header({
     event.target.classList.toggle("activeButton");
     setActivityEdgeDisplay((prevState) => !prevState);
   };
+  // TOGGLE CONTROLS /////////////
 
+  //FILTER OPTIONS DISPLAY CONTROLS /////////////
   const displayFilterOptions = (event) => {
     setFilterOptionsDisplay((prevState) => !prevState);
   };
@@ -58,6 +48,7 @@ export function Header({
   };
 
   const displayCustomStoryOptions = (event) => {
+    //  setPrPeriod({ pr: null, undefined: true });
     setCurrentStory(null); // so all nodes are available to select from to make custom story
     setCustomStoryDisplay((prevState) => !prevState);
   };
@@ -70,6 +61,41 @@ export function Header({
     }));
     //resets proptons when button is clicked
   };
+  //FILTER OPTIONS DISPLAY CONTROLS /////////////
+
+  //STYLING //////////////////////
+  const optionsStyle = {
+    display: filterOptionsDisplay ? "block" : "none",
+  };
+  const storyStyle = {
+    display: storySectionDisplay ? "block" : "none",
+  };
+  const prStyle = {
+    display: prSectionDisplay ? "flex" : "none",
+  };
+
+  const resetStyle = {
+    display: prPeriod.pr === null && currentStory === null ? "none" : "inline-block",
+  };
+
+  const addStoryButtonStyle = {
+    display: customStory.ids.length === 0 || customStory.name === "" ? "none" : "flex",
+  };
+
+  const selectedStoryStyle = (storyName) => {
+    if (currentStory !== null && currentStory.name === storyName) {
+      return { color: "grey" };
+    }
+  };
+
+  const customStoryStyle = () => {
+    if (currentStory === null && customStoryDisplay === true) {
+      return { display: "flex" };
+    } else {
+      return { display: "none" };
+    }
+  };
+  //STYLING //////////////////////
 
   //sets prperod to selected radio button
   const prClickHandler = (event) => {
@@ -84,14 +110,6 @@ export function Header({
         undefined: event.target.type === "checkbox" ? !prevState.undefined : prevState.undefined,
       }));
     }
-  };
-
-  const resetFilter = (event) => {
-    setPrPeriod({ pr: null, undefined: true });
-    setCurrentStory(null);
-    setPrSectionDisplay(false); //hides open prperiod optons when filter optiosn is clicked
-    setStorySectionDisplay(false);
-    setCustomStory({ name: "", ids: [] });
   };
 
   //allows user to set pr period using the arrow buttons
@@ -139,43 +157,34 @@ export function Header({
     setCustomStoryDisplay(false); //hides the current stroy options
   };
 
-  const sortedNodes =
-    cyState.cy !== null && cyState.cy.nodes("[type = 'activityNode']").sort((a, b) => a.id() - b.id()); //sorts nodes in oredr of ID
-
-  const idSelectOptions =
-    cyState.cy !== null &&
-    sortedNodes.map((node) => (
-      <option value={node.id()} key={node.id()}>
-        {node.id()}
-      </option>
-    ));
-
-  const optionsStyle = {
-    display: filterOptionsDisplay ? "block" : "none",
-  };
-  const storyStyle = {
-    display: storySectionDisplay ? "block" : "none",
-  };
-  const prStyle = {
-    display: prSectionDisplay ? "flex" : "none",
+  const resetFilter = (event) => {
+    setPrPeriod({ pr: null, undefined: true });
+    setCurrentStory(null);
+    setPrSectionDisplay(false); //hides open prperiod optons when filter optiosn is clicked
+    setStorySectionDisplay(false);
+    setCustomStory({ name: "", ids: [] });
   };
 
-  const resetStyle = {
-    display: prPeriod.pr === null && currentStory === null ? "none" : "inline-block",
+  const storyClickHandler = (event) => {
+    setCustomStoryDisplay(false);
+    //set stte to array of id inn that story
+    setCurrentStory({ ids: event.target.dataset.ids.split(",").map((i) => Number(i)), name: event.target.title });
   };
 
-  const addStoryButtonStyle = {
-    display: customStory.ids.length === 0 || customStory.name === "" ? "none" : "flex",
+  const storyOptions = stories.map((story, i) => (
+    <p
+      key={story.name}
+      title={story.name}
+      data-ids={story.ids}
+      style={selectedStoryStyle(story.name)}
+      onClick={storyClickHandler}
+    >
+      {i + 1}. {story.name}
+    </p>
+  ));
+  const optionHoverHandler = (event) => {
+    console.log(event.target.value);
   };
-
-  const customStoryStyle = () => {
-    if (currentStory === null && customStoryDisplay === true) {
-      return { display: "flex" };
-    } else {
-      return { display: "none" };
-    }
-  };
-
   const prRadio =
     datesRef.current !== null &&
     prOptions.map((opt, i) => (
@@ -190,6 +199,17 @@ export function Header({
           checked={prPeriod.pr !== null && prPeriod.pr - 1 === i} //check the current pr period
         ></input>
       </div>
+    ));
+
+  const sortedNodes =
+    cyState.cy !== null && cyState.cy.nodes("[type = 'activityNode']").sort((a, b) => a.id() - b.id()); //sorts nodes in oredr of ID
+
+  const idSelectOptions =
+    cyState.cy !== null &&
+    sortedNodes.map((node) => (
+      <option value={node.id()} key={node.id()} onMouseEnter={optionHoverHandler}>
+        {node.id()}
+      </option>
     ));
 
   return (
@@ -224,16 +244,6 @@ export function Header({
             Progress Report Period
             {prSectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
           </button>
-
-          <div className="prSelection" style={prStyle}>
-            {prRadio}
-            <button id="backButton" onClick={scrollHandler}>
-              <i className="fa fa-angles-left"></i>
-            </button>
-            <button id="forwardButton" onClick={scrollHandler}>
-              <i className="fa fa-angles-right"></i>
-            </button>
-          </div>
           <div className="undefinedCheck" style={prStyle}>
             <label htmlFor="prPeriod">Include Undefined</label>
             <input
@@ -244,6 +254,15 @@ export function Header({
               onChange={prClickHandler}
               defaultChecked={true}
             ></input>
+          </div>
+          <div className="prSelection" style={prStyle}>
+            {prRadio}
+            <button id="backButton" onClick={scrollHandler}>
+              <i className="fa fa-angles-left"></i>
+            </button>
+            <button id="forwardButton" onClick={scrollHandler}>
+              <i className="fa fa-angles-right"></i>
+            </button>
           </div>
         </div>
         <div style={optionsStyle}>
@@ -257,14 +276,14 @@ export function Header({
                 Custom Story
               </button>
             </div>
-            <div className="customStory" style={customStoryStyle()}>
-              <div className="customInput">
+            <div className="customStorySection" style={customStoryStyle()}>
+              <div className="customStoryInput">
                 <input id="customName" name="customStory" placeholder="story name" onKeyUp={addCustomStoryName}></input>
                 <button type="button" onClick={addCustomStoryName}>
                   <i className="fa-solid fa-plus"></i>
                 </button>
               </div>
-              <div className="customInput">
+              <div className="customStoryInput">
                 <select
                   id="customId"
                   name="customStory"
@@ -292,6 +311,7 @@ export function Header({
 
 export default Header;
 
+// converts dates to nice format
 function prStartAndEndDate(datesRef, prPeriod) {
   const pr = prPeriod.pr === null ? datesRef.current[datesRef.current.length - 1].prPeriod : prPeriod.pr;
   const prDates = datesRef.current.filter((date) => pr === date.prPeriod);
@@ -305,7 +325,6 @@ function prStartAndEndDate(datesRef, prPeriod) {
       year: "numeric",
     })
   );
-
   return {
     start: start,
     end: end,

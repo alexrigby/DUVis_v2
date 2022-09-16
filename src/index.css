@@ -49,3 +49,7 @@ button:active {
   z-index: 9999;
   pointer-events: none;
 }
+
+.activeButton {
+  background-color: #cfcfcf;
+}
