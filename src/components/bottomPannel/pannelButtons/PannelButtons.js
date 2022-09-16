@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import "./PannelButtons.css";
 
 export function PannelButtons({ selectedBottomVis, setSelectedBottomVis }) {
@@ -14,6 +15,14 @@ export function PannelButtons({ selectedBottomVis, setSelectedBottomVis }) {
     ) : (
       <i className="fa fa-angle-up"></i>
     );
+
+  // const buttonStyle = () => {
+  //   if (selectedBottomVis === "") {
+  //     return { position: "absolute" };
+  //   } else if (selectedBottomVis === "gantChartButton") {
+  //     return { position: "relative" };
+  //   }
+  // };
 
   const style = {
     position: selectedBottomVis !== "" ? "relative" : "absolute",
