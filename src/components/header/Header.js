@@ -84,6 +84,7 @@ export function Header({
     setCurrentStory(null);
     setPrSectionDisplay(false); //hides open prperiod optons when filter optiosn is clicked
     setStorySectionDisplay(false);
+    setCustomStory({ name: "", ids: [] });
   };
 
   //allows user to set pr period using the arrow buttons
@@ -103,15 +104,28 @@ export function Header({
   };
 
   const addCustomStoryName = (event) => {
-    event.keyCode === 13 && setCustomStory((prevState) => ({ ...prevState, name: event.target.value })); // key code 13 === 'enter'
+    if (event.target.type === "button") {
+      setCustomStory((prevState) => ({ ...prevState, name: document.getElementById("customName").value }));
+    } else {
+      event.keyCode === 13 && setCustomStory((prevState) => ({ ...prevState, name: event.target.value }));
+    } // key code 13 === 'enter'
   };
+
   const addCustomStoryId = (event) => {
-    event.keyCode === 13 &&
+    if (event.target.type === "button") {
       setCustomStory((prevState) => ({
         ...prevState,
-        ids: checkForDuplicateIds(event.target.value, prevState.ids),
+        ids: checkForDuplicateIds(document.getElementById("customId").value, prevState.ids),
       }));
+    } else {
+      event.keyCode === 13 &&
+        setCustomStory((prevState) => ({
+          ...prevState,
+          ids: checkForDuplicateIds(event.target.value, prevState.ids),
+        }));
+    }
   };
+
   const addCustomStoryToList = (event) => {
     setStories((prevState) => [...prevState, customStory]); //ads the new story to the list of stories
     setCustomStory({ name: "", ids: [] }); // resets the custom story to empty
@@ -139,6 +153,9 @@ export function Header({
     display: prPeriod.pr === null && currentStory === null ? "none" : "inline-block",
   };
 
+  const addStoryButtonStyle = {
+    display: customStory.ids.length === 0 || customStory.name === "" ? "none" : "flex",
+  };
   const prRadio =
     datesRef.current !== null &&
     prOptions.map((opt, i) => (
@@ -217,22 +234,39 @@ export function Header({
             {storyButtons}
             <div className="customStory">
               <label name="customStory">Custom Story</label>
-              <input
-                name="customStory"
-                placeholder="Custom Story 1"
-                defaultValue="Custom Story 1"
-                onKeyUp={addCustomStoryName}
-              ></input>
-              <select name="customStory" onKeyUp={addCustomStoryId} onKeyDown={(e) => e.preventDefault()}>
-                {/* <option value="" disabled selected style={{ color: "grey" }}>
-                  ID
-                </option> */}
-                {idSelectOptions}
-              </select>
+              <div className="customInput">
+                <input
+                  id="customName"
+                  name="customStory"
+                  placeholder="Custom Story 1"
+                  defaultValue="Custom Story 1"
+                  onKeyUp={addCustomStoryName}
+                ></input>
+                <button type="button" onClick={addCustomStoryName}>
+                  <i className="fa-solid fa-plus"></i>
+                </button>
+              </div>
+              <div className="customInput">
+                <select
+                  id="customId"
+                  name="customStory"
+                  onKeyUp={addCustomStoryId}
+                  onKeyDown={(e) => e.preventDefault()}
+                >
+                  {idSelectOptions}
+                </select>
+                <button type="button" onClick={addCustomStoryId}>
+                  <i className="fa-solid fa-plus"></i>
+                </button>
+              </div>
               <p>{customStory.name !== "" && customStory.name}</p>
+
               <p>{customStory.ids.length !== 0 && String(customStory.ids)}</p>
             </div>
-            <button onClick={addCustomStoryToList}> Add Story </button>
+            <button onClick={addCustomStoryToList} style={addStoryButtonStyle}>
+              {" "}
+              Add Story{" "}
+            </button>
           </div>
         </div>
       </div>

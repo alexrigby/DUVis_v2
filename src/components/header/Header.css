@@ -97,3 +97,13 @@ p {
   flex-direction: column;
   width: fit-content;
 }
+
+.customInput {
+  display: inline-block;
+  /* flex-direction: row; */
+}
+
+.customInput button {
+  margin: 2px;
+  padding: 4px;
+}
