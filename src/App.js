@@ -27,7 +27,7 @@ export function App() {
   //sets initial state for selected node
   const [selectedNode, setSelectedNode] = useState({ id: "" });
   const [prPeriod, setPrPeriod] = useState({ pr: null, undefined: true }); //sets state for pr period
-  const [storyIds, setStoryIds] = useState(null); //sets story ids state
+  const [currentStory, setCurrentStory] = useState(null); //sets story ids state
   const [activityEdgeDisplay, setActivityEdgeDisplay] = useState(false); //sets if wp edges or activity edges are displayed
   const [completedDisplay, setCompletedDisplay] = useState(false); //sets if nodes opacity is defined by completion status
 
@@ -44,7 +44,7 @@ export function App() {
         wpDataset,
         datesData,
         prPeriod,
-        storyIds,
+        currentStory,
         completedDisplay
       ); //combines parsing functions to make elements array
 
@@ -63,7 +63,7 @@ export function App() {
 
     addDataToCytoscape();
     // addCategoryIcon(cyState.cy);
-  }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, storyIds]);
+  }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory]);
 
   return (
     <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
@@ -80,8 +80,8 @@ export function App() {
           datesRef={datesRef}
           setPrPeriod={setPrPeriod}
           prPeriod={prPeriod}
-          setStoryIds={setStoryIds}
-          storyIds={storyIds}
+          setCurrentStory={setCurrentStory}
+          currentStory={currentStory}
           setActivityEdgeDisplay={setActivityEdgeDisplay}
           setCompletedDisplay={setCompletedDisplay}
         />

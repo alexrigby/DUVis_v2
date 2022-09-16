@@ -1,15 +1,15 @@
 import "./Header.css";
 import LAYOUTS from "../cytoscape/functions/cyLayouts";
 import STORIES from "../../configs/stories";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 export function Header({
   cyState,
   datesRef,
   setPrPeriod,
   prPeriod,
-  setStoryIds,
-  storyIds,
+  setCurrentStory,
+  currentStory,
   setActivityEdgeDisplay,
   setCompletedDisplay,
 }) {
@@ -17,14 +17,17 @@ export function Header({
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
   const [storySectionDisplay, setStorySectionDisplay] = useState(false);
 
+  const [stories, setStories] = useState(STORIES);
+  const [customStory, setCustomStory] = useState({ name: "", ids: [] });
+
   const storyClickHandler = (event) => {
     //set stte to array of id inn that story
-    setStoryIds({ ids: event.target.dataset.ids.split(",").map((i) => Number(i)), name: event.target.title });
+    setCurrentStory({ ids: event.target.dataset.ids.split(",").map((i) => Number(i)), name: event.target.title });
   };
 
   const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
 
-  const storyButtons = STORIES.map((story, i) => (
+  const storyButtons = stories.map((story, i) => (
     <p key={story.name} title={story.name} data-ids={story.ids} onClick={storyClickHandler}>
       {i + 1}. {story.name}
     </p>
@@ -78,7 +81,7 @@ export function Header({
 
   const resetFilter = (event) => {
     setPrPeriod({ pr: null, undefined: true });
-    setStoryIds(null);
+    setCurrentStory(null);
     setPrSectionDisplay(false); //hides open prperiod optons when filter optiosn is clicked
     setStorySectionDisplay(false);
   };
@@ -99,6 +102,29 @@ export function Header({
     }
   };
 
+  const addCustomStoryName = (event) => {
+    event.keyCode === 13 && setCustomStory((prevState) => ({ ...prevState, name: event.target.value })); // key code 13 === 'enter'
+  };
+  const addCustomStoryId = (event) => {
+    event.keyCode === 13 &&
+      setCustomStory((prevState) => ({
+        ...prevState,
+        ids: checkForDuplicateIds(event.target.value, prevState.ids),
+      }));
+  };
+  const addCustomStoryToList = (event) => {
+    setStories((prevState) => [...prevState, customStory]); //ads the new story to the list of stories
+    setCustomStory({ name: "", ids: [] }); // resets the custom story to empty
+  };
+
+  const idSelectOptions =
+    cyState.cy !== null &&
+    cyState.cy.nodes("[type = 'activityNode']").map((node) => (
+      <option value={node.id()} key={node.id()}>
+        {node.id()}
+      </option>
+    ));
+
   const optionsStyle = {
     display: filterOptionsDisplay ? "block" : "none",
   };
@@ -110,7 +136,7 @@ export function Header({
   };
 
   const resetStyle = {
-    display: prPeriod.pr === null && storyIds === null ? "none" : "inline-block",
+    display: prPeriod.pr === null && currentStory === null ? "none" : "inline-block",
   };
 
   const prRadio =
@@ -140,7 +166,7 @@ export function Header({
         </div>
       </div>
       <p className="subHeader">
-        {storyIds === null ? "All Activities" : storyIds.name}
+        {currentStory === null ? "All Activities" : currentStory.name}
         {" || "}
         {datesRef.current !== null && prStartAndEndDate(datesRef, prPeriod).start} -{" "}
         {datesRef.current !== null && prStartAndEndDate(datesRef, prPeriod).end}
@@ -189,6 +215,24 @@ export function Header({
           </button>
           <div className="storyButtons" style={storyStyle}>
             {storyButtons}
+            <div className="customStory">
+              <label name="customStory">Custom Story</label>
+              <input
+                name="customStory"
+                placeholder="Custom Story 1"
+                defaultValue="Custom Story 1"
+                onKeyUp={addCustomStoryName}
+              ></input>
+              <select name="customStory" onKeyUp={addCustomStoryId} onKeyDown={(e) => e.preventDefault()}>
+                {/* <option value="" disabled selected style={{ color: "grey" }}>
+                  ID
+                </option> */}
+                {idSelectOptions}
+              </select>
+              <p>{customStory.name !== "" && customStory.name}</p>
+              <p>{customStory.ids.length !== 0 && String(customStory.ids)}</p>
+            </div>
+            <button onClick={addCustomStoryToList}> Add Story </button>
           </div>
         </div>
       </div>
@@ -216,4 +260,17 @@ function prStartAndEndDate(datesRef, prPeriod) {
     start: start,
     end: end,
   };
+}
+
+//prevents 2 of the same ids being chosen
+function checkForDuplicateIds(newId, prevIds) {
+  if (prevIds.length === 0) {
+    return [newId];
+  } else {
+    if (prevIds.includes(newId)) {
+      return [...prevIds];
+    } else {
+      return [...prevIds, newId];
+    }
+  }
 }

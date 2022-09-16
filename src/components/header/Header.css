@@ -85,3 +85,15 @@ p {
 .activeButton {
   background-color: #cfcfcf;
 }
+
+.customStory label {
+  font-size: 10pt;
+  font-weight: 600;
+  opacity: 0.7;
+}
+
+.customStory {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
