@@ -52,7 +52,7 @@ export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBo
       },
       axis: 6,
     },
-    maxHeight: 580,
+    maxHeight: 500,
   };
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import SidePannel from "./components/sidePannel/SidePannel";
 import CytoscapeVis from "./components/cytoscape/CytoscapeVis";
 import Legend from "./components/legend/Legend";
 import BottomPannel from "./components/bottomPannel/BottomPannel";
+import FilterOptions from "./components/FilterOptions/FilterOptions";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
@@ -30,6 +31,8 @@ export function App() {
   const [currentStory, setCurrentStory] = useState(null); //sets story ids state
   const [activityEdgeDisplay, setActivityEdgeDisplay] = useState(false); //sets if wp edges or activity edges are displayed
   const [completedDisplay, setCompletedDisplay] = useState(false); //sets if nodes opacity is defined by completion status
+
+  const [selectedBottomVis, setSelectedBottomVis] = useState("");
 
   const gantchartData = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
@@ -78,14 +81,24 @@ export function App() {
         <Header
           cyState={cyState}
           datesRef={datesRef}
-          setPrPeriod={setPrPeriod}
           prPeriod={prPeriod}
-          setCurrentStory={setCurrentStory}
           currentStory={currentStory}
           setActivityEdgeDisplay={setActivityEdgeDisplay}
           setCompletedDisplay={setCompletedDisplay}
+          completedDisplay={completedDisplay}
+          selectedBottomVis={selectedBottomVis}
+          setSelectedBottomVis={setSelectedBottomVis}
+        />
+        <FilterOptions
+          cyState={cyState}
+          datesRef={datesRef}
+          prPeriod={prPeriod}
+          setPrPeriod={setPrPeriod}
+          currentStory={currentStory}
+          setCurrentStory={setCurrentStory}
         />
         <Legend cyState={cyState} />
+
         <BottomPannel
           gantchartData={gantchartData}
           cyState={cyState}
@@ -93,6 +106,7 @@ export function App() {
           actDataRef={actDataRef}
           datesRef={datesRef}
           prPeriod={prPeriod}
+          selectedBottomVis={selectedBottomVis}
         />
       </div>
       <CytoscapeVis cyState={cyState} setSelectedNode={setSelectedNode} activityEdgeDisplay={activityEdgeDisplay} />
