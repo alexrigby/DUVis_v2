@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import STORIES from "../../configs/stories";
 
 import "./FilterOptions.css";
@@ -10,9 +10,20 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
   const [customStoryDisplay, setCustomStoryDisplay] = useState(false);
 
   const [stories, setStories] = useState(STORIES);
-  const [customStory, setCustomStory] = useState({ name: "", ids: [] });
+  const [customStory, setCustomStory] = useState({ name: "", ids: [], custom: true });
+
+  const localStories = JSON.parse(window.localStorage.getItem("customStory"));
 
   const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
+
+  const storyNames = stories.map((story) => story.name);
+
+  //runs fist time component is loaded - checks for data in local storage and adds it to the stories state
+  useEffect(() => {
+    if (localStories !== null) {
+      setStories((prevState) => [...prevState, ...localStories]);
+    }
+  }, []);
 
   //FILTER OPTIONS DISPLAY CONTROLS /////////////
   const displayFilterOptions = (event) => {
@@ -44,7 +55,7 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
     display: filterOptionsDisplay ? "block" : "none",
   };
   const storyStyle = {
-    display: storySectionDisplay ? "block" : "none",
+    display: storySectionDisplay ? "contents" : "none",
   };
   const prStyle = {
     display: prSectionDisplay ? "flex" : "none",
@@ -72,6 +83,14 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
     }
   };
 
+  // if the story name has been input alread then input box is red
+  const customStoryNameStyle = (event) => {
+    if (storyNames.includes(event.target.value)) {
+      event.target.style.backgroundColor = "#f40000";
+    } else {
+      event.target.style.backgroundColor = "white";
+    }
+  };
   //STYLING //////////////////////
 
   const prClickHandler = (event) => {
@@ -106,10 +125,14 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
 
   const addCustomStoryName = (event) => {
     if (event.target.type === "button") {
-      setCustomStory((prevState) => ({ ...prevState, name: document.getElementById("customName").value }));
+      if (!storyNames.includes(document.getElementById("customName").value)) {
+        setCustomStory((prevState) => ({ ...prevState, name: document.getElementById("customName").value }));
+      }
     } else {
-      event.keyCode === 13 && setCustomStory((prevState) => ({ ...prevState, name: event.target.value }));
-    } // key code 13 === 'enter'
+      if (!storyNames.includes(event.target.value)) {
+        event.keyCode === 13 && setCustomStory((prevState) => ({ ...prevState, name: event.target.value }));
+      } // key code 13 === 'enter'
+    }
   };
 
   const addCustomStoryId = (event) => {
@@ -127,9 +150,15 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
     }
   };
 
+  //adds teh new story to the story state to update list and adds the story to local storage (so next time page is loaded the stories are added to state automatically)
   const addCustomStoryToList = (event) => {
-    setStories((prevState) => [...prevState, customStory]); //ads the new story to the list of stories
-    setCustomStory({ name: "", ids: [] }); // resets the custom story to empty
+    setStories((prevState) => [...prevState, customStory]); //adds the new story to the list of stories
+    if (localStories === null) {
+      window.localStorage.setItem("customStory", JSON.stringify([customStory]));
+    } else {
+      window.localStorage.setItem("customStory", JSON.stringify([...localStories, customStory]));
+    }
+    setCustomStory({ name: "", ids: [], custom: true }); // resets the custom story to empty
     setCustomStoryDisplay(false); //hides the current stroy options
   };
 
@@ -138,7 +167,7 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
     setCurrentStory(null);
     setPrSectionDisplay(false); //hides open prperiod optons when filter optiosn is clicked
     setStorySectionDisplay(false);
-    setCustomStory({ name: "", ids: [] });
+    setCustomStory({ name: "", ids: [], custom: true });
   };
 
   const storyClickHandler = (event) => {
@@ -147,20 +176,28 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
     setCurrentStory({ ids: event.target.dataset.ids.split(",").map((i) => Number(i)), name: event.target.title });
   };
 
-  const storyOptions = stories.map((story, i) => (
-    <p
-      key={story.name}
-      title={story.name}
-      data-ids={story.ids}
-      style={selectedStoryStyle(story.name)}
-      onClick={storyClickHandler}
-    >
-      {i + 1}. {story.name}
-    </p>
-  ));
-  const optionHoverHandler = (event) => {
-    console.log(event.target.value);
+  const deleteCustomStory = (event) => {
+    const newLocalArray = localStories.filter((story) => story.name !== event.target.dataset.storyname); // filter by storyname of deleted click
+    setStories([...STORIES, ...newLocalArray]); //reset story state to the new array of local storage and the default storys
+    setCurrentStory((prevState) => (prevState.name === event.target.dataset.storyname ? null : prevState)); // set current story to null so when story is deleted if it is selected
+    window.localStorage.setItem("customStory", JSON.stringify([...newLocalArray])); //set the new array minus deleted story to local storage
   };
+
+  const storyOptions = stories.map((story, i) => {
+    return (
+      <div key={story.name}>
+        <p title={story.name} data-ids={story.ids} style={selectedStoryStyle(story.name)} onClick={storyClickHandler}>
+          {i + 1}. {story.name}
+        </p>{" "}
+        <p>
+          {story.custom === true && (
+            <i onClick={deleteCustomStory} data-storyname={story.name} className="fa fa-trash"></i> // if it is a custom story then add delete icon to it
+          )}
+        </p>
+      </div>
+    );
+  });
+
   const prRadio =
     datesRef.current !== null &&
     prOptions.map((opt, i) => (
@@ -183,11 +220,10 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
   const idSelectOptions =
     cyState.cy !== null &&
     sortedNodes.map((node) => (
-      <option value={node.id()} key={node.id()} onMouseEnter={optionHoverHandler}>
+      <option value={node.id()} key={node.id()}>
         {node.id()}
       </option>
     ));
-  cyState.cy !== null && completedActivityInfo(prPeriod, cyState.cy, datesRef.current);
 
   return (
     <div className="filterOptions">
@@ -217,17 +253,6 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
               defaultChecked={true}
             ></input>
           </div>
-          {/* <div className="undefinedCheck">
-              <label htmlFor="prPeriod">Up To PR Period</label>
-              <input
-                type="checkBox"
-                id="undef"
-                name="prPeriod"
-                value="undef"
-                // onChange={prClickHandler}
-                defaultChecked={true}
-              ></input>
-            </div> */}
         </div>
         <div className="prSelection" style={prStyle}>
           {prRadio}
@@ -252,7 +277,14 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
           </div>
           <div className="customStorySection" style={customStoryStyle()}>
             <div className="customStoryInput">
-              <input id="customName" name="customStory" placeholder="story name" onKeyUp={addCustomStoryName}></input>
+              <input
+                autoComplete="off"
+                id="customName"
+                name="customStory"
+                placeholder="story name"
+                onChange={customStoryNameStyle}
+                onKeyUp={addCustomStoryName}
+              ></input>
               <button type="button" onClick={addCustomStoryName}>
                 <i className="fa-solid fa-plus"></i>
               </button>
@@ -293,29 +325,6 @@ function checkForDuplicateIds(newId, prevIds) {
       return [...prevIds];
     } else {
       return [...prevIds, newId];
-    }
-  }
-}
-
-function completedActivityInfo(prPeriod, cy, dates, co) {
-  const latestPrPeriod = dates[dates.length - 1].prPeriod;
-  if (co === "ongoing") {
-    if (prPeriod.pr === null) {
-      return cy !== null && cy.nodes(`[meta.endPrPeriod > "${latestPrPeriod}"]`).length;
-    } else {
-      return cy !== null && cy.nodes(`[meta.endPrPeriod > "${prPeriod.pr}"]`).length;
-    }
-  } else if (co === "completed") {
-    if (prPeriod.pr === null) {
-      return (
-        cy !== null &&
-        cy.nodes('[type ="activityNode"]').length - cy.nodes(`[meta.endPrPeriod > "${latestPrPeriod}"]`).length
-      );
-    } else {
-      return (
-        cy !== null &&
-        cy.nodes('[type ="activityNode"]').length - cy.nodes(`[meta.endPrPeriod > "${prPeriod.pr}"]`).length
-      );
     }
   }
 }
