@@ -179,7 +179,8 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
   const deleteCustomStory = (event) => {
     const newLocalArray = localStories.filter((story) => story.name !== event.target.dataset.storyname); // filter by storyname of deleted click
     setStories([...STORIES, ...newLocalArray]); //reset story state to the new array of local storage and the default storys
-    setCurrentStory((prevState) => (prevState.name === event.target.dataset.storyname ? null : prevState)); // set current story to null so when story is deleted if it is selected
+    currentStory !== null &&
+      setCurrentStory((prevState) => (prevState.name === event.target.dataset.storyname ? null : prevState)); // set current story to null so when story is deleted if it is selected
     window.localStorage.setItem("customStory", JSON.stringify([...newLocalArray])); //set the new array minus deleted story to local storage
   };
 
