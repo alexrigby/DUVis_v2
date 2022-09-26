@@ -1,5 +1,6 @@
 import "./Header.css";
 import LAYOUTS from "../cytoscape/functions/cyLayouts";
+import { useEffect } from "react";
 
 export function Header({
   cyState,
@@ -11,6 +12,8 @@ export function Header({
   completedDisplay,
   selectedBottomVis,
   setSelectedBottomVis,
+  setConnectionFlagsDisplay,
+  connectionFlagsDisplay,
 }) {
   // TOGGLE CONTROLS /////////////
   function changeLayout() {
@@ -25,6 +28,24 @@ export function Header({
     event.target.classList.toggle("activeButton");
     setActivityEdgeDisplay((prevState) => !prevState);
   };
+
+  const toggleConnectionFlags = (event) => {
+    event.target.classList.toggle("activeButton");
+    setConnectionFlagsDisplay((prevState) => !prevState);
+  };
+
+  // every time button is clicked the style of flagged activities is chnaged
+  useEffect(() => {
+    const nodeEdges = cyState.cy.nodes('[type = "activityNode"]').map((node) => node.connectedEdges().length);
+    const meanEdges = nodeEdges.reduce((a, b) => a + b, 0) / nodeEdges.length; //gets average edges per node
+    if (connectionFlagsDisplay === true) {
+      cyState.cy
+        .nodes('[type = "activityNode"]')
+        .map((node) => node.connectedEdges().length < meanEdges && node.addClass("lowConnections"));
+    } else {
+      cyState.cy.nodes('[type = "activityNode"]').removeClass("lowConnections");
+    }
+  }, [connectionFlagsDisplay, cyState.cy]);
 
   const toggleBottomPannelDisplay = (event) => {
     const target = event.currentTarget.id;
@@ -66,6 +87,9 @@ export function Header({
             <button onClick={changeLayout}>Change Layout </button>
             <button onClick={toggleEdges}>Toggle Connections</button>
             <button onClick={toggleCompleted}>Toggle Completed </button>
+            <button title="flag activities with less than mean number of connections" onClick={toggleConnectionFlags}>
+              Toggle Connection Flags
+            </button>
           </div>
           <div className="bottomPannelButtons">
             <button id="gantChartButton" onClick={toggleBottomPannelDisplay} style={ganttButtonstyle}>

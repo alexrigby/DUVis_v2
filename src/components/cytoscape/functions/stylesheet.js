@@ -64,6 +64,14 @@ export function stylesheet(activityEdgeDisplay) {
       },
     },
     {
+      selector: ".lowConnections",
+      style: {
+        // label: "data(flag)",
+        color: "red",
+        "font-weight": 900,
+      },
+    },
+    {
       selector: ".connectedEdge",
       style: {
         "line-color": "red",

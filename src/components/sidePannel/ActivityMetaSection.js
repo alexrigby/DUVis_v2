@@ -1,5 +1,6 @@
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import hilightOnLiHover from "./functions/hilightOnLiHover";
+import { useEffect, useRef } from "react";
 
 export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, datesRef, prPeriod }) {
   const meta = selectedNode.meta;
@@ -18,6 +19,32 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
       }
     } else {
       return { color: selectedNode.meta.endPrPeriod <= prPeriod.pr ? "#39ff14" : "#ffbf00" };
+    }
+  }
+
+  const flagTextStyle = {
+    color: "#FFBF00",
+    opacity: "0.7",
+  };
+
+  const datesStyle = {
+    opacity: 0.7,
+  };
+
+  function flagText() {
+    if (selectedNode !== null) {
+      const allNodeEdges = cyState.cy.nodes('[type = "activityNode"]').map((node) => node.connectedEdges().length);
+      const meanEdges = allNodeEdges.reduce((a, b) => a + b, 0) / allNodeEdges.length; //gets average edges per node
+      const nodeEdges = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).connectedEdges();
+      if (nodeEdges.length < meanEdges) {
+        return (
+          <p>
+            1. <span style={flagTextStyle}>Less than the mean number of connections</span>
+          </p>
+        );
+      } else {
+        return <p style={{ color: "green", opacity: "0.8" }}>none</p>;
+      }
     }
   }
 
@@ -60,9 +87,18 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
           {/* {meta["Activity Status"]} */}
           {completedText()}
         </p>
-        <h2>Start-End Months:</h2>
+        <h2>Flags:</h2>
+        {flagText()}
+        <h2>Start - End:</h2>
         <p>
-          {meta["Start Month"]}-{meta["End Month/ Ongoing"]}
+          <span style={datesStyle}> Date: </span> {shortDates(meta, "start")} - {shortDates(meta, "end")}
+        </p>
+        <p>
+          <span style={datesStyle}> Months: </span> {meta["Start Month"]} - {meta["End Month/ Ongoing"]}
+        </p>
+        <p>
+          <span style={datesStyle}> PR Period: </span> {meta.startPrPeriod} -{" "}
+          {meta.endPrPeriod === "onGoing" ? "Ongoing" : meta.endPrPeriod}
         </p>
         <h2> Category:</h2> <p>{meta["Activity Category"]}</p>
         <h2> Researcher:</h2> <p>{meta.Name}</p>
@@ -116,8 +152,24 @@ function researchQuestionType(meta) {
   } else {
     return (
       <p>
-        {meta["Research Question type"]} & {meta["Research Question type 2"]}
+        {meta["Research Question type"]} + {meta["Research Question type 2"]}
       </p>
     );
+  }
+}
+
+function shortDates(node, se) {
+  if (se === "end") {
+    if (node.endDate === "onGoing" || node.endDate === "undefined") {
+      return "Ongoing";
+    } else {
+      return new Date(node.endDate).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+    }
+  } else if (se === "start") {
+    if (node.startDate === "undefined") {
+      return "undefined";
+    } else {
+      return new Date(node.startDate).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+    }
   }
 }

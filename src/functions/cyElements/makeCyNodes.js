@@ -13,6 +13,7 @@ export function makeCyNodes(data, prPeriod, completedDisplay, latestPrPeriod) {
         size: 1,
         parent: `wp${data[i].WP}`,
         id: data[i].ID,
+        // flag: data[i].ID + `*`, //so I can style flagged data
         label: "node",
         name: data[i]["Activity Name"],
         category: data[i]["Activity Category"],
@@ -24,6 +25,7 @@ export function makeCyNodes(data, prPeriod, completedDisplay, latestPrPeriod) {
     };
     cyNodes.push(nodeOps);
   }
+
   return cyNodes;
 }
 

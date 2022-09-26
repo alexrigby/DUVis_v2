@@ -31,6 +31,7 @@ export function App() {
   const [currentStory, setCurrentStory] = useState(null); //sets story ids state
   const [activityEdgeDisplay, setActivityEdgeDisplay] = useState(false); //sets if wp edges or activity edges are displayed
   const [completedDisplay, setCompletedDisplay] = useState(false); //sets if nodes opacity is defined by completion status
+  const [connectionFlagsDisplay, setConnectionFlagsDisplay] = useState(false);
 
   const [selectedBottomVis, setSelectedBottomVis] = useState("");
 
@@ -88,6 +89,8 @@ export function App() {
           completedDisplay={completedDisplay}
           selectedBottomVis={selectedBottomVis}
           setSelectedBottomVis={setSelectedBottomVis}
+          setConnectionFlagsDisplay={setConnectionFlagsDisplay}
+          connectionFlagsDisplay={connectionFlagsDisplay}
         />
         <FilterOptions
           cyState={cyState}
