@@ -275,6 +275,10 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
             <button className="customStoryButton" onClick={displayCustomStoryOptions}>
               Custom Story
             </button>
+            <a href={"data:text/csv;charset=utf-8," + escape(convertToCSV(stories))} download="stories">
+              {/* allows stories to be downloaded as csv*/}
+              <button className="customStoryButton">Export Stories</button>
+            </a>
           </div>
           <div className="customStorySection" style={customStoryStyle()}>
             <div className="customStoryInput">
@@ -329,3 +333,13 @@ function checkForDuplicateIds(newId, prevIds) {
     }
   }
 }
+
+const convertToCSV = (data) => {
+  // Convert dataset to TSV and print
+  const headers = Object.keys(data[0]);
+  const csv = [headers.join(","), ...data.map((row) => headers.map((fieldName) => row[fieldName]).join(","))].join(
+    "\r\n"
+  );
+
+  return csv;
+};
