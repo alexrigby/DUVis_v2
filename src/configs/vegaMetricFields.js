@@ -1,10 +1,12 @@
+import { metaFields } from "./metaFields";
+
 export const vegaMetricFields = [
-  "Activity Category",
-  "Research Question type",
-  "Methodology category",
-  "Data Procurement Method",
-  "PDCA Cycle",
-  "Discipline",
+  metaFields.CATEGORY,
+  metaFields.QTYPE,
+  metaFields.METHODCATEGORY,
+  metaFields.DATAMETHOD,
+  metaFields.PDCA,
+  metaFields.DISCIPLINE,
 ];
 
 export default vegaMetricFields;

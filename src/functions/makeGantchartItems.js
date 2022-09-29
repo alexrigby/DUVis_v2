@@ -1,5 +1,6 @@
 import COLORS from "../configs/wpColors";
 import activityOpacity from "./activityOpacity";
+import { metaFields } from "../configs/metaFields";
 
 export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, latestPrPeriod) {
   const groups = wpData.map((wp) => ({
@@ -13,12 +14,12 @@ export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, l
   const items = actData.map((act) => ({
     group: `wp${act.WP}`,
     id: act.ID,
-    content: `${act.ID}. ${act["Activity Name"]}`,
+    content: `${act.ID}. ${act[metaFields.ACTIVITY]}`,
     start: new Date(handleNonDates(act.startDate, "start")).getTime(),
     end: new Date(handleNonDates(act.endDate, "end")).getTime(), //if the end date is not a date value then return last date of project
-    title: act["Activity Name"],
+    title: act[metaFields.ACTIVITY],
     className: `item${act.ID}`,
-    sMonth: act["Start Month"],
+    sMonth: act[metaFields.STARTM],
     style: `${classActivitiesbyID(act.WP)}; color: white; opacity: ${activityOpacity(
       act,
       completedDisplay,
