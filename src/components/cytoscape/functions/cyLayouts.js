@@ -20,12 +20,14 @@ export const LAYOUTS = {
     idealEdgeLength: function (edge) {
       return 300;
     },
+    edgeElasticity: (edge) => 0.1,
     randomize: false,
     fit: true,
-    gravity: 3,
-    numIter: 100000,
-    initialTemp: 1000,
-    coolingFactor: 0.99,
+    gravity: 4,
+    gravityCompound: 5.0,
+    // numIter: 100000,
+    // initialTemp: 1000,
+    // coolingFactor: 0.99,
     // nestingFactor: 0.3, //seems to make each wp more indipendant i.e. larger nodes float further away from center of graph
   },
   //run when chnage layout button is clicked, creates more 'drastic' layout chnage
@@ -39,12 +41,14 @@ export const LAYOUTS = {
     idealEdgeLength: function (edge) {
       return 300;
     },
+    edgeElasticity: (edge) => 0.1,
     randomize: true,
     fit: true,
     gravity: 3,
-    numIter: 100000,
-    initialTemp: 1000,
-    coolingFactor: 0.99,
+    gravityCompound: 5.0,
+    // numIter: 100000,
+    // initialTemp: 1000,
+    // coolingFactor: 0.99,
     // nestingFactor: 0.3,
   },
 };
