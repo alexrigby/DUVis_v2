@@ -1,25 +1,33 @@
 import COLORS from "../configs/wpColors";
 import activityOpacity from "./activityOpacity";
-import { metaFields } from "../configs/metaFields";
+import { actFields, wpFields } from "../data";
 
-export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, latestPrPeriod) {
+export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, latestPrPeriod, convertedDates) {
+  function handleNonDates(date, startOrEnd) {
+    if (date === "onGoing" || date === "undefined") {
+      return startOrEnd === "start" ? convertedDates[0].date : convertedDates[convertedDates.length - 1].date;
+    } else {
+      return date;
+    }
+  }
+
   const groups = wpData.map((wp) => ({
-    id: wp.id,
-    content: wp.id,
-    name: wp.name,
-    category: wp.category,
-    style: `${classActivitiesbyID(wp.id.slice(2))}; color: white`,
+    id: wp[wpFields.ID],
+    content: wp[wpFields.ID],
+    name: wp[wpFields.NAME],
+    category: wp[wpFields.CATEGORY],
+    style: `${classActivitiesbyID(wp[wpFields.ID].slice(2))}; color: white`,
   }));
 
   const items = actData.map((act) => ({
-    group: `wp${act.WP}`,
-    id: act.ID,
-    content: `${act.ID}. ${act[metaFields.ACTIVITY]}`,
+    group: `wp${act[actFields.WP]}`,
+    id: act[actFields.ID],
+    content: `${act[actFields.ID]}. ${act[actFields.ACTIVITY]}`,
     start: new Date(handleNonDates(act.startDate, "start")).getTime(),
     end: new Date(handleNonDates(act.endDate, "end")).getTime(), //if the end date is not a date value then return last date of project
-    title: act[metaFields.ACTIVITY],
+    title: act[actFields.ACTIVITY],
     className: `item${act.ID}`,
-    sMonth: act[metaFields.STARTM],
+    sMonth: act[actFields.STARTM],
     style: `${classActivitiesbyID(act.WP)}; color: white; opacity: ${activityOpacity(
       act,
       completedDisplay,
@@ -50,14 +58,6 @@ function classActivitiesbyID(wp) {
     return `background-color: ${COLORS.bg.wp8}; border-color: ${COLORS.border.wp8}`;
   } else {
     return `background-color: ${COLORS.bg.other}; border-color: ${COLORS.border.other}`;
-  }
-}
-
-function handleNonDates(date, startOrEnd) {
-  if (date === "onGoing" || date === "undefined") {
-    return startOrEnd === "start" ? "2016-09-01" : "2023-03-01";
-  } else {
-    return date;
   }
 }
 

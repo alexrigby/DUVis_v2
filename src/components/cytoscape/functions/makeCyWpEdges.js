@@ -1,15 +1,17 @@
+import { wpFields } from "../../../data";
+
 export function makeCyWpEdges(cy, wpData) {
   // loops over all WPs and returns an array of targets of the outgoing edges from that WP
   const wpTargetNodes = [];
   for (let i = 0; i < wpData.length; i++) {
-    var targetNodes = getOutgoingEdgeTargets(cy, wpData[i].id);
-    wpTargetNodes[wpData[i].id] = targetNodes;
+    var targetNodes = getOutgoingEdgeTargets(cy, wpData[i][wpFields.ID]);
+    wpTargetNodes[wpData[i][wpFields.ID]] = targetNodes;
   }
 
   const wpActIds = [];
   for (let i = 0; i < wpData.length; i++) {
-    var d = getWpChildren(cy, wpData[i].id);
-    wpActIds[wpData[i].id] = d;
+    var d = getWpChildren(cy, wpData[i][wpFields.ID]);
+    wpActIds[wpData[i][wpFields.ID]] = d;
   }
 
   //Finds all connections between workpackages and returns a weighted edge
@@ -21,14 +23,14 @@ export function makeCyWpEdges(cy, wpData) {
         group: "edges",
         classes: "wpEdge",
         data: {
-          id: `${wpData[i].id}${wpData[j].id}`,
-          source: `${wpData[i].id}`,
-          target: `${wpData[j].id}`,
+          id: `${wpData[i][wpFields.ID]}${wpData[j][wpFields.ID]}`,
+          source: `${wpData[i][wpFields.ID]}`,
+          target: `${wpData[j][wpFields.ID]}`,
           weight: wpConectionWeight(
-            wpTargetNodes[`${wpData[i].id}`],
-            wpActIds[`${wpData[j].id}`],
-            wpTargetNodes[`${wpData[j].id}`],
-            wpActIds[`${wpData[i].id}`]
+            wpTargetNodes[`${wpData[i][wpFields.ID]}`],
+            wpActIds[`${wpData[j][wpFields.ID]}`],
+            wpTargetNodes[`${wpData[j][wpFields.ID]}`],
+            wpActIds[`${wpData[i][wpFields.ID]}`]
           ),
           type: "wpEdge",
         },

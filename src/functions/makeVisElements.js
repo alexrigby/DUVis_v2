@@ -46,7 +46,14 @@ export async function makeVisElements(
   const trimmedData = trimData(activityData, prPeriod, storyIds);
   const trimmedWpData = wpData.filter((wp) => [...new Set(trimmedData.map((act) => act.WP))].includes(wp.id.slice(2)));
 
-  const gantChartItems = makeGantchartItems(trimmedData, trimmedWpData, prPeriod, completedDisplay, latestPrPeriod);
+  const gantChartItems = makeGantchartItems(
+    trimmedData,
+    trimmedWpData,
+    prPeriod,
+    completedDisplay,
+    latestPrPeriod,
+    convertedDates
+  );
 
   const nodes = makeCyNodes(trimmedData, prPeriod, completedDisplay, latestPrPeriod);
 

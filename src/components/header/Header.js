@@ -121,6 +121,7 @@ function prStartAndEndDate(datesRef, prPeriod) {
       year: "numeric",
     })
   );
+
   return {
     start: start,
     end: end,

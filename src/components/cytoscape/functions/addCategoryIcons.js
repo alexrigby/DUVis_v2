@@ -1,7 +1,7 @@
 import nodeHtmlLabel from "../../../../node_modules/cytoscape-node-html-label/dist/cytoscape-node-html-label.js";
 import cytoscape from "cytoscape";
 import { renderToString } from "react-dom/server";
-import { metaFields } from "../../../configs/metaFields.js";
+import { actFields } from "../../../data/index.js";
 import React from "react";
 
 import iconByCategory from "./iconByCategory";
@@ -24,7 +24,7 @@ export function addCategoryIcon(cy) {
       tpl(data) {
         return renderToString(
           <div className="categoryIcon" style={styleActivitiesByWP(data.parent)} value={data.id}>
-            {iconByCategory(data.meta[metaFields.CATEGORY])}
+            {iconByCategory(data.meta[actFields.CATEGORY])}
           </div>
         );
       },

@@ -1,7 +1,7 @@
 //creats a Node object for each activity
 
 import activityOpacity from "../activityOpacity";
-import { metaFields } from "../../configs/metaFields";
+import { actFields } from "../../data";
 
 export function makeCyNodes(data, prPeriod, completedDisplay, latestPrPeriod) {
   const cyNodes = [];
@@ -12,12 +12,12 @@ export function makeCyNodes(data, prPeriod, completedDisplay, latestPrPeriod) {
       data: {
         type: "activityNode",
         size: 1,
-        parent: `wp${data[i][metaFields.WP]}`,
-        id: data[i][metaFields.ID],
+        parent: `wp${data[i][actFields.WP]}`,
+        id: data[i][actFields.ID],
         // flag: data[i].ID + `*`, //so I can style flagged data
         label: "node",
-        name: data[i][metaFields.ACTIVITY],
-        category: data[i][metaFields.CATEGORY],
+        name: data[i][actFields.ACTIVITY],
+        category: data[i][actFields.CATEGORY],
         opacity: activityOpacity(data[i], completedDisplay, latestPrPeriod, prPeriod),
         meta: {
           ...data[i],

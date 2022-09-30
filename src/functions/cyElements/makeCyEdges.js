@@ -1,5 +1,4 @@
 export function makeCyEdges(links, nodes) {
-  // TO EXPENCIVE AND SLOW!!!!
   //creats array of node in selection
   const nodeId = nodes.map((node) => parseFloat(node.data.id));
   //extractso only the link data for present nodes

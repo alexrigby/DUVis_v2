@@ -1,6 +1,16 @@
 import vegaMetricFields from "../../../../configs/vegaMetricFields";
 
 export function parseVegaData(actData, dates, brushRange, selectedMetric) {
+  function handleNonDates(date, startOrEnd) {
+    if (date === "onGoing" || date === "undefined") {
+      return startOrEnd === "start"
+        ? new Date(dates[0].date).getTime()
+        : new Date(dates[dates.length - 1].date).getTime();
+    } else {
+      return new Date(date).getTime();
+    }
+  }
+
   //handles dates "onGoing" and "undefined"
   var numericDate = actData.map((act) => ({
     ...act,
@@ -16,6 +26,8 @@ export function parseVegaData(actData, dates, brushRange, selectedMetric) {
       }
     }
   }
+
+  console.log(dates);
 
   //unique category names
   const options = [...new Set(numericDate.map((act) => act[selectedMetric]))];
@@ -59,11 +71,3 @@ export function parseVegaData(actData, dates, brushRange, selectedMetric) {
 }
 
 export default parseVegaData;
-
-function handleNonDates(date, startOrEnd) {
-  if (date === "onGoing" || date === "undefined") {
-    return startOrEnd === "start" ? new Date("2016-09-01").getTime() : new Date("2023-02-01").getTime();
-  } else {
-    return new Date(date).getTime();
-  }
-}

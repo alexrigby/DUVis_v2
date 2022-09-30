@@ -11,6 +11,7 @@ export function Legend({ cyState }) {
   useEffect(() => {
     // gets all WPS  and descriptions present in cy graph
     const wps = cyState.cy.nodes("[type = 'wp']").map((wp) => wp.data());
+
     // returns unique array of activity categorys
     const categorys = [
       ...new Set(cyState.cy.nodes("[type = 'activityNode']").map((act) => act.data().meta["Activity Category"])),

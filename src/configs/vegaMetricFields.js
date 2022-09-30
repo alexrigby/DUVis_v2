@@ -1,12 +1,12 @@
-import { metaFields } from "./metaFields";
+import { actFields } from "../data";
 
 export const vegaMetricFields = [
-  metaFields.CATEGORY,
-  metaFields.QTYPE,
-  metaFields.METHODCATEGORY,
-  metaFields.DATAMETHOD,
-  metaFields.PDCA,
-  metaFields.DISCIPLINE,
+  actFields.CATEGORY,
+  actFields.QTYPE,
+  actFields.METHODCATEGORY,
+  actFields.DATAMETHOD,
+  actFields.PDCA,
+  actFields.DISCIPLINE,
 ];
 
 export default vegaMetricFields;

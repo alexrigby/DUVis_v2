@@ -1,6 +1,6 @@
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import hilightOnLiHover from "./functions/hilightOnLiHover";
-import { metaFields } from "../../configs/metaFields";
+import { actFields } from "../../data";
 
 export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, datesRef, prPeriod }) {
   const meta = selectedNode.meta;
@@ -75,7 +75,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
     <div>
       <div className="metaSection">
         <h1>
-          {meta.ID}. {meta[metaFields.ACTIVITY]}
+          {meta.ID}. {meta[actFields.ACTIVITY]}
         </h1>
         <h1
           onClick={() => nodeNavigationHandler(selectedNode.parent, setSelectedNode, cyState)}
@@ -94,47 +94,47 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
           <span style={datesStyle}> Date: </span> {shortDates(meta, "start")} - {shortDates(meta, "end")}
         </p>
         <p>
-          <span style={datesStyle}> Months: </span> {meta[metaFields.STARTM]} - {meta[metaFields.ENDM]}
+          <span style={datesStyle}> Months: </span> {meta[actFields.STARTM]} - {meta[actFields.ENDM]}
         </p>
         <p>
           <span style={datesStyle}> PR Period: </span> {meta.startPrPeriod} -{" "}
           {meta.endPrPeriod === "onGoing" ? "Ongoing" : meta.endPrPeriod}
         </p>
-        <h2> Category:</h2> <p>{meta[metaFields.CATEGORY]}</p>
-        <h2> Researcher:</h2> <p>{meta[metaFields.Name]}</p>
-        <h2> End Users: </h2> <p>{meta[metaFields.ENDUSER]}</p>
-        <h2> PDCA Cycle: </h2> <p>{meta[metaFields.PDCA]}</p>
-        <h2> Contribution to DU: </h2> <p>{meta[metaFields.PROJECTCONTRIBUTION]}</p>
+        <h2> Category:</h2> <p>{meta[actFields.CATEGORY]}</p>
+        <h2> Researcher:</h2> <p>{meta[actFields.Name]}</p>
+        <h2> End Users: </h2> <p>{meta[actFields.ENDUSER]}</p>
+        <h2> PDCA Cycle: </h2> <p>{meta[actFields.PDCA]}</p>
+        <h2> Contribution to DU: </h2> <p>{meta[actFields.PROJECTCONTRIBUTION]}</p>
       </div>
       <div className="metaSection">
-        <h1>DESCRIPTION: </h1> <p>{meta[metaFields.DESCRIPTION]}</p>
+        <h1>DESCRIPTION: </h1> <p>{meta[actFields.DESCRIPTION]}</p>
       </div>
       <div className="metaSection">
         <h1>RESEARCH: </h1>
         <h2>Question Type:</h2> {researchQuestionType(meta)}
-        <h2>Question:</h2> <p> {meta[metaFields.QUESTION]} </p>
+        <h2>Question:</h2> <p> {meta[actFields.QUESTION]} </p>
       </div>
       <div className="metaSection">
         <h1>METHODOLOGY:</h1>
-        <h2>Category:</h2> <p>{meta[metaFields.CATEGORY]}</p>
-        <h2>Methodology: </h2> <p>{meta[metaFields.METHOD]} </p>
+        <h2>Category:</h2> <p>{meta[actFields.CATEGORY]}</p>
+        <h2>Methodology: </h2> <p>{meta[actFields.METHOD]} </p>
       </div>
       <div className="metaSection">
         <h1>DATA: </h1>
-        <h2>Procurement Method: </h2> <p>{meta[metaFields.DATAMETHOD]} </p>
-        <h2>Type:</h2> <p>{meta[metaFields.DATATYPE]}</p>
-        <h2>Usage:</h2> <p>{meta[metaFields.DATAUSAGE]}</p>
+        <h2>Procurement Method: </h2> <p>{meta[actFields.DATAMETHOD]} </p>
+        <h2>Type:</h2> <p>{meta[actFields.DATATYPE]}</p>
+        <h2>Usage:</h2> <p>{meta[actFields.DATAUSAGE]}</p>
       </div>
       <div className="metaSection">
         <h1>DISCIPLINE: </h1>
-        <h2>Category: </h2> <p>{meta[metaFields.CATEGORY]}</p>
-        <h2>Specific Perspective:</h2> <p>{meta[metaFields.PERSPECTIVES]}</p>
-        <h2>Transdisciplinary Perspectives:</h2> <p>{meta[metaFields.TDPERSPECTIVE]}</p>
+        <h2>Category: </h2> <p>{meta[actFields.CATEGORY]}</p>
+        <h2>Specific Perspective:</h2> <p>{meta[actFields.PERSPECTIVES]}</p>
+        <h2>Transdisciplinary Perspectives:</h2> <p>{meta[actFields.TDPERSPECTIVE]}</p>
       </div>
       <div className="metaSection">
         <h1>IERLAND WATER: </h1>
-        <h2>Aims and Objectives: </h2> <p>{meta[metaFields.IW]}</p>
-        <h2>Contribution:</h2> <p>{meta[metaFields.IWCONTRIBUTION]}</p>
+        <h2>Aims and Objectives: </h2> <p>{meta[actFields.IW]}</p>
+        <h2>Contribution:</h2> <p>{meta[actFields.IWCONTRIBUTION]}</p>
       </div>
       <div className="metaSection">
         <h1>LINKED ACTIVITIES: </h1>
@@ -147,12 +147,12 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
 export default ActivityMetaSection;
 
 function researchQuestionType(meta) {
-  if (meta[metaFields.QTYPE2] === "") {
-    return <p>{meta[metaFields.QTYPE]}</p>;
+  if (meta[actFields.QTYPE2] === "") {
+    return <p>{meta[actFields.QTYPE]}</p>;
   } else {
     return (
       <p>
-        {meta[metaFields.QTYPE]} + {meta[metaFields.QTYPE2]}
+        {meta[actFields.QTYPE]} + {meta[actFields.QTYPE2]}
       </p>
     );
   }

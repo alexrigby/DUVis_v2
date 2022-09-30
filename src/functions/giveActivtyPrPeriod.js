@@ -1,19 +1,19 @@
-import { metaFields } from "../configs/metaFields";
+import { actFields } from "../data";
 
 export function giveActivityPrPeriod(act, dates, se) {
   if (se === "start") {
-    if (act[metaFields.STARTM] === "") {
+    if (act[actFields.STARTM] === "") {
       return "undefined";
     } else {
-      return dates.filter((d) => d.month === act[metaFields.STARTM])[0].prPeriod;
+      return dates.filter((d) => d.month === act[actFields.STARTM])[0].prPeriod;
     }
   } else if (se === "end") {
-    if (act[metaFields.ENDM] === "Ongoing") {
+    if (act[actFields.ENDM] === "Ongoing") {
       return "onGoing";
-    } else if (act[metaFields.ENDM] === "") {
+    } else if (act[actFields.ENDM] === "") {
       return "undefined";
     } else {
-      return dates.filter((d) => d.month === act[metaFields.ENDM])[0].prPeriod;
+      return dates.filter((d) => d.month === act[actFields.ENDM])[0].prPeriod;
     }
   }
 }

@@ -1,4 +1,4 @@
-export const metaFields = {
+export const actFields = {
   ID: "ID",
   RESEARCHER: "Name",
   WP: "WP",
@@ -41,4 +41,11 @@ export const metaFields = {
   CONTRIBUTIONFIELD: "Fields of Scientific Contribution",
   IW: "IW Aims and Objectives",
   IWCONTRIBUTION: "Contributions to IW aims and objectives",
+};
+
+export const wpFields = {
+  ID: "id",
+  NAME: "name",
+  CATEGORY: "category",
+  PLATFORM: "platform",
 };
