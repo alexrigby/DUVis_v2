@@ -88,7 +88,7 @@ export function Header({
             <button onClick={toggleEdges}>Toggle Connections</button>
             <button onClick={toggleCompleted}>Toggle Completed </button>
             <button title="flag activities with less than mean number of connections" onClick={toggleConnectionFlags}>
-              Toggle Connection Flags
+              Mean Connection Flag
             </button>
           </div>
           <div className="bottomPannelButtons">

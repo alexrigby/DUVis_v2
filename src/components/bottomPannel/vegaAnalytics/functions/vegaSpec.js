@@ -8,21 +8,6 @@ export function vegaSpec(options, brushRange, selectedMetric) {
     padding: 20,
     data: { name: "vegaData" },
     tooltip: true,
-
-    params: [
-      // {
-      //   name: "legendSelect",
-      //   select: { type: "point", fields: [selectedMetric] },
-      //   bind: "legend",
-      // },
-      // {
-      //   name: "brush",
-      //   select: {
-      //     type: "interval",
-      //     encodings: ["x"],
-      //   },
-      // },
-    ],
     vconcat: [
       {
         title: `${selectedMetric} per Month`,
@@ -74,8 +59,7 @@ export function vegaSpec(options, brushRange, selectedMetric) {
                 axis: { title: "", tickMinStep: 1 },
                 scale: { domainMin: 0.075 }, // hides 0 values from the graph
               },
-              scale: { domain: { param: "brush" } },
-
+              // scale: { domain: { param: "brush" } }, // somehow works without this csale
               color: {
                 // condition: {
                 //   test: `datum['${selectedMetric}'] === '0'`,
@@ -152,7 +136,6 @@ export function vegaSpec(options, brushRange, selectedMetric) {
       },
     },
   };
-
   return spec;
 }
 
