@@ -27,8 +27,6 @@ export function parseVegaData(actData, dates, brushRange, selectedMetric) {
     }
   }
 
-  console.log(dates);
-
   //unique category names
   const options = [...new Set(numericDate.map((act) => act[selectedMetric]))];
 

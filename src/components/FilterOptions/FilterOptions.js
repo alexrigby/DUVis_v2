@@ -18,6 +18,9 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
 
   const storyNames = stories.map((story) => story.name);
 
+  const currentPr = findCurrentPrperiod(prOptions, datesRef);
+  const maxPr = prOptions[prOptions.length - 1];
+
   //runs fist time component is loaded - checks for data in local storage and adds it to the stories state
   useEffect(() => {
     if (localStories !== null) {
@@ -44,7 +47,7 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
     setPrSectionDisplay((prevState) => !prevState);
     setPrPeriod((prevState) => ({
       ...prevState,
-      pr: prevState.pr === null ? prOptions.length : null,
+      pr: prevState.pr === null ? currentPr : null,
     }));
     //resets proptons when button is clicked
   };
@@ -113,7 +116,7 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
     if (event.currentTarget.id === "forwardButton") {
       setPrPeriod((prevState) => ({
         ...prevState,
-        pr: prevState.pr >= 13 ? 13 : prevState.pr + 1,
+        pr: prevState.pr >= maxPr ? maxPr : prevState.pr + 1,
       }));
     } else if (event.currentTarget.id === "backButton") {
       setPrPeriod((prevState) => ({
@@ -199,11 +202,18 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
     );
   });
 
+  //colors current PR period in red
+  const radioLableStyle = (i) => {
+    return { color: currentPr === i + 1 ? "red" : "balck" };
+  };
+
   const prRadio =
     datesRef.current !== null &&
     prOptions.map((opt, i) => (
       <div className="radioGroup" key={opt}>
-        <label htmlFor="prPeriod">{opt}</label>
+        <label htmlFor="prPeriod" style={radioLableStyle(i)}>
+          {opt}
+        </label>
         <input
           type="radio"
           id={opt}
@@ -343,3 +353,22 @@ const convertToCSV = (data) => {
 
   return csv;
 };
+
+function findCurrentPrperiod(prOptions, datesRef) {
+  const pr = [];
+  //splits up dates into prperiods
+  for (let i = 0; i < prOptions.length; i++) {
+    pr.push(datesRef.current.filter((d) => d.prPeriod === prOptions[i]));
+  }
+  //checks in=f todays date is between start and end dates of each pr period and returns pr period
+  var currentPr = {};
+  for (let i = 0; i < pr.length; i++) {
+    if (
+      new Date().getTime(pr[i][0].date) <= new Date().getTime() &&
+      new Date().getTime() <= new Date(pr[i][pr[i].length - 1].date).getTime()
+    ) {
+      currentPr.currentPr = pr[i][0].prPeriod;
+    }
+  }
+  return currentPr.currentPr;
+}
