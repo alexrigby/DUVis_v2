@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import STORIES from "../../configs/stories";
+import LAYOUTS from "../cytoscape/functions/cyLayouts";
 
 import "./FilterOptions.css";
 
@@ -177,6 +178,7 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
     setCustomStoryDisplay(false);
     //set stte to array of id inn that story
     setCurrentStory({ ids: event.target.dataset.ids.split(",").map((i) => Number(i)), name: event.target.title });
+    // cyState.cy.layout(LAYOUTS.FCOSE).run();
   };
 
   const deleteCustomStory = (event) => {

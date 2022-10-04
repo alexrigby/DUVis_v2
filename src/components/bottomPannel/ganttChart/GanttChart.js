@@ -31,10 +31,6 @@ export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBo
     }
   }, [selectedBottomVis]);
 
-  // const style = {
-  //   display: selectedBottomVis === "gantChartButton" ? "block" : "none",
-  // };
-
   const options = {
     start: datesRef.current !== null ? new Date(datesRef.current[0].date).getTime() : "2022-01-01",
     end:

@@ -45,7 +45,6 @@
 
 .selectedItem {
   border-color: red !important;
-  border-width: 4px;
-  font-size: 10pt;
-  line-height: 3px;
+  border-width: 3px !important;
+  line-height: 4px !important;
 }
