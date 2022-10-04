@@ -101,7 +101,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
           {meta.endPrPeriod === "onGoing" ? "Ongoing" : meta.endPrPeriod}
         </p>
         <h2> Category:</h2> <p>{meta[actFields.CATEGORY]}</p>
-        <h2> Researcher:</h2> <p>{meta[actFields.Name]}</p>
+        <h2> Researcher:</h2> <p>{meta[actFields.RESEARCHER]}</p>
         <h2> End Users: </h2> <p>{meta[actFields.ENDUSER]}</p>
         <h2> PDCA Cycle: </h2> <p>{meta[actFields.PDCA]}</p>
         <h2> Contribution to DU: </h2> <p>{meta[actFields.PROJECTCONTRIBUTION]}</p>
