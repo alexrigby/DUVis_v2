@@ -8,7 +8,7 @@ import vegaSpec from "./functions/vegaSpec";
 import parseVegaData from "./functions/parseVegaData";
 import "./VegaAnalytics.css";
 
-export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPeriod }) {
+export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPeriod, setSelectedBottomVis }) {
   const dates = datesRef.current;
   const actData = actDataRef.current;
 
@@ -59,6 +59,9 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
       setBrushRange(fullRange);
     };
 
+    const closeVegaPannel = (event) => {
+      setSelectedBottomVis("");
+    };
     const { vegaData, options } = parseVegaData(actData, trimmedDates, brushRange, selectedMetric);
     const spec = vegaSpec(options, brushRange, selectedMetric);
 
@@ -71,6 +74,9 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
       return (
         <div className="vegaAnalytics" onMouseUp={mouseUpHandler} onDoubleClick={resetDoubleClick} title={title}>
           <VegaSelect setSelectedMetric={setSelectedMetric} />
+          <p className="exitVega" onClick={closeVegaPannel} title="close analytics panel">
+            <i className="fa fa-xmark"></i>
+          </p>
           <VegaLite
             data={vegaData}
             spec={spec}

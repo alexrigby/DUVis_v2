@@ -13,6 +13,7 @@ export function BottomPannel({
   datesRef,
   prPeriod,
   selectedBottomVis,
+  setSelectedBottomVis,
 }) {
   return (
     <div className="bottomPannel">
@@ -21,6 +22,7 @@ export function BottomPannel({
         actDataRef={actDataRef}
         datesRef={datesRef}
         prPeriod={prPeriod}
+        setSelectedBottomVis={setSelectedBottomVis}
       />
       <GanttChart
         gantchartData={gantchartData}

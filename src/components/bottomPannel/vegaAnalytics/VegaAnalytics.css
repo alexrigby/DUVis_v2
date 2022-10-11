@@ -18,8 +18,20 @@
   right: 0;
   z-index: 200;
   position: absolute;
-  padding: 10px 10px 0 0;
+  padding: 10px 40px 0 0;
   font-size: 10pt;
   font-weight: 300;
   font-family: inherit;
+}
+
+.exitVega {
+  right: 0;
+  z-index: 200;
+  position: absolute;
+  padding: 0px 10px 0 0;
+}
+
+.exitVega:hover {
+  color: gray;
+  cursor: pointer;
 }

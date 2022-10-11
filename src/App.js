@@ -110,6 +110,7 @@ export function App() {
           datesRef={datesRef}
           prPeriod={prPeriod}
           selectedBottomVis={selectedBottomVis}
+          setSelectedBottomVis={setSelectedBottomVis}
         />
       </div>
       <CytoscapeVis cyState={cyState} setSelectedNode={setSelectedNode} activityEdgeDisplay={activityEdgeDisplay} />
