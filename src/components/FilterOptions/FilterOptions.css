@@ -148,3 +148,7 @@
   font-weight: 650;
   opacity: 0.7;
 }
+
+.fieldSelect {
+  display: flex;
+}

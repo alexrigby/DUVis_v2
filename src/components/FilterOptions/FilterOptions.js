@@ -9,6 +9,7 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
   const [storySectionDisplay, setStorySectionDisplay] = useState(false);
   const [customStoryDisplay, setCustomStoryDisplay] = useState(false);
+  const [customFilterDisplay, setCustomFilterDisplay] = useState(false);
 
   const [stories, setStories] = useState(STORIES);
   const [customStory, setCustomStory] = useState({ name: "", ids: [], custom: true });
@@ -38,6 +39,10 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
     setStorySectionDisplay((prevState) => !prevState);
   };
 
+  const displayCustomFilterOptions = (event) => {
+    setCustomFilterDisplay((prevState) => !prevState);
+  };
+
   const displayCustomStoryOptions = (event) => {
     //  setPrPeriod({ pr: null, undefined: true });
     setCurrentStory(null); // so all nodes are available to select from to make custom story
@@ -63,6 +68,9 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
   };
   const prStyle = {
     display: prSectionDisplay ? "flex" : "none",
+  };
+  const customFilterStyle = {
+    display: customFilterDisplay ? "flex" : "none",
   };
 
   const resetStyle = {
@@ -325,6 +333,17 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
           <button onClick={addCustomStoryToList} style={addStoryButtonStyle} className="customStoryButton">
             Add
           </button>
+        </div>
+      </div>
+      <div className="customFilter" style={optionsStyle}>
+        <button className="filterOptionButton" onClick={displayCustomFilterOptions}>
+          Custom Filter{" "}
+          {customFilterDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
+        </button>
+        <div className="customFieldOptions" style={customFilterStyle}>
+          {/* <label name="field">Field</label> */}
+          <select name="field" className="fieldSelect"></select>
+          <select name="field" className="fieldOptionSelect"></select>
         </div>
       </div>
     </div>
