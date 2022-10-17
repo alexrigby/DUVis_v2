@@ -16,7 +16,7 @@ export async function makeVisElements(
   wpDatasetURL,
   datesURL,
   prPeriod,
-  storyIds,
+  currentStory,
   completedDisplay
 ) {
   const activityDataNoDate = await parseDataset(datasetURL);
@@ -43,7 +43,7 @@ export async function makeVisElements(
   }));
 
   //trims the data by filter option, used instead of raw data
-  const trimmedData = trimData(activityData, prPeriod, storyIds);
+  const trimmedData = trimData(activityData, prPeriod, currentStory);
   const trimmedWpData = wpData.filter((wp) => [...new Set(trimmedData.map((act) => act.WP))].includes(wp.id.slice(2)));
 
   const gantChartItems = makeGantchartItems(

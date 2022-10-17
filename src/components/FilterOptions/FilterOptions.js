@@ -250,7 +250,7 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
         </button>
       </div>
       <div style={optionsStyle}>
-        <CustomFilter actDataRef={actDataRef} />
+        <CustomFilter actDataRef={actDataRef} cyState={cyState} />
       </div>
       <div style={optionsStyle}>
         <button onClick={displayPrOptions} className="filterOptionButton">

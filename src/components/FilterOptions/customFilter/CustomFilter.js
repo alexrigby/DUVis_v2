@@ -1,10 +1,13 @@
 import { useState } from "react";
+import { actFields } from "../../../data";
 import "./CustomFilter.css";
-export function CustomFilter({ actDataRef }) {
+export function CustomFilter({ actDataRef, cyState }) {
   const [customFilterDisplay, setCustomFilterDisplay] = useState(false);
   const [selectedMatrixField, setSelectedMatrixField] = useState(null);
   const [customFilterList, setCustomFilterList] = useState([]);
   const [customFilter, setCustomFilter] = useState({ name: "", field: "", values: [] });
+
+  //   const localCustomFilter = JSON.parse(window.localStorage.getItem("customFilter"))
 
   const customFilterStyle = {
     display: customFilterDisplay ? "flex" : "none",
@@ -70,8 +73,7 @@ export function CustomFilter({ actDataRef }) {
     }
     setCustomFilter({ name: "", field: "", values: [] });
   };
-  //   console.log(customFilter);
-  console.log(customFilterList);
+
   //adds all matrix fields to the select list
   const matrixFieldOptions =
     actDataRef.current !== null &&
@@ -89,6 +91,20 @@ export function CustomFilter({ actDataRef }) {
         {option}
       </option>
     ));
+
+  const testState = { name: "test", field: "Name", values: ["Jan"] };
+
+  function getCustomFilterIds() {
+    const values = testState.values;
+    const ids = values.flatMap((val) =>
+      actDataRef.current.filter((act) => act[testState.field] === val).map((act) => act[actFields.ID])
+    );
+    return { name: testState.name, ids: ids };
+  }
+
+  const test1 = actDataRef.current !== null && getCustomFilterIds();
+
+  console.log(test1);
 
   return (
     <div>
