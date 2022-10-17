@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 import STORIES from "../../configs/stories";
-import LAYOUTS from "../cytoscape/functions/cyLayouts";
+import CustomFilter from "./customFilter/CustomFilter";
 
 import "./FilterOptions.css";
 
-export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, currentStory, setCurrentStory }) {
+export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, currentStory, setCurrentStory, actDataRef }) {
   const [filterOptionsDisplay, setFilterOptionsDisplay] = useState(false);
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
   const [storySectionDisplay, setStorySectionDisplay] = useState(false);
   const [customStoryDisplay, setCustomStoryDisplay] = useState(false);
-  const [customFilterDisplay, setCustomFilterDisplay] = useState(false);
 
   const [stories, setStories] = useState(STORIES);
   const [customStory, setCustomStory] = useState({ name: "", ids: [], custom: true });
@@ -39,10 +38,6 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
     setStorySectionDisplay((prevState) => !prevState);
   };
 
-  const displayCustomFilterOptions = (event) => {
-    setCustomFilterDisplay((prevState) => !prevState);
-  };
-
   const displayCustomStoryOptions = (event) => {
     //  setPrPeriod({ pr: null, undefined: true });
     setCurrentStory(null); // so all nodes are available to select from to make custom story
@@ -68,9 +63,6 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
   };
   const prStyle = {
     display: prSectionDisplay ? "flex" : "none",
-  };
-  const customFilterStyle = {
-    display: customFilterDisplay ? "flex" : "none",
   };
 
   const resetStyle = {
@@ -258,6 +250,9 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
         </button>
       </div>
       <div style={optionsStyle}>
+        <CustomFilter actDataRef={actDataRef} />
+      </div>
+      <div style={optionsStyle}>
         <button onClick={displayPrOptions} className="filterOptionButton">
           Progress Report Period
           {prSectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
@@ -327,23 +322,12 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
                 <i className="fa-solid fa-plus"></i>
               </button>
             </div>
-            <p className="customStoryName">Name: {customStory.name !== "" && customStory.name}</p>
-            <p className="customStoryIds">Activities: {customStory.ids.length !== 0 && String(customStory.ids)}</p>
+            <p className="customName">Name: {customStory.name !== "" && customStory.name}</p>
+            <p className="customOptions">Activities: {customStory.ids.length !== 0 && String(customStory.ids)}</p>
           </div>
           <button onClick={addCustomStoryToList} style={addStoryButtonStyle} className="customStoryButton">
             Add
           </button>
-        </div>
-      </div>
-      <div className="customFilter" style={optionsStyle}>
-        <button className="filterOptionButton" onClick={displayCustomFilterOptions}>
-          Custom Filter{" "}
-          {customFilterDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
-        </button>
-        <div className="customFieldOptions" style={customFilterStyle}>
-          {/* <label name="field">Field</label> */}
-          <select name="field" className="fieldSelect"></select>
-          <select name="field" className="fieldOptionSelect"></select>
         </div>
       </div>
     </div>

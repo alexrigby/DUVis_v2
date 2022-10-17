@@ -99,6 +99,7 @@ export function App() {
           setPrPeriod={setPrPeriod}
           currentStory={currentStory}
           setCurrentStory={setCurrentStory}
+          actDataRef={actDataRef}
         />
         <Legend cyState={cyState} />
 
