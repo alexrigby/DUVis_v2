@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import STORIES from "../../configs/stories";
 import CustomFilter from "./customFilter/CustomFilter";
+import CustomStory from "./customStory/CustomStroy";
 
 import "./FilterOptions.css";
 
@@ -16,8 +17,6 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
   const localStories = JSON.parse(window.localStorage.getItem("customStory"));
 
   const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
-
-  const storyNames = stories.map((story) => story.name);
 
   const currentPr = findCurrentPrperiod(prOptions, datesRef);
   const maxPr = prOptions[prOptions.length - 1];
@@ -79,22 +78,6 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
     }
   };
 
-  const customStoryStyle = () => {
-    if (currentStory === null && customStoryDisplay === true) {
-      return { display: "flex" };
-    } else {
-      return { display: "none" };
-    }
-  };
-
-  // if the story name has been input alread then input box is red
-  const customStoryNameStyle = (event) => {
-    if (storyNames.includes(event.target.value)) {
-      event.target.style.backgroundColor = "#f40000";
-    } else {
-      event.target.style.backgroundColor = "white";
-    }
-  };
   //STYLING //////////////////////
 
   const prClickHandler = (event) => {
@@ -124,33 +107,6 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
         ...prevState,
         pr: prevState.pr <= 1 ? 1 : prevState.pr - 1,
       }));
-    }
-  };
-
-  const addCustomStoryName = (event) => {
-    if (event.target.type === "button") {
-      if (!storyNames.includes(document.getElementById("customName").value)) {
-        setCustomStory((prevState) => ({ ...prevState, name: document.getElementById("customName").value }));
-      }
-    } else {
-      if (!storyNames.includes(event.target.value)) {
-        event.keyCode === 13 && setCustomStory((prevState) => ({ ...prevState, name: event.target.value }));
-      } // key code 13 === 'enter'
-    }
-  };
-
-  const addCustomStoryId = (event) => {
-    if (event.target.type === "button") {
-      setCustomStory((prevState) => ({
-        ...prevState,
-        ids: checkForDuplicateIds(document.getElementById("customId").value, prevState.ids),
-      }));
-    } else {
-      event.keyCode === 13 &&
-        setCustomStory((prevState) => ({
-          ...prevState,
-          ids: checkForDuplicateIds(event.target.value, prevState.ids),
-        }));
     }
   };
 
@@ -227,17 +183,6 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
       </div>
     ));
 
-  const sortedNodes =
-    cyState.cy !== null && cyState.cy.nodes("[type = 'activityNode']").sort((a, b) => a.id() - b.id()); //sorts nodes in oredr of ID
-
-  const idSelectOptions =
-    cyState.cy !== null &&
-    sortedNodes.map((node) => (
-      <option value={node.id()} key={node.id()}>
-        {node.id()}
-      </option>
-    ));
-
   return (
     <div className="filterOptions">
       <div>
@@ -295,36 +240,14 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
               <button className="customStoryButton">Export Stories</button>
             </a>
           </div>
-          <div className="customStorySection" style={customStoryStyle()}>
-            <div className="customStoryInput">
-              <input
-                autoComplete="off"
-                id="customName"
-                name="customStory"
-                placeholder="story name"
-                onChange={customStoryNameStyle}
-                onKeyUp={addCustomStoryName}
-              ></input>
-              <button type="button" onClick={addCustomStoryName}>
-                <i className="fa-solid fa-plus"></i>
-              </button>
-            </div>
-            <div className="customStoryInput">
-              <select
-                id="customId"
-                name="customStory"
-                onKeyUp={addCustomStoryId}
-                onKeyDown={(e) => e.preventDefault()} //prevents 'enter' opening select dropdown
-              >
-                {idSelectOptions}
-              </select>
-              <button type="button" onClick={addCustomStoryId}>
-                <i className="fa-solid fa-plus"></i>
-              </button>
-            </div>
-            <p className="customName">Name: {customStory.name !== "" && customStory.name}</p>
-            <p className="customOptions">Activities: {customStory.ids.length !== 0 && String(customStory.ids)}</p>
-          </div>
+          <CustomStory
+            stories={stories}
+            currentStory={currentStory}
+            customStoryDisplay={customStoryDisplay}
+            customStory={customStory}
+            setCustomStory={setCustomStory}
+            cyState={cyState}
+          />
           <button onClick={addCustomStoryToList} style={addStoryButtonStyle} className="customStoryButton">
             Add
           </button>
@@ -335,19 +258,6 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
 }
 
 export default FilterOptions;
-
-//prevents 2 of the same ids being chosen
-function checkForDuplicateIds(newId, prevIds) {
-  if (prevIds.length === 0) {
-    return [newId];
-  } else {
-    if (prevIds.includes(newId)) {
-      return [...prevIds];
-    } else {
-      return [...prevIds, newId];
-    }
-  }
-}
 
 const convertToCSV = (data) => {
   // Convert dataset to TSV and print

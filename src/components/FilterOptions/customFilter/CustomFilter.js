@@ -8,6 +8,7 @@ export function CustomFilter({ actDataRef, cyState }) {
   const [customFilter, setCustomFilter] = useState({ name: "", field: "", values: [] });
 
   //   const localCustomFilter = JSON.parse(window.localStorage.getItem("customFilter"))
+  const localStories = JSON.parse(window.localStorage.getItem("customStory"));
 
   const customFilterStyle = {
     display: customFilterDisplay ? "flex" : "none",
