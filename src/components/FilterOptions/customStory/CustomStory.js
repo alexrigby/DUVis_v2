@@ -14,6 +14,13 @@ export function CustomStory({
   setCustomStoryDisplay,
   localStories,
 }) {
+  const [fieldCount, setFieldCount] = useState(0);
+  //input Controls
+  const [selectedName, setSelectedName] = useState("");
+  const [selectedField, setSelectedField] = useState("");
+  const [selectedValue, setSelectedValue] = useState("");
+  //input controls
+
   const storyNames = stories.map((story) => story.name); // returns a list of the story names
 
   //hidescustom story options if a story is selected
@@ -27,6 +34,7 @@ export function CustomStory({
 
   // if the story name has been input alread then input box is red
   const customStoryNameStyle = (event) => {
+    setSelectedName(event.target.value);
     if (storyNames.includes(event.target.value)) {
       event.target.style.backgroundColor = "#f40000";
     } else {
@@ -41,6 +49,13 @@ export function CustomStory({
   const addFieldButtonStyle = {
     display: customStory.ids.length === 0 || customStory.name === "" ? "none" : "flex",
   };
+
+  const addFieldToFilter = (event) => {
+    setFieldCount((prevState) => prevState + 1);
+    console.log(fieldCount);
+  };
+
+  console.log(fieldCount);
 
   const addCustomStoryFilterName = (event) => {
     if (event.target.type === "button") {
@@ -118,6 +133,9 @@ export function CustomStory({
 
   //adds the new story to the story state to update list and adds the story to local storage (so next time page is loaded the stories are added to state automatically)
   const addCustomStoryToList = (event) => {
+    setSelectedValue("");
+    setSelectedField("");
+    setSelectedName("");
     setStories((prevState) => [...prevState, customStory]); //adds the new story to the list of stories
     if (localStories === null) {
       window.localStorage.setItem("customStory", JSON.stringify([customStory]));
@@ -156,6 +174,7 @@ export function CustomStory({
             id="customStoryName"
             name="customStoryName"
             placeholder="story name"
+            value={selectedName}
             onChange={customStoryNameStyle}
             onKeyUp={addCustomStoryFilterName}
           ></input>
@@ -169,7 +188,9 @@ export function CustomStory({
             name="customStory"
             onKeyUp={addCustomStoryFilterField}
             onKeyDown={(e) => e.preventDefault()} //prevents 'enter' opening select dropdown
-            defaultValue=""
+            // defaultValue=""
+            value={selectedField}
+            onChange={(e) => setSelectedField(e.target.value)}
           >
             <option disabled={true} value="">
               --matrix field--
@@ -189,7 +210,9 @@ export function CustomStory({
               id="customStoryValues"
               onKeyUp={addCustomStoryFilterValues}
               onKeyDown={(e) => e.preventDefault()}
-              defaultValue=""
+              // defaultValue=""
+              value={selectedValue}
+              onChange={(e) => setSelectedValue(e.target.value)}
             >
               <option disabled={true} value="">
                 --field value--
@@ -208,7 +231,7 @@ export function CustomStory({
           Values: {customStoryFilter[0].values.length !== 0 && String(customStoryFilter[0].values)}
         </p>
       </div>
-      <button style={addFieldButtonStyle} className="customStoryButton">
+      <button style={addFieldButtonStyle} onClick={addFieldToFilter} className="customStoryButton">
         Add Field
       </button>
       <button onClick={addCustomStoryToList} style={addStoryButtonStyle} className="customStoryButton">
