@@ -1,27 +1,26 @@
 import { useEffect, useState } from "react";
 import STORIES from "../../configs/stories";
 
-import CustomStory from "./customStory/CustomStroy";
+import CustomStory from "./customStory/CustomStory";
+import PRScroll from "./PRScroll/PRScroll";
 
 import "./FilterOptions.css";
 
-export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, currentStory, setCurrentStory, actDataRef }) {
+export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, setCurrentStory, actDataRef }) {
   const [filterOptionsDisplay, setFilterOptionsDisplay] = useState(false);
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
   const [storySectionDisplay, setStorySectionDisplay] = useState(false);
   const [customStoryDisplay, setCustomStoryDisplay] = useState(false);
 
   const [stories, setStories] = useState(STORIES);
+  const [customStoryFilter, setCustomStoryFilter] = useState({ name: "", field: "", values: [] });
   const [customStory, setCustomStory] = useState({ name: "", ids: [], custom: true });
-
-  console.log(customStory);
 
   const localStories = JSON.parse(window.localStorage.getItem("customStory"));
 
   const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
 
   const currentPr = findCurrentPrperiod(prOptions, datesRef);
-  const maxPr = prOptions[prOptions.length - 1];
 
   //runs fist time component is loaded - checks for data in local storage and adds it to the stories state
   useEffect(() => {
@@ -62,16 +61,9 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
   const storyStyle = {
     display: storySectionDisplay ? "contents" : "none",
   };
-  const prStyle = {
-    display: prSectionDisplay ? "flex" : "none",
-  };
 
   const resetStyle = {
     display: prPeriod.pr === null && currentStory === null ? "none" : "inline-block",
-  };
-
-  const addStoryButtonStyle = {
-    display: customStory.ids.length === 0 || customStory.name === "" ? "none" : "flex",
   };
 
   const selectedStoryStyle = (storyName) => {
@@ -79,50 +71,7 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
       return { color: "grey" };
     }
   };
-
   //STYLING //////////////////////
-
-  const prClickHandler = (event) => {
-    if (prPeriod.pr === null) {
-      setPrPeriod((prevState) => ({
-        pr: event.target.type === "radio" ? parseFloat(event.target.value) : null,
-        undefined: event.target.type === "checkbox" ? !prevState.undefined : prevState.undefined,
-      }));
-    } else {
-      setPrPeriod((prevState) => ({
-        pr: event.target.type === "radio" ? parseFloat(event.target.value) : prevState.pr,
-        undefined: event.target.type === "checkbox" ? !prevState.undefined : prevState.undefined,
-      }));
-    }
-  };
-
-  //allows user to set pr period using the arrow buttons
-  const scrollHandler = (event) => {
-    // console.log(event.currentTarget.id);
-    if (event.currentTarget.id === "forwardButton") {
-      setPrPeriod((prevState) => ({
-        ...prevState,
-        pr: prevState.pr >= maxPr ? maxPr : prevState.pr + 1,
-      }));
-    } else if (event.currentTarget.id === "backButton") {
-      setPrPeriod((prevState) => ({
-        ...prevState,
-        pr: prevState.pr <= 1 ? 1 : prevState.pr - 1,
-      }));
-    }
-  };
-
-  //adds teh new story to the story state to update list and adds the story to local storage (so next time page is loaded the stories are added to state automatically)
-  const addCustomStoryToList = (event) => {
-    setStories((prevState) => [...prevState, customStory]); //adds the new story to the list of stories
-    if (localStories === null) {
-      window.localStorage.setItem("customStory", JSON.stringify([customStory]));
-    } else {
-      window.localStorage.setItem("customStory", JSON.stringify([...localStories, customStory]));
-    }
-    setCustomStory({ name: "", ids: [], custom: true }); // resets the custom story to empty
-    setCustomStoryDisplay(false); //hides the current stroy options
-  };
 
   const resetFilter = (event) => {
     setPrPeriod({ pr: null, undefined: true });
@@ -130,6 +79,7 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
     setPrSectionDisplay(false); //hides open prperiod optons when filter optiosn is clicked
     setStorySectionDisplay(false);
     setCustomStory({ name: "", ids: [], custom: true });
+    setCustomStoryFilter({ name: "", field: "", values: [] });
   };
 
   const storyClickHandler = (event) => {
@@ -162,29 +112,6 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
     );
   });
 
-  //colors current PR period in red
-  const radioLableStyle = (i) => {
-    return { color: currentPr === i + 1 ? "red" : "balck" };
-  };
-
-  const prRadio =
-    datesRef.current !== null &&
-    prOptions.map((opt, i) => (
-      <div className="radioGroup" key={opt}>
-        <label htmlFor="prPeriod" style={radioLableStyle(i)}>
-          {opt}
-        </label>
-        <input
-          type="radio"
-          id={opt}
-          name="prPeriod"
-          value={opt}
-          onChange={prClickHandler}
-          checked={prPeriod.pr !== null && prPeriod.pr - 1 === i} //check the current pr period
-        ></input>
-      </div>
-    ));
-
   return (
     <div className="filterOptions">
       <div>
@@ -196,34 +123,19 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
           Reset
         </button>
       </div>
-      <div style={optionsStyle}>{/* <CustomFilter actDataRef={actDataRef} cyState={cyState} /> */}</div>
       <div style={optionsStyle}>
         <button onClick={displayPrOptions} className="filterOptionButton">
           Progress Report Period
           {prSectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
         </button>
-        <div style={prStyle}>
-          <div className="undefinedCheck">
-            <label htmlFor="prPeriod">Include Undefined</label>
-            <input
-              type="checkBox"
-              id="undef"
-              name="prPeriod"
-              value="undef"
-              onChange={prClickHandler}
-              defaultChecked={true}
-            ></input>
-          </div>
-        </div>
-        <div className="prSelection" style={prStyle}>
-          {prRadio}
-          <button id="backButton" onClick={scrollHandler}>
-            <i className="fa fa-angles-left"></i>
-          </button>
-          <button id="forwardButton" onClick={scrollHandler}>
-            <i className="fa fa-angles-right"></i>
-          </button>
-        </div>
+        <PRScroll
+          setPrPeriod={setPrPeriod}
+          currentPr={currentPr}
+          prPeriod={prPeriod}
+          datesRef={datesRef}
+          prOptions={prOptions}
+          prSectionDisplay={prSectionDisplay}
+        />
       </div>
       <div style={optionsStyle}>
         <button onClick={displayStoryOptions} className="filterOptionButton">
@@ -244,14 +156,15 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
             stories={stories}
             currentStory={currentStory}
             customStoryDisplay={customStoryDisplay}
-            customStory={customStory}
             setCustomStory={setCustomStory}
-            cyState={cyState}
             actDataRef={actDataRef}
+            customStoryFilter={customStoryFilter}
+            setCustomStoryFilter={setCustomStoryFilter}
+            setStories={setStories}
+            customStory={customStory}
+            setCustomStoryDisplay={setCustomStoryDisplay}
+            localStories={localStories}
           />
-          <button onClick={addCustomStoryToList} style={addStoryButtonStyle} className="customStoryButton">
-            Add
-          </button>
         </div>
       </div>
     </div>
@@ -276,7 +189,7 @@ function findCurrentPrperiod(prOptions, datesRef) {
   for (let i = 0; i < prOptions.length; i++) {
     pr.push(datesRef.current.filter((d) => d.prPeriod === prOptions[i]));
   }
-  //checks in=f todays date is between start and end dates of each pr period and returns pr period
+  //checks if todays date is between start and end dates of each pr period and returns pr period
   var currentPr = {};
   for (let i = 0; i < pr.length; i++) {
     if (

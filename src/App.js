@@ -93,7 +93,6 @@ export function App() {
           connectionFlagsDisplay={connectionFlagsDisplay}
         />
         <FilterOptions
-          cyState={cyState}
           datesRef={datesRef}
           prPeriod={prPeriod}
           setPrPeriod={setPrPeriod}
