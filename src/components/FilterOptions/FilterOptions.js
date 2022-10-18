@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import STORIES from "../../configs/stories";
-import CustomFilter from "./customFilter/CustomFilter";
+
 import CustomStory from "./customStory/CustomStroy";
 
 import "./FilterOptions.css";
@@ -13,6 +13,8 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
 
   const [stories, setStories] = useState(STORIES);
   const [customStory, setCustomStory] = useState({ name: "", ids: [], custom: true });
+
+  console.log(customStory);
 
   const localStories = JSON.parse(window.localStorage.getItem("customStory"));
 
@@ -194,9 +196,7 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
           Reset
         </button>
       </div>
-      <div style={optionsStyle}>
-        <CustomFilter actDataRef={actDataRef} cyState={cyState} />
-      </div>
+      <div style={optionsStyle}>{/* <CustomFilter actDataRef={actDataRef} cyState={cyState} /> */}</div>
       <div style={optionsStyle}>
         <button onClick={displayPrOptions} className="filterOptionButton">
           Progress Report Period
@@ -247,6 +247,7 @@ export function FilterOptions({ cyState, datesRef, prPeriod, setPrPeriod, curren
             customStory={customStory}
             setCustomStory={setCustomStory}
             cyState={cyState}
+            actDataRef={actDataRef}
           />
           <button onClick={addCustomStoryToList} style={addStoryButtonStyle} className="customStoryButton">
             Add
