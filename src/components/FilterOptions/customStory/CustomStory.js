@@ -38,17 +38,25 @@ export function CustomStory({
     display: customStory.ids.length === 0 || customStory.name === "" ? "none" : "flex",
   };
 
+  const addFieldButtonStyle = {
+    display: customStory.ids.length === 0 || customStory.name === "" ? "none" : "flex",
+  };
+
   const addCustomStoryFilterName = (event) => {
     if (event.target.type === "button") {
       if (!storyNames.includes(document.getElementById("customStoryName").value)) {
-        setCustomStoryFilter((prevState) => ({
+        setCustomStory((prevState) => ({
           ...prevState,
           name: document.getElementById("customStoryName").value,
         }));
       }
     } else {
       if (!storyNames.includes(event.target.value)) {
-        event.keyCode === 13 && setCustomStoryFilter((prevState) => ({ ...prevState, name: event.target.value }));
+        event.keyCode === 13 &&
+          setCustomStory((prevState) => ({
+            ...prevState,
+            name: event.target.value,
+          }));
       } // key code 13 === 'enter'
     }
   };
@@ -56,44 +64,56 @@ export function CustomStory({
   const addCustomStoryFilterField = (event) => {
     if (event.target.type === "button") {
       if (!storyNames.includes(document.getElementById("customStoryField").value)) {
-        setCustomStoryFilter((prevState) => ({
-          ...prevState,
-          field: document.getElementById("customStoryField").value,
-        }));
+        setCustomStoryFilter((prevState) => [
+          {
+            values: prevState[0].values,
+            field: document.getElementById("customStoryField").value,
+          },
+        ]);
       }
     } else {
       if (!storyNames.includes(event.target.value)) {
-        event.keyCode === 13 && setCustomStoryFilter((prevState) => ({ ...prevState, field: event.target.value }));
+        event.keyCode === 13 &&
+          setCustomStoryFilter((prevState) => [
+            { values: prevState[0].values, field: event.target.value, name: prevState[0].name },
+          ]);
       } // key code 13 === 'enter'
     }
   };
 
   const addCustomStoryFilterValues = (event) => {
     if (event.target.type === "button") {
-      setCustomStoryFilter((prevState) => ({
-        ...prevState,
-        values: checkForDuplicates(document.getElementById("customStoryValues").value, prevState.values),
-      }));
+      setCustomStoryFilter((prevState) => [
+        {
+          field: prevState[0].field,
+          values: checkForDuplicates(document.getElementById("customStoryValues").value, prevState[0].values),
+        },
+      ]);
     } else {
       event.keyCode === 13 &&
-        setCustomStoryFilter((prevState) => ({
-          ...prevState,
-          values: checkForDuplicates(event.target.value, prevState.values),
-        }));
+        setCustomStoryFilter((prevState) => [
+          {
+            field: prevState[0].field,
+            values: checkForDuplicates(event.target.value, prevState[0].values),
+          },
+        ]);
     }
   };
 
-  //filters the dataset for the selected field values and find the ids
   function getCustomFilterIds() {
-    const values = customStoryFilter.values;
-    const ids = values.flatMap((val) =>
-      actDataRef.current.filter((act) => act[customStoryFilter.field] === val).map((act) => act[actFields.ID])
-    );
-    return { name: customStoryFilter.name, ids: ids };
+    const filters = customStoryFilter;
+    const ids = filters.flatMap((filter) => {
+      let values = filter.values;
+      return values.flatMap((val) =>
+        actDataRef.current.filter((act) => act[filter.field] === val).map((act) => act[actFields.ID])
+      );
+    });
+
+    return ids;
   }
 
   useEffect(() => {
-    setCustomStory({ ...getCustomFilterIds(), custom: true });
+    setCustomStory((prevState) => ({ ...prevState, ids: getCustomFilterIds() }));
   }, [customStoryFilter]);
 
   //adds the new story to the story state to update list and adds the story to local storage (so next time page is loaded the stories are added to state automatically)
@@ -106,7 +126,7 @@ export function CustomStory({
     }
     setCustomStory({ name: "", ids: [], custom: true }); // resets the custom story to empty
     setCustomStoryDisplay(false); //hides the current stroy options
-    setCustomStoryFilter({ name: "", field: "", values: [] });
+    setCustomStoryFilter([{ field: "", values: [] }]);
   };
 
   //adds all matrix fields to the select list
@@ -120,8 +140,8 @@ export function CustomStory({
 
   //adds the options from the chosen field to a select list
   const chosenFieldOptions =
-    customStoryFilter.field !== "" &&
-    [...new Set(actDataRef.current.map((act) => act[customStoryFilter.field]))].map((option) => (
+    customStoryFilter[0].field !== "" &&
+    [...new Set(actDataRef.current.map((act) => act[customStoryFilter[0].field]))].map((option) => (
       <option value={option} key={option}>
         {option}
       </option>
@@ -182,14 +202,17 @@ export function CustomStory({
           </div>
         )}
 
-        <p className="customName">Name: {customStoryFilter.name !== "" && customStoryFilter.name}</p>
-        <p className="customOptions">Field: {customStoryFilter.field !== "" && customStoryFilter.field}</p>
+        <p className="customName">Name: {customStory.name !== "" && customStory.name}</p>
+        <p className="customOptions">Field: {customStoryFilter[0].field !== "" && customStoryFilter[0].field}</p>
         <p className="customOptions">
-          Values: {customStoryFilter.values.length !== 0 && String(customStoryFilter.values)}
+          Values: {customStoryFilter[0].values.length !== 0 && String(customStoryFilter[0].values)}
         </p>
       </div>
+      <button style={addFieldButtonStyle} className="customStoryButton">
+        Add Field
+      </button>
       <button onClick={addCustomStoryToList} style={addStoryButtonStyle} className="customStoryButton">
-        Add
+        Generate Story
       </button>
     </div>
   );

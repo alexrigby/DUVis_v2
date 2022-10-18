@@ -13,7 +13,7 @@ export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, s
   const [customStoryDisplay, setCustomStoryDisplay] = useState(false);
 
   const [stories, setStories] = useState(STORIES);
-  const [customStoryFilter, setCustomStoryFilter] = useState({ name: "", field: "", values: [] });
+  const [customStoryFilter, setCustomStoryFilter] = useState([{ field: "", values: [] }]);
   const [customStory, setCustomStory] = useState({ name: "", ids: [], custom: true });
 
   const localStories = JSON.parse(window.localStorage.getItem("customStory"));
@@ -79,7 +79,7 @@ export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, s
     setPrSectionDisplay(false); //hides open prperiod optons when filter optiosn is clicked
     setStorySectionDisplay(false);
     setCustomStory({ name: "", ids: [], custom: true });
-    setCustomStoryFilter({ name: "", field: "", values: [] });
+    setCustomStoryFilter([{ field: "", values: [] }]);
   };
 
   const storyClickHandler = (event) => {
