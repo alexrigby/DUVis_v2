@@ -14,16 +14,18 @@ export function CustomStory({
   setCustomStoryDisplay,
   localStories,
 }) {
-  const [fieldCount, setFieldCount] = useState(0);
   //input Controls
   const [selectedName, setSelectedName] = useState("");
+  const [disabledName, setDisabledName] = useState(false);
   const [selectedField, setSelectedField] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
   //input controls
 
   const storyNames = stories.map((story) => story.name); // returns a list of the story names
 
-  //hidescustom story options if a story is selected
+  const filterCount = customStoryFilter.length - 1; //keeps track of number of fields chosen for filter
+
+  //hides custom story options if a story is selected
   const customStoryStyle = () => {
     if (currentStory === null && customStoryDisplay === true) {
       return { display: "flex" };
@@ -43,20 +45,23 @@ export function CustomStory({
   };
 
   const addStoryButtonStyle = {
+    // only displays generate story button if a story has been created (with ids and a name)
     display: customStory.ids.length === 0 || customStory.name === "" ? "none" : "flex",
   };
 
   const addFieldButtonStyle = {
-    display: customStory.ids.length === 0 || customStory.name === "" ? "none" : "flex",
+    // only displays add field button if values have been chosen to filter ids from
+    display: customStoryFilter[filterCount].values.length === 0 ? "none" : "flex",
   };
 
   const addFieldToFilter = (event) => {
-    setFieldCount((prevState) => prevState + 1);
-    console.log(fieldCount);
+    setCustomStoryFilter((prevState) => [...prevState, { field: "", values: [] }]); // adds new blank filter object to array
+    setSelectedValue(""); // resets input
+    setSelectedField(""); //resets input
+    setDisabledName(true); //if another field is being added disables ability to add new name
   };
 
-  console.log(fieldCount);
-
+  // adds the name straight to customStory State
   const addCustomStoryFilterName = (event) => {
     if (event.target.type === "button") {
       if (!storyNames.includes(document.getElementById("customStoryName").value)) {
@@ -76,78 +81,76 @@ export function CustomStory({
     }
   };
 
+  const updateFilterArray = (index, whichVal, newVal) => {
+    let temporaryArray = customStoryFilter.slice(); // creates copy of customStoryFilter state
+    temporaryArray[index][whichVal] = newVal; // chnages the selected value of the selected index to new value
+    setCustomStoryFilter(temporaryArray); // sets the customSotryFilter state to the altered temporary array
+  };
+
   const addCustomStoryFilterField = (event) => {
+    // adds selected field to state
     if (event.target.type === "button") {
-      if (!storyNames.includes(document.getElementById("customStoryField").value)) {
-        setCustomStoryFilter((prevState) => [
-          {
-            values: prevState[0].values,
-            field: document.getElementById("customStoryField").value,
-          },
-        ]);
-      }
+      updateFilterArray(filterCount, "values", []); // sets the values back to null if field is changed (so values arent chosen for wrong field)
+      updateFilterArray(filterCount, "filed", document.getElementById("customStoryField").value);
     } else {
-      if (!storyNames.includes(event.target.value)) {
-        event.keyCode === 13 &&
-          setCustomStoryFilter((prevState) => [
-            { values: prevState[0].values, field: event.target.value, name: prevState[0].name },
-          ]);
-      } // key code 13 === 'enter'
-    }
+      updateFilterArray(filterCount, "values", []); // sets the values back to null if Field is changed (so values arent chosen for wrong field)
+      event.keyCode === 13 && updateFilterArray(filterCount, "field", event.target.value);
+    } // key code 13 === 'enter'
   };
 
   const addCustomStoryFilterValues = (event) => {
+    // adds selected values to state
     if (event.target.type === "button") {
-      setCustomStoryFilter((prevState) => [
-        {
-          field: prevState[0].field,
-          values: checkForDuplicates(document.getElementById("customStoryValues").value, prevState[0].values),
-        },
-      ]);
+      updateFilterArray(
+        filterCount,
+        "values",
+        checkForDuplicates(document.getElementById("customStoryValues").value, customStoryFilter[filterCount].values) //ensures no dupicate values added
+      );
     } else {
       event.keyCode === 13 &&
-        setCustomStoryFilter((prevState) => [
-          {
-            field: prevState[0].field,
-            values: checkForDuplicates(event.target.value, prevState[0].values),
-          },
-        ]);
+        updateFilterArray(
+          filterCount,
+          "values",
+          checkForDuplicates(event.target.value, customStoryFilter[filterCount].values) //ensures no duplicate values added
+        );
     }
   };
 
   function getCustomFilterIds() {
-    const filters = customStoryFilter;
-    const ids = filters.flatMap((filter) => {
+    // gets ids of activities in chosen filters
+    const ids = customStoryFilter.flatMap((filter) => {
       let values = filter.values;
       return values.flatMap((val) =>
         actDataRef.current.filter((act) => act[filter.field] === val).map((act) => act[actFields.ID])
       );
     });
-
     return ids;
   }
 
   useEffect(() => {
+    // every time customStoryFilter state chnages, update the custom story state
     setCustomStory((prevState) => ({ ...prevState, ids: getCustomFilterIds() }));
   }, [customStoryFilter]);
 
-  //adds the new story to the story state to update list and adds the story to local storage (so next time page is loaded the stories are added to state automatically)
+  //adds customStory state to stories state adds the new story to local storage
   const addCustomStoryToList = (event) => {
-    setSelectedValue("");
-    setSelectedField("");
-    setSelectedName("");
+    setCustomStoryDisplay(false); //hides the current story options
+    setSelectedValue(""); // reset input
+    setSelectedField(""); // reset input
+    setSelectedName(""); // reset input
+    setDisabledName(false); // allow name input
     setStories((prevState) => [...prevState, customStory]); //adds the new story to the list of stories
     if (localStories === null) {
+      // adds new story to local storage
       window.localStorage.setItem("customStory", JSON.stringify([customStory]));
     } else {
       window.localStorage.setItem("customStory", JSON.stringify([...localStories, customStory]));
     }
     setCustomStory({ name: "", ids: [], custom: true }); // resets the custom story to empty
-    setCustomStoryDisplay(false); //hides the current stroy options
-    setCustomStoryFilter([{ field: "", values: [] }]);
+    setCustomStoryFilter([{ field: "", values: [] }]); // restes filter state to empty
   };
 
-  //adds all matrix fields to the select list
+  //adds all matrix fields to a select list
   const matrixFieldOptions =
     actDataRef.current !== null &&
     Object.keys(actDataRef.current[0]).map((field) => (
@@ -158,12 +161,24 @@ export function CustomStory({
 
   //adds the options from the chosen field to a select list
   const chosenFieldOptions =
-    customStoryFilter[0].field !== "" &&
-    [...new Set(actDataRef.current.map((act) => act[customStoryFilter[0].field]))].map((option) => (
+    customStoryFilter[filterCount].field !== "" &&
+    [...new Set(actDataRef.current.map((act) => act[customStoryFilter[filterCount].field]))].map((option) => (
       <option value={option} key={option}>
         {option}
       </option>
     ));
+
+  // generates text describing each filter in customStoryFilter state
+  const filterOptionsText = customStoryFilter.map((filter, i) => (
+    <div key={i} className="filterText">
+      <p className="customOptions">
+        Field {i > 0 && i + 1}: {filter.field}
+      </p>
+      <p className="customOptions">
+        Values {i > 0 && i + 1}: {String(filter.values)}
+      </p>
+    </div>
+  ));
 
   return (
     <div>
@@ -175,10 +190,11 @@ export function CustomStory({
             name="customStoryName"
             placeholder="story name"
             value={selectedName}
+            disabled={disabledName}
             onChange={customStoryNameStyle}
             onKeyUp={addCustomStoryFilterName}
           ></input>
-          <button type="button" onClick={addCustomStoryFilterName}>
+          <button type="button" onClick={addCustomStoryFilterName} disabled={disabledName}>
             <i className="fa-solid fa-plus"></i>
           </button>
         </div>
@@ -202,7 +218,7 @@ export function CustomStory({
           </button>
         </div>
 
-        {customStoryFilter.field !== "" && (
+        {customStoryFilter[filterCount].field !== "" && (
           <div className="customStoryInput">
             <select
               name="field"
@@ -226,10 +242,7 @@ export function CustomStory({
         )}
 
         <p className="customName">Name: {customStory.name !== "" && customStory.name}</p>
-        <p className="customOptions">Field: {customStoryFilter[0].field !== "" && customStoryFilter[0].field}</p>
-        <p className="customOptions">
-          Values: {customStoryFilter[0].values.length !== 0 && String(customStoryFilter[0].values)}
-        </p>
+        {filterOptionsText}
       </div>
       <button style={addFieldButtonStyle} onClick={addFieldToFilter} className="customStoryButton">
         Add Field
