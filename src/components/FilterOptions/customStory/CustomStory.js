@@ -131,7 +131,7 @@ export function CustomStory({
 
   useEffect(() => {
     // every time customStoryFilter state chnages, update the custom story state
-    setCustomStory((prevState) => ({ ...prevState, ids: getCustomFilterIds() }));
+    setCustomStory((prevState) => ({ ...prevState, ids: [...new Set(getCustomFilterIds())] }));
   }, [customStoryFilter]);
 
   //adds customStory state to stories state adds the new story to local storage
