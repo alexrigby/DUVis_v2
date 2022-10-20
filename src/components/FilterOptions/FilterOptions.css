@@ -41,27 +41,13 @@
   padding-left: 5px;
 }
 
-.topLine {
-  display: flex;
-  justify-content: space-between;
-}
-/* .displayButtons {
-  /* float: right; */
-/* }  */
-
 .toggleButtons {
   border-bottom: 1px solid #e4e4e4;
 }
+
 .bottomPannelButtons {
   padding-top: 5px;
   float: right;
-}
-
-.subHeader {
-  padding-bottom: 10px;
-  padding-left: 5px;
-  font-weight: 700;
-  opacity: 0.7;
 }
 
 .filterOptionButton {
@@ -74,36 +60,8 @@
   opacity: 0.7;
 }
 
-.radioGroup {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  padding-bottom: 3px;
-}
-
-.prSelection {
-  padding-bottom: 5px;
-}
-
-.undefinedCheck {
-  align-items: center;
-  display: flex;
-  padding-left: 5px;
-  padding-bottom: 1px;
-}
-
-.prSelection button {
-  margin: 2px;
-  padding: 4px;
-}
-
-.prSelection .fa {
-  padding-left: 0px;
-}
-
 .storyFilter {
   padding-bottom: 5px;
-  /* width: fit-content; */
 }
 
 .storyOptions {
@@ -113,7 +71,6 @@
 
 .storyOptions p {
   display: contents;
-
   font-size: 10pt;
   font-weight: 600;
   opacity: 0.7;
@@ -122,36 +79,4 @@
 .storyOptions p:hover {
   color: gray;
   cursor: pointer;
-}
-
-.customStoryButton {
-  padding: 4px 10px;
-  margin-bottom: 0;
-  margin-top: 2px;
-}
-
-.customStorySection {
-  flex-direction: column;
-}
-
-.customStoryInput button {
-  margin: 2px;
-  padding: 4px;
-}
-
-.customName {
-  font-size: 10pt;
-  font-weight: 700;
-  opacity: 0.7;
-}
-
-.customOptions {
-  font-size: 9pt;
-  font-weight: 650;
-  opacity: 0.7;
-}
-
-.filterText {
-  border-top: 1px solid #e4e4e4;
-  pointer-events: none !important;
 }

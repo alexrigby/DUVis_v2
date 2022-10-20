@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { actFields } from "../../../data";
 
+import "./CustomStory.css";
+
 export function CustomStory({
   stories,
   currentStory,

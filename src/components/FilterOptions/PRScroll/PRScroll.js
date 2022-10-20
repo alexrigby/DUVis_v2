@@ -1,3 +1,5 @@
+import "./PRScroll.css";
+
 export function PRScroll({ setPrPeriod, currentPr, prPeriod, datesRef, prOptions, prSectionDisplay }) {
   const maxPr = prOptions[prOptions.length - 1];
 
