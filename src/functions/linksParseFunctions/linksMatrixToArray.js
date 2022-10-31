@@ -11,7 +11,7 @@ export function linksMatrixToArray(dataset) {
   for (let i = 0; i < dataset.length; i++) {
     var links = [];
     for (let j = 0; j < dataset[i].length; j++) {
-      if (dataset[i][j] === "Y" || dataset[i][j] === "y") {
+      if (dataset[i][j] === "Y" || dataset[i][j] === "y" || dataset[i][j] === "1") {
         links.push([j + 1]);
       }
     }

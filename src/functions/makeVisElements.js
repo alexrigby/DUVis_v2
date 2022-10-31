@@ -9,12 +9,14 @@ import makeCyWpNodes from "./cyElements/makeCyWpNodes";
 import getPRPeriods from "./getPRPeriods";
 import giveActivityPrPeriod from "./giveActivtyPrPeriod";
 import trimData from "./trimData";
+import parseTDRMatrix from "./TDRParseFucntions/parseTDRMatrix";
 
 export async function makeVisElements(
   datasetURL,
   linksURL,
   wpDatasetURL,
   datesURL,
+  tdrURL,
   prPeriod,
   currentStory,
   completedDisplay
@@ -23,6 +25,7 @@ export async function makeVisElements(
   const links = await parseLinks(linksURL);
   const wpData = await parseDataset(wpDatasetURL);
   const dates = await parseDataset(datesURL);
+  const TDR = await parseTDRMatrix(tdrURL);
 
   const convertedDates = dates.map((d, i) => ({
     ...d,

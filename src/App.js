@@ -11,12 +11,13 @@ import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
 
 import makeCyWpEdges from "./components/cytoscape/functions/makeCyWpEdges";
-import addCategoryIcon from "./components/cytoscape/functions/addCategoryIcons";
+// import addCategoryIcon from "./components/cytoscape/functions/addCategoryIcons";
 
-import dataset from "./data/TDR Matrix_Subset.txt";
+import dataset from "./data/activity_matrix.txt";
 import links from "./data/links.txt";
 import wpDataset from "./data/wp_names.txt";
 import datesData from "./data/dates.txt";
+import tdrData from "./data/stakeholder_matrix.txt";
 
 export function App() {
   //sets state of cy
@@ -47,6 +48,7 @@ export function App() {
         links,
         wpDataset,
         datesData,
+        tdrData,
         prPeriod,
         currentStory,
         completedDisplay

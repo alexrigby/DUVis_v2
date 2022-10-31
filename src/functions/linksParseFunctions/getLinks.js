@@ -4,6 +4,7 @@ export async function getLinks(url) {
     .then((res) => res.text())
     .then((data) =>
       data
+        .trim()
         .replace(/\r/g, "")
         .split("\n")
         .map((row) => row.split("\t"))
