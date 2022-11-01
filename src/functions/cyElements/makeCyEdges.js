@@ -8,7 +8,7 @@ export function makeCyEdges(links, nodes) {
     act: link.act,
     links: nodeId.filter((id) => link.links.includes(id)),
   }));
-
+  // console.log(currentLinks);
   return currentLinks.map((el, i) => {
     let linkedActivities = currentLinks[i].links;
     //maps each link in i links to its array index (i + 1)

@@ -6,7 +6,7 @@ import "tippy.js/dist/tippy.css";
 cytoscape.use(popper);
 // NODE TOOLTIP
 export function nodeTooltip(cy) {
-  const activityNodes = cy.nodes("[type = 'activityNode']");
+  const activityNodes = cy.nodes("[type != 'wp']");
   //   const wpNodes = cy.nodes("[type = 'wp']");
 
   makeTooltips(activityNodes, "mouseover", "mouseout");

@@ -3,7 +3,7 @@ import COLORS from "../../../configs/wpColors";
 export function stylesheet(activityEdgeDisplay) {
   return [
     {
-      selector: "node[type = 'activityNode']",
+      selector: "node[type != 'wp']",
       style: {
         // "font-family": "FontAwesome, sans-serif",
         label: "data(id)",
@@ -53,7 +53,7 @@ export function stylesheet(activityEdgeDisplay) {
       },
     },
     {
-      selector: "edge[type = 'wpEdge']",
+      selector: "edge[type != 'activityEdge']",
       style: {
         display: activityEdgeDisplay === true ? "none" : "element",
         // label: "data(weight)",

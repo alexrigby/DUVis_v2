@@ -3,7 +3,6 @@ import getLinks from "../linksParseFunctions/getLinks";
 export async function parseTDRMatrix(url) {
   const data = await getLinks(url);
   const stakeholders = data.slice(4, data.length).map((s) => s.slice(0, 2)); // removes headers and gets 2 first collumns, tdr id and stakeholder name
-  const stakeholderIDs = stakeholders.flatMap((s) => s.slice(0, 1)); // gets array of stakeholder IDs
   const activityIDs = data
     .slice(3, 4)
     .flat()
@@ -24,7 +23,8 @@ export async function parseTDRMatrix(url) {
   // }
 
   const stakeholderLinks = matrix.map((row, i) => ({
-    stakeholder: stakeholderIDs[i],
+    stakeholderID: stakeholders[i][0],
+    name: stakeholders[i][1],
     act: row
       .map(
         (el, j) =>

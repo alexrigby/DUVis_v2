@@ -10,6 +10,8 @@ import getPRPeriods from "./getPRPeriods";
 import giveActivityPrPeriod from "./giveActivtyPrPeriod";
 import trimData from "./trimData";
 import parseTDRMatrix from "./TDRParseFucntions/parseTDRMatrix";
+import makeCyStakeholerNodes from "./cyElements/makeCyStakeholderNodes";
+import makeStakeholderCyEdges from "./cyElements/makeStakeholderCyEdges";
 
 export async function makeVisElements(
   datasetURL,
@@ -25,7 +27,7 @@ export async function makeVisElements(
   const links = await parseLinks(linksURL);
   const wpData = await parseDataset(wpDatasetURL);
   const dates = await parseDataset(datesURL);
-  const TDR = await parseTDRMatrix(tdrURL);
+  const stakeholderData = await parseTDRMatrix(tdrURL);
 
   const convertedDates = dates.map((d, i) => ({
     ...d,
@@ -64,7 +66,12 @@ export async function makeVisElements(
 
   const wpNodes = makeCyWpNodes(trimmedWpData);
 
-  const cyElms = [nodes, edges.flat(), wpNodes].flat();
+  const stakeholderNodes = makeCyStakeholerNodes(stakeholderData);
+
+  const stakeholderEdges = makeStakeholderCyEdges(stakeholderData);
+  console.log(stakeholderEdges);
+
+  const cyElms = [nodes, stakeholderNodes, edges.flat(), stakeholderEdges.flat(), wpNodes].flat();
 
   return {
     cyElms: cyElms,

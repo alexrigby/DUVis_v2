@@ -21,8 +21,10 @@ export function SidePannel({ selectedNode, cyState, setSelectedNode, datesRef, p
             datesRef={datesRef}
             prPeriod={prPeriod}
           />
-        ) : (
+        ) : selectedNode.type === "wp" ? (
           <WpNodeMetaSection selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />
+        ) : (
+          <div></div>
         )}
       </div>
     );

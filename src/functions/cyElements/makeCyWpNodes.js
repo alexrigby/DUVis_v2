@@ -1,7 +1,9 @@
 import { wpFields } from "../../data";
 //for each work package a node is created, each WP is a parent to one of the activities
 export function makeCyWpNodes(data) {
-  const wps = [];
+  const wps = [
+    { group: "nodes", classes: "wpNodes", data: { id: "stakeholders", type: "wp", name: "All Stakeholders" } },
+  ];
 
   for (let i = 0; i < data.length; i++) {
     let wp = data[i][wpFields.ID];
@@ -18,6 +20,7 @@ export function makeCyWpNodes(data) {
     };
     wps.push(nodeOps);
   }
+
   return wps;
 }
 
