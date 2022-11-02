@@ -27,7 +27,6 @@ export async function makeVisElements(
   const links = await parseLinks(linksURL);
   const wpData = await parseDataset(wpDatasetURL);
   const dates = await parseDataset(datesURL);
-  const stakeholderData = await parseTDRMatrix(tdrURL);
 
   const convertedDates = dates.map((d, i) => ({
     ...d,
@@ -50,6 +49,7 @@ export async function makeVisElements(
   //trims the data by filter option, used instead of raw data
   const trimmedData = trimData(activityData, prPeriod, currentStory);
   const trimmedWpData = wpData.filter((wp) => [...new Set(trimmedData.map((act) => act.WP))].includes(wp.id.slice(2)));
+  const stakeholderData = await parseTDRMatrix(tdrURL, trimmedData);
 
   const gantChartItems = makeGantchartItems(
     trimmedData,
@@ -69,7 +69,6 @@ export async function makeVisElements(
   const stakeholderNodes = makeCyStakeholerNodes(stakeholderData);
 
   const stakeholderEdges = makeStakeholderCyEdges(stakeholderData);
-  console.log(stakeholderEdges);
 
   const cyElms = [nodes, stakeholderNodes, edges.flat(), stakeholderEdges.flat(), wpNodes].flat();
 

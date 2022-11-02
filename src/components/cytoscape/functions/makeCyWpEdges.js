@@ -1,13 +1,16 @@
 import { wpFields } from "../../../data";
 
 export function makeCyWpEdges(cy, wp) {
-  const wpData = wp.concat({
-    group: "nodes",
-    classes: "wpNodes",
-    id: "stakeholders",
-    name: "All Stakeholders",
-  });
-  console.log(wpData);
+  // const wpData = wp.concat(
+  //   {
+  //   group: "nodes",
+  //   classes: "wpNodes",
+  //   id: "stakeholders",
+  //   name: "All Stakeholders",
+  // }
+  // );
+  const wpData = [...wp];
+  // console.log(wpData);
   // loops over all WPs and returns an array of targets of the outgoing edges from that WP
   const wpTargetNodes = [];
   for (let i = 0; i < wpData.length; i++) {
