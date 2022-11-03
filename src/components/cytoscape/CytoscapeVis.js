@@ -6,7 +6,7 @@ import stylesheet from "./functions/stylesheet";
 import nodeTooltip from "./functions/nodeTooltips";
 import styleSelectedElements from "./functions/styleSelectedElements";
 
-export function CytoscapeVis({ cyState, setSelectedNode, activityEdgeDisplay }) {
+export function CytoscapeVis({ cyState, setSelectedNode, activityEdgeDisplay, stakeholdersDisplay }) {
   //called every time setSideBarVis or cyState chanages
   useEffect(() => {
     nodeTooltip(cyState.cy); //produces tooltips on mouuseover
@@ -46,7 +46,7 @@ export function CytoscapeVis({ cyState, setSelectedNode, activityEdgeDisplay }) 
       }}
       elements={cyState.elements}
       style={style}
-      stylesheet={stylesheet(activityEdgeDisplay)}
+      stylesheet={stylesheet(activityEdgeDisplay, stakeholdersDisplay)}
       layout={LAYOUTS.COSE}
     />
   );

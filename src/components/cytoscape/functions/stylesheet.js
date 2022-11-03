@@ -1,6 +1,6 @@
 import COLORS from "../../../configs/wpColors";
 
-export function stylesheet(activityEdgeDisplay) {
+export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
   return [
     {
       selector: "node[type != 'wp']",
@@ -22,10 +22,34 @@ export function stylesheet(activityEdgeDisplay) {
         //width and height displayed in accepted bubble area scale 'D2 = D1 * SQRT(X2/X1)' https://infonewt.com/circles/
         //+1 gives value to nodes with no connecting edges,
         width: function (ele) {
-          return 1 * Math.sqrt((ele.connectedEdges().length + 1) / 1) * 20;
+          // if (stakeholdersDisplay) {
+          //   return 1 * Math.sqrt((ele.connectedEdges().length + 1) / 1) * 20;
+          // } else {
+          return (
+            1 *
+            Math.sqrt(
+              ele.connectedEdges().length -
+                ele.connectedEdges().connectedNodes("[type = 'stakeholderNode']").length +
+                1 / 1
+            ) *
+            20
+          );
+          // }
         },
         height: function (ele) {
-          return 1 * Math.sqrt((ele.connectedEdges().length + 1) / 1) * 20;
+          // if (stakeholdersDisplay) {
+          //   return 1 * Math.sqrt((ele.connectedEdges().length + 1) / 1) * 20;
+          // } else {
+          return (
+            1 *
+            Math.sqrt(
+              ele.connectedEdges().length -
+                ele.connectedEdges().connectedNodes("[type = 'stakeholderNode']").length +
+                1 / 1
+            ) *
+            20
+          );
+          // }
         },
       },
     },
@@ -42,6 +66,7 @@ export function stylesheet(activityEdgeDisplay) {
     {
       selector: "node[type = 'stakeholderNode']",
       style: {
+        display: stakeholdersDisplay === false ? "element" : "none",
         "text-outline-color": "#666666",
         "text-outline-width": 1,
       },

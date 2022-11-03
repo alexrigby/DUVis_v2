@@ -14,6 +14,7 @@ export function Header({
   setSelectedBottomVis,
   setConnectionFlagsDisplay,
   connectionFlagsDisplay,
+  setStakeholdersDisplay,
 }) {
   // TOGGLE CONTROLS /////////////
   function changeLayout() {
@@ -27,6 +28,13 @@ export function Header({
   const toggleEdges = (event) => {
     event.target.classList.toggle("activeButton");
     setActivityEdgeDisplay((prevState) => !prevState);
+  };
+
+  const toggleStakeholders = (event) => {
+    event.target.classList.toggle("activeButton");
+    cyState.cy.nodes("[type = 'stakeholderNode'] ").removeClass("show"); // remove any unwanted classes from stakeholder nodes
+    setStakeholdersDisplay((prevState) => !prevState);
+    // cyState.cy.layout(LAYOUTS.FCOSERandom).run();
   };
 
   const toggleConnectionFlags = (event) => {
@@ -83,13 +91,16 @@ export function Header({
           </p>
         </div>
         <div className="displayButtons">
-          <div className="toggleButtons">
+          <div className="cytoscapeButtons">
             <button onClick={changeLayout}>Change Layout </button>
-            <button onClick={toggleEdges}>Toggle Connections</button>
-            <button onClick={toggleCompleted}>Toggle Completed </button>
             <button title="flag activities with less than mean number of connections" onClick={toggleConnectionFlags}>
               Mean Connection Flag
             </button>
+          </div>
+          <div className="toggleButtons">
+            <button onClick={toggleEdges}>Toggle Connections</button>
+            <button onClick={toggleCompleted}>Toggle Completed </button>
+            <button onClick={toggleStakeholders}> Toggle Stakeholders</button>
           </div>
           <div className="bottomPannelButtons">
             <button id="gantChartButton" onClick={toggleBottomPannelDisplay} style={ganttButtonstyle}>
