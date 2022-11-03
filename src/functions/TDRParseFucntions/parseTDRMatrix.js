@@ -9,13 +9,13 @@ export async function parseTDRMatrix(url, trimmedData) {
 
   const matrix = data.slice(3, data.length).map((s) => s.slice(2, data.length));
 
-  const removeIndexArray = []; //loop over activity ids and check matrix ids are present
+  const removeIndexArray = []; //get array of indicies to remove from matrix
   for (let i = 0; i < activityIDs.length; i++) {
     !trimmedDataIds.includes(activityIDs[i]) && removeIndexArray.push(i);
   }
 
   const trimmedMatrix = [];
-  //filter matrix for ids to be removed
+  //filter matrix by index
   for (let i = 0; i < matrix.length; i++) {
     trimmedMatrix.push(matrix[i].filter((val, i) => removeIndexArray.indexOf(i) == -1));
   }
