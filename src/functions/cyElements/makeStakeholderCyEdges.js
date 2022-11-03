@@ -3,7 +3,7 @@ export function makeStakeholderCyEdges(stakeholders) {
   //   console.log(stakeholders);
 
   return stakeholders.map((el, i) => {
-    let linkedActivities = stakeholders[i].act.map((act) => act.actID);
+    let linkedActivities = stakeholders[i].act.map((act) => act);
     //maps each link in i links to its array index (i + 1)
     return [
       //map linked activites (n)
@@ -11,10 +11,11 @@ export function makeStakeholderCyEdges(stakeholders) {
         .map((n) => ({
           group: "edges",
           data: {
-            id: `g${el.stakeholderID}e${n}`,
+            id: `g${el.stakeholderID}e${n.actID}`,
             source: `${el.stakeholderID}`,
-            target: `${n}`,
+            target: `${n.actID}`,
             type: "activityEdge",
+            engagement: n.engagement,
           },
         }))
         // filter out edges with no value (Node has no 'Linked Activities' in dataset)

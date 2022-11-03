@@ -40,6 +40,13 @@ export function stylesheet(activityEdgeDisplay) {
       },
     },
     {
+      selector: "node[type = 'stakeholderNode']",
+      style: {
+        "text-outline-color": "#666666",
+        "text-outline-width": 1,
+      },
+    },
+    {
       selector: "edge",
       style: {
         width: 1.5,

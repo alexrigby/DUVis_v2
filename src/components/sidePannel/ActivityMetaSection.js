@@ -4,8 +4,17 @@ import { actFields } from "../../data";
 
 export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, datesRef, prPeriod }) {
   const meta = selectedNode.meta;
-  const outgoingActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).outgoers().targets();
-  const incommingActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).incomers().sources();
+
+  const outgoingActivities = cyState.cy
+    .nodes(`[id = "${selectedNode.id}"]`)
+    .outgoers()
+    .targets('[type != "stakeholderNode"]');
+
+  const incommingActivities = cyState.cy
+    .nodes(`[id = "${selectedNode.id}"]`)
+    .incomers()
+    .sources('[type != "stakeholderNode"]');
+
   const uniqueLinks = [...new Set([...incommingActivities, ...outgoingActivities])];
 
   const latestPrPeriod = datesRef.current[datesRef.current.length - 1].prPeriod;
@@ -70,6 +79,26 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
       {activity.id()}. {activity.data().name}
     </li>
   ));
+
+  const stakeholderList = [];
+  //4 for 4 engagement levels
+  for (var i = 0; i < 4; i++) {
+    //get collections of conected nodes by engagemnet level
+    const acts = cyState.cy
+      .nodes(`[id = "${selectedNode.id}"]`)
+      .incomers(`[engagement = "${i + 1}"]`)
+      .sources('[type = "stakeholderNode"]');
+
+    //only push lists that have nodes
+    if (acts.length !== 0) {
+      stakeholderList.push(
+        <div className="metaSection" key={i}>
+          <h2>Level {i + 1} engagement: </h2>
+          <ul>{listLinks(acts, setSelectedNode, cyState)} </ul>
+        </div>
+      );
+    }
+  }
 
   return (
     <div>
@@ -140,6 +169,10 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
         <h1>LINKED ACTIVITIES: </h1>
         <ul>{linkedActivitiesList}</ul>
       </div>
+      <div className="metaSection">
+        <h1>LINKED STAKEHOLDERS: </h1>
+        {stakeholderList}
+      </div>
     </div>
   );
 }
@@ -172,4 +205,17 @@ function shortDates(node, se) {
       return new Date(node.startDate).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
     }
   }
+}
+
+function listLinks(nodes, setSelectedNode, cyState) {
+  return nodes.map((act) => (
+    <li
+      key={act.id()}
+      onClick={() => nodeNavigationHandler(act.id(), setSelectedNode, cyState)}
+      onMouseOver={() => hilightOnLiHover(act.id(), cyState)}
+      onMouseOut={() => hilightOnLiHover(act.id(), cyState)}
+    >
+      {act.id()}. {act.data().name}
+    </li>
+  ));
 }
