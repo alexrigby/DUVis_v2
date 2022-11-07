@@ -78,6 +78,7 @@ export async function makeVisElements(
     gantChartItems: gantChartItems,
     activityData: trimmedData,
     dates: convertedDates,
+    stakeholderData: stakeholderData,
   };
 }
 

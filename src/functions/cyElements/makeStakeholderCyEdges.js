@@ -14,7 +14,7 @@ export function makeStakeholderCyEdges(stakeholders) {
             id: `g${el.stakeholderID}e${n.actID}`,
             source: `${el.stakeholderID}`,
             target: `${n.actID}`,
-            type: "activityEdge",
+            type: "stakeholderEdge",
             engagement: n.engagement,
           },
         }))

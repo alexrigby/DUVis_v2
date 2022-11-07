@@ -41,11 +41,17 @@ export function App() {
   const gantchartData = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
   const actDataRef = useRef(null); //stores activity data
+  const stakeholderDataRef = useRef(null);
+  const nodeCountRef = useRef(null);
+
+  //adds stakeholder nand activity nodes to count
+  nodeCountRef.current =
+    actDataRef.current && stakeholderDataRef.current && actDataRef.current.length + stakeholderDataRef.current.length;
 
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
     async function addDataToCytoscape() {
-      const { cyElms, wpData, gantChartItems, activityData, dates } = await makeVisElements(
+      const { cyElms, wpData, gantChartItems, activityData, dates, stakeholderData } = await makeVisElements(
         dataset,
         links,
         wpDataset,
@@ -59,6 +65,7 @@ export function App() {
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
 
       actDataRef.current = activityData; //ssigns activity data to ref
+      stakeholderDataRef.current = stakeholderData;
       datesRef.current = dates; //assigns dates ro ref
       gantchartData.current = gantChartItems; //asign gant chart data to the ref
 
@@ -96,6 +103,7 @@ export function App() {
           setConnectionFlagsDisplay={setConnectionFlagsDisplay}
           connectionFlagsDisplay={connectionFlagsDisplay}
           setStakeholdersDisplay={setStakeholdersDisplay}
+          nodeCountRef={nodeCountRef}
         />
         <FilterOptions
           datesRef={datesRef}
@@ -123,6 +131,7 @@ export function App() {
         setSelectedNode={setSelectedNode}
         activityEdgeDisplay={activityEdgeDisplay}
         stakeholdersDisplay={stakeholdersDisplay}
+        nodeCountRef={nodeCountRef}
       />
     </div>
   );

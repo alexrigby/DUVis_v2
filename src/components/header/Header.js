@@ -15,11 +15,18 @@ export function Header({
   setConnectionFlagsDisplay,
   connectionFlagsDisplay,
   setStakeholdersDisplay,
+  nodeCountRef,
 }) {
   // TOGGLE CONTROLS /////////////
   function changeLayout() {
-    cyState.cy.layout(LAYOUTS.FCOSERandom).run();
+    // cyState.cy
+    //   .elements("node[type != 'stakeholderNode'], edge[type != 'stakeholderEdge']")
+    //   .layout(LAYOUTS.FCOSERandom)
+    //   .run();
+    // cyState.cy.elements("node[type = 'stakeholderNode'], edge[type = 'stakeholderEdge']").layout(LAYOUTS.circle).run();
+    cyState.cy.layout(LAYOUTS(nodeCountRef.current).FCOSERandom).run();
   }
+
   const toggleCompleted = (event) => {
     event.target.classList.toggle("activeButton");
     setCompletedDisplay((prevState) => !prevState);

@@ -85,7 +85,7 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
       },
     },
     {
-      selector: "edge[type != 'activityEdge']",
+      selector: "edge[type = 'wpEdge']",
       style: {
         display: activityEdgeDisplay === true ? "none" : "element",
         // label: "data(weight)",
@@ -93,6 +93,18 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
         "line-color": "mapData(weight, 0, 40, #ffcba4, #cb410b)",
         "line-cap": "round",
         "line-opacity": 0.5,
+      },
+    },
+    {
+      selector: "edge[type = 'stakeholderEdge']",
+      style: {
+        display: "none",
+        width: 1.5,
+        "source-endpoint": "outside-to-line",
+        "source-distance-from-node": "4px",
+        "target-distance-from-node": "4px",
+        "target-endpoint": "outside-to-line",
+        "curve-style": "straight",
       },
     },
     {

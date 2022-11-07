@@ -6,7 +6,7 @@ import stylesheet from "./functions/stylesheet";
 import nodeTooltip from "./functions/nodeTooltips";
 import styleSelectedElements from "./functions/styleSelectedElements";
 
-export function CytoscapeVis({ cyState, setSelectedNode, activityEdgeDisplay, stakeholdersDisplay }) {
+export function CytoscapeVis({ cyState, setSelectedNode, activityEdgeDisplay, stakeholdersDisplay, nodeCountRef }) {
   //called every time setSideBarVis or cyState chanages
   useEffect(() => {
     nodeTooltip(cyState.cy); //produces tooltips on mouuseover
@@ -29,9 +29,11 @@ export function CytoscapeVis({ cyState, setSelectedNode, activityEdgeDisplay, st
 
   useEffect(() => {
     //only runs when the elements length chnages--- hakey but works
-    cyState.cy.layout(LAYOUTS.FCOSE).run();
-    cyState.cy.fit();
-  }, [cyState.cy, cyState.elements.length]);
+    // cyState.cy.elements("node[type = 'stakeholderNode'], edge[type = 'stakeholderEdge']").layout(LAYOUTS.circle).run();
+    // cyState.cy.elements("node[type != 'stakeholderNode'], edge[type != 'stakeholderEdge']").layout(LAYOUTS.FCOSE).run();
+    nodeCountRef.current && cyState.cy.layout(LAYOUTS(nodeCountRef.current).FCOSE).run();
+    // cyState.cy.fit();
+  }, [cyState.cy, cyState.elements.length, nodeCountRef]);
 
   return (
     <CytoscapeComponent
@@ -40,8 +42,16 @@ export function CytoscapeVis({ cyState, setSelectedNode, activityEdgeDisplay, st
         cyState.cy = cy;
         cy.on("resize", (_evt) => {
           // fits the cy graph to the window when the window is resized
-          cyState.cy.layout(LAYOUTS.FCOSE).run();
-          cyState.cy.fit();
+          // cyState.cy
+          //   .elements("node[type = 'stakeholderNode'], edge[type = 'stakeholderEdge']")
+          //   .layout(LAYOUTS.circle)
+          //   .run();
+          // cyState.cy
+          //   .elements("node[type != 'stakeholderNode'], edge[type != 'stakeholderEdge']")
+          //   .layout(LAYOUTS.FCOSE)
+          //   .run();
+          nodeCountRef.current && cyState.cy.layout(LAYOUTS(nodeCountRef.current).FCOSE).run();
+          // cyState.cy.fit();
         });
       }}
       elements={cyState.elements}
