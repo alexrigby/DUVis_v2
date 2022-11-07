@@ -21,9 +21,12 @@ export function Header({
   function changeLayout() {
     // cyState.cy
     //   .elements("node[type != 'stakeholderNode'], edge[type != 'stakeholderEdge']")
-    //   .layout(LAYOUTS.FCOSERandom)
+    //   .layout(LAYOUTS(nodeCountRef.current).FCOSERandom)
     //   .run();
-    // cyState.cy.elements("node[type = 'stakeholderNode'], edge[type = 'stakeholderEdge']").layout(LAYOUTS.circle).run();
+    // cyState.cy
+    //   .elements("node[type = 'stakeholderNode'], edge[type = 'stakeholderEdge']")
+    //   .layout(LAYOUTS(nodeCountRef.current).COLA)
+    //   .run();
     cyState.cy.layout(LAYOUTS(nodeCountRef.current).FCOSERandom).run();
   }
 

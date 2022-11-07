@@ -11,6 +11,7 @@ export function makeCyWpNodes(data) {
       group: "nodes",
       classes: "wpNodes",
       data: {
+        parent: "project",
         id: wp,
         type: "wp",
         // size: WP_IDS[wp].length,

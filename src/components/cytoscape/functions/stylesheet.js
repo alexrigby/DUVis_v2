@@ -3,7 +3,19 @@ import COLORS from "../../../configs/wpColors";
 export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
   return [
     {
-      selector: "node[type != 'wp']",
+      selector: "node[type = 'project']",
+      style: {
+        "border-opacity": 0,
+        "background-opacity": 0,
+        // "min-width": 3000,
+        // "min-height": 3000,
+        // "min-width-bias-left": "50%",
+        // "min-width-bias-right": "50%",
+        events: "no",
+      },
+    },
+    {
+      selector: "node[type != 'wp'][type != 'project']",
       style: {
         // "font-family": "FontAwesome, sans-serif",
         label: "data(id)",

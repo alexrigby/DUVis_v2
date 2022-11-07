@@ -70,7 +70,16 @@ export async function makeVisElements(
 
   const stakeholderEdges = makeStakeholderCyEdges(stakeholderData);
 
-  const cyElms = [nodes, stakeholderNodes, edges.flat(), stakeholderEdges.flat(), wpNodes].flat();
+  const projectNode = {
+    group: "nodes",
+    grabbable: false,
+    data: {
+      id: "project",
+      type: "project",
+    },
+  };
+
+  const cyElms = [nodes, stakeholderNodes, edges.flat(), stakeholderEdges.flat(), wpNodes, projectNode].flat();
 
   return {
     cyElms: cyElms,
