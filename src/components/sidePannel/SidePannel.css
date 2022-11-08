@@ -76,3 +76,16 @@
   color: gray;
   cursor: pointer;
 }
+
+.metaSection .fa {
+  float: right;
+}
+
+/* .metaSectionHead:hover {
+  background-color: black;
+} */
+
+.metaSection .fa:hover {
+  color: grey;
+  cursor: pointer;
+}

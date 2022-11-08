@@ -32,7 +32,7 @@ export function CytoscapeVis({ cyState, setSelectedNode, activityEdgeDisplay, st
     // cyState.cy.elements("node[type = 'stakeholderNode'], edge[type = 'stakeholderEdge']").layout(LAYOUTS.circle).run();
     // cyState.cy.elements("node[type != 'stakeholderNode'], edge[type != 'stakeholderEdge']").layout(LAYOUTS.FCOSE).run();
     nodeCountRef.current && cyState.cy.layout(LAYOUTS(nodeCountRef.current).FCOSE).run();
-    // cyState.cy.fit();
+    cyState.cy.fit();
   }, [cyState.cy, cyState.elements.length, nodeCountRef]);
 
   return (
@@ -51,7 +51,7 @@ export function CytoscapeVis({ cyState, setSelectedNode, activityEdgeDisplay, st
           //   .layout(LAYOUTS.FCOSE)
           //   .run();
           nodeCountRef.current && cyState.cy.layout(LAYOUTS(nodeCountRef.current).FCOSE).run();
-          // cyState.cy.fit();
+          cyState.cy.fit();
         });
       }}
       elements={cyState.elements}
