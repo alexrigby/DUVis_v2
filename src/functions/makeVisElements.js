@@ -70,6 +70,7 @@ export async function makeVisElements(
 
   const stakeholderEdges = makeStakeholderCyEdges(stakeholderData);
 
+  //node to hold all other nodes, prevents stakeholder nodes entering center of graph
   const projectNode = {
     group: "nodes",
     grabbable: false,

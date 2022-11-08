@@ -47,7 +47,7 @@ export const LAYOUTS = (nodeCount) => {
         if (edge.data().type === "stakeholderEdge") {
           return nodeCount * edgeLengthFactor;
         } else {
-          return 400;
+          return 300;
         }
       },
       // nestingFactor: nestingFactor,
@@ -82,7 +82,7 @@ export const LAYOUTS = (nodeCount) => {
         if (edge.data().type === "stakeholderEdge") {
           return nodeCount * edgeLengthFactor;
         } else {
-          return 400;
+          return 300;
         }
       },
       // nestingFactor: nestingFactor,
