@@ -5,77 +5,65 @@ import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import hilightOnLiHover from "./functions/hilightOnLiHover";
 
 export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode }) {
-  const [accordion, setAccordion] = useState({ activity: false, stakeholder: false });
-  const stakeholderCountRef = useRef(null);
-  const wpStakeholderListRef = useRef(null);
+  const engCount = [1, 2, 3, 4]; // add or remove numbers if engement level chnages
+  const engState = engCount.reduce((e, cur) => ({ ...e, [`eng${cur}`]: false }), {}); //adds each engement level to object {eng(n): false}
 
-  const wpActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).children();
+  const [accordion, setAccordion] = useState({ activity: false, stakeholder: false, ...engState }); //all display objects set as false
 
-  const activitiesList = listLinks(wpActivities, setSelectedNode, cyState);
+  const wpActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).children(); //gets all activities in wp
 
-  useEffect(() => {
-    const wpStakeholdersList = [];
-    const wpStakeholders = [];
-    for (let i = 0; i < 4; i++) {
-      const stakeholderList = [];
-      //loop over alll wp activities and return there connected stakeholders by engement (1-4)
-      for (let j = 0; j < wpActivities.length; j++) {
-        const stakeholders = wpActivities[j]
-          .incomers(`[engagement = "${i + 1}"]`)
-          .sources('[type = "stakeholderNode"]');
-        if (stakeholders.length !== 0) {
-          stakeholderList.push(stakeholders.flat());
-        }
-      }
-      // remove any duplicate stakeholders
-      const uniqueStakeholders = [...new Set([...stakeholderList.flat()])];
-      //add stakeholders to a lists by engement level
-      if (uniqueStakeholders.length !== 0) {
-        const key = `eng${i}`;
-        wpStakeholders.push(uniqueStakeholders);
+  const activitiesList = listLinks(wpActivities, setSelectedNode, cyState); // makes list of acctivitis
 
-        setAccordion((prevState) => ({
-          ...prevState,
-          [key]: false,
-        }));
+  const wpStakeholdersList = []; // JSX list of stakeholders and headings
+  const wpStakeholders = []; // list of all stakehlders (to get total count)
 
-        // var f = (event) => {
-        //   setAccordion((prevState) => ({
-        //     ...prevState,
-        //     [key]: !prevState[key]
-        //   }))
-        // };
-        // Object.defineProperty(f, 'name', {value: key})
-
-        wpStakeholdersList.push(
-          <div className="metaSection" key={i}>
-            <h2>
-              Level {i + 1} engagement:{" "}
-              <span
-                onClick={() => {
-                  setAccordion((prevState) => ({
-                    ...prevState,
-                    [key]: !prevState[key],
-                  }));
-                }}
-              >
-                {accordion[key] ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>}
-              </span>
-            </h2>
-            <h2>count: {uniqueStakeholders.length}</h2>
-            <div style={{ display: accordion[key] ? "none" : "block" }}>
-              <ul>{listLinks(uniqueStakeholders, setSelectedNode, cyState)} </ul>
-            </div>
-          </div>
-        );
+  //loop over once for every level of engagemnt
+  for (let i = 0; i < engCount.length; i++) {
+    const stakeholderList = [];
+    //loop over alll wp activities and return there connected stakeholders by engement (1-4)
+    for (let j = 0; j < wpActivities.length; j++) {
+      const stakeholders = wpActivities[j].incomers(`[engagement = "${i + 1}"]`).sources('[type = "stakeholderNode"]');
+      if (stakeholders.length !== 0) {
+        stakeholderList.push(stakeholders.flat());
       }
     }
 
-    stakeholderCountRef.current = wpStakeholders.flat().length;
-    wpStakeholderListRef.current = wpStakeholdersList;
-  }, []);
+    const uniqueStakeholders = [...new Set([...stakeholderList.flat()])]; // remove any duplicate stakeholders
+    //add stakeholders to a lists by engement level
+    // if (uniqueStakeholders.length !== 0) {
+    wpStakeholders.push(uniqueStakeholders); // to get total count
 
-  //TO DO --- ontrol stakeholder headers with display instead of this ^^^^^^
+    const style = {
+      // style by state for eng(n)
+      display: accordion[`eng${i}`] ? "block" : "none",
+    };
+
+    const openAccordion = (event) => {
+      // sets state for enge(n)
+      setAccordion((prevState) => ({
+        ...prevState,
+        [`eng${i}`]: !prevState[`eng${i}`],
+      }));
+    };
+
+    wpStakeholdersList.push(
+      <div className="metaSection" key={i}>
+        <h2>
+          Level {i + 1} engagement:{" "}
+          <span onClick={openAccordion}>
+            {accordion[`eng${i}`] ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>}
+          </span>
+        </h2>
+        <h2>count: {uniqueStakeholders.length}</h2>
+        <div style={style}>
+          <ul>{listLinks(uniqueStakeholders, setSelectedNode, cyState)} </ul>
+        </div>
+      </div>
+    );
+    // }
+  }
+
+  const stakeholderCount = wpStakeholders.flat().length;
 
   const openActivitySection = (event) => {
     setAccordion((prevState) => ({
@@ -120,18 +108,17 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode }) {
         <h2>count: {activitiesList.length}</h2>
         <ul style={acivitiesListStyle}>{activitiesList}</ul>
       </div>
-      <div className="metaSection">
-        <div className="metaSectionHead">
-          <h1>
-            LINKED STAKEHOLDERS{" "}
-            <span onClick={openStakeholderSection}>
-              {accordion.stakeholder ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>}
-            </span>
-          </h1>
-          <h2>count: {stakeholderCountRef.current}</h2>
-        </div>
-        <div style={stakeholderListDisplay}>{wpStakeholderListRef.current}</div>
+
+      <div className="metaSectionHead metaSection">
+        <h1>
+          LINKED STAKEHOLDERS{" "}
+          <span onClick={openStakeholderSection}>
+            {accordion.stakeholder ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>}
+          </span>
+        </h1>
+        <h2>count: {stakeholderCount}</h2>
       </div>
+      <div style={stakeholderListDisplay}>{wpStakeholdersList}</div>
     </div>
   );
 }
@@ -150,3 +137,38 @@ function listLinks(nodes, setSelectedNode, cyState) {
     </li>
   ));
 }
+
+//   <div className="metaSection">
+//     <h2>
+//       Level 1 engagement:
+//       <span>{/* {accordion? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>} */}</span>
+//     </h2>
+//     <h2>count: {wpStakeholders[0].length}</h2>
+//     {wpStakeholdersList[0]}
+//   </div>
+//   <div className="metaSection">
+//     <h2>
+//       Level 2 engagement:
+//       <span>{/* {accordion? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>} */}</span>
+//     </h2>
+//     <h2>count: {wpStakeholders[1].length}</h2>
+//     {wpStakeholdersList[1]}
+//   </div>
+//   <div className="metaSection">
+//     <h2>
+//       Level 3 engagement:
+//       <span>{/* {accordion? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>} */}</span>
+//     </h2>
+//     <h2>count: {wpStakeholders[2].length}</h2>
+//     {wpStakeholdersList[2]}
+//   </div>
+//   <div className="metaSection">
+//     <h2>
+//       Level 4 engagement:
+//       <span>{/* {accordion? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>} */}</span>
+//     </h2>
+//     <h2>count: {wpStakeholders[3].length}</h2>
+//     {wpStakeholdersList[3]}
+//   </div>
+//   {/* <div style={stakeholderListDisplay}>{wpStakeholdersList}</div> */}
+// </div>
