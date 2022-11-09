@@ -6,7 +6,15 @@ import PRScroll from "./PRScroll/PRScroll";
 
 import "./FilterOptions.css";
 
-export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, setCurrentStory, actDataRef }) {
+export function FilterOptions({
+  datesRef,
+  prPeriod,
+  setPrPeriod,
+  currentStory,
+  setCurrentStory,
+  actDataRef,
+  matrixHeadersRef,
+}) {
   const [filterOptionsDisplay, setFilterOptionsDisplay] = useState(false);
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
   const [storySectionDisplay, setStorySectionDisplay] = useState(false);
@@ -164,6 +172,7 @@ export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, s
             customStory={customStory}
             setCustomStoryDisplay={setCustomStoryDisplay}
             localStories={localStories}
+            matrixHeadersRef={matrixHeadersRef}
           />
         </div>
       </div>

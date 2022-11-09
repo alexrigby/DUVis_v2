@@ -15,6 +15,7 @@ export function CustomStory({
   customStory,
   setCustomStoryDisplay,
   localStories,
+  matrixHeadersRef,
 }) {
   //input Controls
   const [selectedName, setSelectedName] = useState("");
@@ -154,8 +155,8 @@ export function CustomStory({
 
   //adds all matrix fields to a select list
   const matrixFieldOptions =
-    actDataRef.current !== null &&
-    Object.keys(actDataRef.current[0]).map((field) => (
+    matrixHeadersRef.current !== null &&
+    Object.keys(matrixHeadersRef.current).map((field) => (
       <option value={field} key={field}>
         {field}
       </option>

@@ -43,6 +43,7 @@ export function App() {
   const actDataRef = useRef(null); //stores activity data
   const stakeholderDataRef = useRef(null);
   const nodeCountRef = useRef(null);
+  const matrixHeadersRef = useRef(null);
 
   //adds stakeholder nand activity nodes to count
   nodeCountRef.current =
@@ -51,16 +52,8 @@ export function App() {
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
     async function addDataToCytoscape() {
-      const { cyElms, wpData, gantChartItems, activityData, dates, stakeholderData } = await makeVisElements(
-        dataset,
-        links,
-        wpDataset,
-        datesData,
-        tdrData,
-        prPeriod,
-        currentStory,
-        completedDisplay
-      ); //combines parsing functions to make elements array
+      const { cyElms, wpData, gantChartItems, activityData, dates, stakeholderData, matrixHeaders } =
+        await makeVisElements(dataset, links, wpDataset, datesData, tdrData, prPeriod, currentStory, completedDisplay); //combines parsing functions to make elements array
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
 
@@ -68,6 +61,7 @@ export function App() {
       stakeholderDataRef.current = stakeholderData;
       datesRef.current = dates; //assigns dates ro ref
       gantchartData.current = gantChartItems; //asign gant chart data to the ref
+      matrixHeadersRef.current = matrixHeaders;
 
       setCyState((prevState) => ({
         ...prevState,
@@ -81,58 +75,62 @@ export function App() {
   }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory]);
 
   return (
-    <div className="container" onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
-      <div className="top-layer">
-        <SidePannel
-          selectedNode={selectedNode}
+    <div className="container">
+      <div onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
+        <div className="top-layer">
+          <SidePannel
+            selectedNode={selectedNode}
+            cyState={cyState}
+            setSelectedNode={setSelectedNode}
+            datesRef={datesRef}
+            prPeriod={prPeriod}
+          />
+          <Header
+            cyState={cyState}
+            datesRef={datesRef}
+            prPeriod={prPeriod}
+            currentStory={currentStory}
+            setActivityEdgeDisplay={setActivityEdgeDisplay}
+            setCompletedDisplay={setCompletedDisplay}
+            completedDisplay={completedDisplay}
+            selectedBottomVis={selectedBottomVis}
+            setSelectedBottomVis={setSelectedBottomVis}
+            setConnectionFlagsDisplay={setConnectionFlagsDisplay}
+            connectionFlagsDisplay={connectionFlagsDisplay}
+            setStakeholdersDisplay={setStakeholdersDisplay}
+            nodeCountRef={nodeCountRef}
+          />
+          <FilterOptions
+            datesRef={datesRef}
+            prPeriod={prPeriod}
+            setPrPeriod={setPrPeriod}
+            currentStory={currentStory}
+            setCurrentStory={setCurrentStory}
+            actDataRef={actDataRef}
+            matrixHeadersRef={matrixHeadersRef}
+          />
+          <Legend cyState={cyState} />
+
+          <BottomPannel
+            gantchartData={gantchartData}
+            cyState={cyState}
+            setSelectedNode={setSelectedNode}
+            actDataRef={actDataRef}
+            datesRef={datesRef}
+            prPeriod={prPeriod}
+            selectedBottomVis={selectedBottomVis}
+            setSelectedBottomVis={setSelectedBottomVis}
+          />
+        </div>
+
+        <CytoscapeVis
           cyState={cyState}
           setSelectedNode={setSelectedNode}
-          datesRef={datesRef}
-          prPeriod={prPeriod}
-        />
-        <Header
-          cyState={cyState}
-          datesRef={datesRef}
-          prPeriod={prPeriod}
-          currentStory={currentStory}
-          setActivityEdgeDisplay={setActivityEdgeDisplay}
-          setCompletedDisplay={setCompletedDisplay}
-          completedDisplay={completedDisplay}
-          selectedBottomVis={selectedBottomVis}
-          setSelectedBottomVis={setSelectedBottomVis}
-          setConnectionFlagsDisplay={setConnectionFlagsDisplay}
-          connectionFlagsDisplay={connectionFlagsDisplay}
-          setStakeholdersDisplay={setStakeholdersDisplay}
+          activityEdgeDisplay={activityEdgeDisplay}
+          stakeholdersDisplay={stakeholdersDisplay}
           nodeCountRef={nodeCountRef}
         />
-        <FilterOptions
-          datesRef={datesRef}
-          prPeriod={prPeriod}
-          setPrPeriod={setPrPeriod}
-          currentStory={currentStory}
-          setCurrentStory={setCurrentStory}
-          actDataRef={actDataRef}
-        />
-        <Legend cyState={cyState} />
-
-        <BottomPannel
-          gantchartData={gantchartData}
-          cyState={cyState}
-          setSelectedNode={setSelectedNode}
-          actDataRef={actDataRef}
-          datesRef={datesRef}
-          prPeriod={prPeriod}
-          selectedBottomVis={selectedBottomVis}
-          setSelectedBottomVis={setSelectedBottomVis}
-        />
       </div>
-      <CytoscapeVis
-        cyState={cyState}
-        setSelectedNode={setSelectedNode}
-        activityEdgeDisplay={activityEdgeDisplay}
-        stakeholdersDisplay={stakeholdersDisplay}
-        nodeCountRef={nodeCountRef}
-      />
     </div>
   );
 }

@@ -46,6 +46,8 @@ export async function makeVisElements(
     endPrPeriod: giveActivityPrPeriod(act, convertedDates, "end"),
   }));
 
+  const matrixHeaders = activityData.slice(0, 1)[0];
+
   //trims the data by filter option, used instead of raw data
   const trimmedData = trimData(activityData, prPeriod, currentStory);
   const trimmedWpData = wpData.filter((wp) => [...new Set(trimmedData.map((act) => act.WP))].includes(wp.id.slice(2)));
@@ -89,6 +91,7 @@ export async function makeVisElements(
     activityData: trimmedData,
     dates: convertedDates,
     stakeholderData: stakeholderData,
+    matrixHeaders: matrixHeaders,
   };
 }
 

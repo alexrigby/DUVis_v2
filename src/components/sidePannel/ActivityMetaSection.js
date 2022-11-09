@@ -1,9 +1,20 @@
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import hilightOnLiHover from "./functions/hilightOnLiHover";
 import { actFields } from "../../data";
+import { useState } from "react";
 
 export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, datesRef, prPeriod }) {
   const meta = selectedNode.meta;
+  const open = <i className="fa fa-angle-down"></i>;
+  const close = <i className="fa fa-angle-up"></i>;
+
+  const engCount = [1, 2, 3, 4];
+  const subSections = ["description", "research", "method", "data", "discipline", "IW", "activity", "stakeholder"];
+
+  const engObj = engCount.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
+  const subSectionObj = subSections.reduce((p, c) => ({ ...p, [c]: false }), {}); // each subsection to onject- false
+
+  const [actAccordion, setActAccordion] = useState({ ...engObj, ...subSectionObj });
 
   const outgoingActivities = cyState.cy
     .nodes(`[id = "${selectedNode.id}"]`)
@@ -80,25 +91,47 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
     </li>
   ));
 
+  const openActAccordion = (event, key) => {
+    setActAccordion((prevState) => ({
+      ...prevState,
+      [key]: !prevState[key],
+    }));
+  };
   const stakeholderList = [];
+  const stakeholderCollection = [];
+
   //4 for 4 engagement levels
-  for (var i = 0; i < 4; i++) {
+  for (let i = 0; i < engCount.length; i++) {
     //get collections of conected nodes by engagemnet level
-    const acts = cyState.cy
+    const stakeholders = cyState.cy
       .nodes(`[id = "${selectedNode.id}"]`)
       .incomers(`[engagement = "${i + 1}"]`)
       .sources('[type = "stakeholderNode"]');
 
+    stakeholderCollection.push(stakeholders.flat());
+    const style = {
+      display: actAccordion[`eng${i}`] ? "block" : "none",
+    };
+
     //only push lists that have nodes
-    if (acts.length !== 0) {
+    if (stakeholders.length !== 0) {
       stakeholderList.push(
         <div className="metaSection" key={i}>
-          <h2>Level {i + 1} engagement: </h2>
-          <ul>{listLinks(acts, setSelectedNode, cyState)} </ul>
+          <h2>
+            Level {i + 1} engagement:{" "}
+            <span onClick={() => openActAccordion("click", `eng${i}`)}>{actAccordion[`eng${i}`] ? close : open}</span>{" "}
+          </h2>
+          <h2>count: {stakeholders.length}</h2>
+          <div style={style}>
+            <ul>{listLinks(stakeholders, setSelectedNode, cyState)} </ul>
+          </div>
         </div>
       );
     }
   }
+  const stakeholderCount = stakeholderCollection.flat().length;
+
+  const style = (key) => ({ display: actAccordion[key] ? "block" : "none" });
 
   return (
     <div>
@@ -136,43 +169,81 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
         <h2> Contribution to DU: </h2> <p>{meta[actFields.PROJECTCONTRIBUTION]}</p>
       </div>
       <div className="metaSection">
-        <h1>DESCRIPTION: </h1> <p>{meta[actFields.DESCRIPTION]}</p>
+        <h1>
+          DESCRIPTION{" "}
+          <span onClick={() => openActAccordion("click", "description")}>
+            {actAccordion.description ? close : open}
+          </span>
+        </h1>{" "}
+        <p style={style("description")}>{meta[actFields.DESCRIPTION]}</p>
       </div>
       <div className="metaSection">
-        <h1>RESEARCH: </h1>
-        <h2>Question Type:</h2> {researchQuestionType(meta)}
-        <h2>Question:</h2> <p> {meta[actFields.QUESTION]} </p>
+        <h1>
+          RESEARCH{" "}
+          <span onClick={() => openActAccordion("click", "research")}>{actAccordion.research ? close : open}</span>{" "}
+        </h1>
+        <div style={style("research")}>
+          <h2>Question Type:</h2> {researchQuestionType(meta)}
+          <h2>Question:</h2> <p> {meta[actFields.QUESTION]} </p>
+        </div>
       </div>
       <div className="metaSection">
-        <h1>METHODOLOGY:</h1>
-        <h2>Category:</h2> <p>{meta[actFields.CATEGORY]}</p>
-        <h2>Methodology: </h2> <p>{meta[actFields.METHOD]} </p>
+        <h1>
+          METHODOLOGY{" "}
+          <span onClick={() => openActAccordion("click", "method")}>{actAccordion.method ? close : open}</span>
+        </h1>
+        <div style={style("method")}>
+          <h2>Category:</h2> <p>{meta[actFields.CATEGORY]}</p>
+          <h2>Methodology: </h2> <p>{meta[actFields.METHOD]} </p>
+        </div>
       </div>
       <div className="metaSection">
-        <h1>DATA: </h1>
-        <h2>Procurement Method: </h2> <p>{meta[actFields.DATAMETHOD]} </p>
-        <h2>Type:</h2> <p>{meta[actFields.DATATYPE]}</p>
-        <h2>Usage:</h2> <p>{meta[actFields.DATAUSAGE]}</p>
+        <h1>
+          DATA <span onClick={() => openActAccordion("click", "data")}>{actAccordion.data ? close : open}</span>{" "}
+        </h1>
+        <div style={style("data")}>
+          <h2>Procurement Method: </h2> <p>{meta[actFields.DATAMETHOD]} </p>
+          <h2>Type:</h2> <p>{meta[actFields.DATATYPE]}</p>
+          <h2>Usage:</h2> <p>{meta[actFields.DATAUSAGE]}</p>
+        </div>
       </div>
       <div className="metaSection">
-        <h1>DISCIPLINE: </h1>
-        <h2>Category: </h2> <p>{meta[actFields.CATEGORY]}</p>
-        <h2>Specific Perspective:</h2> <p>{meta[actFields.PERSPECTIVES]}</p>
-        <h2>Transdisciplinary Perspectives:</h2> <p>{meta[actFields.TDPERSPECTIVE]}</p>
+        <h1>
+          DISCIPLINE{" "}
+          <span onClick={() => openActAccordion("click", "discipline")}>{actAccordion.discipline ? close : open}</span>{" "}
+        </h1>
+        <div style={style("discipline")}>
+          <h2>Category: </h2> <p>{meta[actFields.CATEGORY]}</p>
+          <h2>Specific Perspective:</h2> <p>{meta[actFields.PERSPECTIVES]}</p>
+          <h2>Transdisciplinary Perspectives:</h2> <p>{meta[actFields.TDPERSPECTIVE]}</p>
+        </div>
       </div>
       <div className="metaSection">
-        <h1>IERLAND WATER: </h1>
-        <h2>Aims and Objectives: </h2> <p>{meta[actFields.IW]}</p>
-        <h2>Contribution:</h2> <p>{meta[actFields.IWCONTRIBUTION]}</p>
+        <h1>
+          IERLAND WATER <span onClick={() => openActAccordion("click", "IW")}>{actAccordion.IW ? close : open}</span>{" "}
+        </h1>
+        <div style={style("IW")}>
+          <h2>Aims and Objectives: </h2> <p>{meta[actFields.IW]}</p>
+          <h2>Contribution:</h2> <p>{meta[actFields.IWCONTRIBUTION]}</p>
+        </div>
       </div>
       <div className="metaSection">
-        <h1>LINKED ACTIVITIES: </h1>
-        <ul>{linkedActivitiesList}</ul>
+        <h1>
+          LINKED ACTIVITIES{" "}
+          <span onClick={() => openActAccordion("click", "activity")}>{actAccordion.activity ? close : open}</span>{" "}
+        </h1>
+        <ul style={style("activity")}>{linkedActivitiesList}</ul>
       </div>
       <div className="metaSection">
-        <h1>LINKED STAKEHOLDERS: </h1>
-        {stakeholderList}
+        <h1>
+          LINKED STAKEHOLDERS{" "}
+          <span onClick={() => openActAccordion("click", "stakeholder")}>
+            {actAccordion.stakeholder ? close : open}
+          </span>{" "}
+        </h1>
+        <h2>count: {stakeholderCount}</h2>
       </div>
+      <div style={style("stakeholder")}>{stakeholderList}</div>
     </div>
   );
 }
