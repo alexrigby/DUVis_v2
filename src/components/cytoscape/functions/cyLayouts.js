@@ -23,14 +23,13 @@ export const LAYOUTS = (nodeCount, totalActCount, random) => {
       name: "fcose",
       quality: "proof",
       animationDuration: 1000,
+
       nodeDimensionsIncludeLabels: true,
 
       randomize: random,
-      // fit: true,
-      gravity: 10,
-      gravityRange: 2,
-      gravityCompound: 8,
-      gravityRangeCompound: 1.2,
+      fit: true,
+      gravityCompound: 10000000,
+      gravityRangeCompound: 1,
       numIter: 300,
       nodeRepulsion: function (node) {
         if (node.data().type === "stakehlderNode") {
