@@ -16,18 +16,11 @@ export function Header({
   connectionFlagsDisplay,
   setStakeholdersDisplay,
   nodeCountRef,
+  totalActCountRef,
 }) {
   // TOGGLE CONTROLS /////////////
   function changeLayout() {
-    // cyState.cy
-    //   .elements("node[type != 'stakeholderNode'], edge[type != 'stakeholderEdge']")
-    //   .layout(LAYOUTS(nodeCountRef.current).FCOSERandom)
-    //   .run();
-    // cyState.cy
-    //   .elements("node[type = 'stakeholderNode'], edge[type = 'stakeholderEdge']")
-    //   .layout(LAYOUTS(nodeCountRef.current).COLA)
-    //   .run();
-    cyState.cy.layout(LAYOUTS(nodeCountRef.current).FCOSERandom).run();
+    cyState.cy.layout(LAYOUTS(nodeCountRef.current, totalActCountRef.current, true).FCOSE).run();
   }
 
   const toggleCompleted = (event) => {

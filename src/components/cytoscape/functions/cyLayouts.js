@@ -9,88 +9,52 @@ Cytoscape.use(fcose);
 
 Cytoscape.use(cola);
 
-export const LAYOUTS = (nodeCount) => {
-  const nodeRepuslionFactor = 400;
-  const edgeLengthFactor = 0.1;
+export const LAYOUTS = (nodeCount, totalActCount, random) => {
+  const nodeRepuslionFactor = 800;
 
-  const itterations = 100;
-  const gravity = 10;
-  const gravityCompound = 8;
-  const gravityRangeCompound = 1.2;
-  // const edgeElasticity = 0.1;
-  const nestingFactor = 0;
-  const gravityRange = 2;
+  /// might be unnecicerily cnfusing
+  // const reducerConst = totalActCount * 4;
+  // const multiplier = (reducerConst - nodeCount) / 100; // need to teat if this works for diffrent sized graphs
+  // const stakeholderedgelength = Math.pow(multiplier, 4);
 
   return {
     FCOSE: {
+      uniformNodeDimensions: true,
       name: "fcose",
       quality: "proof",
       animationDuration: 1000,
       nodeDimensionsIncludeLabels: true,
-      randomize: false,
-      fit: true,
-      gravity: gravity,
-      gravityRange: gravityRange,
-      gravityCompound: gravityCompound,
-      gravityRangeCompound: gravityRangeCompound,
-      numIter: itterations,
+
+      randomize: random,
+      // fit: true,
+      gravity: 10,
+      gravityRange: 2,
+      gravityCompound: 8,
+      gravityRangeCompound: 1.2,
+      numIter: 300,
       nodeRepulsion: function (node) {
-        // return 1000;
-        if (node.data().type === "stakeholderNode") {
-          return nodeCount * nodeRepuslionFactor;
+        if (node.data().type === "stakehlderNode") {
+          return nodeRepuslionFactor * nodeCount;
         } else {
-          return 2;
+          return nodeRepuslionFactor * nodeCount;
         }
       },
       idealEdgeLength: function (edge) {
-        // return 1000;
         if (edge.data().type === "stakeholderEdge") {
-          return nodeCount * edgeLengthFactor;
+          return 50;
         } else {
-          return 300;
+          return nodeCount * 4;
         }
       },
-      // nestingFactor: nestingFactor,
-      // edgeElasticity: (edge) => edgeElasticity,
-      // initialTemp: 1000,
-      // coolingFactor: 0.99,
-      // nestingFactor: 0.3, //seems to make each wp more indipendant i.e. larger nodes float further away from center of graph
-    },
-    //run when chnage layout button is clicked, creates more 'drastic' layout chnage
-    FCOSERandom: {
-      name: "fcose",
-      quality: "proof",
-      animationDuration: 1000,
-      nodeDimensionsIncludeLabels: true,
-      randomize: true,
-      fit: true,
-      gravity: gravity,
-      gravityRange: gravityRange,
-      gravityCompound: gravityCompound,
-      gravityRangeCompound: gravityRangeCompound,
-      numIter: itterations,
-      nodeRepulsion: function (node) {
-        // return 1000;
-        if (node.data().type === "stakeholderNode") {
-          return nodeCount * nodeRepuslionFactor;
-        } else {
-          return 2;
-        }
-      },
-      idealEdgeLength: function (edge) {
-        // return 1000;
+      edgeElasticity: (edge) => {
         if (edge.data().type === "stakeholderEdge") {
-          return nodeCount * edgeLengthFactor;
+          return 0.4;
         } else {
-          return 300;
+          return 0.1;
         }
       },
-      // nestingFactor: nestingFactor,
-      // edgeElasticity: (edge) => edgeElasticity,
-      // // initialTemp: 1000,
-      // // coolingFactor: 0.99,
-      // // nestingFactor: 0.3,
     },
+
     COLA: {
       name: "cola",
       edgeLength: 2000, // sets edge length directly in simulation

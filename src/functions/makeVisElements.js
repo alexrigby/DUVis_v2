@@ -81,6 +81,7 @@ export async function makeVisElements(
       type: "project",
     },
   };
+  const totaActCount = activityData.length;
 
   const cyElms = [nodes, stakeholderNodes, edges.flat(), stakeholderEdges.flat(), wpNodes, projectNode].flat();
 
@@ -92,6 +93,7 @@ export async function makeVisElements(
     dates: convertedDates,
     stakeholderData: stakeholderData,
     matrixHeaders: matrixHeaders,
+    totalActCount: totaActCount,
   };
 }
 

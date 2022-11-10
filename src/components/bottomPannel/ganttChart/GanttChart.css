@@ -48,3 +48,10 @@
   border-width: 3px !important;
   line-height: 4px !important;
 }
+
+.hilightedItem {
+  background-color: red !important;
+  border-color: red !important;
+  border-width: 3px !important;
+  line-height: 4px !important;
+}

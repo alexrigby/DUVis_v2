@@ -26,7 +26,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
     .incomers()
     .sources('[type != "stakeholderNode"]');
 
-  const uniqueLinks = [...new Set([...incommingActivities, ...outgoingActivities])];
+  const uniqueActLinks = [...new Set([...incommingActivities, ...outgoingActivities])];
 
   const latestPrPeriod = datesRef.current[datesRef.current.length - 1].prPeriod;
 
@@ -80,7 +80,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
     }
   }
 
-  const linkedActivitiesList = uniqueLinks.map((activity) => (
+  const linkedActivitiesList = uniqueActLinks.map((activity) => (
     <li
       key={activity.id()}
       onClick={() => nodeNavigationHandler(activity.id(), setSelectedNode, cyState)}
@@ -232,6 +232,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
           LINKED ACTIVITIES{" "}
           <span onClick={() => openActAccordion("click", "activity")}>{actAccordion.activity ? close : open}</span>{" "}
         </h1>
+        <h2>count: {uniqueActLinks.length}</h2>
         <ul style={style("activity")}>{linkedActivitiesList}</ul>
       </div>
       <div className="metaSection">

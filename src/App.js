@@ -44,15 +44,14 @@ export function App() {
   const stakeholderDataRef = useRef(null);
   const nodeCountRef = useRef(null);
   const matrixHeadersRef = useRef(null);
-
+  const totalActCountRef = useRef(null);
   //adds stakeholder nand activity nodes to count
-  nodeCountRef.current =
-    actDataRef.current && stakeholderDataRef.current && actDataRef.current.length + stakeholderDataRef.current.length;
+  nodeCountRef.current = actDataRef.current && actDataRef.current.length;
 
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
     async function addDataToCytoscape() {
-      const { cyElms, wpData, gantChartItems, activityData, dates, stakeholderData, matrixHeaders } =
+      const { cyElms, wpData, gantChartItems, activityData, dates, stakeholderData, matrixHeaders, totalActCount } =
         await makeVisElements(dataset, links, wpDataset, datesData, tdrData, prPeriod, currentStory, completedDisplay); //combines parsing functions to make elements array
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
@@ -62,6 +61,7 @@ export function App() {
       datesRef.current = dates; //assigns dates ro ref
       gantchartData.current = gantChartItems; //asign gant chart data to the ref
       matrixHeadersRef.current = matrixHeaders;
+      totalActCountRef.current = totalActCount;
 
       setCyState((prevState) => ({
         ...prevState,
@@ -99,6 +99,7 @@ export function App() {
             connectionFlagsDisplay={connectionFlagsDisplay}
             setStakeholdersDisplay={setStakeholdersDisplay}
             nodeCountRef={nodeCountRef}
+            totalActCountRef={totalActCountRef}
           />
           <FilterOptions
             datesRef={datesRef}
@@ -129,6 +130,7 @@ export function App() {
           activityEdgeDisplay={activityEdgeDisplay}
           stakeholdersDisplay={stakeholdersDisplay}
           nodeCountRef={nodeCountRef}
+          totalActCountRef={totalActCountRef}
         />
       </div>
     </div>

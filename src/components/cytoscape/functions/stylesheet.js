@@ -145,6 +145,16 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
       },
     },
     {
+      selector: ".hilightedNode",
+      style: {
+        "border-color": "red",
+        "background-color": "red",
+        "border-opacity": 1,
+        "border-width": "6px",
+        display: "element",
+      },
+    },
+    {
       selector: ".show",
       style: {
         display: "element",

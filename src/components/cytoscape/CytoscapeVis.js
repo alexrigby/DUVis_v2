@@ -6,7 +6,14 @@ import stylesheet from "./functions/stylesheet";
 import nodeTooltip from "./functions/nodeTooltips";
 import styleSelectedElements from "./functions/styleSelectedElements";
 
-export function CytoscapeVis({ cyState, setSelectedNode, activityEdgeDisplay, stakeholdersDisplay, nodeCountRef }) {
+export function CytoscapeVis({
+  cyState,
+  setSelectedNode,
+  activityEdgeDisplay,
+  stakeholdersDisplay,
+  nodeCountRef,
+  totalActCountRef,
+}) {
   //called every time setSideBarVis or cyState chanages
   useEffect(() => {
     nodeTooltip(cyState.cy); //produces tooltips on mouuseover
@@ -31,9 +38,11 @@ export function CytoscapeVis({ cyState, setSelectedNode, activityEdgeDisplay, st
     //only runs when the elements length chnages--- hakey but works
     // cyState.cy.elements("node[type = 'stakeholderNode'], edge[type = 'stakeholderEdge']").layout(LAYOUTS.circle).run();
     // cyState.cy.elements("node[type != 'stakeholderNode'], edge[type != 'stakeholderEdge']").layout(LAYOUTS.FCOSE).run();
-    nodeCountRef.current && cyState.cy.layout(LAYOUTS(nodeCountRef.current).FCOSE).run();
+    nodeCountRef.current &&
+      totalActCountRef.current &&
+      cyState.cy.layout(LAYOUTS(nodeCountRef.current, totalActCountRef.current, false).FCOSE).run();
     cyState.cy.fit();
-  }, [cyState.cy, cyState.elements.length, nodeCountRef]);
+  }, [cyState.cy, cyState.elements.length, nodeCountRef, totalActCountRef]);
 
   return (
     <CytoscapeComponent
@@ -50,7 +59,9 @@ export function CytoscapeVis({ cyState, setSelectedNode, activityEdgeDisplay, st
           //   .elements("node[type != 'stakeholderNode'], edge[type != 'stakeholderEdge']")
           //   .layout(LAYOUTS.FCOSE)
           //   .run();
-          nodeCountRef.current && cyState.cy.layout(LAYOUTS(nodeCountRef.current).FCOSE).run();
+          nodeCountRef.current &&
+            totalActCountRef.current &&
+            cyState.cy.layout(LAYOUTS(nodeCountRef.current, totalActCountRef.current, false).FCOSE).run();
           cyState.cy.fit();
         });
       }}
