@@ -7,10 +7,6 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
       style: {
         "border-opacity": 0,
         "background-opacity": 0,
-        // "min-width": 3000,
-        // "min-height": 3000,
-        // "min-width-bias-left": "50%",
-        // "min-width-bias-right": "50%",
         events: "no",
       },
     },
@@ -34,34 +30,10 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
         //width and height displayed in accepted bubble area scale 'D2 = D1 * SQRT(X2/X1)' https://infonewt.com/circles/
         //+1 gives value to nodes with no connecting edges,
         width: function (ele) {
-          // if (stakeholdersDisplay) {
-          //   return 1 * Math.sqrt((ele.connectedEdges().length + 1) / 1) * 20;
-          // } else {
-          return (
-            1 *
-            Math.sqrt(
-              ele.connectedEdges().length -
-                ele.connectedEdges().connectedNodes("[type = 'stakeholderNode']").length +
-                1 / 1
-            ) *
-            20
-          );
-          // }
+          return 1 * Math.sqrt(ele.connectedEdges().connectedNodes("[type != 'stakeholderNode']").length + 1 / 1) * 20;
         },
         height: function (ele) {
-          // if (stakeholdersDisplay) {
-          //   return 1 * Math.sqrt((ele.connectedEdges().length + 1) / 1) * 20;
-          // } else {
-          return (
-            1 *
-            Math.sqrt(
-              ele.connectedEdges().length -
-                ele.connectedEdges().connectedNodes("[type = 'stakeholderNode']").length +
-                1 / 1
-            ) *
-            20
-          );
-          // }
+          return 1 * Math.sqrt(ele.connectedEdges().connectedNodes("[type != 'stakeholderNode']").length + 1 / 1) * 20;
         },
       },
     },

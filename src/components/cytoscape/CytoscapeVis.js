@@ -36,8 +36,6 @@ export function CytoscapeVis({
 
   useEffect(() => {
     //only runs when the elements length chnages--- hakey but works
-    // cyState.cy.elements("node[type = 'stakeholderNode'], edge[type = 'stakeholderEdge']").layout(LAYOUTS.circle).run();
-    // cyState.cy.elements("node[type != 'stakeholderNode'], edge[type != 'stakeholderEdge']").layout(LAYOUTS.FCOSE).run();
     nodeCountRef.current &&
       totalActCountRef.current &&
       cyState.cy.layout(LAYOUTS(nodeCountRef.current, totalActCountRef.current, false).FCOSE).run();
@@ -50,15 +48,6 @@ export function CytoscapeVis({
       cy={(cy) => {
         cyState.cy = cy;
         cy.on("resize", (_evt) => {
-          // fits the cy graph to the window when the window is resized
-          // cyState.cy
-          //   .elements("node[type = 'stakeholderNode'], edge[type = 'stakeholderEdge']")
-          //   .layout(LAYOUTS.circle)
-          //   .run();
-          // cyState.cy
-          //   .elements("node[type != 'stakeholderNode'], edge[type != 'stakeholderEdge']")
-          //   .layout(LAYOUTS.FCOSE)
-          //   .run();
           nodeCountRef.current &&
             totalActCountRef.current &&
             cyState.cy.layout(LAYOUTS(nodeCountRef.current, totalActCountRef.current, false).FCOSE).run();
