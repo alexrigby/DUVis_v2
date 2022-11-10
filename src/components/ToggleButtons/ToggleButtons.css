@@ -1,0 +1,28 @@
+.headSection button {
+  pointer-events: all;
+  margin-bottom: 5px;
+  margin-right: 5px;
+}
+
+.cytoscapeButtons {
+  border-bottom: 1px solid #e4e4e4;
+
+  display: flex;
+  justify-content: flex-end;
+}
+
+.toggleButtons {
+  border-bottom: 1px solid #e4e4e4;
+  padding-top: 5px;
+  display: flex;
+  justify-content: flex-end;
+}
+.bottomPannelButtons {
+  padding-top: 5px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.fa {
+  padding-left: 3px;
+}

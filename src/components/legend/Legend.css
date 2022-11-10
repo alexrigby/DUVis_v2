@@ -1,6 +1,6 @@
 .legend {
   display: inline-block;
-  padding: 5px 0px 0px 15px;
+  padding: 5px 0px 0px 0px;
   pointer-events: none;
   position: relative;
 }

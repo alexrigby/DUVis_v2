@@ -53,3 +53,22 @@ button:active {
 .activeButton {
   background-color: #cfcfcf;
 }
+
+.headSection {
+  display: flex;
+  justify-content: space-between;
+}
+
+.headSection h1 {
+  margin-top: 0px;
+  margin-bottom: 6px;
+}
+
+.headSection {
+  padding: 10px 20px 0px 15px;
+  font-size: 10pt;
+}
+
+.headSection p {
+  margin: 0;
+}

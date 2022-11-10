@@ -153,11 +153,13 @@ export function FilterOptions({
           <div className="storyOptions">
             {storyOptions}
             <button className="customStoryButton" onClick={displayCustomStoryOptions}>
-              Custom Story
+              Custom Story <i class="fa fa-pencil"></i>
             </button>
             <a href={"data:text/csv;charset=utf-8," + escape(convertToCSV(stories))} download="stories">
               {/* allows stories to be downloaded as csv*/}
-              <button className="customStoryButton">Export Stories</button>
+              <button className="customStoryButton">
+                Export Stories <i class="fa fa-download"></i>
+              </button>
             </a>
           </div>
           <CustomStory

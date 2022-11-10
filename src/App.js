@@ -6,6 +6,7 @@ import CytoscapeVis from "./components/cytoscape/CytoscapeVis";
 import Legend from "./components/legend/Legend";
 import BottomPannel from "./components/bottomPannel/BottomPannel";
 import FilterOptions from "./components/FilterOptions/FilterOptions";
+import ToggleButtons from "./components/ToggleButtons/ToggleButtons";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
@@ -85,32 +86,40 @@ export function App() {
             datesRef={datesRef}
             prPeriod={prPeriod}
           />
-          <Header
-            cyState={cyState}
-            datesRef={datesRef}
-            prPeriod={prPeriod}
-            currentStory={currentStory}
-            setActivityEdgeDisplay={setActivityEdgeDisplay}
-            setCompletedDisplay={setCompletedDisplay}
-            completedDisplay={completedDisplay}
-            selectedBottomVis={selectedBottomVis}
-            setSelectedBottomVis={setSelectedBottomVis}
-            setConnectionFlagsDisplay={setConnectionFlagsDisplay}
-            connectionFlagsDisplay={connectionFlagsDisplay}
-            setStakeholdersDisplay={setStakeholdersDisplay}
-            nodeCountRef={nodeCountRef}
-            totalActCountRef={totalActCountRef}
-          />
-          <FilterOptions
-            datesRef={datesRef}
-            prPeriod={prPeriod}
-            setPrPeriod={setPrPeriod}
-            currentStory={currentStory}
-            setCurrentStory={setCurrentStory}
-            actDataRef={actDataRef}
-            matrixHeadersRef={matrixHeadersRef}
-          />
-          <Legend cyState={cyState} />
+          <div className="headSection">
+            <div className="rightSide">
+              <Header
+                cyState={cyState}
+                datesRef={datesRef}
+                prPeriod={prPeriod}
+                currentStory={currentStory}
+                completedDisplay={completedDisplay}
+              />
+
+              <FilterOptions
+                datesRef={datesRef}
+                prPeriod={prPeriod}
+                setPrPeriod={setPrPeriod}
+                currentStory={currentStory}
+                setCurrentStory={setCurrentStory}
+                actDataRef={actDataRef}
+                matrixHeadersRef={matrixHeadersRef}
+              />
+              <Legend cyState={cyState} />
+            </div>
+            <ToggleButtons
+              selectedBottomVis={selectedBottomVis}
+              setSelectedBottomVis={setSelectedBottomVis}
+              setConnectionFlagsDisplay={setConnectionFlagsDisplay}
+              connectionFlagsDisplay={connectionFlagsDisplay}
+              setStakeholdersDisplay={setStakeholdersDisplay}
+              nodeCountRef={nodeCountRef}
+              totalActCountRef={totalActCountRef}
+              setActivityEdgeDisplay={setActivityEdgeDisplay}
+              setCompletedDisplay={setCompletedDisplay}
+              cyState={cyState}
+            />
+          </div>
 
           <BottomPannel
             gantchartData={gantchartData}
