@@ -28,17 +28,16 @@ export function App() {
     elements: [],
   });
 
-  console.log("rendered")
+  console.log("rendered");
 
-  //sets initial state for selected node
-  const [selectedNode, setSelectedNode] = useState({ id: "" });
+  const [selectedNode, setSelectedNode] = useState({ id: "" }); //sets initial state for selected node
   const [prPeriod, setPrPeriod] = useState({ pr: null, undefined: true }); //sets state for pr period
   const [currentStory, setCurrentStory] = useState(null); //sets story ids state
   const [activityEdgeDisplay, setActivityEdgeDisplay] = useState(false); //sets if wp edges or activity edges are displayed
   const [completedDisplay, setCompletedDisplay] = useState(false); //sets if nodes opacity is defined by completion status
   const [connectionFlagsDisplay, setConnectionFlagsDisplay] = useState(false);
   const [stakeholdersDisplay, setStakeholdersDisplay] = useState(false);
-
+  const [networkVeiw, setNetworkVeiw] = useState(false);
   const [selectedBottomVis, setSelectedBottomVis] = useState("");
 
   const gantchartData = useRef(null); //stores parsed gantchart data
@@ -120,6 +119,8 @@ export function App() {
               setActivityEdgeDisplay={setActivityEdgeDisplay}
               setCompletedDisplay={setCompletedDisplay}
               cyState={cyState}
+              setNetworkVeiw={setNetworkVeiw}
+              networkVeiw={networkVeiw}
             />
           </div>
 

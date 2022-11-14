@@ -14,6 +14,8 @@ export function ToggleButtons({
   setActivityEdgeDisplay,
   setCompletedDisplay,
   cyState,
+  setNetworkVeiw,
+  networkVeiw,
 }) {
   // TOGGLE CONTROLS /////////////
   function changeLayout() {
@@ -30,10 +32,15 @@ export function ToggleButtons({
     setActivityEdgeDisplay((prevState) => !prevState);
   };
 
-  const toggleConnectionFlags = (event) => {
+  const toggleNetworkVeiw = (event) => {
     event.target.classList.toggle("activeButton");
-    setConnectionFlagsDisplay((prevState) => !prevState);
+    setNetworkVeiw((prevState) => !prevState);
   };
+
+  // const toggleConnectionFlags = (event) => {
+  //   event.target.classList.toggle("activeButton");
+  //   setConnectionFlagsDisplay((prevState) => !prevState);
+  // };
 
   const toggleStakeholders = (event) => {
     event.target.classList.toggle("activeButton");
@@ -43,17 +50,17 @@ export function ToggleButtons({
   };
 
   // every time button is clicked the style of flagged activities is chnaged
-  useEffect(() => {
-    const nodeEdges = cyState.cy.nodes('[type = "activityNode"]').map((node) => node.connectedEdges().length);
-    const meanEdges = nodeEdges.reduce((a, b) => a + b, 0) / nodeEdges.length; //gets average edges per node
-    if (connectionFlagsDisplay === true) {
-      cyState.cy
-        .nodes('[type = "activityNode"]')
-        .map((node) => node.connectedEdges().length < meanEdges && node.addClass("lowConnections"));
-    } else {
-      cyState.cy.nodes('[type = "activityNode"]').removeClass("lowConnections");
-    }
-  }, [connectionFlagsDisplay, cyState.cy]);
+  // useEffect(() => {
+  //   const nodeEdges = cyState.cy.nodes('[type = "activityNode"]').map((node) => node.connectedEdges().length);
+  //   const meanEdges = nodeEdges.reduce((a, b) => a + b, 0) / nodeEdges.length; //gets average edges per node
+  //   if (connectionFlagsDisplay === true) {
+  //     cyState.cy
+  //       .nodes('[type = "activityNode"]')
+  //       .map((node) => node.connectedEdges().length < meanEdges && node.addClass("lowConnections"));
+  //   } else {
+  //     cyState.cy.nodes('[type = "activityNode"]').removeClass("lowConnections");
+  //   }
+  // }, [connectionFlagsDisplay, cyState.cy]);
 
   const toggleBottomPannelDisplay = (event) => {
     const target = event.currentTarget.id;
@@ -62,13 +69,10 @@ export function ToggleButtons({
   // TOGGLE CONTROLS /////////////
 
   //STYLING //////////////////////
-  const ganttButtonstyle = {
-    backgroundColor: selectedBottomVis === "gantChartButton" ? " #cfcfcf" : "#e4e4e4",
-  };
 
-  const anyliticsButtonStyle = {
-    backgroundColor: selectedBottomVis === "vegaAnalyticsButton" ? " #cfcfcf" : "#e4e4e4",
-  };
+  const style = (state) => ({
+    backgroundColor: state ? " #cfcfcf" : "#e4e4e4",
+  });
 
   //STYLING //////////////////////
   return (
@@ -77,13 +81,24 @@ export function ToggleButtons({
         <button onClick={changeLayout}>
           Change Layout <i className="fa fa-repeat"></i>
         </button>
+        <button onClick={toggleNetworkVeiw}>
+          Network <i className="fa fa-circle-nodes"></i>
+        </button>
         {/* <button title="flag activities with less than mean number of connections" onClick={toggleConnectionFlags}>
           Mean Connection Flag
         </button> */}
-        <button id="gantChartButton" onClick={toggleBottomPannelDisplay} style={ganttButtonstyle}>
+        <button
+          id="gantChartButton"
+          onClick={toggleBottomPannelDisplay}
+          style={style(selectedBottomVis === "gantChartButton")}
+        >
           Gantt Chart <i className="fa fa-chart-gantt"></i>
         </button>
-        <button id="vegaAnalyticsButton" onClick={toggleBottomPannelDisplay} style={anyliticsButtonStyle}>
+        <button
+          id="vegaAnalyticsButton"
+          onClick={toggleBottomPannelDisplay}
+          style={style(selectedBottomVis === "vegaAnalyticsButton")}
+        >
           Analytics <i className="fa fa-chart-column"></i>
         </button>
       </div>
