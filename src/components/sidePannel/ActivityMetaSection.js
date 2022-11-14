@@ -149,8 +149,8 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
           {/* {meta["Activity Status"]} */}
           {completedText()}
         </p>
-        <h2>Flags:</h2>
-        {flagText()}
+        {/* <h2>Flags:</h2>
+        {flagText()} */}
         <h2>Start - End:</h2>
         <p>
           <span style={datesStyle}> Date: </span> {shortDates(meta, "start")} - {shortDates(meta, "end")}

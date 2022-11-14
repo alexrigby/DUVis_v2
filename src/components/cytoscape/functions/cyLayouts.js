@@ -34,7 +34,11 @@ export const LAYOUTS = (nodeCount, totalActCount, random) => {
       nodeRepulsion: function (node) {
         if (node.data().type === "stakehlderNode") {
           return nodeRepuslionFactor * nodeCount;
-        } else {
+        }
+        // else if (node.data().type === "project") {
+        //   return nodeRepuslionFactor * nodeCount * 4;
+        // }
+        else {
           return nodeRepuslionFactor * nodeCount;
         }
       },

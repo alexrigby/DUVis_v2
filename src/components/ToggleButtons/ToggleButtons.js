@@ -75,28 +75,28 @@ export function ToggleButtons({
     <div className="displayButtons">
       <div className="cytoscapeButtons">
         <button onClick={changeLayout}>
-          Change Layout <i class="fa fa-repeat"></i>
+          Change Layout <i className="fa fa-repeat"></i>
         </button>
         {/* <button title="flag activities with less than mean number of connections" onClick={toggleConnectionFlags}>
           Mean Connection Flag
         </button> */}
         <button id="gantChartButton" onClick={toggleBottomPannelDisplay} style={ganttButtonstyle}>
-          Gantt Chart <i class="fa fa-chart-gantt"></i>
+          Gantt Chart <i className="fa fa-chart-gantt"></i>
         </button>
         <button id="vegaAnalyticsButton" onClick={toggleBottomPannelDisplay} style={anyliticsButtonStyle}>
-          Analytics <i class="fa fa-chart-column"></i>
+          Analytics <i className="fa fa-chart-column"></i>
         </button>
       </div>
       <div className="toggleButtons">
         <button onClick={toggleEdges}>
-          Toggle Connections <i class="fa fa-diagram-project"></i>
+          Toggle Connections <i className="fa fa-diagram-project"></i>
         </button>
         <button onClick={toggleCompleted}>
-          Toggle Completed <i class="fa fa-check"></i>
+          Toggle Completed <i className="fa fa-check"></i>
         </button>
         <button onClick={toggleStakeholders}>
           {" "}
-          Toggle Stakeholders <i class="fa fa-handshake-simple"></i>
+          Toggle Stakeholders <i className="fa fa-handshake-simple"></i>
         </button>
       </div>
       {/* <div className="bottomPannelButtons"></div> */}

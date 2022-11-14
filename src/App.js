@@ -28,6 +28,8 @@ export function App() {
     elements: [],
   });
 
+  console.log("rendered")
+
   //sets initial state for selected node
   const [selectedNode, setSelectedNode] = useState({ id: "" });
   const [prPeriod, setPrPeriod] = useState({ pr: null, undefined: true }); //sets state for pr period

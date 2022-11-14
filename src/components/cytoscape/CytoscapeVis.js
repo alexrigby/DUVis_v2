@@ -55,7 +55,7 @@ export function CytoscapeVis({
         });
       }}
       elements={cyState.elements}
-      wheelSensitivity={0.1}
+      // wheelSensitivity={0.1}
       style={style}
       stylesheet={stylesheet(activityEdgeDisplay, stakeholdersDisplay)}
       layout={LAYOUTS.COSE}
