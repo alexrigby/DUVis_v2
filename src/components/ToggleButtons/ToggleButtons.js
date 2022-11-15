@@ -37,30 +37,12 @@ export function ToggleButtons({
     setNetworkVeiw((prevState) => !prevState);
   };
 
-  // const toggleConnectionFlags = (event) => {
-  //   event.target.classList.toggle("activeButton");
-  //   setConnectionFlagsDisplay((prevState) => !prevState);
-  // };
-
   const toggleStakeholders = (event) => {
     event.target.classList.toggle("activeButton");
     cyState.cy.nodes("[type = 'stakeholderNode'] ").removeClass("show"); // remove any unwanted classes from stakeholder nodes
     setStakeholdersDisplay((prevState) => !prevState);
     // cyState.cy.layout(LAYOUTS.FCOSERandom).run();
   };
-
-  // every time button is clicked the style of flagged activities is chnaged
-  // useEffect(() => {
-  //   const nodeEdges = cyState.cy.nodes('[type = "activityNode"]').map((node) => node.connectedEdges().length);
-  //   const meanEdges = nodeEdges.reduce((a, b) => a + b, 0) / nodeEdges.length; //gets average edges per node
-  //   if (connectionFlagsDisplay === true) {
-  //     cyState.cy
-  //       .nodes('[type = "activityNode"]')
-  //       .map((node) => node.connectedEdges().length < meanEdges && node.addClass("lowConnections"));
-  //   } else {
-  //     cyState.cy.nodes('[type = "activityNode"]').removeClass("lowConnections");
-  //   }
-  // }, [connectionFlagsDisplay, cyState.cy]);
 
   const toggleBottomPannelDisplay = (event) => {
     const target = event.currentTarget.id;
@@ -120,3 +102,21 @@ export function ToggleButtons({
 }
 
 export default ToggleButtons;
+
+// const toggleConnectionFlags = (event) => {
+//   event.target.classList.toggle("activeButton");
+//   setConnectionFlagsDisplay((prevState) => !prevState);
+// };
+
+// every time button is clicked the style of flagged activities is chnaged
+// useEffect(() => {
+//   const nodeEdges = cyState.cy.nodes('[type = "activityNode"]').map((node) => node.connectedEdges().length);
+//   const meanEdges = nodeEdges.reduce((a, b) => a + b, 0) / nodeEdges.length; //gets average edges per node
+//   if (connectionFlagsDisplay === true) {
+//     cyState.cy
+//       .nodes('[type = "activityNode"]')
+//       .map((node) => node.connectedEdges().length < meanEdges && node.addClass("lowConnections"));
+//   } else {
+//     cyState.cy.nodes('[type = "activityNode"]').removeClass("lowConnections");
+//   }
+// }, [connectionFlagsDisplay, cyState.cy]);

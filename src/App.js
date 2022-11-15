@@ -143,6 +143,7 @@ export function App() {
           stakeholdersDisplay={stakeholdersDisplay}
           nodeCountRef={nodeCountRef}
           totalActCountRef={totalActCountRef}
+          networkVeiw={networkVeiw}
         />
       </div>
     </div>
