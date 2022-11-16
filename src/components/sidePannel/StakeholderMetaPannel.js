@@ -1,6 +1,5 @@
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import hilightOnLiHover from "./functions/hilightOnLiHover";
-import { flatAccessWithDatum } from "vega-lite";
 import { useState } from "react";
 
 export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState }) {

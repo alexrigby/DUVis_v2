@@ -33,7 +33,7 @@ export function ToggleButtons({
   };
 
   const toggleNetworkVeiw = (event) => {
-    event.target.classList.toggle("activeButton");
+    // event.target.classList.toggle("activeButton");
     setNetworkVeiw((prevState) => !prevState);
   };
 
@@ -52,6 +52,10 @@ export function ToggleButtons({
 
   //STYLING //////////////////////
 
+  // const networkButtonStyle = {
+  //   backgroundColor
+  // }
+
   const style = (state) => ({
     backgroundColor: state ? " #cfcfcf" : "#e4e4e4",
   });
@@ -63,7 +67,7 @@ export function ToggleButtons({
         <button onClick={changeLayout}>
           Change Layout <i className="fa fa-repeat"></i>
         </button>
-        <button onClick={toggleNetworkVeiw}>
+        <button style={style(networkVeiw)} onClick={toggleNetworkVeiw}>
           Network <i className="fa fa-circle-nodes"></i>
         </button>
         {/* <button title="flag activities with less than mean number of connections" onClick={toggleConnectionFlags}>

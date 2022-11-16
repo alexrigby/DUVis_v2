@@ -28,8 +28,6 @@ export function App() {
     elements: [],
   });
 
-  console.log("rendered");
-
   const [selectedNode, setSelectedNode] = useState({ id: "" }); //sets initial state for selected node
   const [prPeriod, setPrPeriod] = useState({ pr: null, undefined: true }); //sets state for pr period
   const [currentStory, setCurrentStory] = useState(null); //sets story ids state
@@ -78,7 +76,7 @@ export function App() {
 
   return (
     <div className="container">
-      <div onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState)}>
+      <div onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState, networkVeiw)}>
         <div className="top-layer">
           <SidePannel
             selectedNode={selectedNode}
@@ -139,6 +137,7 @@ export function App() {
         <CytoscapeVis
           cyState={cyState}
           setSelectedNode={setSelectedNode}
+          selectedNode={selectedNode}
           activityEdgeDisplay={activityEdgeDisplay}
           stakeholdersDisplay={stakeholdersDisplay}
           nodeCountRef={nodeCountRef}
