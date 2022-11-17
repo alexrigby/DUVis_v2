@@ -6,6 +6,7 @@ export function makeCyStakeholerNodes(stakeholders) {
       type: "stakeholderNode",
       size: 1,
       id: s.stakeholderID,
+      label: s.stakeholderID,
       name: s.name,
       //   parent: "stakeholders",
     },

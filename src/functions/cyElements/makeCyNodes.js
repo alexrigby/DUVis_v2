@@ -13,9 +13,10 @@ export function makeCyNodes(data, prPeriod, completedDisplay, latestPrPeriod) {
         type: "activityNode",
         size: 1,
         parent: `wp${data[i][actFields.WP]}`,
+        colorRef: `wp${data[i][actFields.WP]}`,
         id: data[i][actFields.ID],
         // flag: data[i].ID + `*`, //so I can style flagged data
-        label: "node",
+        label: data[i][actFields.ID],
         name: data[i][actFields.ACTIVITY],
         category: data[i][actFields.CATEGORY],
         opacity: activityOpacity(data[i], completedDisplay, latestPrPeriod, prPeriod),

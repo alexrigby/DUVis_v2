@@ -13,6 +13,7 @@ export function makeCyWpNodes(data) {
       data: {
         parent: "project",
         id: wp,
+        label: wp,
         type: "wp",
         // size: WP_IDS[wp].length,
         name: data[i][wpFields.NAME],

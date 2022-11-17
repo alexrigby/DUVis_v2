@@ -14,7 +14,7 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
       selector: "node[type != 'wp'][type != 'project']",
       style: {
         // "font-family": "FontAwesome, sans-serif",
-        label: "data(id)",
+        label: "data(label)",
         "text-wrap": "wrap",
         "text-valign": "center",
         color: "white",
@@ -22,10 +22,10 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
         "background-opacity": "data(opacity)",
         "border-opacity": "data(opacity)",
         "background-color": function (ele) {
-          return nodeBackgroundColor(ele, "parent");
+          return nodeBackgroundColor(ele, "colorRef");
         },
         "border-color": function (ele) {
-          return nodeBorderColor(ele, "parent");
+          return nodeBorderColor(ele, "colorRef");
         },
         //width and height displayed in accepted bubble area scale 'D2 = D1 * SQRT(X2/X1)' https://infonewt.com/circles/
         //+1 gives value to nodes with no connecting edges,
@@ -108,6 +108,12 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
       },
     },
     {
+      selector: ".networkEdge",
+      style: {
+        display: "element",
+      },
+    },
+    {
       selector: ".selectedNode",
       style: {
         "border-color": "red",
@@ -126,12 +132,7 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
         display: "element",
       },
     },
-    {
-      selector: ".show",
-      style: {
-        display: "element",
-      },
-    },
+
     {
       selector: ".hide",
       style: {

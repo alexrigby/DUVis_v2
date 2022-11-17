@@ -1,4 +1,4 @@
-import LAYOUTS from "../cytoscape/functions/cyLayouts";
+import LAYOUTS from "../cytoscape/functions/LAYOUTS";
 import { useEffect } from "react";
 
 import "./Header.css";

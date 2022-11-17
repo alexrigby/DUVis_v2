@@ -42,16 +42,16 @@ export function App() {
   const datesRef = useRef(null); //stores dates
   const actDataRef = useRef(null); //stores activity data
   const stakeholderDataRef = useRef(null);
-  const nodeCountRef = useRef(null);
+  const currentActNodeCountRef = useRef(null);
   const matrixHeadersRef = useRef(null);
-  const totalActCountRef = useRef(null);
+  const origionalActCountRef = useRef(null);
   //adds stakeholder nand activity nodes to count
-  nodeCountRef.current = actDataRef.current && actDataRef.current.length;
+  currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
 
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
     async function addDataToCytoscape() {
-      const { cyElms, wpData, gantChartItems, activityData, dates, stakeholderData, matrixHeaders, totalActCount } =
+      const { cyElms, wpData, gantChartItems, activityData, dates, stakeholderData, matrixHeaders, origionalActCount } =
         await makeVisElements(dataset, links, wpDataset, datesData, tdrData, prPeriod, currentStory, completedDisplay); //combines parsing functions to make elements array
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
@@ -61,7 +61,7 @@ export function App() {
       datesRef.current = dates; //assigns dates ro ref
       gantchartData.current = gantChartItems; //asign gant chart data to the ref
       matrixHeadersRef.current = matrixHeaders;
-      totalActCountRef.current = totalActCount;
+      origionalActCountRef.current = origionalActCount;
 
       setCyState((prevState) => ({
         ...prevState,
@@ -112,8 +112,8 @@ export function App() {
               setConnectionFlagsDisplay={setConnectionFlagsDisplay}
               connectionFlagsDisplay={connectionFlagsDisplay}
               setStakeholdersDisplay={setStakeholdersDisplay}
-              nodeCountRef={nodeCountRef}
-              totalActCountRef={totalActCountRef}
+              currentActNodeCountRef={currentActNodeCountRef}
+              origionalActCountRef={origionalActCountRef}
               setActivityEdgeDisplay={setActivityEdgeDisplay}
               setCompletedDisplay={setCompletedDisplay}
               cyState={cyState}
@@ -140,8 +140,8 @@ export function App() {
           selectedNode={selectedNode}
           activityEdgeDisplay={activityEdgeDisplay}
           stakeholdersDisplay={stakeholdersDisplay}
-          nodeCountRef={nodeCountRef}
-          totalActCountRef={totalActCountRef}
+          currentActNodeCountRef={currentActNodeCountRef}
+          origionalActCountRef={origionalActCountRef}
           networkVeiw={networkVeiw}
         />
       </div>

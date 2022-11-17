@@ -1,5 +1,4 @@
-import LAYOUTS from "../cytoscape/functions/cyLayouts";
-import { useEffect } from "react";
+import { FCOSE } from "../cytoscape/functions/LAYOUTS";
 
 import "./ToggleButtons.css";
 
@@ -9,8 +8,8 @@ export function ToggleButtons({
   setConnectionFlagsDisplay,
   connectionFlagsDisplay,
   setStakeholdersDisplay,
-  nodeCountRef,
-  totalActCountRef,
+  currentActNodeCountRef,
+  origionalActCountRef,
   setActivityEdgeDisplay,
   setCompletedDisplay,
   cyState,
@@ -19,7 +18,7 @@ export function ToggleButtons({
 }) {
   // TOGGLE CONTROLS /////////////
   function changeLayout() {
-    cyState.cy.layout(LAYOUTS(nodeCountRef.current, totalActCountRef.current, true).FCOSE).run();
+    cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, true)).run();
   }
 
   const toggleCompleted = (event) => {

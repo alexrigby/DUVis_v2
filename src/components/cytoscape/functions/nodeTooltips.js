@@ -27,7 +27,7 @@ function makeTooltips(nodes, triggerEvent, cancelEvent) {
       //content to show in tooltip
       content: () => {
         let content = document.createElement("div");
-        content.innerHTML = `${node.id()}. ${node.data("name")}`;
+        content.innerHTML = `${node.data().label}. ${node.data("name")}`;
         return content;
       },
     });
