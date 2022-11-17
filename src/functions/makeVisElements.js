@@ -13,20 +13,17 @@ import parseTDRMatrix from "./TDRParseFucntions/parseTDRMatrix";
 import makeCyStakeholerNodes from "./cyElements/makeCyStakeholderNodes";
 import makeStakeholderCyEdges from "./cyElements/makeStakeholderCyEdges";
 
-export async function makeVisElements(
-  datasetURL,
-  linksURL,
-  wpDatasetURL,
-  datesURL,
-  tdrURL,
-  prPeriod,
-  currentStory,
-  completedDisplay
-) {
-  const activityDataNoDate = await parseDataset(datasetURL);
-  const links = await parseLinks(linksURL);
-  const wpData = await parseDataset(wpDatasetURL);
-  const dates = await parseDataset(datesURL);
+import actDataset from "../data/activity_matrix.txt";
+import actLinks from "../data/links.txt";
+import wpDataset from "../data/wp_names.txt";
+import datesData from "../data/dates.txt";
+import tdrDataset from "../data/stakeholder_matrix.txt";
+
+export async function makeVisElements(prPeriod, currentStory, completedDisplay) {
+  const activityDataNoDate = await parseDataset(actDataset);
+  const links = await parseLinks(actLinks);
+  const wpData = await parseDataset(wpDataset);
+  const dates = await parseDataset(datesData);
 
   const convertedDates = dates.map((d, i) => ({
     ...d,
@@ -51,7 +48,7 @@ export async function makeVisElements(
   //trims the data by filter option, used instead of raw data
   const trimmedData = trimData(activityData, prPeriod, currentStory);
   const trimmedWpData = wpData.filter((wp) => [...new Set(trimmedData.map((act) => act.WP))].includes(wp.id.slice(2)));
-  const stakeholderData = await parseTDRMatrix(tdrURL, trimmedData);
+  const stakeholderData = await parseTDRMatrix(tdrDataset, trimmedData);
 
   const gantChartItems = makeGantchartItems(
     trimmedData,

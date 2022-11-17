@@ -63,7 +63,10 @@ export function makeNHoodLayout(cyState, prevSelectedNode, selectedNode) {
 
   const newNhoodElms = [newNHoodSNodes, newNHoodActNodes, newNHoodActEdges, newNHoodSEdges].flat();
   cyState.cy.nodes().addClass("hide"); // hide all nodes and there connected edges
-  cyState.cy.add(newNhoodElms).layout(CONCENTRIC).run(); //add the new nodes to cytoscape and run concentric layout
+
+  prevSelectedNode.id === selectedNode.id
+    ? cyState.cy.add(newNhoodElms).layout(CONCENTRIC)
+    : cyState.cy.add(newNhoodElms).layout(CONCENTRIC).run(); //add the new nodes to cytoscape and run concentric layout
   nodeTooltip(cyState.cy); //produces tooltips on mouuseover
 }
 

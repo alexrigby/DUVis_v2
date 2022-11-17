@@ -5,14 +5,13 @@ import { useState } from "react";
 
 export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, datesRef, prPeriod }) {
   const meta = selectedNode.meta;
-  const open = <i className="fa fa-angle-down"></i>;
-  const close = <i className="fa fa-angle-up"></i>;
+  const OPEN = <i className="fa fa-angle-down"></i>;
+  const CLOSE = <i className="fa fa-angle-up"></i>;
+  const ENG_COUNT = [1, 2, 3, 4];
+  const SUBSECTIONS = ["description", "research", "method", "data", "discipline", "IW", "activity", "stakeholder"];
 
-  const engCount = [1, 2, 3, 4];
-  const subSections = ["description", "research", "method", "data", "discipline", "IW", "activity", "stakeholder"];
-
-  const engObj = engCount.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
-  const subSectionObj = subSections.reduce((p, c) => ({ ...p, [c]: false }), {}); // each subsection to onject- false
+  const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
+  const subSectionObj = SUBSECTIONS.reduce((p, c) => ({ ...p, [c]: false }), {}); // each subsection to onject- false
 
   const [actAccordion, setActAccordion] = useState({ ...engObj, ...subSectionObj });
 
@@ -101,7 +100,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
   const stakeholderCollection = [];
 
   //4 for 4 engagement levels
-  for (let i = 0; i < engCount.length; i++) {
+  for (let i = 0; i < ENG_COUNT.length; i++) {
     //get collections of conected nodes by engagemnet level
     const stakeholders = cyState.cy
       .nodes(`[id = "${selectedNode.id}"]`)
@@ -119,7 +118,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
         <div className="metaSection" key={i}>
           <h2>
             Level {i + 1} engagement:{" "}
-            <span onClick={() => openActAccordion("click", `eng${i}`)}>{actAccordion[`eng${i}`] ? close : open}</span>{" "}
+            <span onClick={() => openActAccordion("click", `eng${i}`)}>{actAccordion[`eng${i}`] ? CLOSE : OPEN}</span>{" "}
           </h2>
           <h2>count: {stakeholders.length}</h2>
           <div style={style}>
@@ -172,7 +171,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
         <h1>
           DESCRIPTION{" "}
           <span onClick={() => openActAccordion("click", "description")}>
-            {actAccordion.description ? close : open}
+            {actAccordion.description ? CLOSE : OPEN}
           </span>
         </h1>{" "}
         <p style={style("description")}>{meta[actFields.DESCRIPTION]}</p>
@@ -180,7 +179,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
       <div className="metaSection">
         <h1>
           RESEARCH{" "}
-          <span onClick={() => openActAccordion("click", "research")}>{actAccordion.research ? close : open}</span>{" "}
+          <span onClick={() => openActAccordion("click", "research")}>{actAccordion.research ? CLOSE : OPEN}</span>{" "}
         </h1>
         <div style={style("research")}>
           <h2>Question Type:</h2> {researchQuestionType(meta)}
@@ -190,7 +189,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
       <div className="metaSection">
         <h1>
           METHODOLOGY{" "}
-          <span onClick={() => openActAccordion("click", "method")}>{actAccordion.method ? close : open}</span>
+          <span onClick={() => openActAccordion("click", "method")}>{actAccordion.method ? CLOSE : OPEN}</span>
         </h1>
         <div style={style("method")}>
           <h2>Category:</h2> <p>{meta[actFields.CATEGORY]}</p>
@@ -199,7 +198,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
       </div>
       <div className="metaSection">
         <h1>
-          DATA <span onClick={() => openActAccordion("click", "data")}>{actAccordion.data ? close : open}</span>{" "}
+          DATA <span onClick={() => openActAccordion("click", "data")}>{actAccordion.data ? CLOSE : OPEN}</span>{" "}
         </h1>
         <div style={style("data")}>
           <h2>Procurement Method: </h2> <p>{meta[actFields.DATAMETHOD]} </p>
@@ -210,7 +209,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
       <div className="metaSection">
         <h1>
           DISCIPLINE{" "}
-          <span onClick={() => openActAccordion("click", "discipline")}>{actAccordion.discipline ? close : open}</span>{" "}
+          <span onClick={() => openActAccordion("click", "discipline")}>{actAccordion.discipline ? CLOSE : OPEN}</span>{" "}
         </h1>
         <div style={style("discipline")}>
           <h2>Category: </h2> <p>{meta[actFields.CATEGORY]}</p>
@@ -220,7 +219,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
       </div>
       <div className="metaSection">
         <h1>
-          IERLAND WATER <span onClick={() => openActAccordion("click", "IW")}>{actAccordion.IW ? close : open}</span>{" "}
+          IERLAND WATER <span onClick={() => openActAccordion("click", "IW")}>{actAccordion.IW ? CLOSE : OPEN}</span>{" "}
         </h1>
         <div style={style("IW")}>
           <h2>Aims and Objectives: </h2> <p>{meta[actFields.IW]}</p>
@@ -230,7 +229,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
       <div className="metaSection">
         <h1>
           LINKED ACTIVITIES{" "}
-          <span onClick={() => openActAccordion("click", "activity")}>{actAccordion.activity ? close : open}</span>{" "}
+          <span onClick={() => openActAccordion("click", "activity")}>{actAccordion.activity ? CLOSE : OPEN}</span>{" "}
         </h1>
         <h2>count: {uniqueActLinks.length}</h2>
         <ul style={style("activity")}>{linkedActivitiesList}</ul>
@@ -239,7 +238,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
         <h1>
           LINKED STAKEHOLDERS{" "}
           <span onClick={() => openActAccordion("click", "stakeholder")}>
-            {actAccordion.stakeholder ? close : open}
+            {actAccordion.stakeholder ? CLOSE : OPEN}
           </span>{" "}
         </h1>
         <h2>count: {stakeholderCount}</h2>

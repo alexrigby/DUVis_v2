@@ -10,47 +10,75 @@ Cytoscape.use(fcose);
 Cytoscape.use(cola);
 
 export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
-  const nodeRepuslionFactor = 800;
+  const nodeRepuslionFactor = 8000;
   /// might be unnecicerily cnfusing
   // const reducerConst = origionalActCount * 4;
   // const multiplier = (reducerConst - nodeCount) / 100; // need to teat if this works for diffrent sized graphs
   // const stakeholderedgelength = Math.pow(multiplier, 4);
+
   return {
-    uniformNodeDimensions: true,
+    //cose-bilkent is a cytoscape plugin
     name: "fcose",
-    quality: "proof",
+    // quality: currentActNodeCount < origionalActCount ? "default" : "proof",
     animationDuration: 1000,
     nodeDimensionsIncludeLabels: true,
-    randomize: random,
-    fit: true,
-    gravityCompound: 10000000,
-    gravityRangeCompound: 1,
-    numIter: 300,
     nodeRepulsion: function (node) {
       if (node.data().type === "stakehlderNode") {
         return nodeRepuslionFactor * currentActNodeCount;
-      }
-      // else if (node.data().type === "project") {
-      //   return nodeRepuslionFactor * nodeCount * 4;
-      // }
-      else {
-        return nodeRepuslionFactor * currentActNodeCount;
+      } else {
+        return 4000;
       }
     },
     idealEdgeLength: function (edge) {
       if (edge.data().type === "stakeholderEdge") {
-        return 50;
+        return 1;
       } else {
-        return currentActNodeCount * 3;
+        return 300;
       }
     },
-    edgeElasticity: (edge) => {
-      if (edge.data().type === "stakeholderEdge") {
-        return 0.4;
-      } else {
-        return 0.1;
-      }
-    },
+    edgeElasticity: (edge) => 0.1,
+    // tile: false,
+    randomize: random,
+    fit: true,
+    gravity: 4,
+    gravityCompound: 5.0,
+
+    //   uniformNodeDimensions: true,
+    //   name: "fcose",
+    //   quality: "proof",
+    //   animationDuration: 1000,
+    //   nodeDimensionsIncludeLabels: true,
+    //   randomize: random,
+    //   fit: true,
+    //   gravityCompound: 10000000,
+    //   gravityRangeCompound: 1,
+    //   numIter: 300,
+    //   nodeRepulsion: function (node) {
+    //     if (node.data().type === "stakehlderNode") {
+    //       return nodeRepuslionFactor * currentActNodeCount;
+    //     }
+    //     // else if (node.data().type === "project") {
+    //     //   return nodeRepuslionFactor * nodeCount * 4;
+    //     // }
+    //     else {
+    //       return nodeRepuslionFactor * currentActNodeCount;
+    //     }
+    //   },
+    //   idealEdgeLength: function (edge) {
+    //     if (edge.data().type === "stakeholderEdge") {
+    //       return 50;
+    //     } else {
+    //       return currentActNodeCount * 3;
+    //     }
+    //   },
+    //   edgeElasticity: (edge) => {
+    //     if (edge.data().type === "stakeholderEdge") {
+    //       return 0.4;
+    //     } else {
+    //       return 0.1;
+    //     }
+    //   },
+    // };
   };
 };
 

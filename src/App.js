@@ -14,11 +14,11 @@ import makeVisElements from "./functions/makeVisElements";
 import makeCyWpEdges from "./components/cytoscape/functions/makeCyWpEdges";
 // import addCategoryIcon from "./components/cytoscape/functions/addCategoryIcons";
 
-import dataset from "./data/activity_matrix.txt";
-import links from "./data/links.txt";
-import wpDataset from "./data/wp_names.txt";
-import datesData from "./data/dates.txt";
-import tdrData from "./data/stakeholder_matrix.txt";
+// import dataset from "./data/activity_matrix.txt";
+// import links from "./data/links.txt";
+// import wpDataset from "./data/wp_names.txt";
+// import datesData from "./data/dates.txt";
+// import tdrData from "./data/stakeholder_matrix.txt";
 
 export function App() {
   //sets state of cy
@@ -41,20 +41,20 @@ export function App() {
   const gantchartData = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
   const actDataRef = useRef(null); //stores activity data
-  const stakeholderDataRef = useRef(null);
+  const stakeholderDataRef = useRef(null); //stakeholder data
   const currentActNodeCountRef = useRef(null);
   const matrixHeadersRef = useRef(null);
   const origionalActCountRef = useRef(null);
-  //adds stakeholder nand activity nodes to count
+
   currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
 
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
     async function addDataToCytoscape() {
       const { cyElms, wpData, gantChartItems, activityData, dates, stakeholderData, matrixHeaders, origionalActCount } =
-        await makeVisElements(dataset, links, wpDataset, datesData, tdrData, prPeriod, currentStory, completedDisplay); //combines parsing functions to make elements array
+        await makeVisElements(prPeriod, currentStory, completedDisplay); //all pre-processing of data
 
-      const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges
+      const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges once cytoscape has been made
 
       actDataRef.current = activityData; //ssigns activity data to ref
       stakeholderDataRef.current = stakeholderData;

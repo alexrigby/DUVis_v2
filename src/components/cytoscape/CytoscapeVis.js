@@ -24,7 +24,7 @@ export function CytoscapeVis({
     prevSelectedNode.current = selectedNode;
   }, [selectedNode]);
 
-  //called every time setSideBarVis or cyState chanages
+  //NODE SELECTION, called every time setSideBarVis or cyState chanages,
   useEffect(() => {
     nodeTooltip(cyState.cy); //produces tooltips on mouuseover
     const nodeClickHandler = (event) => {
@@ -41,6 +41,7 @@ export function CytoscapeVis({
     return () => cyState.cy.off("click", "node", nodeClickHandler); //clean up click handler to prevent memory leak
   }, [setSelectedNode, cyState]);
 
+  //RUNS LAYOUT WHEN NODES ARE ADDED/REMOVED
   useEffect(() => {
     //only runs when the elements length chnages--- hakey but works
     currentActNodeCountRef.current &&
@@ -49,6 +50,7 @@ export function CytoscapeVis({
     cyState.cy.fit();
   }, [cyState.cy, cyState.elements.length, currentActNodeCountRef, origionalActCountRef]);
 
+  //REMOVES NETWORK LAYOUT NODES
   useEffect(() => {
     function restoreLayout() {
       const newNhood = cyState.cy.elements(`#N_${prevSelectedNode.current.id}`).closedNeighborhood();
@@ -60,10 +62,12 @@ export function CytoscapeVis({
     !networkVeiw && cyState.cy && restoreLayout(); // if networkveiw is false and then remove all extra nodes and restore origional graph
   }, [currentActNodeCountRef, cyState.cy, networkVeiw, origionalActCountRef]);
 
-  networkVeiw &&
-    selectedNode.id !== "" &&
-    selectedNode.type !== "wp" &&
-    makeNHoodLayout(cyState, prevSelectedNode, selectedNode); // only run if there is a selected node and network is true
+  useEffect(() => {
+    networkVeiw &&
+      selectedNode.id !== "" &&
+      selectedNode.type !== "wp" &&
+      makeNHoodLayout(cyState, prevSelectedNode, selectedNode); // only run if there is a selected node and network is true
+  }, [cyState, networkVeiw, selectedNode]);
 
   const style = {
     display: cyState.display,
