@@ -20,13 +20,6 @@ export function CytoscapeVis({
   latestPrPeriodRef,
   prPeriod,
 }) {
-  // const prevSelectedNode = useRef({ id: "" }); // see which node was selected last
-  // // const preveCyElsLength = useRef(null);
-  // useEffect(() => {
-  //   //updates previous state ref when state changes
-  //   prevSelectedNode.current = selectedNode;
-  // }, [selectedNode]);
-
   //NODE SELECTION, called every time setSideBarVis or cyState chanages,
   useEffect(() => {
     nodeTooltip(cyState.cy); //produces tooltips on mouuseover
@@ -53,25 +46,20 @@ export function CytoscapeVis({
     cyState.cy.fit();
   }, [cyState.cy, cyState.elements.length, currentActNodeCountRef, origionalActCountRef]);
 
+  //MAKES NETWORK LAYOUT ELEMENST AND CONTROLS NAVIGATION BETWEEN NETWORK VEIWS
+  useEffect(() => {
+    networkVeiw && selectedNode.id !== "" && selectedNode.type !== "wp" && makeNHoodLayout(cyState, selectedNode); // only run if there is a selected node and network is true
+  }, [networkVeiw, selectedNode]);
+
   //REMOVES NETWORK LAYOUT NODES
   useEffect(() => {
     function restoreLayout() {
-      const newNhood = cyState.cy.nodes(`[network = "yes"]`);
-      console.log(newNhood.length);
-      cyState.cy.remove(newNhood); //deletes newly added nodes
+      cyState.cy.remove(cyState.cy.nodes(`[network = "yes"]`)); //deletes newly added nodes
       cyState.cy.elements().removeClass("hide"); //disply all elements
       cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, true)).run();
     }
-
     !networkVeiw && cyState.cy && restoreLayout(); // if networkveiw is false and then remove all extra nodes and restore origional graph
   }, [currentActNodeCountRef, cyState.cy, networkVeiw, origionalActCountRef]);
-
-  useEffect(() => {
-    networkVeiw &&
-      selectedNode.id !== "" &&
-      selectedNode.type !== "wp" &&
-      makeNHoodLayout(cyState, selectedNode, completedDisplay, latestPrPeriodRef, prPeriod); // only run if there is a selected node and network is true
-  }, [completedDisplay, cyState, latestPrPeriodRef, networkVeiw, prPeriod, selectedNode]);
 
   const style = {
     display: cyState.display,
@@ -96,7 +84,7 @@ export function CytoscapeVis({
       elements={cyState.elements}
       // wheelSensitivity={0.1}
       style={style}
-      stylesheet={stylesheet(activityEdgeDisplay, stakeholdersDisplay)}
+      stylesheet={stylesheet(activityEdgeDisplay, stakeholdersDisplay, completedDisplay, latestPrPeriodRef, prPeriod)}
       // layout={FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, false)}
     />
   );

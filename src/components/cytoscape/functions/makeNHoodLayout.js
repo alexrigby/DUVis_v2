@@ -2,7 +2,7 @@ import nodeTooltip from "./nodeTooltips";
 import activityOpacity from "../../../functions/activityOpacity";
 import { CONCENTRIC } from "./LAYOUTS";
 
-export function makeNHoodLayout(cyState, selectedNode, completedDisplay, latestPrPeriodRef, prPeriod) {
+export function makeNHoodLayout(cyState, selectedNode) {
   // deletes all network nodes
   const newNhood = cyState.cy.nodes(`[network = "yes"]`);
   cyState.cy.remove(newNhood);
@@ -48,7 +48,7 @@ export function makeNHoodLayout(cyState, selectedNode, completedDisplay, latestP
         parent: null,
         id: "N_" + n.id(),
         network: "yes",
-        opacity: activityOpacity(n.data().meta, completedDisplay, latestPrPeriodRef.current, prPeriod), //need to dynamically set opacity when making new nodes
+        // opacity: activityOpacity(n.data().meta, completedDisplay, latestPrPeriodRef.current, prPeriod), //need to dynamically set opacity when making new nodes
       },
     };
   });

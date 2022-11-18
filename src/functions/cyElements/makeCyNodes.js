@@ -19,7 +19,7 @@ export function makeCyNodes(data, prPeriod, completedDisplay, latestPrPeriod) {
         label: data[i][actFields.ID],
         name: data[i][actFields.ACTIVITY],
         category: data[i][actFields.CATEGORY],
-        opacity: activityOpacity(data[i], completedDisplay, latestPrPeriod, prPeriod),
+        // opacity: activityOpacity(data[i], completedDisplay, latestPrPeriod, prPeriod),
         meta: {
           ...data[i],
         },

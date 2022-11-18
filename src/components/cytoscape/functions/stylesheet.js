@@ -1,6 +1,8 @@
 import COLORS from "../../../configs/wpColors";
+import activityOpacity from "../../../functions/activityOpacity";
+import statusOpacity from "../../../configs/statusOpacity";
 
-export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
+export function stylesheet(activityEdgeDisplay, stakeholdersDisplay, completedDisplay, latestPrPeriodRef, prPeriod) {
   return [
     {
       selector: "node[type = 'project']",
@@ -11,7 +13,7 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
       },
     },
     {
-      selector: "node[type != 'wp'][type != 'project']",
+      selector: "node[type = 'activityNode']",
       style: {
         // "font-family": "FontAwesome, sans-serif",
         label: "data(label)",
@@ -19,8 +21,13 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
         "text-valign": "center",
         color: "white",
         "border-width": 4,
-        "background-opacity": "data(opacity)",
-        "border-opacity": "data(opacity)",
+        // "background-opacity": "data(opacity)",
+        "background-opacity": function (ele) {
+          return activityOpacity(ele.data().meta, completedDisplay, latestPrPeriodRef.current, prPeriod);
+        },
+        "border-opacity": function (ele) {
+          return activityOpacity(ele.data().meta, completedDisplay, latestPrPeriodRef.current, prPeriod);
+        },
         "background-color": function (ele) {
           return nodeBackgroundColor(ele, "colorRef");
         },
@@ -53,6 +60,19 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
         display: stakeholdersDisplay === false ? "element" : "none",
         "text-outline-color": "#666666",
         "text-outline-width": 1,
+        label: "data(label)",
+        "text-wrap": "wrap",
+        "text-valign": "center",
+        color: "white",
+        "border-width": 4,
+        "border-opacity": statusOpacity.onGoing,
+        "background-opacity": statusOpacity.onGoing,
+        "background-color": function (ele) {
+          return nodeBackgroundColor(ele, "colorRef");
+        },
+        "border-color": function (ele) {
+          return nodeBorderColor(ele, "colorRef");
+        },
       },
     },
     {
@@ -132,7 +152,6 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay) {
         display: "element",
       },
     },
-
     {
       selector: ".hide",
       style: {
