@@ -16,19 +16,22 @@ export function CytoscapeVis({
   currentActNodeCountRef,
   origionalActCountRef,
   networkVeiw,
+  completedDisplay,
+  latestPrPeriodRef,
+  prPeriod,
 }) {
-  const prevSelectedNode = useRef({ id: "" }); // see which node was selected last
-
-  useEffect(() => {
-    //updates previous state ref when state changes
-    prevSelectedNode.current = selectedNode;
-  }, [selectedNode]);
+  // const prevSelectedNode = useRef({ id: "" }); // see which node was selected last
+  // // const preveCyElsLength = useRef(null);
+  // useEffect(() => {
+  //   //updates previous state ref when state changes
+  //   prevSelectedNode.current = selectedNode;
+  // }, [selectedNode]);
 
   //NODE SELECTION, called every time setSideBarVis or cyState chanages,
   useEffect(() => {
     nodeTooltip(cyState.cy); //produces tooltips on mouuseover
     const nodeClickHandler = (event) => {
-      if (event.target.data().network === true) {
+      if (event.target.data().network === "yes") {
         const networkID = event.target.data().label; // network node ables are there equivelent node id
         setSelectedNode(cyState.cy.nodes(`#${networkID}`).data()); // set selected node to origional graph node
       } else {
@@ -53,10 +56,11 @@ export function CytoscapeVis({
   //REMOVES NETWORK LAYOUT NODES
   useEffect(() => {
     function restoreLayout() {
-      const newNhood = cyState.cy.elements(`#N_${prevSelectedNode.current.id}`).closedNeighborhood();
+      const newNhood = cyState.cy.nodes(`[network = "yes"]`);
+      console.log(newNhood.length);
       cyState.cy.remove(newNhood); //deletes newly added nodes
       cyState.cy.elements().removeClass("hide"); //disply all elements
-      cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, true)).run(); //runs the main layout again
+      cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, true)).run();
     }
 
     !networkVeiw && cyState.cy && restoreLayout(); // if networkveiw is false and then remove all extra nodes and restore origional graph
@@ -66,8 +70,8 @@ export function CytoscapeVis({
     networkVeiw &&
       selectedNode.id !== "" &&
       selectedNode.type !== "wp" &&
-      makeNHoodLayout(cyState, prevSelectedNode, selectedNode); // only run if there is a selected node and network is true
-  }, [cyState, networkVeiw, selectedNode]);
+      makeNHoodLayout(cyState, selectedNode, completedDisplay, latestPrPeriodRef, prPeriod); // only run if there is a selected node and network is true
+  }, [completedDisplay, cyState, latestPrPeriodRef, networkVeiw, prPeriod, selectedNode]);
 
   const style = {
     display: cyState.display,

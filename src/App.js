@@ -45,14 +45,24 @@ export function App() {
   const currentActNodeCountRef = useRef(null);
   const matrixHeadersRef = useRef(null);
   const origionalActCountRef = useRef(null);
+  const latestPrPeriodRef = useRef(null);
 
   currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
 
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
     async function addDataToCytoscape() {
-      const { cyElms, wpData, gantChartItems, activityData, dates, stakeholderData, matrixHeaders, origionalActCount } =
-        await makeVisElements(prPeriod, currentStory, completedDisplay); //all pre-processing of data
+      const {
+        cyElms,
+        wpData,
+        gantChartItems,
+        activityData,
+        dates,
+        stakeholderData,
+        matrixHeaders,
+        origionalActCount,
+        latestPrPeriod,
+      } = await makeVisElements(prPeriod, currentStory, completedDisplay); //all pre-processing of data
 
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges once cytoscape has been made
 
@@ -62,6 +72,7 @@ export function App() {
       gantchartData.current = gantChartItems; //asign gant chart data to the ref
       matrixHeadersRef.current = matrixHeaders;
       origionalActCountRef.current = origionalActCount;
+      latestPrPeriodRef.current = latestPrPeriod;
 
       setCyState((prevState) => ({
         ...prevState,
@@ -119,6 +130,9 @@ export function App() {
               cyState={cyState}
               setNetworkVeiw={setNetworkVeiw}
               networkVeiw={networkVeiw}
+              activityEdgeDisplay={activityEdgeDisplay}
+              completedDisplay={completedDisplay}
+              stakeholdersDisplay={stakeholdersDisplay}
             />
           </div>
 
@@ -143,6 +157,9 @@ export function App() {
           currentActNodeCountRef={currentActNodeCountRef}
           origionalActCountRef={origionalActCountRef}
           networkVeiw={networkVeiw}
+          completedDisplay={completedDisplay}
+          latestPrPeriodRef={latestPrPeriodRef}
+          prPeriod={prPeriod}
         />
       </div>
     </div>

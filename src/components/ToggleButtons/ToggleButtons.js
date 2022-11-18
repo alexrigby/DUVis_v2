@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { FCOSE } from "../cytoscape/functions/LAYOUTS";
 
 import "./ToggleButtons.css";
@@ -15,6 +16,9 @@ export function ToggleButtons({
   cyState,
   setNetworkVeiw,
   networkVeiw,
+  activityEdgeDisplay,
+  completedDisplay,
+  stakeholdersDisplay,
 }) {
   // TOGGLE CONTROLS /////////////
   function changeLayout() {
@@ -22,12 +26,11 @@ export function ToggleButtons({
   }
 
   const toggleCompleted = (event) => {
-    event.target.classList.toggle("activeButton");
     setCompletedDisplay((prevState) => !prevState);
   };
+
   //hides/displays wpedges/ activity edges when button is clicked
   const toggleEdges = (event) => {
-    event.target.classList.toggle("activeButton");
     setActivityEdgeDisplay((prevState) => !prevState);
   };
 
@@ -37,8 +40,6 @@ export function ToggleButtons({
   };
 
   const toggleStakeholders = (event) => {
-    event.target.classList.toggle("activeButton");
-    cyState.cy.nodes("[type = 'stakeholderNode'] ").removeClass("show"); // remove any unwanted classes from stakeholder nodes
     setStakeholdersDisplay((prevState) => !prevState);
     // cyState.cy.layout(LAYOUTS.FCOSERandom).run();
   };
@@ -50,10 +51,6 @@ export function ToggleButtons({
   // TOGGLE CONTROLS /////////////
 
   //STYLING //////////////////////
-
-  // const networkButtonStyle = {
-  //   backgroundColor
-  // }
 
   const style = (state) => ({
     backgroundColor: state ? " #cfcfcf" : "#e4e4e4",
@@ -88,13 +85,13 @@ export function ToggleButtons({
         </button>
       </div>
       <div className="toggleButtons">
-        <button onClick={toggleEdges}>
+        <button onClick={toggleEdges} style={style(activityEdgeDisplay)}>
           Toggle Connections <i className="fa fa-diagram-project"></i>
         </button>
-        <button onClick={toggleCompleted}>
+        <button onClick={toggleCompleted} style={style(completedDisplay)}>
           Toggle Completed <i className="fa fa-check"></i>
         </button>
-        <button onClick={toggleStakeholders}>
+        <button onClick={toggleStakeholders} style={style(stakeholdersDisplay)}>
           {" "}
           Toggle Stakeholders <i className="fa fa-handshake-simple"></i>
         </button>

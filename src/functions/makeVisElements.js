@@ -91,6 +91,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
     stakeholderData: stakeholderData,
     matrixHeaders: matrixHeaders,
     origionalActCount: origionalActCount,
+    latestPrPeriod: latestPrPeriod,
   };
 }
 

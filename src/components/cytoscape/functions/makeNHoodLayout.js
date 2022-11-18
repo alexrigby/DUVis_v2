@@ -1,9 +1,10 @@
 import nodeTooltip from "./nodeTooltips";
+import activityOpacity from "../../../functions/activityOpacity";
 import { CONCENTRIC } from "./LAYOUTS";
 
-export function makeNHoodLayout(cyState, prevSelectedNode, selectedNode) {
-  // deletes all neighborhood of previosuly selected node, is no node was selected nothing happens
-  const newNhood = cyState.cy.elements(`#N_${prevSelectedNode.current.id}`).closedNeighborhood();
+export function makeNHoodLayout(cyState, selectedNode, completedDisplay, latestPrPeriodRef, prPeriod) {
+  // deletes all network nodes
+  const newNhood = cyState.cy.nodes(`[network = "yes"]`);
   cyState.cy.remove(newNhood);
 
   //gets neighboorhood of selected node and makes new nodes and edges
@@ -21,7 +22,7 @@ export function makeNHoodLayout(cyState, prevSelectedNode, selectedNode) {
             id: "N_" + e.id(),
             source: "N_" + e.data().source,
             target: "N_" + selectedNode.id,
-            network: true,
+            network: "yes",
           },
         }))
       : [];
@@ -33,20 +34,24 @@ export function makeNHoodLayout(cyState, prevSelectedNode, selectedNode) {
       ...n.data(),
       parent: null,
       id: "N_" + n.id(),
-      network: true,
+      network: "yes",
     },
   }));
 
-  const newNHoodActNodes = nHoodActNodes.map((n) => ({
-    group: "nodes",
-    classes: "networkNodes",
-    data: {
-      ...n.data(),
-      parent: null,
-      id: "N_" + n.id(),
-      network: true,
-    },
-  }));
+  const newNHoodActNodes = nHoodActNodes.map((n) => {
+    // console.log(n.data().meta);
+    return {
+      group: "nodes",
+      classes: "networkNodes",
+      data: {
+        ...n.data(),
+        parent: null,
+        id: "N_" + n.id(),
+        network: "yes",
+        opacity: activityOpacity(n.data().meta, completedDisplay, latestPrPeriodRef.current, prPeriod), //need to dynamically set opacity when making new nodes
+      },
+    };
+  });
 
   const newNHoodActEdges = newNHoodActNodes // only make one edge for each activity node so all egeds point to the parent
     .map((n) => ({
@@ -56,7 +61,7 @@ export function makeNHoodLayout(cyState, prevSelectedNode, selectedNode) {
         id: `N_g${selectedNode.id}e${n.data.id}`,
         source: n.data.id,
         target: "N_" + selectedNode.id,
-        network: true,
+        network: "yes",
       },
     }))
     .filter((el) => el.data.target !== el.data.source);
@@ -64,9 +69,7 @@ export function makeNHoodLayout(cyState, prevSelectedNode, selectedNode) {
   const newNhoodElms = [newNHoodSNodes, newNHoodActNodes, newNHoodActEdges, newNHoodSEdges].flat();
   cyState.cy.nodes().addClass("hide"); // hide all nodes and there connected edges
 
-  prevSelectedNode.id === selectedNode.id
-    ? cyState.cy.add(newNhoodElms).layout(CONCENTRIC)
-    : cyState.cy.add(newNhoodElms).layout(CONCENTRIC).run(); //add the new nodes to cytoscape and run concentric layout
+  cyState.cy.add(newNhoodElms).layout(CONCENTRIC).run();
   nodeTooltip(cyState.cy); //produces tooltips on mouuseover
 }
 
