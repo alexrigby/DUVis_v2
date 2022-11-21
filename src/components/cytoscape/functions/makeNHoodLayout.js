@@ -29,7 +29,7 @@ export function makeNHoodLayout(cyState, selectedNode) {
 
   const newNHoodSNodes = nHoodSNodes.map((n) => ({
     group: "nodes",
-    classes: "networkNodes",
+    classes: "networkNode",
     data: {
       ...n.data(),
       parent: null,
@@ -42,7 +42,7 @@ export function makeNHoodLayout(cyState, selectedNode) {
     // console.log(n.data().meta);
     return {
       group: "nodes",
-      classes: "networkNodes",
+      classes: "networkNode",
       data: {
         ...n.data(),
         parent: null,
@@ -66,10 +66,16 @@ export function makeNHoodLayout(cyState, selectedNode) {
     }))
     .filter((el) => el.data.target !== el.data.source);
 
+  //sort nodes by WP before adding to cytoscape
+  newNHoodActNodes.sort(function (a, b) {
+    return a.data.meta.WP - b.data.meta.WP;
+  });
+
   const newNhoodElms = [newNHoodSNodes, newNHoodActNodes, newNHoodActEdges, newNHoodSEdges].flat();
+
   cyState.cy.nodes().addClass("hide"); // hide all nodes and there connected edges
 
-  cyState.cy.add(newNhoodElms).layout(CONCENTRIC).run();
+  cyState.cy.add(newNhoodElms);
   nodeTooltip(cyState.cy); //produces tooltips on mouuseover
 }
 

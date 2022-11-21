@@ -2,6 +2,7 @@ export function makeCyStakeholerNodes(stakeholders) {
   return stakeholders.map((s) => ({
     group: "nodes",
     data: {
+      colorRef: "stakeholder",
       type: "stakeholderNode",
       size: 1,
       id: s.stakeholderID,

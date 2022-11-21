@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { FCOSE } from "../cytoscape/functions/LAYOUTS";
 
 import "./ToggleButtons.css";
@@ -22,7 +21,7 @@ export function ToggleButtons({
 }) {
   // TOGGLE CONTROLS /////////////
   function changeLayout() {
-    cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, true)).run();
+    !networkVeiw && cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, true)).run();
   }
 
   const toggleCompleted = (event) => {

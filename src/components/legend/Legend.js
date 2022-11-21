@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-import iconByCategory from "../cytoscape/functions/iconByCategory";
+// import iconByCategory from "../cytoscape/functions/iconByCategory";
 import styleActivitiesByWP from "../cytoscape/functions/styleActivitiesByWP";
 
 import "./Legend.css";
@@ -12,21 +12,26 @@ export function Legend({ cyState }) {
     // gets all WPS  and descriptions present in cy graph
     const wps = cyState.cy.nodes("[type = 'wp']").map((wp) => wp.data());
 
-    // returns unique array of activity categorys
-    const categorys = [
-      ...new Set(cyState.cy.nodes("[type = 'activityNode']").map((act) => act.data().meta["Activity Category"])),
-    ];
+    //sort WPS in number order before adding to legend
+    wps.sort(function (a, b) {
+      return a.id.slice(2) - b.id.slice(2);
+    });
 
-    const catLegendItems = categorys.map((cat, i) => (
-      <div key={cat} className="boxContainer">
-        <div className="box" title={`Category: ${cat}`}>
-          {iconByCategory(cat)}
-        </div>
-        <p className="legendLable" title={`Category: ${cat}`}>
-          {cat}
-        </p>
-      </div>
-    ));
+    // // returns unique array of activity categorys
+    // const categorys = [
+    //   ...new Set(cyState.cy.nodes("[type = 'activityNode']").map((act) => act.data().meta["Activity Category"])),
+    // ];
+
+    // const catLegendItems = categorys.map((cat, i) => (
+    //   <div key={cat} className="boxContainer">
+    //     <div className="box" title={`Category: ${cat}`}>
+    //       {iconByCategory(cat)}
+    //     </div>
+    //     <p className="legendLable" title={`Category: ${cat}`}>
+    //       {cat}
+    //     </p>
+    //   </div>
+    // ));
 
     const wpLegendItems = wps.map((wp) => (
       <div key={wp.id} className="boxContainer">
@@ -37,7 +42,9 @@ export function Legend({ cyState }) {
       </div>
     ));
 
-    legendData.current = { wps: wpLegendItems, categorys: catLegendItems };
+    // console.log(wps[0].id.slice(2));s
+
+    legendData.current = { wps: wpLegendItems };
   }, [cyState.cy, cyState.elements.length]);
 
   return (
