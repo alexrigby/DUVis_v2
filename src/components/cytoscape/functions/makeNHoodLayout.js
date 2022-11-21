@@ -2,7 +2,7 @@ import nodeTooltip from "./nodeTooltips";
 import activityOpacity from "../../../functions/activityOpacity";
 import { CONCENTRIC } from "./LAYOUTS";
 
-export function makeNHoodLayout(cyState, selectedNode) {
+export function makeNHoodLayout(cyState, selectedNode, animateLayout) {
   // deletes all network nodes
   const newNhood = cyState.cy.nodes(`[network = "yes"]`);
   cyState.cy.remove(newNhood);
@@ -74,8 +74,8 @@ export function makeNHoodLayout(cyState, selectedNode) {
   const newNhoodElms = [newNHoodSNodes, newNHoodActNodes, newNHoodActEdges, newNHoodSEdges].flat();
 
   cyState.cy.nodes().addClass("hide"); // hide all nodes and there connected edges
+  cyState.cy.add(newNhoodElms).layout(CONCENTRIC(animateLayout)).run();
 
-  cyState.cy.add(newNhoodElms);
   nodeTooltip(cyState.cy); //produces tooltips on mouuseover
 }
 

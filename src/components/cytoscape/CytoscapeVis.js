@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 
-import { FCOSE } from "./functions/LAYOUTS";
+import { FCOSE, CONCENTRIC } from "./functions/LAYOUTS";
 import stylesheet from "./functions/stylesheet";
 import nodeTooltip from "./functions/nodeTooltips";
 import styleSelectedElements from "./functions/styleSelectedElements";
@@ -20,6 +20,15 @@ export function CytoscapeVis({
   latestPrPeriodRef,
   prPeriod,
 }) {
+  const renderCounter = useRef(0);
+  renderCounter.current = cyState.cy && renderCounter.current + 1;
+
+  useEffect(() => {
+    renderCounter.current === 2 &&
+      cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, true)).run();
+    // renderCounter.current === 2 && cyState.cy.fit();
+  });
+
   //NODE SELECTION, called every time setSideBarVis or cyState chanages,
   useEffect(() => {
     nodeTooltip(cyState.cy); //produces tooltips on mouuseover
@@ -37,18 +46,19 @@ export function CytoscapeVis({
     return () => cyState.cy.off("click", "node", nodeClickHandler); //clean up click handler to prevent memory leak
   }, [setSelectedNode, cyState]);
 
-  //RUNS LAYOUT WHEN NODES ARE ADDED/REMOVED
+  //RUNS MAIN OR NETWORK LAYOUTS WHEN NODES ARE ADDED/REMOVED
   useEffect(() => {
-    //only runs when the elements length chnages--- hakey but works
-    currentActNodeCountRef.current &&
-      origionalActCountRef.current &&
+    if (networkVeiw) {
+      makeNHoodLayout(cyState, selectedNode, false);
+    } else {
       cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, false)).run();
-    cyState.cy.fit();
-  }, [cyState.cy, cyState.elements.length, currentActNodeCountRef, origionalActCountRef]);
+      cyState.cy.fit();
+    }
+  }, [cyState.elements.length]);
 
-  //MAKES NETWORK LAYOUT ELEMENST AND CONTROLS NAVIGATION BETWEEN NETWORK VEIWS
+  //MAKES NETWORK LAYOUT ELEMENTS AND CONTROLS NAVIGATION BETWEEN NETWORK VEIWS
   useEffect(() => {
-    networkVeiw && selectedNode.id !== "" && selectedNode.type !== "wp" && makeNHoodLayout(cyState, selectedNode); // only run if there is a selected node and network is true
+    networkVeiw && selectedNode.id !== "" && selectedNode.type !== "wp" && makeNHoodLayout(cyState, selectedNode, true); // only run if there is a selected node and network is true
   }, [networkVeiw, selectedNode]);
 
   //REMOVES NETWORK LAYOUT NODES
@@ -74,12 +84,6 @@ export function CytoscapeVis({
       // cy prop allows acess to cy elements/functions
       cy={(cy) => {
         cyState.cy = cy;
-        cy.on("resize", (_evt) => {
-          currentActNodeCountRef.current &&
-            origionalActCountRef.current &&
-            cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, false)).run();
-          cyState.cy.fit();
-        });
       }}
       elements={cyState.elements}
       // wheelSensitivity={0.1}

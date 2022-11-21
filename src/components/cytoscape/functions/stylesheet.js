@@ -127,6 +127,17 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay, completedDi
         display: "element",
       },
     },
+    // {
+    //   selector: ".networkNode",
+    //   style: {
+    //     display: function (ele) {
+    //       // return ele.data().meta.startPrPeriod > prPeriod.pr || ele.data().meta.endPrPeriod < prPeriod.pr
+    //       //   ? "none"
+    //       //   : "element";
+    //       console.log(ele.data());
+    //     },
+    //   },
+    // },
     {
       selector: ".networkEdge",
       style: {

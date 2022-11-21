@@ -36,7 +36,13 @@ export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
         return 300;
       }
     },
-    edgeElasticity: (edge) => 0.1,
+    edgeElasticity: (edge) => {
+      if (edge.data().type === "stakeholderEdge") {
+        return 0.2;
+      } else {
+        return 0.1;
+      }
+    },
     // tile: false,
     randomize: random,
     fit: true,
@@ -104,8 +110,8 @@ export const BCOSE = {
   gravityRange: 9,
 };
 
-export const CONCENTRIC = {
+export const CONCENTRIC = (ani) => ({
   name: "concentric",
-  animate: true,
+  animate: ani,
   animationDuration: 1000,
-};
+});
