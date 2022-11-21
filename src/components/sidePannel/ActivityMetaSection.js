@@ -37,35 +37,19 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
         return { color: selectedNode.meta.endPrPeriod <= latestPrPeriod ? "#39ff14" : "#ffbf00" };
       }
     } else {
-      return { color: selectedNode.meta.endPrPeriod <= prPeriod.pr ? "#39ff14" : "#ffbf00" };
+      if (selectedNode.meta.endPrPeriod === "undefined" || selectedNode.meta.endPrPeriod === "onGoing") {
+        return { color: "#ffbf00" };
+      } else if (selectedNode.meta.startPrPeriod > prPeriod.pr) {
+        return { color: "#EE4B2B", fontSize: "15pt", fontWeight: "900", opacity: "1" };
+      } else {
+        return { color: selectedNode.meta.endPrPeriod <= prPeriod.pr ? "#39ff14" : "#ffbf00" };
+      }
     }
   }
-
-  const flagTextStyle = {
-    color: "#FFBF00",
-    opacity: "0.7",
-  };
 
   const datesStyle = {
     opacity: 0.7,
   };
-
-  function flagText() {
-    if (selectedNode !== null) {
-      const allNodeEdges = cyState.cy.nodes('[type = "activityNode"]').map((node) => node.connectedEdges().length);
-      const meanEdges = allNodeEdges.reduce((a, b) => a + b, 0) / allNodeEdges.length; //gets average edges per node
-      const nodeEdges = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).connectedEdges();
-      if (nodeEdges.length < meanEdges) {
-        return (
-          <p>
-            1. <span style={flagTextStyle}>Less than the mean number of connections</span>
-          </p>
-        );
-      } else {
-        return <p style={{ color: "green", opacity: "0.8" }}>none</p>;
-      }
-    }
-  }
 
   function completedText() {
     if (prPeriod.pr === null) {
@@ -75,9 +59,19 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
         return selectedNode.meta.endPrPeriod <= latestPrPeriod ? "Completed" : "Ongoing";
       }
     } else {
-      return selectedNode.meta.endPrPeriod <= prPeriod.pr ? "Completed" : "Ongoing";
+      if (selectedNode.meta.endPrPeriod === "undefined" || selectedNode.meta.endPrPeriod === "onGoing") {
+        return "Ongoing";
+      } else if (selectedNode.meta.startPrPeriod > prPeriod.pr) {
+        return "Not Started";
+      } else {
+        return selectedNode.meta.endPrPeriod <= prPeriod.pr ? "Completed" : "Ongoing";
+      }
     }
   }
+
+  // if (prPeriod.pr === null || ) {
+  //   console.log(true);
+  // }
 
   const linkedActivitiesList = uniqueActLinks.map((activity) => (
     <li
@@ -131,6 +125,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
   const stakeholderCount = stakeholderCollection.flat().length;
 
   const style = (key) => ({ display: actAccordion[key] ? "block" : "none" });
+  // console.log(prPeriod);
 
   return (
     <div>
@@ -290,3 +285,25 @@ function listLinks(nodes, setSelectedNode, cyState) {
     </li>
   ));
 }
+
+// function flagText() {
+//   if (selectedNode !== null) {
+//     const allNodeEdges = cyState.cy.nodes('[type = "activityNode"]').map((node) => node.connectedEdges().length);
+//     const meanEdges = allNodeEdges.reduce((a, b) => a + b, 0) / allNodeEdges.length; //gets average edges per node
+//     const nodeEdges = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).connectedEdges();
+//     if (nodeEdges.length < meanEdges) {
+//       return (
+//         <p>
+//           1. <span style={flagTextStyle}>Less than the mean number of connections</span>
+//         </p>
+//       );
+//     } else {
+//       return <p style={{ color: "green", opacity: "0.8" }}>none</p>;
+//     }
+//   }
+// }
+
+//  const flagTextStyle = {
+//    color: "#FFBF00",
+//    opacity: "0.7",
+//  };

@@ -38,7 +38,7 @@ export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
     },
     edgeElasticity: (edge) => {
       if (edge.data().type === "stakeholderEdge") {
-        return 0.2;
+        return 0.1;
       } else {
         return 0.1;
       }

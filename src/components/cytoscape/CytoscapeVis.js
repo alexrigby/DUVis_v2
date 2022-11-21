@@ -36,6 +36,7 @@ export function CytoscapeVis({
       if (event.target.data().network === "yes") {
         const networkID = event.target.data().label; // network node ables are there equivelent node id
         setSelectedNode(cyState.cy.nodes(`#${networkID}`).data()); // set selected node to origional graph node
+        styleSelectedElements(cyState.cy, networkID);
       } else {
         setSelectedNode((prevState) => (event.target.id() === prevState.id ? { id: "" } : event.target.data())); //if same node is clicked twice clear 'selected node' state
         styleSelectedElements(cyState.cy, event.target.id());
