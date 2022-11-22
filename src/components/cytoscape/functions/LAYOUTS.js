@@ -43,7 +43,13 @@ export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
         return 0.1;
       }
     },
-    // tile: false,
+    tile: (node) => {
+      if (node.data().type === "stakeholderNode") {
+        return false;
+      } else {
+        return true;
+      }
+    },
     randomize: random,
     fit: true,
     gravity: 4,
@@ -58,7 +64,7 @@ export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
     //   fit: true,
     //   gravityCompound: 10000000,
     //   gravityRangeCompound: 1,
-    //   numIter: 300,
+    numIter: 300,
     //   nodeRepulsion: function (node) {
     //     if (node.data().type === "stakehlderNode") {
     //       return nodeRepuslionFactor * currentActNodeCount;

@@ -1,8 +1,15 @@
-import COLORS from "../../../configs/wpColors";
+import { BG, BORDER, ENGAGEMENT } from "../../../configs/COLORS";
 import activityOpacity from "../../../functions/activityOpacity";
 import statusOpacity from "../../../configs/statusOpacity";
 
-export function stylesheet(activityEdgeDisplay, stakeholdersDisplay, completedDisplay, latestPrPeriodRef, prPeriod) {
+export function stylesheet(
+  activityEdgeDisplay,
+  stakeholdersDisplay,
+  completedDisplay,
+  latestPrPeriodRef,
+  prPeriod,
+  networkVeiw
+) {
   return [
     {
       selector: "node[type = 'project']",
@@ -73,6 +80,12 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay, completedDi
         "border-color": function (ele) {
           return nodeBorderColor(ele, "colorRef");
         },
+        width: function (ele) {
+          return 1 * Math.sqrt(ele.connectedEdges().connectedNodes().length + 1 / 1) * 20;
+        },
+        height: function (ele) {
+          return 1 * Math.sqrt(ele.connectedEdges().connectedNodes().length + 1 / 1) * 20;
+        },
       },
     },
     {
@@ -103,12 +116,23 @@ export function stylesheet(activityEdgeDisplay, stakeholdersDisplay, completedDi
       selector: "edge[type = 'stakeholderEdge']",
       style: {
         display: "none",
-        width: 1.5,
+
+        "line-opacity": 1,
+        width: networkVeiw
+          ? (ele) => {
+              return ele.data().engagement * 2;
+            }
+          : 1.5,
         "source-endpoint": "outside-to-line",
         "source-distance-from-node": "4px",
         "target-distance-from-node": "4px",
         "target-endpoint": "outside-to-line",
-        "curve-style": "straight",
+        "curve-style": "bezier",
+        "line-color": (ele) => {
+          return engagementEdgeColor(ele, "engagement");
+        },
+        // "target-arrow-color": "#ccc",
+        // "target-arrow-shape": "triangle",
       },
     },
     {
@@ -176,44 +200,56 @@ export default stylesheet;
 
 function nodeBackgroundColor(ele, property) {
   if (ele.data(property) === "wp1") {
-    return COLORS.bg.wp1;
+    return BG.wp1;
   } else if (ele.data(property) === "wp2") {
-    return COLORS.bg.wp2;
+    return BG.wp2;
   } else if (ele.data(property) === "wp3") {
-    return COLORS.bg.wp3;
+    return BG.wp3;
   } else if (ele.data(property) === "wp4") {
-    return COLORS.bg.wp4;
+    return BG.wp4;
   } else if (ele.data(property) === "wp5") {
-    return COLORS.bg.wp5;
+    return BG.wp5;
   } else if (ele.data(property) === "wp6") {
-    return COLORS.bg.wp6;
+    return BG.wp6;
   } else if (ele.data(property) === "wp7") {
-    return COLORS.bg.wp7;
+    return BG.wp7;
   } else if (ele.data(property) === "wp8") {
-    return COLORS.bg.wp8;
+    return BG.wp8;
   } else {
-    return COLORS.bg.other;
+    return BG.other;
   }
 }
 
 function nodeBorderColor(ele, property) {
   if (ele.data(property) === "wp1") {
-    return COLORS.border.wp1;
+    return BORDER.wp1;
   } else if (ele.data(property) === "wp2") {
-    return COLORS.border.wp2;
+    return BORDER.wp2;
   } else if (ele.data(property) === "wp3") {
-    return COLORS.border.wp3;
+    return BORDER.wp3;
   } else if (ele.data(property) === "wp4") {
-    return COLORS.border.wp4;
+    return BORDER.wp4;
   } else if (ele.data(property) === "wp5") {
-    return COLORS.border.wp5;
+    return BORDER.wp5;
   } else if (ele.data(property) === "wp6") {
-    return COLORS.border.wp6;
+    return BORDER.wp6;
   } else if (ele.data(property) === "wp7") {
-    return COLORS.border.wp7;
+    return BORDER.wp7;
   } else if (ele.data(property) === "wp8") {
-    return COLORS.border.wp8;
+    return BORDER.wp8;
   } else {
-    return COLORS.border.other;
+    return BORDER.other;
   }
+}
+
+function engagementEdgeColor(ele, property) {
+  return ele.data(property) === "1"
+    ? ENGAGEMENT[0]
+    : ele.data(property) === "2"
+    ? ENGAGEMENT[1]
+    : ele.data(property) === "3"
+    ? ENGAGEMENT[2]
+    : ele.data(property) === "4"
+    ? ENGAGEMENT[3]
+    : BORDER.other;
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 
-import { FCOSE, CONCENTRIC } from "./functions/LAYOUTS";
+import { FCOSE } from "./functions/LAYOUTS";
 import stylesheet from "./functions/stylesheet";
 import nodeTooltip from "./functions/nodeTooltips";
 import styleSelectedElements from "./functions/styleSelectedElements";
@@ -55,11 +55,13 @@ export function CytoscapeVis({
       cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, false)).run();
       cyState.cy.fit();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cyState.elements.length]);
 
   //MAKES NETWORK LAYOUT ELEMENTS AND CONTROLS NAVIGATION BETWEEN NETWORK VEIWS
   useEffect(() => {
     networkVeiw && selectedNode.id !== "" && selectedNode.type !== "wp" && makeNHoodLayout(cyState, selectedNode, true); // only run if there is a selected node and network is true
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [networkVeiw, selectedNode]);
 
   //REMOVES NETWORK LAYOUT NODES
@@ -89,7 +91,14 @@ export function CytoscapeVis({
       elements={cyState.elements}
       // wheelSensitivity={0.1}
       style={style}
-      stylesheet={stylesheet(activityEdgeDisplay, stakeholdersDisplay, completedDisplay, latestPrPeriodRef, prPeriod)}
+      stylesheet={stylesheet(
+        activityEdgeDisplay,
+        stakeholdersDisplay,
+        completedDisplay,
+        latestPrPeriodRef,
+        prPeriod,
+        networkVeiw
+      )}
       // layout={FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, false)}
     />
   );

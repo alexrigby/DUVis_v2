@@ -5,12 +5,20 @@ import styleActivitiesByWP from "../cytoscape/functions/styleActivitiesByWP";
 
 import "./Legend.css";
 
-export function Legend({ cyState }) {
+export function Legend({ cyState, networkVeiw }) {
   const legendData = useRef({ wps: "", categorys: "" });
 
   useEffect(() => {
     // gets all WPS  and descriptions present in cy graph
     const wps = cyState.cy.nodes("[type = 'wp']").map((wp) => wp.data());
+
+    const sEngagement = [...new Set(cyState.cy.edges("[network = 'yes']").map((e) => e.data("engagement")))].sort(
+      function (a, b) {
+        return a - b;
+      }
+    );
+    console.log(sEngagement);
+    console.log(cyState.cy.edges("[network = 'yes'][type = 'stakeholderEdge']"));
 
     //sort WPS in number order before adding to legend
     wps.sort(function (a, b) {
@@ -45,7 +53,7 @@ export function Legend({ cyState }) {
     // console.log(wps[0].id.slice(2));s
 
     legendData.current = { wps: wpLegendItems };
-  }, [cyState.cy, cyState.elements.length]);
+  }, [cyState.cy, cyState.elements.length, networkVeiw]);
 
   return (
     <div className="legend">

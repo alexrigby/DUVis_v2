@@ -115,7 +115,7 @@ export function App() {
                 actDataRef={actDataRef}
                 matrixHeadersRef={matrixHeadersRef}
               />
-              <Legend cyState={cyState} />
+              <Legend cyState={cyState} networkVeiw={networkVeiw} />
             </div>
             <ToggleButtons
               selectedBottomVis={selectedBottomVis}

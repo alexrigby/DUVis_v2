@@ -1,4 +1,4 @@
-import COLORS from "../configs/wpColors";
+import { BG, BORDER } from "../configs/COLORS";
 import activityOpacity from "./activityOpacity";
 import { actFields, wpFields } from "../data";
 
@@ -41,23 +41,23 @@ export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, l
 
 function classActivitiesbyID(wp) {
   if (wp === "1") {
-    return ` background-color: ${COLORS.bg.wp1}; border-color: ${COLORS.border.wp1}`;
+    return ` background-color: ${BG.wp1}; border-color: ${BORDER.wp1}`;
   } else if (wp === "2") {
-    return `background-color: ${COLORS.bg.wp2}; border-color: ${COLORS.border.wp2}`;
+    return `background-color: ${BG.wp2}; border-color: ${BORDER.wp2}`;
   } else if (wp === "3") {
-    return `background-color: ${COLORS.bg.wp3}; border-color: ${COLORS.border.wp3}`;
+    return `background-color: ${BG.wp3}; border-color: ${BORDER.wp3}`;
   } else if (wp === "4") {
-    return `background-color: ${COLORS.bg.wp4}; border-color: ${COLORS.border.wp4}`;
+    return `background-color: ${BG.wp4}; border-color: ${BORDER.wp4}`;
   } else if (wp === "5") {
-    return `  background-color: ${COLORS.bg.wp5}; border-color: ${COLORS.border.wp5}`;
+    return `  background-color: ${BG.wp5}; border-color: ${BORDER.wp5}`;
   } else if (wp === "6") {
-    return `background-color: ${COLORS.bg.wp6}; border-color: ${COLORS.border.wp6}`;
+    return `background-color: ${BG.wp6}; border-color: ${BORDER.wp6}`;
   } else if (wp === "7") {
-    return `background-color: ${COLORS.bg.wp7}; border-color: ${COLORS.border.wp7}`;
+    return `background-color: ${BG.wp7}; border-color: ${BORDER.wp7}`;
   } else if (wp === "8") {
-    return `background-color: ${COLORS.bg.wp8}; border-color: ${COLORS.border.wp8}`;
+    return `background-color: ${BG.wp8}; border-color: ${BORDER.wp8}`;
   } else {
-    return `background-color: ${COLORS.bg.other}; border-color: ${COLORS.border.other}`;
+    return `background-color: ${BG.other}; border-color: ${BORDER.other}`;
   }
 }
 

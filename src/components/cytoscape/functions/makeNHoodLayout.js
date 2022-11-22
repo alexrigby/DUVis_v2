@@ -1,5 +1,4 @@
 import nodeTooltip from "./nodeTooltips";
-import activityOpacity from "../../../functions/activityOpacity";
 import { CONCENTRIC } from "./LAYOUTS";
 
 export function makeNHoodLayout(cyState, selectedNode, animateLayout) {
