@@ -2,6 +2,7 @@ import { wpFields } from "../../../data";
 
 export function makeCyWpEdges(cy, wp) {
   const wpData = [...wp];
+  console.log(wpData);
 
   // loops over all WPs and returns an array of targets of the outgoing edges from that WP
   const wpTargetNodes = [];
@@ -39,6 +40,24 @@ export function makeCyWpEdges(cy, wp) {
       });
     }
   }
+
+  const test = [];
+  for (let i = 0; i < wpData.length - 1; i++) {
+    for (let j = i + 1; j < wpData.length; j++) {
+      test.push({
+        group: "edges",
+        classes: "wpEdge",
+        data: {
+          id: `${wpData[i][wpFields.ID]}${wpData[j][wpFields.ID]}`,
+          source: `${wpData[i][wpFields.ID]}`,
+          target: `${wpData[j][wpFields.ID]}`,
+          type: "wpEdge",
+        },
+      });
+    }
+  }
+  console.log(test);
+  console.log(wpEdges);
 
   return wpEdges;
 }

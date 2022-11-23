@@ -1,11 +1,7 @@
 import nodeTooltip from "./nodeTooltips";
 import { CONCENTRIC } from "./LAYOUTS";
 
-export function makeNHoodLayout(cyState, selectedNode, animateLayout) {
-  // deletes all network nodes
-  const newNhood = cyState.cy.nodes(`[network = "yes"]`);
-  cyState.cy.remove(newNhood);
-
+export function makeNHoodLayout(cyState, selectedNode) {
   //gets neighboorhood of selected node and makes new nodes and edges
   const nHoodSNodes = cyState.cy.nodes(`#${selectedNode.id}`).closedNeighborhood().nodes("[type = 'stakeholderNode']");
   const nHoodActNodes = cyState.cy.nodes(`#${selectedNode.id}`).closedNeighborhood().nodes("[type = 'activityNode']");
@@ -70,12 +66,7 @@ export function makeNHoodLayout(cyState, selectedNode, animateLayout) {
     return a.data.meta.WP - b.data.meta.WP;
   });
 
-  const newNhoodElms = [newNHoodSNodes, newNHoodActNodes, newNHoodActEdges, newNHoodSEdges].flat();
-
-  cyState.cy.nodes().addClass("hide"); // hide all nodes and there connected edges
-  cyState.cy.add(newNhoodElms).layout(CONCENTRIC(animateLayout)).run();
-
-  nodeTooltip(cyState.cy); //produces tooltips on mouuseover
+  return [newNHoodSNodes, newNHoodActNodes, newNHoodActEdges, newNHoodSEdges].flat();
 }
 
 export default makeNHoodLayout;

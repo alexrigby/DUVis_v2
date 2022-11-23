@@ -1,6 +1,7 @@
 import { BG, BORDER, ENGAGEMENT } from "../../../configs/COLORS";
 import activityOpacity from "../../../functions/activityOpacity";
 import statusOpacity from "../../../configs/statusOpacity";
+import wpEdgeStyle from "./wpEdgeStyle";
 
 export function stylesheet(
   activityEdgeDisplay,
@@ -8,7 +9,8 @@ export function stylesheet(
   completedDisplay,
   latestPrPeriodRef,
   prPeriod,
-  networkVeiw
+  networkVeiw,
+  cyState
 ) {
   return [
     {
@@ -106,8 +108,11 @@ export function stylesheet(
       style: {
         display: activityEdgeDisplay === true ? "none" : "element",
         // label: "data(weight)",
-        width: "data(weight)",
-        "line-color": "mapData(weight, 0, 40, #ffcba4, #cb410b)",
+        width: function (ele) {
+          // console.log(ele.data());
+          return wpEdgeStyle(ele.data(), cyState.cy);
+        },
+        // "line-color": "mapData(weight, 0, 40, #ffcba4, #cb410b)",
         "line-cap": "round",
         "line-opacity": 0.5,
       },

@@ -6,27 +6,26 @@ import styleActivitiesByWP from "../cytoscape/functions/styleActivitiesByWP";
 
 import "./Legend.css";
 
-export function Legend({ cyState, networkVeiw, selectedNode }) {
+export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls }) {
   const legendData = useRef({ wps: "", categorys: "" });
   const sEngagement = useRef(null);
 
   useEffect(() => {
     const eng =
       selectedNode.id !== "" &&
-      [
-        ...new Set(
-          cyState.cy
-            .nodes(`#${selectedNode.id}`)
-            .connectedEdges("[type = 'stakeholderEdge']")
-            .map((e) => e.data("engagement"))
-        ),
-      ].sort(function (a, b) {
-        return a - b;
-      });
+      cyState.cy
+        .nodes(`#${selectedNode.id}`)
+        .connectedEdges("[type = 'stakeholderEdge']")
+        .map((e) => e.data("engagement"))
+        .sort(function (a, b) {
+          return a - b;
+        });
+
+    const uniqueEng = selectedNode.id !== "" && [...new Set([...eng])];
 
     const engLegendItems =
       selectedNode.id !== "" &&
-      eng.map((e, i) => (
+      uniqueEng.map((e, i) => (
         <div key={i} className="boxContainer">
           <div className="engBox" style={styleEngLegend(e)}></div>
           <p className="legendLable">Engagement level {e}</p>
@@ -34,7 +33,7 @@ export function Legend({ cyState, networkVeiw, selectedNode }) {
       ));
 
     sEngagement.current = selectedNode.id !== "" && engLegendItems;
-  }, [cyState.cy, networkVeiw, selectedNode.id]);
+  }, [networkVeiwEls.length]);
   // console.log(sEngagement.current);
 
   useEffect(() => {
@@ -73,15 +72,14 @@ export function Legend({ cyState, networkVeiw, selectedNode }) {
 export default Legend;
 
 function styleEngLegend(eng) {
-  console.log(eng);
   return eng === "1"
-    ? { color: ENGAGEMENT[0], height: "2px" }
+    ? { backgroundColor: ENGAGEMENT[0], height: "2px" }
     : eng === "2"
-    ? { color: ENGAGEMENT[1], height: "4px" }
+    ? { backgroundColor: ENGAGEMENT[1], height: "4px" }
     : eng === "3"
-    ? { color: ENGAGEMENT[2], height: "6px" }
+    ? { backgroundColor: ENGAGEMENT[2], height: "6px" }
     : eng === "4"
-    ? { color: ENGAGEMENT[3], height: "8px" }
+    ? { backgroundColor: ENGAGEMENT[3], height: "8px" }
     : BORDER.other;
 }
 

@@ -12,6 +12,7 @@ import trimData from "./trimData";
 import parseTDRMatrix from "./TDRParseFucntions/parseTDRMatrix";
 import makeCyStakeholerNodes from "./cyElements/makeCyStakeholderNodes";
 import makeStakeholderCyEdges from "./cyElements/makeStakeholderCyEdges";
+import makeCyWpEdges from "./cyElements/makeCyWpEdges";
 
 import actDataset from "../data/activity_matrix.txt";
 import actLinks from "../data/links.txt";
@@ -65,6 +66,8 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
 
   const wpNodes = makeCyWpNodes(trimmedWpData);
 
+  const wpEdges = makeCyWpEdges(trimmedWpData);
+
   const stakeholderNodes = makeCyStakeholerNodes(stakeholderData);
 
   const stakeholderEdges = makeStakeholderCyEdges(stakeholderData);
@@ -80,7 +83,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   };
   const origionalActCount = activityData.length;
 
-  const cyElms = [nodes, stakeholderNodes, edges.flat(), stakeholderEdges.flat(), wpNodes, projectNode].flat();
+  const cyElms = [nodes, stakeholderNodes, edges.flat(), stakeholderEdges.flat(), wpNodes, projectNode, wpEdges].flat();
 
   return {
     cyElms: cyElms,

@@ -116,8 +116,8 @@ export const BCOSE = {
   gravityRange: 9,
 };
 
-export const CONCENTRIC = (ani) => ({
+export const CONCENTRIC = {
   name: "concentric",
-  animate: ani,
+  animate: true,
   animationDuration: 1000,
-});
+};

@@ -7,6 +7,7 @@ import Legend from "./components/legend/Legend";
 import BottomPannel from "./components/bottomPannel/BottomPannel";
 import FilterOptions from "./components/FilterOptions/FilterOptions";
 import ToggleButtons from "./components/ToggleButtons/ToggleButtons";
+import { FCOSE } from "./components/cytoscape/functions/LAYOUTS";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
@@ -37,6 +38,7 @@ export function App() {
   const [stakeholdersDisplay, setStakeholdersDisplay] = useState(false);
   const [networkVeiw, setNetworkVeiw] = useState(false);
   const [selectedBottomVis, setSelectedBottomVis] = useState("");
+  const [networkVeiwEls, setNetworkVeiwEls] = useState([]);
 
   const gantchartData = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
@@ -64,6 +66,7 @@ export function App() {
         latestPrPeriod,
       } = await makeVisElements(prPeriod, currentStory, completedDisplay); //all pre-processing of data
 
+      //TO_DO- make wp edge function indipendent of cytoscape, add weighting to stylesheet
       const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges once cytoscape has been made
 
       actDataRef.current = activityData; //ssigns activity data to ref
@@ -76,14 +79,14 @@ export function App() {
 
       setCyState((prevState) => ({
         ...prevState,
-        elements: wpEdge ? [...cyElms, ...wpEdge] : cyElms, //if wpEdges exist then add them, if not use cyElms
+        elements: cyElms, //if wpEdges exist then add them, if not use cyElms
         display: "block",
       })); //sets elements array as the cytoscape element
     }
-
+    console.log("rendered");
     addDataToCytoscape();
     // addCategoryIcon(cyState.cy);
-  }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory]);
+  }, [completedDisplay, cyState.cy, prPeriod, currentStory]);
 
   return (
     <div className="container">
@@ -115,7 +118,12 @@ export function App() {
                 actDataRef={actDataRef}
                 matrixHeadersRef={matrixHeadersRef}
               />
-              <Legend cyState={cyState} networkVeiw={networkVeiw} selectedNode={selectedNode} />
+              <Legend
+                cyState={cyState}
+                networkVeiw={networkVeiw}
+                selectedNode={selectedNode}
+                networkVeiwEls={networkVeiwEls}
+              />
             </div>
             <ToggleButtons
               selectedBottomVis={selectedBottomVis}
@@ -160,6 +168,8 @@ export function App() {
           completedDisplay={completedDisplay}
           latestPrPeriodRef={latestPrPeriodRef}
           prPeriod={prPeriod}
+          networkVeiwEls={networkVeiwEls}
+          setNetworkVeiwEls={setNetworkVeiwEls}
         />
       </div>
     </div>
