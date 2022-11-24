@@ -25,7 +25,9 @@ export function CytoscapeVis({
   currentStory,
 }) {
   const renderCounter = useRef(0);
+  const selectedNodeNHoodCount = useRef(null);
   renderCounter.current = cyState.cy && renderCounter.current + 1;
+  selectedNodeNHoodCount.current = cyState.cy && cyState.cy.nodes(`#${selectedNode.label}`).closedNeighborhood().length;
 
   //NODE SELECTION, called every time  or cyState chanages,
   useEffect(() => {
@@ -34,49 +36,63 @@ export function CytoscapeVis({
       if (event.target.data().network === "yes") {
         const networkID = event.target.data().label; // network node ables are there equivelent node id
         setSelectedNode(cyState.cy.nodes(`#${networkID}`).data()); // set selected node to origional graph node
-        styleSelectedElements(cyState.cy, networkID, networkVeiw);
-        setNetworkVeiwEls(makeNHoodLayout(cyState, event.target.data()));
+        styleSelectedElements(cyState.cy, networkID);
+        // setNetworkVeiwEls(makeNHoodLayout(cyState, event.target.data()));
       } else {
         setSelectedNode((prevState) => (event.target.id() === prevState.id ? { id: "" } : event.target.data())); //if same node is clicked twice clear 'selected node' state
         styleSelectedElements(cyState.cy, event.target.id());
-        setNetworkVeiwEls(makeNHoodLayout(cyState, event.target.data(), networkVeiw));
+        // setNetworkVeiwEls(makeNHoodLayout(cyState, event.target.data(), networkVeiw));
       }
     };
     cyState.cy.on("click", "node", nodeClickHandler); //add event listner to node
     return () => cyState.cy.off("click", "node", nodeClickHandler); //clean up click handler to prevent memory leak
-  }, [setSelectedNode, cyState, networkVeiw, setNetworkVeiwEls]);
+  }, [setSelectedNode, cyState]);
 
   //RUNS MAIN LAYOUT WHEN NODES ARE ADDED/REMOVED
   useEffect(() => {
-    if (!networkVeiw && networkVeiwEls.length === 0) {
+    if (!networkVeiw) {
       cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, false)).run();
     }
-  }, [currentActNodeCountRef, cyState.cy, cyState.elements.length, networkVeiw, origionalActCountRef, networkVeiwEls]);
+  }, [currentActNodeCountRef, cyState.cy, cyState.elements.length, networkVeiw, origionalActCountRef]);
 
   //RESTORES MAIN LAYOUT IF NETWORK VEIW IS FALSE
   useEffect(() => {
-    if (!networkVeiw) {
+    if (!networkVeiw && networkVeiwEls.els.length !== 0) {
       cyState.cy.nodes().removeClass("hide");
       cyState.cy.remove(cyState.cy.nodes(`[network = "yes"]`));
-      selectedNode.id === "" && setNetworkVeiwEls([]);
+      setNetworkVeiwEls({ ID: "", els: [] });
     }
-  }, [networkVeiw]);
-
-  //MAKES NETWORK LAYOUT ELEMENTS AND CONTROLS NAVIGATION BETWEEN NETWORK VEIWS
-  useEffect(() => {
-    if (selectedNode.id !== "" && selectedNode.type !== "wp") {
-      setNetworkVeiwEls(makeNHoodLayout(cyState, selectedNode));
-    }
-  }, [cyState.elements.length]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [networkVeiw, networkVeiwEls.els.length, networkVeiwEls.ID]);
 
   useEffect(() => {
-    if (networkVeiw && networkVeiw.length !== 0) {
-      cyState.cy.nodes().addClass("hide"); // hide all nodes and there connected edges
-      cyState.cy.add(networkVeiwEls).layout(CONCENTRIC).run();
-      nodeTooltip(cyState.cy); //produces tooltips on mouuseover
-      console.log(networkVeiwEls);
+    if (networkVeiw && selectedNode.id !== "" && selectedNode.type !== "wp") {
+      cyState.cy.nodes().addClass("hide");
+      const newEls = makeNHoodLayout(cyState, selectedNode);
+      setNetworkVeiwEls((prevState) =>
+        newEls.els.length === prevState.els.length && prevState.ID === newEls.ID ? prevState : newEls
+      );
+      cyState.cy.add(networkVeiwEls.els);
+      cyState.cy.nodes("[network = 'yes']").layout(CONCENTRIC).run();
     }
-  }, [networkVeiw, networkVeiwEls.length, selectedNode.id]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [networkVeiw, networkVeiwEls.ID, selectedNode, selectedNodeNHoodCount.current]);
+
+  // //MAKES NETWORK LAYOUT ELEMENTS AND CONTROLS NAVIGATION BETWEEN NETWORK VEIWS
+  // useEffect(() => {
+  //   if (selectedNode.id !== "" && selectedNode.type !== "wp") {
+  //     setNetworkVeiwEls(makeNHoodLayout(cyState, selectedNode));
+  //   }
+  // }, [cyState, cyState.elements.length, selectedNode, setNetworkVeiwEls]);
+  // console.log(networkVeiwEls);
+
+  // useEffect(() => {
+  //   if (networkVeiw) {
+  //     cyState.cy.nodes().addClass("hide"); // hide all nodes and there connected edges
+  //     cyState.cy.add(networkVeiwEls).layout(CONCENTRIC).run();
+  //     nodeTooltip(cyState.cy); //produces tooltips on mouuseover
+  //   }
+  // }, [cyState.cy, networkVeiw, networkVeiwEls, networkVeiwEls.length, selectedNode.id]);
 
   const style = {
     display: cyState.display,
@@ -92,7 +108,7 @@ export function CytoscapeVis({
       cy={(cy) => {
         cyState.cy = cy;
         cy.on("resize", (_evt) => {
-          renderCounter.current === 2 &&
+          renderCounter.current === 1 &&
             cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, true)).run();
         });
       }}

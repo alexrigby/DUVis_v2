@@ -38,7 +38,7 @@ export function App() {
   const [stakeholdersDisplay, setStakeholdersDisplay] = useState(false);
   const [networkVeiw, setNetworkVeiw] = useState(false);
   const [selectedBottomVis, setSelectedBottomVis] = useState("");
-  const [networkVeiwEls, setNetworkVeiwEls] = useState([]);
+  const [networkVeiwEls, setNetworkVeiwEls] = useState({ ID: "", els: [] });
 
   const gantchartData = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates

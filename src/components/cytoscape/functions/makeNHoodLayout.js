@@ -1,4 +1,4 @@
-export function makeNHoodLayout(cyState, selectedNode, networkVeiw) {
+export function makeNHoodLayout(cyState, selectedNode) {
   cyState.cy.remove(cyState.cy.edges(`[network = "yes"]`)); //remove network nodes
   cyState.cy.remove(cyState.cy.nodes(`[network = "yes"]`)); //remove network nodes
   //gets neighboorhood of selected node and makes new nodes and edges
@@ -74,7 +74,11 @@ export function makeNHoodLayout(cyState, selectedNode, networkVeiw) {
     return a.data.meta.WP - b.data.meta.WP;
   });
 
-  return [newNHoodSNodes, newNHoodActNodes, newNHoodActEdges, newNHoodSEdges].flat();
+  console.log({
+    ID: selectedNode.label,
+    els: [newNHoodSNodes, newNHoodActNodes, newNHoodActEdges, newNHoodSEdges].flat(),
+  });
+  return { ID: selectedNode.label, els: [newNHoodSNodes, newNHoodActNodes, newNHoodActEdges, newNHoodSEdges].flat() };
 }
 
 export default makeNHoodLayout;
