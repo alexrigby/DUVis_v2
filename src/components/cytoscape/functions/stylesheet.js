@@ -112,9 +112,9 @@ export function stylesheet(
           // console.log(ele.data());
           return wpEdgeStyle(ele.data(), cyState.cy);
         },
-        // "line-color": "mapData(weight, 0, 40, #ffcba4, #cb410b)",
+        "line-color": "#ffb37a",
         "line-cap": "round",
-        "line-opacity": 0.5,
+        "line-opacity": 0.6,
       },
     },
     {

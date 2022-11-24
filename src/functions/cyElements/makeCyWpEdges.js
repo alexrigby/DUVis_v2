@@ -17,6 +17,7 @@ export function makeCyWpEdges(wpData) {
       });
     }
   }
+  //   console.log(wpEdges.length);s
 
   return wpEdges;
 }

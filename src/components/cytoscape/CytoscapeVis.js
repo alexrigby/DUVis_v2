@@ -6,7 +6,6 @@ import stylesheet from "./functions/stylesheet";
 import nodeTooltip from "./functions/nodeTooltips";
 import styleSelectedElements from "./functions/styleSelectedElements";
 import makeNHoodLayout from "./functions/makeNHoodLayout";
-import { render } from "@testing-library/react";
 
 export function CytoscapeVis({
   cyState,
@@ -28,11 +27,11 @@ export function CytoscapeVis({
   console.log(renderCounter.current);
 
   //NEED TO RUN LAYOUT ON RENDER "when wp Edges are added"
-  useEffect(() => {
-    renderCounter.current === 2 &&
-      cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, true)).run();
-    // renderCounter.current === 2 && cyState.cy.fit();
-  });
+  // useEffect(() => {
+  //   renderCounter.current === 1 &&
+  //     cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, true)).run();
+  //   // renderCounter.current === 2 && cyState.cy.fit();
+  // }, [currentActNodeCountRef, cyState.cy, origionalActCountRef, renderCounter]);
 
   //NODE SELECTION, called every time setSideBarVis or cyState chanages,
   useEffect(() => {
@@ -80,7 +79,7 @@ export function CytoscapeVis({
       cyState.cy.add(networkVeiwEls).layout(CONCENTRIC).run();
       nodeTooltip(cyState.cy); //produces tooltips on mouuseover
     }
-    console.log("rend");
+    // console.log("rend");
   }, [networkVeiw, selectedNode, networkVeiwEls.length, cyState.elements.length, setNetworkVeiwEls]);
 
   const style = {

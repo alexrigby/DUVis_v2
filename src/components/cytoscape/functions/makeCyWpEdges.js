@@ -2,7 +2,6 @@ import { wpFields } from "../../../data";
 
 export function makeCyWpEdges(cy, wp) {
   const wpData = [...wp];
-  console.log(wpData);
 
   // loops over all WPs and returns an array of targets of the outgoing edges from that WP
   const wpTargetNodes = [];
@@ -22,6 +21,15 @@ export function makeCyWpEdges(cy, wp) {
 
   for (let i = 0; i < wpData.length - 1; i++) {
     for (let j = i + 1; j < wpData.length; j++) {
+      console.log(
+        `${wpData[i][wpFields.ID]}${wpData[j][wpFields.ID]}`,
+        wpConectionWeight(
+          wpTargetNodes[`${wpData[i][wpFields.ID]}`],
+          wpActIds[`${wpData[j][wpFields.ID]}`],
+          wpTargetNodes[`${wpData[j][wpFields.ID]}`],
+          wpActIds[`${wpData[i][wpFields.ID]}`]
+        )
+      );
       wpEdges.push({
         group: "edges",
         classes: "wpEdge",
@@ -56,8 +64,7 @@ export function makeCyWpEdges(cy, wp) {
       });
     }
   }
-  console.log(test);
-  console.log(wpEdges);
+  // console.log(test);
 
   return wpEdges;
 }
@@ -76,6 +83,8 @@ function getOutgoingEdgeTargets(cy, wp) {
 
 //gets nodes connecting WPa and WPb and returns there 'weight' (i.e. how many connection there are between WPs)
 function wpConectionWeight(array1, array2, array3, array4) {
+  // console.log(array1, "1");
+  // console.log(array2, "2");
   const cross1 = getCrossover(array1, array2);
   const cross2 = getCrossover(array3, array4);
   return cross1.length + cross2.length;

@@ -56,7 +56,6 @@ export function App() {
     async function addDataToCytoscape() {
       const {
         cyElms,
-        wpData,
         gantChartItems,
         activityData,
         dates,
@@ -65,9 +64,6 @@ export function App() {
         origionalActCount,
         latestPrPeriod,
       } = await makeVisElements(prPeriod, currentStory, completedDisplay); //all pre-processing of data
-
-      //TO_DO- make wp edge function indipendent of cytoscape, add weighting to stylesheet
-      const wpEdge = makeCyWpEdges(cyState.cy, wpData); //creates wp Edges once cytoscape has been made
 
       actDataRef.current = activityData; //ssigns activity data to ref
       stakeholderDataRef.current = stakeholderData;

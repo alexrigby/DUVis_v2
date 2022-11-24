@@ -87,7 +87,6 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
 
   return {
     cyElms: cyElms,
-    wpData: trimmedWpData,
     gantChartItems: gantChartItems,
     activityData: trimmedData,
     dates: convertedDates,
