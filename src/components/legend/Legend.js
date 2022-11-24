@@ -8,9 +8,7 @@ import "./Legend.css";
 
 export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls }) {
   const legendData = useRef({ wps: "", categorys: "" });
-  const sEngagement = useRef(null);
 
-  // useEffect(() => {
   const eng =
     selectedNode.id !== "" &&
     cyState.cy
@@ -31,10 +29,6 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls }) {
         <p className="legendLable">Engagement level {e}</p>
       </div>
     ));
-
-  // sEngagement.current = selectedNode.id !== "" && engLegendItems;
-  // }, [networkVeiwEls.ID]);
-  // console.log(sEngagement.current);
 
   useEffect(() => {
     // gets all WPS  and descriptions present in cy graph

@@ -50,8 +50,9 @@ export function CytoscapeVis({
 
   //RUNS MAIN LAYOUT WHEN NODES ARE ADDED/REMOVED
   useEffect(() => {
-    if (!networkVeiw) {
+    if (!networkVeiw && networkVeiwEls.els.length === 0) {
       cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, false)).run();
+      cyState.cy.fit();
     }
   }, [currentActNodeCountRef, cyState.cy, cyState.elements.length, networkVeiw, origionalActCountRef]);
 
@@ -65,6 +66,7 @@ export function CytoscapeVis({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [networkVeiw, networkVeiwEls.els.length, networkVeiwEls.ID]);
 
+  //ADDS NETWORK VEIW NODES
   useEffect(() => {
     if (networkVeiw && selectedNode.id !== "" && selectedNode.type !== "wp") {
       cyState.cy.nodes().addClass("hide");
@@ -74,25 +76,10 @@ export function CytoscapeVis({
       );
       cyState.cy.add(networkVeiwEls.els);
       cyState.cy.nodes("[network = 'yes']").layout(CONCENTRIC).run();
+      nodeTooltip(cyState.cy); //produces tooltips on mouuseover
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [networkVeiw, networkVeiwEls.ID, selectedNode, selectedNodeNHoodCount.current]);
-
-  // //MAKES NETWORK LAYOUT ELEMENTS AND CONTROLS NAVIGATION BETWEEN NETWORK VEIWS
-  // useEffect(() => {
-  //   if (selectedNode.id !== "" && selectedNode.type !== "wp") {
-  //     setNetworkVeiwEls(makeNHoodLayout(cyState, selectedNode));
-  //   }
-  // }, [cyState, cyState.elements.length, selectedNode, setNetworkVeiwEls]);
-  // console.log(networkVeiwEls);
-
-  // useEffect(() => {
-  //   if (networkVeiw) {
-  //     cyState.cy.nodes().addClass("hide"); // hide all nodes and there connected edges
-  //     cyState.cy.add(networkVeiwEls).layout(CONCENTRIC).run();
-  //     nodeTooltip(cyState.cy); //produces tooltips on mouuseover
-  //   }
-  // }, [cyState.cy, networkVeiw, networkVeiwEls, networkVeiwEls.length, selectedNode.id]);
 
   const style = {
     display: cyState.display,
