@@ -50,6 +50,7 @@ export function App() {
   const latestPrPeriodRef = useRef(null);
 
   currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
+  console.log("render");
 
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
@@ -79,10 +80,9 @@ export function App() {
         display: "block",
       })); //sets elements array as the cytoscape element
     }
-    console.log("rendered");
     addDataToCytoscape();
     // addCategoryIcon(cyState.cy);
-  }, [completedDisplay, cyState.cy, prPeriod, currentStory]);
+  }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory]);
 
   return (
     <div className="container">
@@ -104,7 +104,6 @@ export function App() {
                 currentStory={currentStory}
                 completedDisplay={completedDisplay}
               />
-
               <FilterOptions
                 datesRef={datesRef}
                 prPeriod={prPeriod}
@@ -166,6 +165,7 @@ export function App() {
           prPeriod={prPeriod}
           networkVeiwEls={networkVeiwEls}
           setNetworkVeiwEls={setNetworkVeiwEls}
+          currentStory={currentStory}
         />
       </div>
     </div>
