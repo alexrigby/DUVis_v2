@@ -11,29 +11,29 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls }) {
   const sEngagement = useRef(null);
 
   // useEffect(() => {
-  //   const eng =
-  //     selectedNode.id !== "" &&
-  //     cyState.cy
-  //       .nodes(`#${selectedNode.id}`)
-  //       .connectedEdges("[type = 'stakeholderEdge']")
-  //       .map((e) => e.data("engagement"))
-  //       .sort(function (a, b) {
-  //         return a - b;
-  //       });
+  const eng =
+    selectedNode.id !== "" &&
+    cyState.cy
+      .nodes(`#${selectedNode.id}`)
+      .connectedEdges("[type = 'stakeholderEdge']")
+      .map((e) => e.data("engagement"))
+      .sort(function (a, b) {
+        return a - b;
+      });
 
-  //   const uniqueEng = selectedNode.id !== "" && [...new Set([...eng])];
+  const uniqueEng = selectedNode.id !== "" && [...new Set([...eng])];
 
-  //   const engLegendItems =
-  //     selectedNode.id !== "" &&
-  //     uniqueEng.map((e, i) => (
-  //       <div key={i} className="boxContainer">
-  //         <div className="engBox" style={styleEngLegend(e)}></div>
-  //         <p className="legendLable">Engagement level {e}</p>
-  //       </div>
-  //     ));
+  const engLegendItems =
+    selectedNode.id !== "" &&
+    uniqueEng.map((e, i) => (
+      <div key={i} className="boxContainer">
+        <div className="engBox" style={styleEngLegend(e)}></div>
+        <p className="legendLable">Engagement level {e}</p>
+      </div>
+    ));
 
-  //   sEngagement.current = selectedNode.id !== "" && engLegendItems;
-  // }, [networkVeiwEls.length]);
+  // sEngagement.current = selectedNode.id !== "" && engLegendItems;
+  // }, [networkVeiwEls.ID]);
   // console.log(sEngagement.current);
 
   useEffect(() => {
@@ -63,8 +63,8 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls }) {
       {legendData.current.wps}
       {/* <h2>Categorys:</h2>
       {legendData.current.categorys} */}
-      {/* {networkVeiw && sEngagement.current.length !== 0 && <h2>Engagement Level:</h2>}
-      {networkVeiw && sEngagement.current.length !== 0 && sEngagement.current} */}
+      {networkVeiw && engLegendItems.length !== 0 && <h2>Engagement Level:</h2>}
+      {networkVeiw && engLegendItems.length !== 0 && engLegendItems}
     </div>
   );
 }
