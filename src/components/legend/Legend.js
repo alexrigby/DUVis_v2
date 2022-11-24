@@ -55,7 +55,7 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls }) {
     ));
 
     legendData.current = { wps: wpLegendItems };
-  }, [cyState.cy, cyState.elements.length]);
+  }, [cyState.cy, cyState.elements.length, cyState]);
 
   return (
     <div className="legend">

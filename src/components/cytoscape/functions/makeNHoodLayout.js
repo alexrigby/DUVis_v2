@@ -1,11 +1,19 @@
-import nodeTooltip from "./nodeTooltips";
-import { CONCENTRIC } from "./LAYOUTS";
-
-export function makeNHoodLayout(cyState, selectedNode) {
+export function makeNHoodLayout(cyState, selectedNode, networkVeiw) {
+  cyState.cy.remove(cyState.cy.edges(`[network = "yes"]`)); //remove network nodes
+  cyState.cy.remove(cyState.cy.nodes(`[network = "yes"]`)); //remove network nodes
   //gets neighboorhood of selected node and makes new nodes and edges
-  const nHoodSNodes = cyState.cy.nodes(`#${selectedNode.id}`).closedNeighborhood().nodes("[type = 'stakeholderNode']");
-  const nHoodActNodes = cyState.cy.nodes(`#${selectedNode.id}`).closedNeighborhood().nodes("[type = 'activityNode']");
-  const nHoodSEdges = cyState.cy.nodes(`#${selectedNode.id}`).closedNeighborhood().edges("[type = 'stakeholderEdge']");
+  const nHoodSNodes = cyState.cy
+    .nodes(`#${selectedNode.label}`)
+    .closedNeighborhood()
+    .nodes("[type = 'stakeholderNode']");
+  const nHoodActNodes = cyState.cy
+    .nodes(`#${selectedNode.label}`)
+    .closedNeighborhood()
+    .nodes("[type = 'activityNode']");
+  const nHoodSEdges = cyState.cy
+    .nodes(`#${selectedNode.label}`)
+    .closedNeighborhood()
+    .edges("[type = 'stakeholderEdge']");
 
   const newNHoodSEdges =
     selectedNode.type !== "stakeholderNode"
@@ -16,7 +24,7 @@ export function makeNHoodLayout(cyState, selectedNode) {
             ...e.data(),
             id: "N_" + e.id(),
             source: "N_" + e.data().source,
-            target: "N_" + selectedNode.id,
+            target: "N_" + selectedNode.label,
             network: "yes",
           },
         }))
@@ -28,7 +36,7 @@ export function makeNHoodLayout(cyState, selectedNode) {
     data: {
       ...n.data(),
       parent: null,
-      id: "N_" + n.id(),
+      id: "N_" + n.data().label,
       network: "yes",
     },
   }));
@@ -41,7 +49,7 @@ export function makeNHoodLayout(cyState, selectedNode) {
       data: {
         ...n.data(),
         parent: null,
-        id: "N_" + n.id(),
+        id: "N_" + n.data().label,
         network: "yes",
         // opacity: activityOpacity(n.data().meta, completedDisplay, latestPrPeriodRef.current, prPeriod), //need to dynamically set opacity when making new nodes
       },
@@ -53,9 +61,9 @@ export function makeNHoodLayout(cyState, selectedNode) {
       group: "edges",
       classes: "networkEdge",
       data: {
-        id: `N_g${selectedNode.id}e${n.data.id}`,
+        id: `N_g${selectedNode.label}e${n.data.label}`,
         source: n.data.id,
-        target: "N_" + selectedNode.id,
+        target: "N_" + selectedNode.label,
         network: "yes",
       },
     }))
