@@ -27,7 +27,16 @@ export function CytoscapeVis({
   const renderCounter = useRef(0);
   const selectedNodeNHoodCount = useRef(null);
   renderCounter.current = cyState.cy && renderCounter.current + 1;
+
   selectedNodeNHoodCount.current = cyState.cy && cyState.cy.nodes(`#${selectedNode.label}`).closedNeighborhood().length;
+  const prevSelectedNodeNHoodCount = useRef(null);
+
+  useEffect(() => {
+    prevSelectedNodeNHoodCount.current = selectedNodeNHoodCount.current;
+  }, [selectedNodeNHoodCount.current]);
+
+  // console.log(selectedNodeNHoodCount.current, "current");
+  // console.log(prevSelectedNodeNHoodCount.current, "prev");
 
   //NODE SELECTION, called every time  or cyState chanages,
   useEffect(() => {
@@ -74,12 +83,16 @@ export function CytoscapeVis({
       setNetworkVeiwEls((prevState) =>
         newEls.els.length === prevState.els.length && prevState.ID === newEls.ID ? prevState : newEls
       );
+      // if (networkVeiwEls.els.length !== 0) {
       cyState.cy.add(networkVeiwEls.els);
+
       cyState.cy.nodes("[network = 'yes']").layout(CONCENTRIC).run();
       nodeTooltip(cyState.cy); //produces tooltips on mouuseover
+      // }
+
+      // networkVeiwEls.els.length === 0 && cyState.cy.remove(cyState.cy.nodes(`[network = "yes"]`)); //remove network nodes
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [networkVeiw, networkVeiwEls.ID, selectedNode, selectedNodeNHoodCount.current]);
+  }, [networkVeiw, networkVeiwEls.ID, selectedNode.id, selectedNode, cyState, setNetworkVeiwEls, networkVeiwEls.els]);
 
   const style = {
     display: cyState.display,

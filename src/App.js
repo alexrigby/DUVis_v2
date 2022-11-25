@@ -50,7 +50,7 @@ export function App() {
   const latestPrPeriodRef = useRef(null);
 
   currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
-  console.log("render");
+  // console.log("render");
 
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data

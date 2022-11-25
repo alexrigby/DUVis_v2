@@ -74,10 +74,6 @@ export function makeNHoodLayout(cyState, selectedNode) {
     return a.data.meta.WP - b.data.meta.WP;
   });
 
-  console.log({
-    ID: selectedNode.label,
-    els: [newNHoodSNodes, newNHoodActNodes, newNHoodActEdges, newNHoodSEdges].flat(),
-  });
   return { ID: selectedNode.label, els: [newNHoodSNodes, newNHoodActNodes, newNHoodActEdges, newNHoodSEdges].flat() };
 }
 
