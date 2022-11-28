@@ -94,6 +94,7 @@ export function App() {
             setSelectedNode={setSelectedNode}
             datesRef={datesRef}
             prPeriod={prPeriod}
+            networkVeiw={networkVeiw}
           />
           <div className="headSection">
             <div className="rightSide">

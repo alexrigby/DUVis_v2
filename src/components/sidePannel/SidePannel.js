@@ -5,7 +5,7 @@ import ActivityMetaSection from "./ActivityMetaSection";
 import WpNodeMetaSection from "./WpNodeMetaSection";
 import StakeholderMetaPannel from "./StakeholderMetaPannel";
 
-export function SidePannel({ selectedNode, cyState, setSelectedNode, datesRef, prPeriod }) {
+export function SidePannel({ selectedNode, cyState, setSelectedNode, datesRef, prPeriod, networkVeiw }) {
   //if clicked node is "" display nothing
   // console.log(selectedNode);
 
@@ -23,6 +23,7 @@ export function SidePannel({ selectedNode, cyState, setSelectedNode, datesRef, p
             setSelectedNode={setSelectedNode}
             datesRef={datesRef}
             prPeriod={prPeriod}
+            networkVeiw={networkVeiw}
           />
         ) : selectedNode.type === "wp" ? (
           <WpNodeMetaSection selectedNode={selectedNode} cyState={cyState} setSelectedNode={setSelectedNode} />

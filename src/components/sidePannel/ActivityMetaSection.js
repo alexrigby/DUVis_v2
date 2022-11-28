@@ -3,7 +3,7 @@ import hilightOnLiHover from "./functions/hilightOnLiHover";
 import { actFields } from "../../data";
 import { useState } from "react";
 
-export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, datesRef, prPeriod }) {
+export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, datesRef, prPeriod, networkVeiw }) {
   const meta = selectedNode.meta;
   const OPEN = <i className="fa fa-angle-down"></i>;
   const CLOSE = <i className="fa fa-angle-up"></i>;
@@ -125,8 +125,9 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
   const stakeholderCount = stakeholderCollection.flat().length;
 
   const style = (key) => ({ display: actAccordion[key] ? "block" : "none" });
-  // console.log(prPeriod);
 
+  // console.log(prPeriod);
+  console.log(networkVeiw);
   return (
     <div>
       <div className="metaSection">
@@ -134,7 +135,9 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
           {meta.ID}. {meta[actFields.ACTIVITY]}
         </h1>
         <h1
-          onClick={() => nodeNavigationHandler(selectedNode.parent, setSelectedNode, cyState)}
+          onClick={() => {
+            !networkVeiw && nodeNavigationHandler(selectedNode.parent, setSelectedNode, cyState);
+          }}
           className="navigateToWp"
         >
           WP: {selectedNode.parent.slice(2)}
