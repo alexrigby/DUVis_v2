@@ -126,8 +126,6 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
 
   const style = (key) => ({ display: actAccordion[key] ? "block" : "none" });
 
-  // console.log(prPeriod);
-  console.log(networkVeiw);
   return (
     <div>
       <div className="metaSection">

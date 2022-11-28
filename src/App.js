@@ -104,6 +104,7 @@ export function App() {
                 prPeriod={prPeriod}
                 currentStory={currentStory}
                 completedDisplay={completedDisplay}
+                networkVeiw={networkVeiw}
               />
               <FilterOptions
                 datesRef={datesRef}

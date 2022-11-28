@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import "./Header.css";
 
-export function Header({ cyState, datesRef, prPeriod, currentStory, completedDisplay }) {
+export function Header({ cyState, datesRef, prPeriod, currentStory, completedDisplay, networkVeiw }) {
   return (
     <header>
       <div>
@@ -15,9 +15,9 @@ export function Header({ cyState, datesRef, prPeriod, currentStory, completedDis
           {datesRef.current !== null && prStartAndEndDate(datesRef, prPeriod).end}{" "}
           {completedDisplay !== false &&
             "|| " +
-              completedActivityInfo(prPeriod, cyState.cy, datesRef.current, "completed") +
+              completedActivityInfo(prPeriod, cyState.cy, datesRef.current, "completed", networkVeiw) +
               " completed - " +
-              completedActivityInfo(prPeriod, cyState.cy, datesRef.current, "ongoing") +
+              completedActivityInfo(prPeriod, cyState.cy, datesRef.current, "ongoing", networkVeiw) +
               " ongoing "}
         </p>
       </div>
@@ -48,24 +48,26 @@ function prStartAndEndDate(datesRef, prPeriod) {
   };
 }
 
-function completedActivityInfo(prPeriod, cy, dates, co) {
+function completedActivityInfo(prPeriod, cy, dates, co, networkVeiw) {
+  const nodeSelector = networkVeiw ? '[network = "yes"]' : '[type = "activityNode"]';
+  console.log(networkVeiw);
   const latestPrPeriod = dates[dates.length - 1].prPeriod;
   if (co === "ongoing") {
     if (prPeriod.pr === null) {
-      return cy !== null && cy.nodes(`[meta.endPrPeriod > "${latestPrPeriod}"]`).length;
+      return cy.nodes(`${nodeSelector}[meta.endPrPeriod >= "${latestPrPeriod}"]`).length;
     } else {
-      return cy !== null && cy.nodes(`[meta.endPrPeriod > "${prPeriod.pr}"]`).length;
+      return cy.nodes(`${nodeSelector}[meta.endPrPeriod >= "${prPeriod.pr}"]`).length;
     }
   } else if (co === "completed") {
     if (prPeriod.pr === null) {
       return (
-        cy !== null &&
-        cy.nodes('[type ="activityNode"]').length - cy.nodes(`[meta.endPrPeriod > "${latestPrPeriod}"]`).length
+        cy.nodes(`${nodeSelector}[type ="activityNode"]`).length -
+        cy.nodes(`${nodeSelector}[meta.endPrPeriod >= "${latestPrPeriod}"]`).length
       );
     } else {
       return (
-        cy !== null &&
-        cy.nodes('[type ="activityNode"]').length - cy.nodes(`[meta.endPrPeriod > "${prPeriod.pr}"]`).length
+        cy.nodes(`${nodeSelector}[type ="activityNode"]`).length -
+        cy.nodes(`${nodeSelector}[meta.endPrPeriod >= "${prPeriod.pr}"]`).length
       );
     }
   }
