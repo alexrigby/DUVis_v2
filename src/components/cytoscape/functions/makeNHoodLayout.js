@@ -15,20 +15,17 @@ export function makeNHoodLayout(cyState, selectedNode) {
     .closedNeighborhood()
     .edges("[type = 'stakeholderEdge']");
 
-  const newNHoodSEdges =
-    selectedNode.type !== "stakeholderNode"
-      ? nHoodSEdges.map((e) => ({
-          group: "edges",
-          classes: "networkEdge",
-          data: {
-            ...e.data(),
-            id: "N_" + e.id(),
-            source: "N_" + e.data().source,
-            target: "N_" + selectedNode.label,
-            network: "yes",
-          },
-        }))
-      : [];
+  const newNHoodSEdges = nHoodSEdges.map((e) => ({
+    group: "edges",
+    classes: "networkEdge",
+    data: {
+      ...e.data(),
+      id: "N_" + e.id(),
+      source: "N_" + selectedNode.label,
+      target: selectedNode.type === "stakeholderNode" ? "N_" + e.data().target : "N_" + e.data().source,
+      network: "yes",
+    },
+  }));
 
   const newNHoodSNodes = nHoodSNodes.map((n) => ({
     group: "nodes",
@@ -56,18 +53,21 @@ export function makeNHoodLayout(cyState, selectedNode) {
     };
   });
 
-  const newNHoodActEdges = newNHoodActNodes // only make one edge for each activity node so all egeds point to the parent
-    .map((n) => ({
-      group: "edges",
-      classes: "networkEdge",
-      data: {
-        id: `N_g${selectedNode.label}e${n.data.label}`,
-        source: n.data.id,
-        target: "N_" + selectedNode.label,
-        network: "yes",
-      },
-    }))
-    .filter((el) => el.data.target !== el.data.source);
+  const newNHoodActEdges =
+    selectedNode.type !== "stakeholderNode"
+      ? newNHoodActNodes // only make one edge for each activity node so all egeds point to the parent
+          .map((n) => ({
+            group: "edges",
+            classes: "networkEdge",
+            data: {
+              id: `N_g${selectedNode.label}e${n.data.label}`,
+              source: n.data.id,
+              target: "N_" + selectedNode.label,
+              network: "yes",
+            },
+          }))
+          .filter((el) => el.data.target !== el.data.source)
+      : [];
 
   //sort nodes by WP before adding to cytoscape
   newNHoodActNodes.sort(function (a, b) {

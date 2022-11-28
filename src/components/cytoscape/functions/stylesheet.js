@@ -31,12 +31,16 @@ export function stylesheet(
         color: "white",
         "border-width": 4,
         // "background-opacity": "data(opacity)",
-        "background-opacity": function (ele) {
-          return activityOpacity(ele.data().meta, completedDisplay, latestPrPeriodRef.current, prPeriod);
-        },
-        "border-opacity": function (ele) {
-          return activityOpacity(ele.data().meta, completedDisplay, latestPrPeriodRef.current, prPeriod);
-        },
+        "background-opacity": completedDisplay
+          ? function (ele) {
+              return activityOpacity(ele.data().meta, latestPrPeriodRef.current, prPeriod);
+            }
+          : statusOpacity.onGoing,
+        "border-opacity": completedDisplay
+          ? function (ele) {
+              return activityOpacity(ele.data().meta, latestPrPeriodRef.current, prPeriod);
+            }
+          : statusOpacity.onGoing,
         "background-color": function (ele) {
           return nodeBackgroundColor(ele, "colorRef");
         },
@@ -74,8 +78,16 @@ export function stylesheet(
         "text-valign": "center",
         color: "white",
         "border-width": 4,
-        "border-opacity": statusOpacity.onGoing,
-        "background-opacity": statusOpacity.onGoing,
+        "border-opacity": completedDisplay
+          ? function (ele) {
+              return stakeholderOpacity(ele, latestPrPeriodRef, prPeriod, cyState);
+            }
+          : statusOpacity.onGoing,
+        "background-opacity": completedDisplay
+          ? function (ele) {
+              return stakeholderOpacity(ele, latestPrPeriodRef, prPeriod, cyState);
+            }
+          : statusOpacity.onGoing,
         "background-color": function (ele) {
           return nodeBackgroundColor(ele, "colorRef");
         },
@@ -198,10 +210,28 @@ export function stylesheet(
         display: "none",
       },
     },
+    {
+      selector: ".show",
+      style: {
+        display: "element",
+      },
+    },
   ];
 }
 
 export default stylesheet;
+
+function stakeholderOpacity(ele, latestPrPeriodRef, prPeriod) {
+  const connectedActs = ele.connectedEdges().connectedNodes("[type = 'activityNode']"); //collection of connected acts
+  const undef = connectedActs.nodes('[meta.endPrPeriod = "onGoing"], [meta.endPrPeriod = "undefined"]');
+  const onGoing = connectedActs.nodes(
+    `[meta.endPrPeriod >= ${prPeriod.pr !== null ? prPeriod.pr : latestPrPeriodRef.current}]`
+  );
+
+  const onGoingLength = undef.length + onGoing.length; //get length of connected 'onGoing act nodes'
+
+  return onGoingLength === 0 ? statusOpacity.completed : statusOpacity.onGoing; // if there are no ongoing act nodes then set as complete
+}
 
 function nodeBackgroundColor(ele, property) {
   if (ele.data(property) === "wp1") {

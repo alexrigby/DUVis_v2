@@ -75,24 +75,39 @@ export function CytoscapeVis({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [networkVeiw, networkVeiwEls.els.length, networkVeiwEls.ID]);
 
+  // cyState.cy && console.log(cyState.cy.nodes("[meta.endPrPeriod = 'undefined' ], [meta.endPrPeriod = 'onGoing']"));
   //ADDS NETWORK VEIW NODES
   useEffect(() => {
     if (networkVeiw && selectedNode.id !== "" && selectedNode.type !== "wp") {
+      cyState.cy.nodes().removeClass("show");
       cyState.cy.nodes().addClass("hide");
       const newEls = makeNHoodLayout(cyState, selectedNode);
       setNetworkVeiwEls((prevState) =>
         newEls.els.length === prevState.els.length && prevState.ID === newEls.ID ? prevState : newEls
       );
-      // if (networkVeiwEls.els.length !== 0) {
+      //Needto work out way of running this block of code only when state changes
       cyState.cy.add(networkVeiwEls.els);
-
       cyState.cy.nodes("[network = 'yes']").layout(CONCENTRIC).run();
       nodeTooltip(cyState.cy); //produces tooltips on mouuseover
-      // }
-
-      // networkVeiwEls.els.length === 0 && cyState.cy.remove(cyState.cy.nodes(`[network = "yes"]`)); //remove network nodes
     }
-  }, [networkVeiw, networkVeiwEls.ID, selectedNode.id, selectedNode, cyState, setNetworkVeiwEls, networkVeiwEls.els]);
+  }, [
+    networkVeiw,
+    networkVeiwEls.ID,
+    selectedNode.id,
+    cyState.elements.length,
+    selectedNode,
+    setNetworkVeiwEls,
+    networkVeiwEls.els,
+  ]);
+
+  // useEffect(() => {
+  //   if (networkVeiw) {
+  //     //Needto work out way of running this block of code only when state changes
+  //     cyState.cy.add(networkVeiwEls.els);
+  //     cyState.cy.nodes("[network = 'yes']").layout(CONCENTRIC).run();
+  //     nodeTooltip(cyState.cy); //produces tooltips on mouuseover
+  //   }
+  // }, [networkVeiwEls.els.length, networkVeiwEls.ID, networkVeiw]);
 
   const style = {
     display: cyState.display,
