@@ -50,7 +50,7 @@ function prStartAndEndDate(datesRef, prPeriod) {
 
 function completedActivityInfo(prPeriod, cy, dates, co, networkVeiw) {
   const nodeSelector = networkVeiw ? '[network = "yes"]' : '[type = "activityNode"]';
-  console.log(networkVeiw);
+
   const latestPrPeriod = dates[dates.length - 1].prPeriod;
   if (co === "ongoing") {
     if (prPeriod.pr === null) {

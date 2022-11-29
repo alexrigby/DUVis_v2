@@ -153,14 +153,41 @@ export function CustomStory({
     setCustomStoryFilter([{ field: "", values: [] }]); // restes filter state to empty
   };
 
-  //adds all matrix fields to a select list
-  const matrixFieldOptions =
-    matrixHeadersRef.current !== null &&
-    Object.keys(matrixHeadersRef.current).map((field) => (
-      <option value={field} key={field}>
-        {field}
-      </option>
-    ));
+  const fieldFilters = [
+    actFields.ID,
+    actFields.RESEARCHER,
+    actFields.COMPLETIONSTATUS,
+    actFields.WP,
+    actFields.CATEGORY,
+    actFields.METHODCATEGORY,
+    actFields.DISCIPLINE,
+    actFields.DATAMETHOD,
+    actFields.WATERPRODUCERS,
+    actFields.RESEARCH,
+    actFields.WATERUSERS,
+    actFields.THEORY,
+    actFields.PRACTICE,
+    actFields.TECHPLATFORM,
+    actFields.POLICYSUPPORT,
+    actFields.COLLAB,
+    actFields.TDPERSPECTIVE,
+    actFields.ENGAGEMENTLEVEL,
+  ];
+
+  // //adds all matrix fields to a select list
+  // const matrixFieldOptions =
+  //   matrixHeadersRef.current !== null &&
+  //   Object.keys(matrixHeadersRef.current).map((field) => (
+  //     <option value={field} key={field}>
+  //       {field}
+  //     </option>
+  //   ));
+
+  const matrixFieldOptions = fieldFilters.map((field) => (
+    <option value={field} key={field}>
+      {field}
+    </option>
+  ));
 
   //adds the options from the chosen field to a select list
   const chosenFieldOptions =

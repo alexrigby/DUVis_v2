@@ -33,10 +33,8 @@ export function CytoscapeVis({
 
   useEffect(() => {
     prevSelectedNodeNHoodCount.current = selectedNodeNHoodCount.current;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedNodeNHoodCount.current]);
-
-  // console.log(selectedNodeNHoodCount.current, "current");
-  // console.log(prevSelectedNodeNHoodCount.current, "prev");
 
   //NODE SELECTION, called every time  or cyState chanages,
   useEffect(() => {
@@ -63,6 +61,7 @@ export function CytoscapeVis({
       cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, false)).run();
       cyState.cy.fit();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentActNodeCountRef, cyState.cy, cyState.elements.length, networkVeiw, origionalActCountRef]);
 
   //RESTORES MAIN LAYOUT IF NETWORK VEIW IS FALSE
@@ -90,6 +89,7 @@ export function CytoscapeVis({
       cyState.cy.nodes("[network = 'yes']").layout(CONCENTRIC).run();
       nodeTooltip(cyState.cy); //produces tooltips on mouuseover
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     networkVeiw,
     networkVeiwEls.ID,
@@ -122,6 +122,10 @@ export function CytoscapeVis({
       // cy prop allows acess to cy elements/functions
       cy={(cy) => {
         cyState.cy = cy;
+        // cy.ready(function (_evt) {
+        //   renderCounter.current === 1 &&
+        //     cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, true)).run();
+        // });
         cy.on("resize", (_evt) => {
           renderCounter.current === 1 &&
             cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, true)).run();
