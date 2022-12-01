@@ -11,6 +11,9 @@ export function styleSelectedElements(cy, nodeId) {
   document.querySelectorAll(`.vis-item`).forEach((el) => {
     el.classList.remove("selectedItem");
   });
+  document.querySelectorAll(`.vis-item`).forEach((el) => {
+    el.classList.remove("hilightedItem");
+  });
 
   document.querySelectorAll(`.item${nodeId}`).forEach((el) => {
     el.classList.add("selectedItem");

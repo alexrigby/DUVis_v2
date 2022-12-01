@@ -10,7 +10,7 @@ Cytoscape.use(fcose);
 Cytoscape.use(cola);
 
 export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
-  const nodeRepuslionFactor = 8000;
+  const nodeRepuslionFactor = 500;
   /// might be unnecicerily cnfusing
   // const reducerConst = origionalActCount * 4;
   // const multiplier = (reducerConst - nodeCount) / 100; // need to teat if this works for diffrent sized graphs
@@ -23,9 +23,13 @@ export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
     animationDuration: 1000,
     nodeDimensionsIncludeLabels: true,
     nodeRepulsion: function (node) {
-      if (node.data().type === "stakehlderNode") {
+      if (node.data().type === "stakeholderNod") {
         return nodeRepuslionFactor * currentActNodeCount;
-      } else {
+      }
+      //  else if (node.data().type === "project") {
+      //   return nodeRepuslionFactor * currentActNodeCount;
+      // }
+      else {
         return 4000;
       }
     },
@@ -54,16 +58,6 @@ export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
     fit: true,
     gravity: 4,
     gravityCompound: 5.0,
-
-    //   uniformNodeDimensions: true,
-    //   name: "fcose",
-    //   quality: "proof",
-    //   animationDuration: 1000,
-    //   nodeDimensionsIncludeLabels: true,
-    //   randomize: random,
-    //   fit: true,
-    //   gravityCompound: 10000000,
-    //   gravityRangeCompound: 1,
     numIter: 300,
     //   nodeRepulsion: function (node) {
     //     if (node.data().type === "stakehlderNode") {
@@ -104,17 +98,21 @@ export const COLA = {
   // animationDuration: 1000,
 };
 
-export const BCOSE = {
-  name: "cose-bilkent",
-  nodeDimensionsIncludeLabels: true,
-  nodeRepulsion: 3000,
-  idealEdgeLength: 20,
-  nesttingFactor: 0.4,
-  edgeElasticity: 0.1,
-  gravity: 1,
-  gravityRangeCompound: 1.5,
-  gravityRange: 9,
-};
+// export const FCOSE = (currentActNodeCount, origionalActCount, random) => ({
+//   name: "cose-bilkent",
+//   nodeDimensionsIncludeLabels: true,
+//   animationDuration: 1000,
+//   randomize: random,
+//   fit: true,
+//   nodeRepulsion: 3000,
+//   idealEdgeLength: 300,
+//   nesttingFactor: 0.4,
+//   edgeElasticity: 0.1,
+//   gravity: 4,
+//   gravityCompound: 5,
+//   // gravityRangeCompound: 1.5,
+//   // gravityRange: 9,
+// });
 
 export const CONCENTRIC = {
   name: "concentric",
