@@ -32,7 +32,7 @@ export function App() {
   const [selectedNode, setSelectedNode] = useState({ id: "" }); //sets initial state for selected node
   const [prPeriod, setPrPeriod] = useState({ pr: null, undefined: true }); //sets state for pr period
   const [currentStory, setCurrentStory] = useState(null); //sets story ids state
-  const [activityEdgeDisplay, setActivityEdgeDisplay] = useState(false); //sets if wp edges or activity edges are displayed
+  const [activityEdgeDisplay, setActivityEdgeDisplay] = useState("wp"); //sets if wp edges or activity edges are displayed
   const [completedDisplay, setCompletedDisplay] = useState(false); //sets if nodes opacity is defined by completion status
   const [connectionFlagsDisplay, setConnectionFlagsDisplay] = useState(false);
   const [stakeholdersDisplay, setStakeholdersDisplay] = useState(false);
@@ -138,6 +138,7 @@ export function App() {
               activityEdgeDisplay={activityEdgeDisplay}
               completedDisplay={completedDisplay}
               stakeholdersDisplay={stakeholdersDisplay}
+              selectedNode={selectedNode}
             />
           </div>
 

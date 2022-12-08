@@ -18,6 +18,7 @@ export function ToggleButtons({
   activityEdgeDisplay,
   completedDisplay,
   stakeholdersDisplay,
+  selectedNode,
 }) {
   // TOGGLE CONTROLS /////////////
   function changeLayout() {
@@ -30,7 +31,8 @@ export function ToggleButtons({
 
   //hides/displays wpedges/ activity edges when button is clicked
   const toggleEdges = (event) => {
-    setActivityEdgeDisplay((prevState) => !prevState);
+    selectedNode.id === "" &&
+      setActivityEdgeDisplay((prevState) => (prevState === "wp" ? "act" : prevState === "act" ? "none" : "wp"));
   };
 
   const toggleNetworkVeiw = (event) => {
@@ -54,6 +56,10 @@ export function ToggleButtons({
   const style = (state) => ({
     backgroundColor: state ? " #cfcfcf" : "#e4e4e4",
   });
+
+  const connectionButtonStyle = {
+    backgroundColor: activityEdgeDisplay === "wp" ? "#e4e4e4" : activityEdgeDisplay === "act" ? "#e9e9e9" : "#cfcfcf",
+  };
 
   //STYLING //////////////////////
   return (
@@ -84,7 +90,7 @@ export function ToggleButtons({
         </button>
       </div>
       <div className="toggleButtons">
-        <button onClick={toggleEdges} style={style(activityEdgeDisplay)}>
+        <button onClick={toggleEdges}>
           Toggle Connections <i className="fa fa-diagram-project"></i>
         </button>
         <button onClick={toggleCompleted} style={style(completedDisplay)}>

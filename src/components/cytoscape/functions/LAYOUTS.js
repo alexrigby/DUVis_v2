@@ -10,7 +10,7 @@ Cytoscape.use(fcose);
 Cytoscape.use(cola);
 
 export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
-  const nodeRepuslionFactor = 500;
+  const nodeRepuslionFactor = 1000;
   /// might be unnecicerily cnfusing
   // const reducerConst = origionalActCount * 4;
   // const multiplier = (reducerConst - nodeCount) / 100; // need to teat if this works for diffrent sized graphs
@@ -19,17 +19,16 @@ export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
   return {
     //cose-bilkent is a cytoscape plugin
     name: "fcose",
+    // quality: "proof",
     // quality: currentActNodeCount < origionalActCount ? "default" : "proof",
     animationDuration: 1000,
     nodeDimensionsIncludeLabels: true,
     nodeRepulsion: function (node) {
-      if (node.data().type === "stakeholderNod") {
+      if (node.data().type === "stakeholderNode") {
         return nodeRepuslionFactor * currentActNodeCount;
-      }
-      //  else if (node.data().type === "project") {
-      //   return nodeRepuslionFactor * currentActNodeCount;
-      // }
-      else {
+      } else if (node.data().type === "project") {
+        return nodeRepuslionFactor * currentActNodeCount * 10;
+      } else {
         return 4000;
       }
     },
@@ -58,7 +57,7 @@ export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
     fit: true,
     gravity: 4,
     gravityCompound: 5.0,
-    numIter: 300,
+    numIter: 300000,
     //   nodeRepulsion: function (node) {
     //     if (node.data().type === "stakehlderNode") {
     //       return nodeRepuslionFactor * currentActNodeCount;
@@ -102,7 +101,7 @@ export const COLA = {
 //   name: "cose-bilkent",
 //   nodeDimensionsIncludeLabels: true,
 //   animationDuration: 1000,
-//   randomize: random,
+// // randomize: false,
 //   fit: true,
 //   nodeRepulsion: 3000,
 //   idealEdgeLength: 300,
@@ -112,6 +111,7 @@ export const COLA = {
 //   gravityCompound: 5,
 //   // gravityRangeCompound: 1.5,
 //   // gravityRange: 9,
+//   initialEnergyOnIncremental: 1,
 // });
 
 export const CONCENTRIC = {

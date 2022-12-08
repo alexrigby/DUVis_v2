@@ -141,7 +141,8 @@ export function CytoscapeVis({
         latestPrPeriodRef,
         prPeriod,
         networkVeiw,
-        cyState
+        cyState,
+        selectedNode
       )}
       // layout={ FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, false)}
     />

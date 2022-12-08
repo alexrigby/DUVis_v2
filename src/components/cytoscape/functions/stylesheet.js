@@ -10,7 +10,8 @@ export function stylesheet(
   latestPrPeriodRef,
   prPeriod,
   networkVeiw,
-  cyState
+  cyState,
+  selectedNode
 ) {
   return [
     {
@@ -72,7 +73,7 @@ export function stylesheet(
       style: {
         display: stakeholdersDisplay === false ? "element" : "none",
         "text-outline-color": "#666666",
-        "text-outline-width": 1,
+        "text-outline-width": 2,
         label: "data(label)",
         "text-wrap": "wrap",
         "text-valign": "center",
@@ -89,7 +90,10 @@ export function stylesheet(
             }
           : statusOpacity.onGoing,
         "background-color": function (ele) {
-          return nodeBackgroundColor(ele, "colorRef");
+          const { engScore, max } = stakeholderEngagmentScale(ele, cyState);
+          var n = (engScore * 240) / max;
+
+          return "hsl(" + n + ",100%,50%)";
         },
         "border-color": function (ele) {
           return nodeBorderColor(ele, "colorRef");
@@ -107,7 +111,7 @@ export function stylesheet(
       style: {
         width: 1.5,
         "line-color": "#ffb37a",
-        display: activityEdgeDisplay === false ? "none" : "element",
+        display: activityEdgeDisplay !== "act" || selectedNode.id !== "" ? "none" : "element",
         "source-endpoint": "outside-to-line",
         "source-distance-from-node": "4px",
         "target-distance-from-node": "4px",
@@ -118,7 +122,7 @@ export function stylesheet(
     {
       selector: "edge[type = 'wpEdge']",
       style: {
-        display: activityEdgeDisplay === true ? "none" : "element",
+        display: activityEdgeDisplay !== "wp" || selectedNode.id !== "" ? "none" : "element",
         // label: "data(weight)",
         width: function (ele) {
           // console.log(ele.data());
@@ -287,4 +291,29 @@ function engagementEdgeColor(ele, property) {
     : ele.data(property) === "4"
     ? ENGAGEMENT[3]
     : BORDER.other;
+}
+
+function stakeholderEngagmentScale(node, cyState) {
+  const allEngWeight = cyState.cy.nodes("[type = 'stakeholderNode']").map((n) => {
+    var engLev = [];
+    //4 for 4 engagement levels
+    for (let i = 0; i < 4; i++) {
+      var multiplyFactor = i + 1; // + 1 so not multiplied by 0
+      //number of each eng level multiplied
+      engLev.push(n.outgoers(`[engagement = "${i + 1}"]`).targets().length * multiplyFactor);
+    }
+
+    return engLev.reduce((a, b) => a + b);
+  });
+
+  const maxEngLevel = Math.max(...allEngWeight);
+  var engLevels = [];
+  //4 for 4 engagement levels
+  for (let i = 0; i < 4; i++) {
+    const multiplyFactor = i + 1; // + 1 so not multiplied by 0
+    //number of each eng level multiplied
+    engLevels.push(node.outgoers(`[engagement = "${i + 1}"]`).targets().length * multiplyFactor);
+  }
+
+  return { engScore: engLevels.reduce((a, b) => a + b), max: maxEngLevel };
 }
