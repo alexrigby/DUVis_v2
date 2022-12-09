@@ -47,9 +47,7 @@ export function ToggleButtons({
   };
 
   const toggleStakeholders = (event) => {
-    setStakeholdersDisplay((prevState) =>
-      networkVeiw && selectedNode.type !== "stakeholderNode" ? !prevState : prevState
-    );
+    setStakeholdersDisplay((prevState) => (selectedNode.type !== "stakeholderNode" ? !prevState : false));
     // cyState.cy.layout(LAYOUTS.FCOSERandom).run();
   };
 

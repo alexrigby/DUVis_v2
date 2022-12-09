@@ -4,7 +4,7 @@ import { BG } from "../../configs/COLORS";
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import hilightOnLiHover from "./functions/hilightOnLiHover";
 
-export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode }) {
+export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setStakeholdersDisplay }) {
   const open = <i className="fa fa-angle-down"></i>;
   const close = <i className="fa fa-angle-up"></i>;
 
@@ -108,11 +108,11 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode }) {
 
 export default WpNodeMetaSection;
 
-function listLinks(nodes, setSelectedNode, cyState) {
+function listLinks(nodes, setSelectedNode, cyState, setStakeholdersDisplay) {
   return nodes.map((act) => (
     <li
       key={act.id()}
-      onClick={() => nodeNavigationHandler(act.id(), setSelectedNode, cyState)}
+      onClick={() => nodeNavigationHandler(act.id(), setSelectedNode, cyState, setStakeholdersDisplay)}
       onMouseOver={() => hilightOnLiHover(act.id(), cyState)}
       onMouseOut={() => hilightOnLiHover(act.id(), cyState)}
     >

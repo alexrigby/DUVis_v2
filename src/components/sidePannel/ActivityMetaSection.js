@@ -3,7 +3,15 @@ import hilightOnLiHover from "./functions/hilightOnLiHover";
 import { actFields } from "../../data";
 import { useState } from "react";
 
-export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, datesRef, prPeriod, networkVeiw }) {
+export function ActivityMetaSection({
+  selectedNode,
+  cyState,
+  setSelectedNode,
+  datesRef,
+  prPeriod,
+  networkVeiw,
+  setStakeholdersDisplay,
+}) {
   const meta = selectedNode.meta;
   const OPEN = <i className="fa fa-angle-down"></i>;
   const CLOSE = <i className="fa fa-angle-up"></i>;
@@ -76,7 +84,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
   const linkedActivitiesList = uniqueActLinks.map((activity) => (
     <li
       key={activity.id()}
-      onClick={() => nodeNavigationHandler(activity.id(), setSelectedNode, cyState)}
+      onClick={() => nodeNavigationHandler(activity.id(), setSelectedNode, cyState, setStakeholdersDisplay)}
       onMouseOver={() => hilightOnLiHover(activity.id(), cyState)}
       onMouseOut={() => hilightOnLiHover(activity.id(), cyState)}
     >
@@ -116,7 +124,7 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
           </h2>
           <h2>count: {stakeholders.length}</h2>
           <div style={style}>
-            <ul>{listLinks(stakeholders, setSelectedNode, cyState)} </ul>
+            <ul>{listLinks(stakeholders, setSelectedNode, cyState, setStakeholdersDisplay)} </ul>
           </div>
         </div>
       );
@@ -134,7 +142,8 @@ export function ActivityMetaSection({ selectedNode, cyState, setSelectedNode, da
         </h1>
         <h1
           onClick={() => {
-            !networkVeiw && nodeNavigationHandler(selectedNode.parent, setSelectedNode, cyState);
+            !networkVeiw &&
+              nodeNavigationHandler(selectedNode.parent, setSelectedNode, cyState, setStakeholdersDisplay);
           }}
           className="navigateToWp"
         >
@@ -274,11 +283,12 @@ function shortDates(node, se) {
   }
 }
 
-function listLinks(nodes, setSelectedNode, cyState) {
+function listLinks(nodes, setSelectedNode, cyState, setStakeholdersDisplay) {
+  console.log(setStakeholdersDisplay);
   return nodes.map((act) => (
     <li
       key={act.id()}
-      onClick={() => nodeNavigationHandler(act.id(), setSelectedNode, cyState)}
+      onClick={() => nodeNavigationHandler(act.id(), setSelectedNode, cyState, setStakeholdersDisplay)}
       onMouseOver={() => hilightOnLiHover(act.id(), cyState)}
       onMouseOut={() => hilightOnLiHover(act.id(), cyState)}
     >

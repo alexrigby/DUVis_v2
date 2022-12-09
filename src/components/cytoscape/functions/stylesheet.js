@@ -16,15 +16,7 @@ export function stylesheet(
   engScoreVeiw
 ) {
   return [
-    {
-      selector: "node[type = 'project']",
-      style: {
-        "border-opacity": 0,
-        "background-opacity": 0,
-        events: "no",
-        label: "",
-      },
-    },
+    // ________NODES_______
     {
       selector: "node",
       style: {
@@ -33,6 +25,15 @@ export function stylesheet(
         "text-valign": "center",
         color: "white",
         "border-width": 4,
+      },
+    },
+    {
+      selector: "node[type = 'project']",
+      style: {
+        "border-opacity": 0,
+        "background-opacity": 0,
+        events: "no",
+        label: "",
       },
     },
     {
@@ -87,6 +88,7 @@ export function stylesheet(
         height: (ele) => 1 * Math.sqrt(ele.connectedEdges().connectedNodes().length + 1 / 1) * 20,
       },
     },
+    // ______EDGES_________
     {
       selector: "edge",
       style: {
@@ -117,6 +119,7 @@ export function stylesheet(
         "line-color": (ele) => ENGAGEMENT[ele.data("engagement") - 1],
       },
     },
+    //______CLASSES__________
     {
       selector: ".lowConnections",
       style: {

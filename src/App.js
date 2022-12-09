@@ -89,6 +89,7 @@ export function App() {
             datesRef={datesRef}
             prPeriod={prPeriod}
             networkVeiw={networkVeiw}
+            setStakeholdersDisplay={setStakeholdersDisplay}
           />
           <div className="headSection">
             <div className="rightSide">

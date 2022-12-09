@@ -76,11 +76,11 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState }
 
 export default StakeholderMetaPannel;
 
-function listLinks(nodes, setSelectedNode, cyState) {
+function listLinks(nodes, setSelectedNode, cyState, setStakeholdersDisplay) {
   return nodes.map((act) => (
     <li
       key={act.id()}
-      onClick={() => nodeNavigationHandler(act.id(), setSelectedNode, cyState)}
+      onClick={() => nodeNavigationHandler(act.id(), setSelectedNode, cyState, setStakeholdersDisplay)}
       onMouseOver={() => hilightOnLiHover(act.id(), cyState)}
       onMouseOut={() => hilightOnLiHover(act.id(), cyState)}
     >
