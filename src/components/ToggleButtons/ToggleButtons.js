@@ -19,6 +19,8 @@ export function ToggleButtons({
   completedDisplay,
   stakeholdersDisplay,
   selectedNode,
+  engScoreVeiw,
+  setEngeScoreVeiw,
 }) {
   // TOGGLE CONTROLS /////////////
   function changeLayout() {
@@ -40,8 +42,14 @@ export function ToggleButtons({
     setNetworkVeiw((prevState) => !prevState);
   };
 
+  const toggleEngScoreVeiw = (event) => {
+    setEngeScoreVeiw((prevState) => !prevState);
+  };
+
   const toggleStakeholders = (event) => {
-    setStakeholdersDisplay((prevState) => !prevState);
+    setStakeholdersDisplay((prevState) =>
+      networkVeiw && selectedNode.type !== "stakeholderNode" ? !prevState : prevState
+    );
     // cyState.cy.layout(LAYOUTS.FCOSERandom).run();
   };
 
@@ -68,9 +76,6 @@ export function ToggleButtons({
         <button onClick={changeLayout}>
           Change Layout <i className="fa fa-repeat"></i>
         </button>
-        <button style={style(networkVeiw)} onClick={toggleNetworkVeiw}>
-          Network <i className="fa fa-circle-nodes"></i>
-        </button>
         {/* <button title="flag activities with less than mean number of connections" onClick={toggleConnectionFlags}>
           Mean Connection Flag
         </button> */}
@@ -90,15 +95,22 @@ export function ToggleButtons({
         </button>
       </div>
       <div className="toggleButtons">
+        <button style={style(networkVeiw)} onClick={toggleNetworkVeiw}>
+          Network <i className="fa fa-circle-nodes"></i>
+        </button>
+        <button style={style(engScoreVeiw)} onClick={toggleEngScoreVeiw}>
+          Engagement <i className="fa fa-link"></i>
+        </button>
+        <button onClick={toggleStakeholders} style={style(stakeholdersDisplay)}>
+          Toggle Stakeholders <i className="fa fa-handshake-simple"></i>
+        </button>
+      </div>
+      <div className="toggleButtons">
         <button onClick={toggleEdges}>
           Toggle Connections <i className="fa fa-diagram-project"></i>
         </button>
         <button onClick={toggleCompleted} style={style(completedDisplay)}>
           Toggle Completed <i className="fa fa-check"></i>
-        </button>
-        <button onClick={toggleStakeholders} style={style(stakeholdersDisplay)}>
-          {" "}
-          Toggle Stakeholders <i className="fa fa-handshake-simple"></i>
         </button>
       </div>
       {/* <div className="bottomPannelButtons"></div> */}

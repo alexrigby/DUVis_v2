@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
-import cloneDeep from "lodash.clonedeep";
 
 import { FCOSE, CONCENTRIC } from "./functions/LAYOUTS";
 import stylesheet from "./functions/stylesheet";
@@ -23,7 +22,26 @@ export function CytoscapeVis({
   networkVeiwEls,
   setNetworkVeiwEls,
   currentStory,
+  maxEngScore,
+  engScoreVeiw,
 }) {
+  useEffect(() => {
+    const allEngWeight = cyState.cy.nodes("[type = 'stakeholderNode']").map((n) => {
+      var engLev = [];
+      //4 for 4 engagement levels
+      for (let i = 0; i < 4; i++) {
+        var multiplyFactor = i + 1; // + 1 so not multiplied by 0
+        //number of each eng level multiplied
+        engLev.push(n.outgoers(`[engagement = "${i + 1}"]`).targets().length * multiplyFactor);
+      }
+      const engScore = engLev.reduce((a, b) => a + b);
+      n.data("weight", engScore);
+      return engScore;
+    });
+    const maxEngLevel = Math.max(...allEngWeight);
+    maxEngScore.current = maxEngLevel;
+  }, [cyState.cy, cyState.elements.length, maxEngScore]);
+
   const renderCounter = useRef(0);
   const selectedNodeNHoodCount = useRef(null);
   renderCounter.current = cyState.cy && renderCounter.current + 1;
@@ -43,11 +61,11 @@ export function CytoscapeVis({
       if (event.target.data().network === "yes") {
         const networkID = event.target.data().label; // network node ables are there equivelent node id
         setSelectedNode(cyState.cy.nodes(`#${networkID}`).data()); // set selected node to origional graph node
-        styleSelectedElements(cyState.cy, networkID);
+        styleSelectedElements(cyState.cy, networkID, stakeholdersDisplay);
         // setNetworkVeiwEls(makeNHoodLayout(cyState, event.target.data()));
       } else {
         setSelectedNode((prevState) => (event.target.id() === prevState.id ? { id: "" } : event.target.data())); //if same node is clicked twice clear 'selected node' state
-        styleSelectedElements(cyState.cy, event.target.id());
+        styleSelectedElements(cyState.cy, event.target.id(), stakeholdersDisplay);
         // setNetworkVeiwEls(makeNHoodLayout(cyState, event.target.data(), networkVeiw));
       }
     };
@@ -142,7 +160,9 @@ export function CytoscapeVis({
         prPeriod,
         networkVeiw,
         cyState,
-        selectedNode
+        selectedNode,
+        maxEngScore,
+        engScoreVeiw
       )}
       // layout={ FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, false)}
     />

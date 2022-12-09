@@ -24,3 +24,5 @@ export const BORDER = {
 };
 
 export const ENGAGEMENT = ["#b2e2e2", "#66c2a4", "#2ca25f", "#006d2c"];
+
+export const ENGRANK = { high: "red", low: "yellow" };

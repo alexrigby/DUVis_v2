@@ -39,6 +39,7 @@ export function App() {
   const [networkVeiw, setNetworkVeiw] = useState(false);
   const [selectedBottomVis, setSelectedBottomVis] = useState("");
   const [networkVeiwEls, setNetworkVeiwEls] = useState({ ID: "", els: [] });
+  const [engScoreVeiw, setEngeScoreVeiw] = useState(false);
 
   const gantchartData = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
@@ -48,6 +49,7 @@ export function App() {
   const matrixHeadersRef = useRef(null);
   const origionalActCountRef = useRef(null);
   const latestPrPeriodRef = useRef(null);
+  const maxEngScore = useRef(100);
 
   currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
   // console.log("render");
@@ -120,6 +122,8 @@ export function App() {
                 networkVeiw={networkVeiw}
                 selectedNode={selectedNode}
                 networkVeiwEls={networkVeiwEls}
+                engScoreVeiw={engScoreVeiw}
+                stakeholdersDisplay={stakeholdersDisplay}
               />
             </div>
             <ToggleButtons
@@ -139,6 +143,8 @@ export function App() {
               completedDisplay={completedDisplay}
               stakeholdersDisplay={stakeholdersDisplay}
               selectedNode={selectedNode}
+              engScoreVeiw={engScoreVeiw}
+              setEngeScoreVeiw={setEngeScoreVeiw}
             />
           </div>
 
@@ -169,6 +175,8 @@ export function App() {
           networkVeiwEls={networkVeiwEls}
           setNetworkVeiwEls={setNetworkVeiwEls}
           currentStory={currentStory}
+          maxEngScore={maxEngScore}
+          engScoreVeiw={engScoreVeiw}
         />
       </div>
     </div>

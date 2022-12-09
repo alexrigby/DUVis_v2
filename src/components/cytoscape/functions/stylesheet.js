@@ -1,4 +1,4 @@
-import { BG, BORDER, ENGAGEMENT } from "../../../configs/COLORS";
+import { BG, BORDER, ENGAGEMENT, ENGRANK } from "../../../configs/COLORS";
 import activityOpacity from "../../../functions/activityOpacity";
 import statusOpacity from "../../../configs/statusOpacity";
 import wpEdgeStyle from "./wpEdgeStyle";
@@ -11,7 +11,9 @@ export function stylesheet(
   prPeriod,
   networkVeiw,
   cyState,
-  selectedNode
+  selectedNode,
+  maxEngScore,
+  engScoreVeiw
 ) {
   return [
     {
@@ -25,13 +27,11 @@ export function stylesheet(
     {
       selector: "node[type = 'activityNode']",
       style: {
-        // "font-family": "FontAwesome, sans-serif",
         label: "data(label)",
         "text-wrap": "wrap",
         "text-valign": "center",
         color: "white",
         "border-width": 4,
-        // "background-opacity": "data(opacity)",
         "background-opacity": completedDisplay
           ? function (ele) {
               return activityOpacity(ele.data().meta, latestPrPeriodRef.current, prPeriod);
@@ -89,12 +89,11 @@ export function stylesheet(
               return stakeholderOpacity(ele, latestPrPeriodRef, prPeriod, cyState);
             }
           : statusOpacity.onGoing,
-        "background-color": function (ele) {
-          const { engScore, max } = stakeholderEngagmentScale(ele, cyState);
-          var n = (engScore * 240) / max;
-
-          return "hsl(" + n + ",100%,50%)";
-        },
+        "background-color": engScoreVeiw
+          ? `mapData(weight, 0, ${maxEngScore.current}, ${ENGRANK.low}, ${ENGRANK.high})`
+          : function (ele) {
+              return nodeBackgroundColor(ele, "colorRef");
+            },
         "border-color": function (ele) {
           return nodeBorderColor(ele, "colorRef");
         },
@@ -123,9 +122,7 @@ export function stylesheet(
       selector: "edge[type = 'wpEdge']",
       style: {
         display: activityEdgeDisplay !== "wp" || selectedNode.id !== "" ? "none" : "element",
-        // label: "data(weight)",
         width: function (ele) {
-          // console.log(ele.data());
           return wpEdgeStyle(ele.data(), cyState.cy);
         },
         "line-color": "#ffb37a",
@@ -159,7 +156,6 @@ export function stylesheet(
     {
       selector: ".lowConnections",
       style: {
-        // label: "data(flag)",
         color: "red",
         "font-weight": 900,
       },
@@ -172,17 +168,6 @@ export function stylesheet(
         display: "element",
       },
     },
-    // {
-    //   selector: ".networkNode",
-    //   style: {
-    //     display: function (ele) {
-    //       // return ele.data().meta.startPrPeriod > prPeriod.pr || ele.data().meta.endPrPeriod < prPeriod.pr
-    //       //   ? "none"
-    //       //   : "element";
-    //       console.log(ele.data());
-    //     },
-    //   },
-    // },
     {
       selector: ".networkEdge",
       style: {

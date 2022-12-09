@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from "react";
-import { ENGAGEMENT, BORDER } from "../../configs/COLORS";
+import { ENGAGEMENT, BORDER, ENGRANK } from "../../configs/COLORS";
 
 // import iconByCategory from "../cytoscape/functions/iconByCategory";
 import styleActivitiesByWP from "../cytoscape/functions/styleActivitiesByWP";
 
 import "./Legend.css";
 
-export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls }) {
+export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, engScoreVeiw, stakeholdersDisplay }) {
   const legendData = useRef({ wps: "", categorys: "" });
 
   const eng =
@@ -33,7 +33,6 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls }) {
   useEffect(() => {
     // gets all WPS  and descriptions present in cy graph
     const wps = cyState.cy.nodes("[type = 'wp']").map((wp) => wp.data());
-
     //sort WPS in number order before adding to legend
     wps.sort(function (a, b) {
       return a.id.slice(2) - b.id.slice(2);
@@ -47,18 +46,29 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls }) {
         </p>
       </div>
     ));
-
     legendData.current = { wps: wpLegendItems };
   }, [cyState.cy, cyState.elements.length, cyState]);
+
+  const engScoreScale = (
+    <div className="scale">
+      <p>High</p>
+      <div className="scaleBox" style={{ background: `linear-gradient(${ENGRANK.high}, ${ENGRANK.low})` }}></div>
+      <p>Low</p>
+    </div>
+  );
 
   return (
     <div className="legend">
       <h2>Work Packages:</h2>
       {legendData.current.wps}
+      {engScoreVeiw && !stakeholdersDisplay && <h2>Engagement Ranking:</h2>}
+      {engScoreVeiw && !stakeholdersDisplay && engScoreScale}
+      {/* <h2>{engScoreVeiw ? "Engagement Ranking:" : "Work Packages:"}</h2>
+      {engScoreVeiw ? engScoreScale : legendData.current.wps} */}
       {/* <h2>Categorys:</h2>
       {legendData.current.categorys} */}
-      {networkVeiw && engLegendItems.length !== 0 && <h2>Engagement Level:</h2>}
-      {networkVeiw && engLegendItems.length !== 0 && engLegendItems}
+      {networkVeiw && !stakeholdersDisplay && engLegendItems.length !== 0 && <h2>Engagement Level:</h2>}
+      {networkVeiw && !stakeholdersDisplay && engLegendItems.length !== 0 && engLegendItems}
     </div>
   );
 }
