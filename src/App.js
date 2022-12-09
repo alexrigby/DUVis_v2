@@ -7,19 +7,11 @@ import Legend from "./components/legend/Legend";
 import BottomPannel from "./components/bottomPannel/BottomPannel";
 import FilterOptions from "./components/FilterOptions/FilterOptions";
 import ToggleButtons from "./components/ToggleButtons/ToggleButtons";
-import { FCOSE } from "./components/cytoscape/functions/LAYOUTS";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
 
-import makeCyWpEdges from "./components/cytoscape/functions/makeCyWpEdges";
 // import addCategoryIcon from "./components/cytoscape/functions/addCategoryIcons";
-
-// import dataset from "./data/activity_matrix.txt";
-// import links from "./data/links.txt";
-// import wpDataset from "./data/wp_names.txt";
-// import datesData from "./data/dates.txt";
-// import tdrData from "./data/stakeholder_matrix.txt";
 
 export function App() {
   //sets state of cy

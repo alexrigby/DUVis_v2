@@ -1,4 +1,4 @@
-import { BG, BORDER, ENGAGEMENT, ENGRANK } from "../../../configs/COLORS";
+import { BG, BORDER, ENGAGEMENT, ENGRANK, EDGE } from "../../../configs/COLORS";
 import activityOpacity from "../../../functions/activityOpacity";
 import statusOpacity from "../../../configs/statusOpacity";
 import wpEdgeStyle from "./wpEdgeStyle";
@@ -22,49 +22,47 @@ export function stylesheet(
         "border-opacity": 0,
         "background-opacity": 0,
         events: "no",
+        label: "",
       },
     },
     {
-      selector: "node[type = 'activityNode']",
+      selector: "node",
       style: {
         label: "data(label)",
         "text-wrap": "wrap",
         "text-valign": "center",
         color: "white",
         "border-width": 4,
+      },
+    },
+    {
+      selector: "node[type = 'activityNode']",
+      style: {
+        "border-width": 4,
         "background-opacity": completedDisplay
-          ? function (ele) {
-              return activityOpacity(ele.data().meta, latestPrPeriodRef.current, prPeriod);
-            }
+          ? (ele) => activityOpacity(ele.data().meta, latestPrPeriodRef.current, prPeriod)
           : statusOpacity.onGoing,
         "border-opacity": completedDisplay
-          ? function (ele) {
-              return activityOpacity(ele.data().meta, latestPrPeriodRef.current, prPeriod);
-            }
+          ? (ele) => activityOpacity(ele.data().meta, latestPrPeriodRef.current, prPeriod)
           : statusOpacity.onGoing,
-        "background-color": function (ele) {
-          return nodeBackgroundColor(ele, "colorRef");
-        },
-        "border-color": function (ele) {
-          return nodeBorderColor(ele, "colorRef");
-        },
+        "background-color": (ele) => BG[ele.data("colorRef")],
+        "border-color": (ele) => BORDER[ele.data("colorRef")],
         //width and height displayed in accepted bubble area scale 'D2 = D1 * SQRT(X2/X1)' https://infonewt.com/circles/
         //+1 gives value to nodes with no connecting edges,
-        width: function (ele) {
-          return 1 * Math.sqrt(ele.connectedEdges().connectedNodes("[type != 'stakeholderNode']").length + 1 / 1) * 20;
-        },
-        height: function (ele) {
-          return 1 * Math.sqrt(ele.connectedEdges().connectedNodes("[type != 'stakeholderNode']").length + 1 / 1) * 20;
-        },
+        width: (ele) =>
+          Math.sqrt(ele.connectedEdges().connectedNodes("[type != 'stakeholderNode']").length + 1 / 1) * 20,
+        height: (ele) =>
+          1 * Math.sqrt(ele.connectedEdges().connectedNodes("[type != 'stakeholderNode']").length + 1 / 1) * 20,
       },
     },
     {
       selector: "node[type = 'wp']",
       style: {
-        label: "data(id)",
+        "border-width": 0,
+        label: "",
         "background-opacity": 0.3,
         "background-color": function (ele) {
-          return nodeBackgroundColor(ele, "id");
+          return BG[ele.id()];
         },
       },
     },
@@ -74,42 +72,26 @@ export function stylesheet(
         display: stakeholdersDisplay === false ? "element" : "none",
         "text-outline-color": "#666666",
         "text-outline-width": 2,
-        label: "data(label)",
-        "text-wrap": "wrap",
-        "text-valign": "center",
         color: "white",
-        "border-width": 4,
         "border-opacity": completedDisplay
-          ? function (ele) {
-              return stakeholderOpacity(ele, latestPrPeriodRef, prPeriod, cyState);
-            }
+          ? (ele) => stakeholderOpacity(ele, latestPrPeriodRef, prPeriod, cyState)
           : statusOpacity.onGoing,
         "background-opacity": completedDisplay
-          ? function (ele) {
-              return stakeholderOpacity(ele, latestPrPeriodRef, prPeriod, cyState);
-            }
+          ? (ele) => stakeholderOpacity(ele, latestPrPeriodRef, prPeriod, cyState)
           : statusOpacity.onGoing,
         "background-color": engScoreVeiw
           ? `mapData(weight, 0, ${maxEngScore.current}, ${ENGRANK.low}, ${ENGRANK.high})`
-          : function (ele) {
-              return nodeBackgroundColor(ele, "colorRef");
-            },
-        "border-color": function (ele) {
-          return nodeBorderColor(ele, "colorRef");
-        },
-        width: function (ele) {
-          return 1 * Math.sqrt(ele.connectedEdges().connectedNodes().length + 1 / 1) * 20;
-        },
-        height: function (ele) {
-          return 1 * Math.sqrt(ele.connectedEdges().connectedNodes().length + 1 / 1) * 20;
-        },
+          : BG.stakeholder,
+        "border-color": BORDER.stakeholder,
+        width: (ele) => 1 * Math.sqrt(ele.connectedEdges().connectedNodes().length + 1 / 1) * 20,
+        height: (ele) => 1 * Math.sqrt(ele.connectedEdges().connectedNodes().length + 1 / 1) * 20,
       },
     },
     {
       selector: "edge",
       style: {
         width: 1.5,
-        "line-color": "#ffb37a",
+        "line-color": EDGE,
         display: activityEdgeDisplay !== "act" || selectedNode.id !== "" ? "none" : "element",
         "source-endpoint": "outside-to-line",
         "source-distance-from-node": "4px",
@@ -122,10 +104,7 @@ export function stylesheet(
       selector: "edge[type = 'wpEdge']",
       style: {
         display: activityEdgeDisplay !== "wp" || selectedNode.id !== "" ? "none" : "element",
-        width: function (ele) {
-          return wpEdgeStyle(ele.data(), cyState.cy);
-        },
-        "line-color": "#ffb37a",
+        width: (ele) => wpEdgeStyle(ele.data(), cyState.cy),
         "line-cap": "round",
         "line-opacity": 0.6,
       },
@@ -134,23 +113,8 @@ export function stylesheet(
       selector: "edge[type = 'stakeholderEdge']",
       style: {
         display: "none",
-
-        "line-opacity": 1,
-        width: networkVeiw
-          ? (ele) => {
-              return ele.data().engagement * 2;
-            }
-          : 1.5,
-        "source-endpoint": "outside-to-line",
-        "source-distance-from-node": "4px",
-        "target-distance-from-node": "4px",
-        "target-endpoint": "outside-to-line",
-        "curve-style": "bezier",
-        "line-color": (ele) => {
-          return engagementEdgeColor(ele, "engagement");
-        },
-        // "target-arrow-color": "#ccc",
-        // "target-arrow-shape": "triangle",
+        width: networkVeiw ? (ele) => ele.data().engagement * 2 : 1.5,
+        "line-color": (ele) => ENGAGEMENT[ele.data("engagement") - 1],
       },
     },
     {
@@ -220,85 +184,4 @@ function stakeholderOpacity(ele, latestPrPeriodRef, prPeriod) {
   const onGoingLength = undef.length + onGoing.length; //get length of connected 'onGoing act nodes'
 
   return onGoingLength === 0 ? statusOpacity.completed : statusOpacity.onGoing; // if there are no ongoing act nodes then set as complete
-}
-
-function nodeBackgroundColor(ele, property) {
-  if (ele.data(property) === "wp1") {
-    return BG.wp1;
-  } else if (ele.data(property) === "wp2") {
-    return BG.wp2;
-  } else if (ele.data(property) === "wp3") {
-    return BG.wp3;
-  } else if (ele.data(property) === "wp4") {
-    return BG.wp4;
-  } else if (ele.data(property) === "wp5") {
-    return BG.wp5;
-  } else if (ele.data(property) === "wp6") {
-    return BG.wp6;
-  } else if (ele.data(property) === "wp7") {
-    return BG.wp7;
-  } else if (ele.data(property) === "wp8") {
-    return BG.wp8;
-  } else {
-    return BG.other;
-  }
-}
-
-function nodeBorderColor(ele, property) {
-  if (ele.data(property) === "wp1") {
-    return BORDER.wp1;
-  } else if (ele.data(property) === "wp2") {
-    return BORDER.wp2;
-  } else if (ele.data(property) === "wp3") {
-    return BORDER.wp3;
-  } else if (ele.data(property) === "wp4") {
-    return BORDER.wp4;
-  } else if (ele.data(property) === "wp5") {
-    return BORDER.wp5;
-  } else if (ele.data(property) === "wp6") {
-    return BORDER.wp6;
-  } else if (ele.data(property) === "wp7") {
-    return BORDER.wp7;
-  } else if (ele.data(property) === "wp8") {
-    return BORDER.wp8;
-  } else {
-    return BORDER.other;
-  }
-}
-
-function engagementEdgeColor(ele, property) {
-  return ele.data(property) === "1"
-    ? ENGAGEMENT[0]
-    : ele.data(property) === "2"
-    ? ENGAGEMENT[1]
-    : ele.data(property) === "3"
-    ? ENGAGEMENT[2]
-    : ele.data(property) === "4"
-    ? ENGAGEMENT[3]
-    : BORDER.other;
-}
-
-function stakeholderEngagmentScale(node, cyState) {
-  const allEngWeight = cyState.cy.nodes("[type = 'stakeholderNode']").map((n) => {
-    var engLev = [];
-    //4 for 4 engagement levels
-    for (let i = 0; i < 4; i++) {
-      var multiplyFactor = i + 1; // + 1 so not multiplied by 0
-      //number of each eng level multiplied
-      engLev.push(n.outgoers(`[engagement = "${i + 1}"]`).targets().length * multiplyFactor);
-    }
-
-    return engLev.reduce((a, b) => a + b);
-  });
-
-  const maxEngLevel = Math.max(...allEngWeight);
-  var engLevels = [];
-  //4 for 4 engagement levels
-  for (let i = 0; i < 4; i++) {
-    const multiplyFactor = i + 1; // + 1 so not multiplied by 0
-    //number of each eng level multiplied
-    engLevels.push(node.outgoers(`[engagement = "${i + 1}"]`).targets().length * multiplyFactor);
-  }
-
-  return { engScore: engLevels.reduce((a, b) => a + b), max: maxEngLevel };
 }

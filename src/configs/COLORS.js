@@ -8,7 +8,7 @@ export const BG = {
   wp6: "#beaed4", //
   wp7: "#f768a1",
   wp8: "#ff7f00",
-  other: "#808080",
+  stakeholder: "#808080",
 };
 //border color
 export const BORDER = {
@@ -20,9 +20,11 @@ export const BORDER = {
   wp6: "#967cb9",
   wp7: "#f43682",
   wp8: "#cc6600",
-  other: "#666666",
+  stakeholder: "#666666",
 };
 
 export const ENGAGEMENT = ["#b2e2e2", "#66c2a4", "#2ca25f", "#006d2c"];
 
 export const ENGRANK = { high: "red", low: "yellow" };
+
+export const EDGE = "#ffb37a";

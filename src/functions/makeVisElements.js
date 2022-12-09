@@ -79,6 +79,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
     data: {
       id: "project",
       type: "project",
+      label: "",
     },
   };
   const origionalActCount = activityData.length;

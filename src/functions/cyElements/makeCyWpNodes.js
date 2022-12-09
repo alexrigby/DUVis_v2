@@ -15,14 +15,12 @@ export function makeCyWpNodes(data) {
         id: wp,
         label: wp,
         type: "wp",
-        // size: WP_IDS[wp].length,
         name: data[i][wpFields.NAME],
         category: data[i][wpFields.CATEGORY],
       },
     };
     wps.push(nodeOps);
   }
-
   return wps;
 }
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { BG } from "../../configs/COLORS";
 
-import styleActivitiesByWP from "../cytoscape/functions/styleActivitiesByWP";
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import hilightOnLiHover from "./functions/hilightOnLiHover";
 
@@ -78,7 +78,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode }) {
   return (
     <div>
       <div className="metaSection">
-        <h1 style={styleActivitiesByWP(selectedNode.id)}>WP: {selectedNode.id.slice(2)}</h1>
+        <h1 style={{ backgroundColor: BG[selectedNode.id] }}>WP: {selectedNode.id.slice(2)}</h1>
         <h1>{selectedNode.name}</h1>
         <h2>Category:</h2>
         <p>{selectedNode.category}</p>

@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import { ENGAGEMENT, BORDER, ENGRANK } from "../../configs/COLORS";
+import { ENGAGEMENT, BORDER, BG, ENGRANK } from "../../configs/COLORS";
 
 // import iconByCategory from "../cytoscape/functions/iconByCategory";
-import styleActivitiesByWP from "../cytoscape/functions/styleActivitiesByWP";
 
 import "./Legend.css";
 
@@ -40,7 +39,11 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
 
     const wpLegendItems = wps.map((wp) => (
       <div key={wp.id} className="boxContainer">
-        <div className="box" title={`Category: ${wp.category}`} style={styleActivitiesByWP(wp.id)}></div>
+        <div
+          className="box"
+          title={`Category: ${wp.category}`}
+          style={{ backgroundColor: BG[wp.id], borderColor: BORDER[wp.id] }}
+        ></div>
         <p className="legendLable" title={`Category: ${wp.category}`}>
           {wp.id}: {wp.name}
         </p>
