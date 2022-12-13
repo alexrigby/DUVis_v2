@@ -1,185 +1,240 @@
-		Assign Level of engagement (0-none; 1-inform; 2 consult; 3-share; 4- cocreate) to stakeholders who participating																									
-	Start Month	2	14	18	20	26	33	39	63	60	54	54	55	55	56	62	68	12		1	1	67	57	67	56	69	12
-	Activity Name	Kick-Off meeting	"First Annual Conference: 'Sustainability in Energy & Water Resources: Research & Practice' , 27 October 2017"	"Enhancing the Resilience of your Welsh Organisation: Achieving Water and Energy Savings, 26 Feb 2018"	"Water & Energy in Rural Communities. A workshop for Group Water Schemes in Ireland, 26 April 2018"	Second Annual Conference: ' Water-Energy Innovation'. 23 October 2018	Launch of Blackstairs Demonstration site	T? Mawr Wybrnant Pico Hydropower Demonstration Site Launch	EPANET	Engagement Event - Citizen Science Project on Water-Energy Efficiency in Irish Households	Expert panel discussion on heat recovery potential of leisure centres	Sustainability Webinar on MHP	Drain Water Heat Recovery Webinar	Heat recovery in commercial kitchens Webinar	Benchmarking Webinar	"Webinar: Impacts of climate change on future water availability for hydropower and public water supply in Wales, UK"	Heat Recovery Tool Webinar- 2	Blackstairs GWS micro-hydropower installation	Design and Implementation of ABP Food demonstration site	Ty Mawr Wybrnant GWS micro-hydropower installation	Design and implementation of DWHR system at Penrhyn Castle	NFGWS Primary School Workshops	Primary School Webinars (BGWS)	Climate Action Hackathon Programme in Irish Secondary School - Focus Group	Climate Action Hackathon with ECO-UNESCO	"Carbon, water footprint and heat recovery assessment for Aber Falls distillery and consultation on how environmental footprint can be reduced."	Preliminary design of a hydropower energy recovery scheme Case study: Rathnure tank inlet
-S_ID	Organisation/Activity ID	51	52	53	54	55	31	27	35	58	37	6	43	14	47	20	50	1	45	2	12	42	25	66	59	88	80
-S_1	9 Meals From Anarchy												2														
-S_2	Aber falls distillery																									3	
-S_3	ABP Food Group					2													3								
-S_4	Action Renewables		3			2																					
-S_5	Adnams Gin	3	3																								
-S_6	AEC					2																					
-S_7	Aramark Northern Europe					2																					
-S_10	ARUP		3		2																						
-S_12	Auralab	3																									
-S_13	Ballinabranna Group Water Scheme						3		2													4					
-S_15	Ballingate Group Water Scheme						3																				
-S_17	Ballyshannon Leisure Centre										3																
-S_18	Bangor University (BU)	3	3	3	2	2	3	3		3						2				3	3			4	4	3	
-S_20	Birchfield Farm			3																							
-S_23	Blackstairs Group Water Scheme				2	2	3		2									4				4	4				2
-S_25	Blaenau Gwent County Borough Council		3																								
-S_27	BlueTech Research					2																					
-S_29	Bon Secours Hospital Galway											2															
-S_30	Borrmont GWS								2																		
-S_31	BPD Limited					2																					
-S_32	Brandon House Hotel																2										
-S_33	Bring It To The Lab					2																					
-S_35	Bundoran Waterworld CLG										3																
-S_36	"Business and Industry Committee, RDS"	3																									
-S_37	Byw'n Iach										3																
-S_39	Calon Tysul										3																
-S_40	Cardiff University		3	3																							
-S_41	Carlow City Council				2																						
-S_43	Carlow IT	3																									
-S_45	Caulmert Ltd			3																							
-S_49	"Club Vitae Oranmore, Galway"										3																
-S_50	Codema												2														
-S_51	Colman Hession and ï¿½Associates Engineers					2																					
-S_52	Commission for Energy Regulation	3																									
-S_53	Commission for Regulation of Utilities		3			2																					
-S_55	Consumer Council for Water		3																								
-S_59	Co-Operative Housing Ireland (CHI)									3																	
-S_60	Coral Leisure killarney										3																
-S_61	Coral Leisure Ltd										3	2	2	2	2												
-S_62	Corporate Affairs  Southern											2															
-S_64	Cosyn Cymru											2															
-S_65	Cullahill/Seskin GWS								2																		
-S_66	Cully Automation				2	2																					
-S_68	Cyfoeth Naturiol Cymru / Natural Resources Wales		3	3				3							2												
-S_69	Cyngor Gwynedd										3																
-S_72	DCU				2	2																					
-S_73	Dean of Research TCD	3																									
-S_77	"Department of Housing, Planning, Community & Local Government"	3					3											1									
-S_78	Detectronic Ltd		3																								
-S_80	Donal Mc Kenna												2	2													
-S_81	Driftwood Experience Ltd													2													
-S_83	Dublin City Council					2																					
-S_84	Dulas Ltd	3	3					3																			
-S_85	Dunne Technical Services						3																				
-S_86	Dwr Cymru Welsh Water (DCWW)	3	3	3		2		3								2											
-S_88	Egnida			3																							
-S_89	EIP on Water / Baur Technology	3																									
-S_91	Energy Elephant 	3																									
-S_92	Energy Saving Trust	3																									
-S_93	Engineers Ireland					2																					
-S_94	ENICA Ltd			3																4							
-S_96	Epro Advance Technology Ltd														2												
-S_97	EPS Group	3				2	3					2			2			4									
-S_99	Feedzai												2														
-S_100	Fermanagh Omagh District Council										3																
-S_101	"Finance, Bangor University"	3																									
-S_102	Fingleton White											2															
-S_103	Flintshire County Council											2															
-S_105	Forta Pro											2															
-S_106	Forterra			3																							
-S_107	Gas Networks					2																					
-S_266	General Public					2		3								2											
-S_109	GIP Campus												2	2													
-S_113	GLL										3																
-S_114	Glynn St. Mullins Group Water Scheme						3		2																		
-S_115	Green Connection														2												
-S_116	Gwynedd Council		3																								
-S_117	H2 Ozone					2																					
-S_119	HC Financial Training	3																									
-S_120	Heath Group Water Scheme				2	2																					
-S_121	Higher Education Authority (HEA) 	3																									
-S_122	Hinds book shop					2																					
-S_123	Hogg Enterprises						3																				
-S_124	Housing Department				2																						
-S_125	HSE											2	2	2													
-S_126	IBERS			3																							
-S_127	Imperial Hotel Galway																2										
-S_130	Innogy Renewables uk			3																							
-S_132	International Hotel Killarney																2										
-S_133	Interreg Ireland-Wales Programme 	3																									
-S_134	Ireland-Wales PSC	3																									
-S_135	Irish Rail					2																					
-S_136	Irish Water	3				2									2	2											
-S_137	JLA Hydro											2	2	2	2												
-S_138	Kerry County Council	3									3																
-S_139	Kilanerin Group Water Scheme						3		2																		
-S_141	Kildare County Council						3																				
-S_142	Kilkenny City Council				2																						
-S_147	Langton House Hotel 																2										
-S_148	Laois County Council						3																				
-S_151	Lovegrove EBS Ltd			3							3	2		2													
-S_152	Mark Eire BV										3																
-S_153	Martin J Hughes Glas Cymru												2														
-S_154	Mayo County Council										3																
-S_155	Mbarara University of Science and Technology													2													
-S_160	Mullaun Group Water Scheme						3		2																		
-S_162	Narraghmore Group Water Scheme				2																						
-S_163	National Council of Ireland					2																					
-S_164	National Federation of Group Water Schemes (NFGWS)	3	3		2	2	3		2			2						3				3	3				
-S_165	National Research Network - Low Carbon Energy & Environment	3																									
-S_166	National Trust (NT)							3												3	3						
-S_167	National Trust Wales	3	3																	4	4						
-S_170	Neville Park Hotels																2										
-S_175	NTC - Nexus Technologies Concepts											2			2												
-S_176	NUI Galway		3																								
-S_178	Operational Support Services Limited		3																								
-S_179	OzoneTech					2																					
-S_181	Parkwood Leisure										3																
-S_184	Pool Sentry										3																
-S_185	Portarlington Leisure Centre										3																
-S_187	Q -Blue BV					2											2										
-S_193	Roscommon City Council				2																						
-S_195	RPS Group	3				2						2															
-S_198	Saudi Aramco											2															
-S_201	Shannon Swimming & Leisure Centre										3																
-S_202	shri Ram Rayons														2												
-S_203	Siemens					2																					
-S_207	Southern Regional Assembly				2	2	3					2	2	2	2		2										
-S_209	Sustainability Lab							3																			
-S_210	Sustainable Energy Authority of Ireland		3																								
-S_211	Sustainable Travel Ireland																2										
-S_212	Talbot Hotel Group																2										
-S_214	Tan y Lan Fach											2	2	2	2												
-S_216	Technological University Dublin											2	2		2												
-S_218	Temple Gate Hotel																2										
-S_219	The Brown's			3																							
-S_221	The Clanard Court Hotel																2										
-S_222	The Grand Hotel Dublin																2										
-S_223	The Green Valleys CIC											2															
-S_225	The Rediscovery Centre													2													
-S_226	The Savoy Hotel 																2										
-S_227	The Start			3																							
-S_228	The University of the West of England		3																								
-S_229	The Watershed										3																
-S_230	The Watershed Kilkenny										3																
-S_231	Tipperary County Council				2	2	3					2															
-S_233	Trinity College Dublin (TCD)	3	3	3	2	2	3	3	2	3								4	3	4	4	4	4	4	4		2
-S_234	UCD					2																					
-S_235	UMNG														2												
-S_236	Universidad de Valencia											2	2		2												
-S_237	Universitat Jaume I					2																					
-S_238	University of Cordoba	3	3																								
-S_239	University of the Philippines													2													
-S_240	VEOLIA Environmental Services Technical Solutions Limited	3																									
-S_241	Verde Environmental Consulting											2															
-S_242	volunteer															2											
-S_244	Watef Network	3	3																								
-S_245	Water CoLab					2																					
-S_246	Water Loss Research & Analysis Ltd		3																								
-S_247	Water Turbines PLC	3	3																								
-S_248	Waterford County Council				2																						
-S_249	Waterways Ireland											2															
-S_250	Waterwise	3																									
-S_251	Welsh Assembly		3																								
-S_252	Welsh Government			3								2	2	2	2	2											
-S_253	WEW Consulting						3																				
-S_254	Wexford City Council				2																						
-S_255	Wexford County Council						3											1									
-S_256	Wicklow County Council				2		3																				
-S_257	Wicklow Uplands council											2		2													
-S_258	Woodford Dolmen Hotel																2										
-S_259	Yangzhou university															2											
-S_262	Ynni Llyn - community energy scheme							3																			
-S_263	Ynni Ogwen							3																			
-S_265	Ynys Resources Ltd		3																								
-S_190	Rathnure National School																					3	3				
-S_38	Caim National School																					2	2				
-S_208	St Joseph Donard National School																					2	2				
-S_14	Ballinabranna National School																					3					
-S_171	Newpark Comprehensive School																							4			
-S_87	ECOUNESCO																								3		
+		Assign Level of engagement (0-none; 1-inform; 2 consult; 3-share; 4- cocreate) to stakeholders who participating																																																											
+	Start Month	2	14	18	20	26	33	39	63	60	54	54	55	55	56	62	68	12			1	1	67	57	67	56	69									12					64						65								75			10			
+	Activity Name	Kick-Off meeting	"First Annual Conference: 'Sustainability in Energy & Water Resources: Research & Practice' , 27 October 2017"	"Enhancing the Resilience of your Welsh Organisation: Achieving Water and Energy Savings, 26 Feb 2018"	"Water & Energy in Rural Communities. A workshop for Group Water Schemes in Ireland, 26 April 2018"	Second Annual Conference: ' Water-Energy Innovation'. 23 October 2018	Launch of Blackstairs Demonstration site	T? Mawr Wybrnant Pico Hydropower Demonstration Site Launch	EPANET	Engagement Event - Citizen Science Project on Water-Energy Efficiency in Irish Households	Expert panel discussion on heat recovery potential of leisure centres	Sustainability Webinar on MHP	Drain Water Heat Recovery Webinar	Heat recovery in commercial kitchens Webinar	Benchmarking Webinar	"Webinar: Impacts of climate change on future water availability for hydropower and public water supply in Wales, UK"	Heat Recovery Tool Webinar- 2	Blackstairs GWS micro-hydropower installation	Design and Implementation of ABP Food demonstration site	ABP Food monitoring	Ty Mawr Wybrnant GWS micro-hydropower installation	Design and implementation of DWHR system at Penrhyn Castle	NFGWS Primary School Workshops	Primary School Webinars (BGWS)	Climate Action Hackathon Programme in Irish Secondary School - Focus Group	Climate Action Hackathon with ECO-UNESCO	"Carbon, water footprint and heat recovery assessment for Aber Falls distillery and consultation on how environmental footprint can be reduced."	Feasibility of MHP generation in community-owned rural water supply networks in IrelandCase study: Ballacolla network	Feasibility of MHP generation in community-owned rural water supply networks in IrelandCase study: Blackstairs network	Feasibility of MHP generation in community-owned rural water supply networks in IrelandCase study: Ballinabrannagh network	Feasibility of MHP generation in community-owned rural water supply networks in IrelandCase study: Kilanerin network	"EPS Hydropower Potential Feasibility Assessment: Drogheda WWTP, Blackstairs WTP, Cork Lower Harbour"	Hydro Project Blaenau GwentPre feasibility study	Five Fords Hydropower site - Preliminary design	Dublin City Council Hydropower potential feasibility assessment Dodder Water Supply Scheme	Preliminary design of a hydropower energy recovery schemeCase study: Rathnure tank inlet	Tara Mines hydro feasibility assessment	Dairygold WWTP hydro feasibility assessment	Fethard WTP hydro feasibility assessment	Imperial Hotel DWHR Assessment	Monitoring of the Rediscovery Centre grease trap and feasibility report for DWHR	Improving water-related energy efficiency in wet leisure centres in Denbighshire County Council (DCC). 	Heat recovery potential of leisure centres (Calon Tysul leisure centre - Ceredigion). 	Water-energy efficiency of commercial swimming pools (6 x Welsh leisure centres in collaboration with Pool Sentry). 	Water-energy efficiency in offices (M-Sparc: Menai Science Park). 	Water-energy efficiency of Gibney's pub in Dublin	Bangor University Student Accommodation monitoring	"Consultation and modelling work for Talybont Community Flood Group constituting an assessment of sub-basin contributions to peak flows at Talybont in the Afon Leri catchment, and the potential impact of tree planting on streamflow."	Launch of Penrhyn Demonstration site in person	Launch of Penrhyn Demonstration site online	Drain Water Heat Recovery Fesibility Studies	GIS and water industry statistic based study to explore the effect of rurality on energy consumption in water supply services	"Feasibility of MHP generation in community-owned rural water supply networks in IrelandCase studies: Ballinguiroe Tankardstown GWS, Coolagh Caherleske GWS, Kilcredan GWS, Killally Ballinrush GWS and Kilriffith Kilmore GWS and Walterstown GWS (plus Moyne and Patrickswell GWSs - unfinished)"	"Mullins Mill, Kells, County KilkennyHydropower potential assessment"	Climate Action Hackathon Programme in Irish Secondary School - Delivery 	"Studying water, energy and material use as well as energy and resource recovery options in a micro-distillery, focussing on by-product streams and water heat recovery."	Hydrological modelling assessment in the Afon Gwyrfai catchment to quantify flooding impacts	Preliminary design of a 4KWh pico hydro scheme powered by a pump-as-turbine			
+S_ID	Organisation/Activity ID	51	52	53	54	55	31	27	35	58	37	6	43	14	47	20	50	1	45	46	2	12	42	25	66	59	88	72	73	74	75	76	77	78	79	80	81	82	83	85	49	36	38	39	40	41	48	87	89	90	92	93	93	95	96	97	98	99			
+S_1	9 Meals From Anarchy												2																																																
+S_2	Aber falls distillery																										3																																		
+S_3	ABP Food Group					2													3	3																															2										
+S_4	Action Renewables		3			2																																												2											
+S_5	Adnams Brewery and Distillery	3	3																																																										
+S_6	AEC					2																																																							
+S_7	Aramark Northern Europe					2																																																							
+S_8	ARUP		3		2																																																								
+S_9	Ashlawn Nursing Home																																																		2										
+S_10	Auralab	3																																																											
+S_12	Ballinabranna Group Water Scheme						3		2														4							2																															
+S_14	Ballingate Group Water Scheme						3																																																						
+S_15	Ballinguiroe Tankardstown GWS																																																				2								
+S_16	Ballyshannon Leisure Centre										3																																																		
+S_17	Bangor University (BU)	3	3	3	2	2	3	3		3						2					3	3			4	4	3																						3			3			3						
+S_19	Birchfield Farm			3																																																									
+S_20	Black & Veatch																																																			3									
+S_21	Black Boy Inn													2																																															
+S_22	Blackstairs Group Water Scheme				2	2	3		2									4					4	4					2																																
+S_23	Blaen Eidda Ysbyty Ifan							3																																																					
+S_24	Blaenau Gwent County Borough Council		3																														2			2																									
+S_25	BlueTech Research					2																																																							
+S_26	Boliden Tara Mines																																				2																								
+S_27	Bon Secours Hospital Galway											2																																																	
+S_28	Borrmont GWS								2																																																				
+S_29	BPD Limited					2																																																							
+S_30	Brandon House Hotel																2																																												
+S_31	Bring It To The Lab					2																																																							
+S_32	Bundoran Waterworld CLG										3																																																		
+S_33	"Business and Industry Committee, RDS"	3																																																											
+S_34	Byw'n Iach										3																																	2																	
+S_36	Calon Tysul										3																																4																		
+S_37	Cardiff University		3	3																																																									
+S_38	Carlow County Council				2																																																								
+S_39	Carlow IT	3																																																											
+S_40	Caulmert Ltd			3																																																									
+S_41	Centre for Alternative Technology Wales							3																																																					
+S_42	"Club Vitae Oranmore, Galway"										3																																																		
+S_43	Codema												2																																																
+S_44	Colman Hession and ÿAssociates Engineers					2																																																							
+S_45	Commission for Energy Regulation	3																																																											
+S_46	Commission for Regulation of Utilities		3			2																																																							
+S_47	Consumer Council for Water		3																																																										
+S_48	Coolagh Caherleske GWS																																																				2								
+S_49	Cooleeney Cheese																																																												
+S_50	Coolmore Park GWS																																																												
+S_51	Co-Operative Housing Ireland (CHI)									3																																																			
+S_52	Coral Leisure killarney										3																																																		
+S_53	Coral Leisure Ltd										3	2	2	2	2																																														
+S_54	Corwn Leisure Centre																																									3																			
+S_55	Cosyn Cymru											2																																																	
+S_56	Cullahill/Seskin GWS								2																																																				
+S_57	Cully Automation				2	2																																																							
+S_58	Cwrw Lyn Brewery																																																												
+S_59	Cyfoeth Naturiol Cymru / Natural Resources Wales		3	3				3							2																																			2											
+S_60	Cyngor Gwynedd Council		3								3																																	2																	
+S_61	Dairygold																																					2																							
+S_62	DCU				2	2																																																							
+S_63	Dean of Research TCD	3																																																											
+S_64	Denbighshire County Council																																									2		2																	
+S_65	Denbighshire Leisure																																									2		2																	
+S_66	"Department of Housing, Planning, Community & Local Government"	3			2		3											1																																											
+S_67	Detectronic Ltd		3																																																										
+S_68	Donal Mc Kenna												2	2																																															
+S_69	Driftwood Experience Ltd													2																																															
+S_70	Druids Glen Hotel 																																																		2										
+S_71	Dublin City Council					2																													2																										
+S_72	Dulas Ltd	3	3					3																																																					
+S_73	Dunne Technical Services						3																																																						
+S_74	Dwr Cymru Welsh Water (DCWW)	3	3	3		2		3								2																		2																		1									
+S_76	Egnida			3																																																									
+S_77	EIP on Water / Baur Technology	3																																																											
+S_78	Energy Elephant 	3																																																											
+S_79	Energy Saving Trust	3																																																											
+S_80	Engineers Ireland					2																																																							
+S_81	ENICA Ltd			3																	4																																								
+S_82	Epro Advance Technology Ltd														2																																														
+S_83	EPS Group	3				2	3					2			2			4														2																													
+S_84	Feedzai												2																																																
+S_85	Fermanagh Omagh District Council										3																																																		
+S_86	"Finance, Bangor University"	3																																																											
+S_87	Fingleton White											2																																																	
+S_88	Flintshire County Council											2																																																	
+S_89	Food Technology Centre			3																																																									
+S_90	Forta Pro											2																																																	
+S_91	Forterra			3																																																									
+S_92	Gas Networks					2																																																							
+S_96	Glan Agua																																						2																						
+S_93	General Public					2		3								2																																													
+S_95	GIP Campus												2	2																																															
+S_97	GLL										3																																																		
+S_98	Glynn St. Mullins Group Water Scheme						3		2																																																				
+S_99	Green Connection														2																																														
+S_100	H2 Ozone					2																																																							
+S_101	HC Financial Training	3																																																											
+S_102	Heath Group Water Scheme				2	2																																																							
+S_103	Higher Education Authority (HEA) 	3																																																											
+S_104	Hinds book shop					2																																																							
+S_105	Hogg Enterprises						3																																																						
+S_106	HSE											2	2	2																																															
+S_107	IBERS			3																																																									
+S_108	Imperial Hotel Galway																2																																												
+S_109	Imperial Hotel Llandundo																																							2																					
+S_110	Innogy Renewables uk			3																																																									
+S_111	International Hotel Killarney																2																																												
+S_112	Interreg Ireland-Wales Programme 	3																																																											
+S_113	Ireland-Wales PSC	3																																																											
+S_114	Irish Rail					2																																																							
+S_115	Irish Water	3				2									2	2																																													
+S_116	JLA Hydro											2	2	2	2																																														
+S_117	Kerry County Council	3									3																																																		
+S_118	Kilanerin Group Water Scheme						3		2																						2																														
+S_119	Kilcredan GWS																																																				2								
+S_120	Kildare County Council						3																																																						
+S_121	Kilkenny County Council				2																																																								
+S_122	Killally Ballinrush GWS																																																				2								
+S_123	Kilriffith Kilmore GWS																																																				2								
+S_124	Kings Mill Kilkenny																																																					2							
+S_125	Langton House Hotel 																2																																												
+S_126	Laois County Council						3																																																						
+S_127	Lovegrove EBS Ltd			3							3	2		2																																															
+S_128	Mark Eire BV										3																																																		
+S_129	Martin J Hughes Glas Cymru												2																																				2												
+S_130	Mayo County Council										3																																																		
+S_131	Mbarara University of Science and Technology													2																																															
+S_132	Menai Science Park																																												3																
+S_133	Moyne GWS																																																				1								
+S_134	Mullaun Group Water Scheme						3		2																																																				
+S_135	Narraghmore Group Water Scheme				2																																																								
+S_136	National Council of Ireland					2																																																							
+S_137	National Federation of Group Water Schemes (NFGWS)	3	3		2	2	3		2			2						3					3	3																																					
+S_138	National Research Network - Low Carbon Energy & Environment	3																																																											
+S_139	National Trust (NT)							3													3	3																											3	2	2										
+S_140	National Trust Wales	3	3																		4	4																											3	2	2										
+S_141	Nenagh Swimming Pool																																																		2										
+S_142	Neville Park Hotels																2																																												
+S_144	Nicholas O'Dwyer Ltd					2																																																							
+S_145	Noel Lawlor Consulting Engineers																																																		2										
+S_146	Nova Centre Prestatyn																																									3		4																	
+S_147	NTC - Nexus Technologies Concepts											2			2																																														
+S_148	NUI Galway		3																																																										"The Pool Sentry leisure centres are in Arfon (Caernarfon), Bangor, Glaslyn, Prestatyn, Rhyl, and SC2."
+S_149	Ogwen Hydro																																																									2			
+S_150	Operational Support Services Limited		3																																																										These are where the Sentry units have been installed.
+S_151	OzoneTech					2																																																							
+S_152	Pant Glas Padog Conwy							3																																																					"The DCC leisure centres are: Rhyl, SC2, NOVA Prestatyn, Ruthin, and Corwen."
+S_153	Parkwood Leisure										3																																																		
+S_154	Patrickswell GWS																																																				1								
+S_155	PepsiCo Ireland																																																		2										
+S_156	Pool Sentry										3																																	4																	
+S_157	Portarlington Leisure Centre										3																																																		
+S_158	Portmagee Whiskey distillery																																																												
+S_159	Q -Blue BV					2											2																																												
+S_160	Rain Surfer					3																																																							
+S_162	Rhyl Leisure Centre																																									3		4																	
+S_163	Roscommon City Council				2																																																								
+S_164	RPS Group	3				2						2																																																	
+S_165	Ruthin Leisure Centre																																									3																			
+S_166	Ryan Hanley Ltd					2																																																							
+S_167	Saudi Aramco											2																																																	
+S_168	SC2 leisure centre																																									3		4																	
+S_169	Shannon Swimming & Leisure Centre										3																																																		
+S_170	shri Ram Rayons														2																																														
+S_171	Siemens					2																																																							
+S_172	Southern Regional Assembly				2	2	3					2	2	2	2		2																																	2											
+S_174	Sustainability Lab							3																																																					
+S_175	Sustainable Energy Authority of Ireland		3																																																										
+S_176	Sustainable Travel Ireland																2																																												
+S_177	Talbot Hotel Group																2																																												
+S_178	Talbot Hotel Stillorgan																																																		2										
+S_179	Tan y Lan Fach											2	2	2	2																																														
+S_181	Technological University Dublin											2	2		2																																														
+S_182	Temple Gate Hotel																2																																												
+S_180	TCFG																																															2													
+S_183	The Brown's			3																																																									
+S_184	The Brunner CBS																																																						2						
+S_185	The Clanard Court Hotel																2																																												
+S_186	The Grand Hotel Dublin																2																																												
+S_187	The Green Valleys CIC											2																																																	
+S_188	The Rediscovery Centre													2																											2																				
+S_189	The Savoy Hotel 																2																																												
+S_190	The Start			3																																																									
+S_191	The University of the West of England		3																																																										
+S_192	The Watershed										3																																																		
+S_193	The Watershed Kilkenny										3																																																		
+S_194	Tipperary County Council				2	2	3					2																																																	
+S_195	Trinity College Dublin (TCD)	3	3	3	2	2	3	3	2	3								4	3	3	4	4	4	4	4	4																							3	2					3						
+S_196	UCD					2																																																							
+S_197	UMNG														2																																														
+S_198	Universidad de Valencia											2	2		2																																														
+S_199	Universitat Jaume I					2																																																							
+S_200	University of Cordoba	3	3																																																										
+S_201	University of the Philippines													2																																															
+S_202	VEOLIA Environmental Services Technical Solutions Limited	3																																																											
+S_203	Verde Environmental Consulting											2																																																	
+S_204	volunteer															2																																													
+S_205	Walterstown GWS																																																				2								
+S_206	Watef Network	3	3																																																										
+S_207	Water CoLab					2																																																							
+S_208	Water Loss Research & Analysis Ltd		3																																																										
+S_209	Water Turbines PLC	3	3																																																										
+S_210	Waterford County Council				2																																																								
+S_211	Waterways Ireland											2																																																	
+S_212	Waterwise	3																																																											
+S_213	Welsh Assembly		3																																																										
+S_214	Welsh Government			3								2	2	2	2	2																																		2											
+S_215	WEW Consulting						3																																																						
+S_216	Wexford City Council				2																																																								
+S_217	Wexford County Council						3											1																																											
+S_218	Wicklow County Council				2		3																																																						
+S_219	Wicklow Uplands council											2		2																																															
+S_220	Woodford Dolmen Hotel																2																																												
+S_221	Yangzhou university															2																																													
+S_222	Ymgynghoriaeth Gwynedd Consultancy																																																								2				
+S_223	Ynni Llyn - community energy scheme							3																																																					
+S_224	Ynni Ogwen							3																																																					
+S_225	Ynys Resources Ltd		3																																																										
+S_226	Arbikie Distillery																																																							4					
+S_161	Rathnure National School																						3	3																																					
+S_35	Caim National School																						2	2																																					
+S_173	St Joseph Donard National School																						2	2																																					
+S_13	Ballinabranna National School																						3																																						
+S_143	Newpark Comprehensive School																								4																																				
+S_75	ECOUNESCO																									3																																			
+S_11	Ballacolla Group Water Scheme																											2																																	
+S_94	Gibneys of Malahide																																													3															
+S_227	Mountain Studios																																																2												
+S_228	The Royal Victoria Hotel																																																2												
+S_229	Geosmart Decision																																																	2											
+S_230	University of Bath																																																	2											
+S_231	University of Exeter																																																	2											
+S_232	Pforzheim University (Germany)																																																	2											
+S_233	Northumbrian Water																																																	2											
+S_18	Bangor University St Mary's Student Accommodation																																														2														
+S_234	Arfon Leisure Centre																																											4																	
+S_235	Bangor Leisure Centre																																											4																	
+S_236	Glaslyn Leisure Centre																																											4																	

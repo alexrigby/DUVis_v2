@@ -25,6 +25,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   const links = await parseLinks(actLinks);
   const wpData = await parseDataset(wpDataset);
   const dates = await parseDataset(datesData);
+  // console.log(activityDataNoDate);
 
   const convertedDates = dates.map((d, i) => ({
     ...d,

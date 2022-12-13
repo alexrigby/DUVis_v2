@@ -33,10 +33,14 @@ export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
       }
     },
     idealEdgeLength: function (edge) {
-      if (edge.data().type === "stakeholderEdge") {
+      if (edge.data("type") === "stakeholderEdge") {
         return 1;
       } else {
-        return 300;
+        if (edge.connectedNodes()[0].data("parent") === edge.connectedNodes()[1].data("parent")) {
+          return 1;
+        } else {
+          return 500;
+        }
       }
     },
     edgeElasticity: (edge) => {

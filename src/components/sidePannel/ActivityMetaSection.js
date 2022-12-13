@@ -284,7 +284,6 @@ function shortDates(node, se) {
 }
 
 function listLinks(nodes, setSelectedNode, cyState, setStakeholdersDisplay) {
-  console.log(setStakeholdersDisplay);
   return nodes.map((act) => (
     <li
       key={act.id()}

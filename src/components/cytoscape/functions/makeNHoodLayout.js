@@ -36,10 +36,11 @@ export function makeNHoodLayout(cyState, selectedNode) {
       id: "N_" + n.data().label,
       network: "yes",
     },
+    position: { x: 0, y: 0 },
+    // position: cyState.cy.nodes(`#N_${selectedNode.id}`).renderedPosition(),
   }));
 
   const newNHoodActNodes = nHoodActNodes.map((n) => {
-    // console.log(n.data().meta);
     return {
       group: "nodes",
       classes: "networkNode",
@@ -48,8 +49,9 @@ export function makeNHoodLayout(cyState, selectedNode) {
         parent: null,
         id: "N_" + n.data().label,
         network: "yes",
-        // opacity: activityOpacity(n.data().meta, completedDisplay, latestPrPeriodRef.current, prPeriod), //need to dynamically set opacity when making new nodes
       },
+      position: { x: 0, y: 0 },
+      // position: cyState.cy.nodes(`#N_${selectedNode.id}`).renderedPosition(),
     };
   });
 
