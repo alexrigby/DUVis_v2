@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import SplitPane from "react-split-pane";
 
 import Header from "./components/header/Header";
 import SidePannel from "./components/sidePannel/SidePannel";
@@ -78,8 +79,15 @@ export function App() {
     // addCategoryIcon(cyState.cy);
   }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory]);
 
+  // const [disablePannel, setDisablePannel] = useState(true);
+
+  // const clickHandler = (evt) => {
+  //   setDisablePannel((prevState) => !prevState);
+  // };
+
   return (
     <div className="container">
+      {/* <div className="Resizer"> */}
       <div onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState, networkVeiw)}>
         <div className="top-layer">
           <SidePannel
@@ -173,6 +181,7 @@ export function App() {
         />
       </div>
     </div>
+    // </div>
   );
 }
 

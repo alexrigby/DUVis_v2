@@ -18,6 +18,7 @@
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.4.0",
+    "react-split-pane": "^0.1.92",
     "react-vega": "^7.6.0",
     "react-vis-timeline-2": "^2.1.6",
     "tippy.js": "^6.3.7",
