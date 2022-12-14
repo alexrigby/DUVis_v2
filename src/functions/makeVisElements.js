@@ -78,8 +78,29 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
     group: "nodes",
     grabbable: false,
     data: {
+      parent: "t",
       id: "project",
       type: "project",
+      label: "",
+    },
+  };
+
+  const p = {
+    group: "nodes",
+    grabbable: false,
+    data: {
+      parent: "d",
+      id: "t",
+      type: "t",
+      label: "",
+    },
+  };
+  const d = {
+    group: "nodes",
+    grabbable: false,
+    data: {
+      id: "d",
+      type: "d",
       label: "",
     },
   };

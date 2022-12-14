@@ -19,27 +19,27 @@ export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
   return {
     //cose-bilkent is a cytoscape plugin
     name: "fcose",
-    // quality: "proof",
     // quality: currentActNodeCount < origionalActCount ? "default" : "proof",
     animationDuration: 1000,
     nodeDimensionsIncludeLabels: true,
     nodeRepulsion: function (node) {
       if (node.data().type === "stakeholderNode") {
         return nodeRepuslionFactor * currentActNodeCount;
-      } else if (node.data().type === "project") {
-        return nodeRepuslionFactor * currentActNodeCount * 10;
+      } else if (node.data("type") === "activityNode") {
+        return 0;
       } else {
-        return 4000;
+        return 5000;
       }
     },
     idealEdgeLength: function (edge) {
+      // return 150;
       if (edge.data("type") === "stakeholderEdge") {
-        return 1;
+        return 20; //1
       } else {
         if (edge.connectedNodes()[0].data("parent") === edge.connectedNodes()[1].data("parent")) {
-          return 1;
+          return 100;
         } else {
-          return 500;
+          return 500; //300
         }
       }
     },
@@ -57,37 +57,13 @@ export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
         return true;
       }
     },
-    randomize: random,
+    // randomize: random,
     fit: true,
-    gravity: 4,
-    gravityCompound: 5.0,
+    gravity: 3.8, //attraction to the center of the graph
+    gravityRange: 0.1,
+    gravityCompound: 2000, //attraction to the center of the compound node
+    gravityRangeCompound: 0.99,
     numIter: 300000,
-    //   nodeRepulsion: function (node) {
-    //     if (node.data().type === "stakehlderNode") {
-    //       return nodeRepuslionFactor * currentActNodeCount;
-    //     }
-    //     // else if (node.data().type === "project") {
-    //     //   return nodeRepuslionFactor * nodeCount * 4;
-    //     // }
-    //     else {
-    //       return nodeRepuslionFactor * currentActNodeCount;
-    //     }
-    //   },
-    //   idealEdgeLength: function (edge) {
-    //     if (edge.data().type === "stakeholderEdge") {
-    //       return 50;
-    //     } else {
-    //       return currentActNodeCount * 3;
-    //     }
-    //   },
-    //   edgeElasticity: (edge) => {
-    //     if (edge.data().type === "stakeholderEdge") {
-    //       return 0.4;
-    //     } else {
-    //       return 0.1;
-    //     }
-    //   },
-    // };
   };
 };
 
@@ -105,17 +81,13 @@ export const COLA = {
 //   name: "cose-bilkent",
 //   nodeDimensionsIncludeLabels: true,
 //   animationDuration: 1000,
-// // randomize: false,
+//   randomize: random,
 //   fit: true,
-//   nodeRepulsion: 3000,
+//   nodeRepulsion: 30000,
 //   idealEdgeLength: 300,
 //   nesttingFactor: 0.4,
-//   edgeElasticity: 0.1,
+//   edgeElasticity: 0.3,
 //   gravity: 4,
-//   gravityCompound: 5,
-//   // gravityRangeCompound: 1.5,
-//   // gravityRange: 9,
-//   initialEnergyOnIncremental: 1,
 // });
 
 export const CONCENTRIC = {

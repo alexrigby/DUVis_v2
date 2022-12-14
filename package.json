@@ -9,6 +9,7 @@
     "cytoscape": "^3.22.1",
     "cytoscape-cola": "^2.5.1",
     "cytoscape-cose-bilkent": "^4.1.0",
+    "cytoscape-no-overlap": "^1.0.1",
     "cytoscape-node-html-label": "^1.2.2",
     "cytoscape-popper": "^2.0.0",
     "lodash.clonedeep": "^4.5.0",

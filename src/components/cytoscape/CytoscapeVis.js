@@ -1,11 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
+// import Cytoscape from "cytoscape";
+// import noOverlap from "cytoscape-no-overlap";
 
 import { FCOSE, CONCENTRIC } from "./functions/LAYOUTS";
 import stylesheet from "./functions/stylesheet";
 import nodeTooltip from "./functions/nodeTooltips";
 import styleSelectedElements from "./functions/styleSelectedElements";
 import makeNHoodLayout from "./functions/makeNHoodLayout";
+// Cytoscape.use(noOverlap);
 
 export function CytoscapeVis({
   cyState,
@@ -26,6 +29,7 @@ export function CytoscapeVis({
   engScoreVeiw,
 }) {
   useEffect(() => {
+    // cyState.cy.nodes().noOverlap({ padding: 2 });
     const allEngWeight = cyState.cy.nodes("[type = 'stakeholderNode']").map((n) => {
       var engLev = [];
       //4 for 4 engagement levels
