@@ -14,9 +14,6 @@ export function SidePannel({
   networkVeiw,
   setStakeholdersDisplay,
 }) {
-  //if clicked node is "" display nothing
-  // console.log(selectedNode);
-
   const style = {
     opacity: selectedNode.id === "" ? "0" : "1",
   };

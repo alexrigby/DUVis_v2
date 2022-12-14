@@ -2,7 +2,7 @@ import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import hilightOnLiHover from "./functions/hilightOnLiHover";
 import { useState } from "react";
 
-export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState }) {
+export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, setStakeholdersDisplay }) {
   const open = <i className="fa fa-angle-down"></i>;
   const close = <i className="fa fa-angle-up"></i>;
 
@@ -46,7 +46,7 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState }
           </h2>
           <h2>count: {acts.length}</h2>
           <div style={style(`eng${i}`)}>
-            <ul>{listLinks(acts, setSelectedNode, cyState)} </ul>
+            <ul>{listLinks(acts, setSelectedNode, cyState, setStakeholdersDisplay)} </ul>
           </div>
         </div>
       );

@@ -79,109 +79,121 @@ export function App() {
     // addCategoryIcon(cyState.cy);
   }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory]);
 
-  // const [disablePannel, setDisablePannel] = useState(true);
-
-  // const clickHandler = (evt) => {
-  //   setDisablePannel((prevState) => !prevState);
-  // };
+  //need to think of something better than this!!!!!!!!!!!
+  document.querySelectorAll(".Pane2").forEach((el) => {
+    el.style.display = selectedNode.id === "" ? "none" : "block";
+  });
 
   return (
     <div className="container">
-      {/* <div className="Resizer"> */}
-      <div onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState, networkVeiw)}>
-        <div className="top-layer">
-          <SidePannel
-            selectedNode={selectedNode}
-            cyState={cyState}
-            setSelectedNode={setSelectedNode}
-            datesRef={datesRef}
-            prPeriod={prPeriod}
-            networkVeiw={networkVeiw}
-            setStakeholdersDisplay={setStakeholdersDisplay}
-          />
-          <div className="headSection">
-            <div className="rightSide">
-              <Header
+      <div className="Resizer">
+        <SplitPane split="vertical" minSize={"20em"} defaultSize={"20em"} allowResize={true} primary="second">
+          <div onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState, networkVeiw)}>
+            <div className="top-layer">
+              {/* <SidePannel
+              selectedNode={selectedNode}
+             cyState={cyState}
+             setSelectedNode={setSelectedNode}
+             datesRef={datesRef}
+             prPeriod={prPeriod}
+             networkVeiw={networkVeiw}
+             setStakeholdersDisplay={setStakeholdersDisplay}
+               /> */}
+              <div className="headSection">
+                <div className="rightSide">
+                  <Header
+                    cyState={cyState}
+                    datesRef={datesRef}
+                    prPeriod={prPeriod}
+                    currentStory={currentStory}
+                    completedDisplay={completedDisplay}
+                    networkVeiw={networkVeiw}
+                  />
+                  <FilterOptions
+                    datesRef={datesRef}
+                    prPeriod={prPeriod}
+                    setPrPeriod={setPrPeriod}
+                    currentStory={currentStory}
+                    setCurrentStory={setCurrentStory}
+                    actDataRef={actDataRef}
+                    matrixHeadersRef={matrixHeadersRef}
+                  />
+                  <Legend
+                    cyState={cyState}
+                    networkVeiw={networkVeiw}
+                    selectedNode={selectedNode}
+                    networkVeiwEls={networkVeiwEls}
+                    engScoreVeiw={engScoreVeiw}
+                    stakeholdersDisplay={stakeholdersDisplay}
+                  />
+                </div>
+                <ToggleButtons
+                  selectedBottomVis={selectedBottomVis}
+                  setSelectedBottomVis={setSelectedBottomVis}
+                  setConnectionFlagsDisplay={setConnectionFlagsDisplay}
+                  connectionFlagsDisplay={connectionFlagsDisplay}
+                  setStakeholdersDisplay={setStakeholdersDisplay}
+                  currentActNodeCountRef={currentActNodeCountRef}
+                  origionalActCountRef={origionalActCountRef}
+                  setActivityEdgeDisplay={setActivityEdgeDisplay}
+                  setCompletedDisplay={setCompletedDisplay}
+                  cyState={cyState}
+                  setNetworkVeiw={setNetworkVeiw}
+                  networkVeiw={networkVeiw}
+                  activityEdgeDisplay={activityEdgeDisplay}
+                  completedDisplay={completedDisplay}
+                  stakeholdersDisplay={stakeholdersDisplay}
+                  selectedNode={selectedNode}
+                  engScoreVeiw={engScoreVeiw}
+                  setEngeScoreVeiw={setEngeScoreVeiw}
+                />
+              </div>
+
+              <BottomPannel
+                gantchartData={gantchartData}
                 cyState={cyState}
-                datesRef={datesRef}
-                prPeriod={prPeriod}
-                currentStory={currentStory}
-                completedDisplay={completedDisplay}
-                networkVeiw={networkVeiw}
-              />
-              <FilterOptions
-                datesRef={datesRef}
-                prPeriod={prPeriod}
-                setPrPeriod={setPrPeriod}
-                currentStory={currentStory}
-                setCurrentStory={setCurrentStory}
+                setSelectedNode={setSelectedNode}
                 actDataRef={actDataRef}
-                matrixHeadersRef={matrixHeadersRef}
-              />
-              <Legend
-                cyState={cyState}
-                networkVeiw={networkVeiw}
-                selectedNode={selectedNode}
-                networkVeiwEls={networkVeiwEls}
-                engScoreVeiw={engScoreVeiw}
-                stakeholdersDisplay={stakeholdersDisplay}
+                datesRef={datesRef}
+                prPeriod={prPeriod}
+                selectedBottomVis={selectedBottomVis}
+                setSelectedBottomVis={setSelectedBottomVis}
               />
             </div>
-            <ToggleButtons
-              selectedBottomVis={selectedBottomVis}
-              setSelectedBottomVis={setSelectedBottomVis}
-              setConnectionFlagsDisplay={setConnectionFlagsDisplay}
-              connectionFlagsDisplay={connectionFlagsDisplay}
-              setStakeholdersDisplay={setStakeholdersDisplay}
+
+            <CytoscapeVis
+              cyState={cyState}
+              setSelectedNode={setSelectedNode}
+              selectedNode={selectedNode}
+              activityEdgeDisplay={activityEdgeDisplay}
+              stakeholdersDisplay={stakeholdersDisplay}
               currentActNodeCountRef={currentActNodeCountRef}
               origionalActCountRef={origionalActCountRef}
-              setActivityEdgeDisplay={setActivityEdgeDisplay}
-              setCompletedDisplay={setCompletedDisplay}
-              cyState={cyState}
-              setNetworkVeiw={setNetworkVeiw}
               networkVeiw={networkVeiw}
-              activityEdgeDisplay={activityEdgeDisplay}
               completedDisplay={completedDisplay}
-              stakeholdersDisplay={stakeholdersDisplay}
-              selectedNode={selectedNode}
+              latestPrPeriodRef={latestPrPeriodRef}
+              prPeriod={prPeriod}
+              networkVeiwEls={networkVeiwEls}
+              setNetworkVeiwEls={setNetworkVeiwEls}
+              currentStory={currentStory}
+              maxEngScore={maxEngScore}
               engScoreVeiw={engScoreVeiw}
-              setEngeScoreVeiw={setEngeScoreVeiw}
             />
           </div>
-
-          <BottomPannel
-            gantchartData={gantchartData}
-            cyState={cyState}
-            setSelectedNode={setSelectedNode}
-            actDataRef={actDataRef}
-            datesRef={datesRef}
-            prPeriod={prPeriod}
-            selectedBottomVis={selectedBottomVis}
-            setSelectedBottomVis={setSelectedBottomVis}
-          />
-        </div>
-
-        <CytoscapeVis
-          cyState={cyState}
-          setSelectedNode={setSelectedNode}
-          selectedNode={selectedNode}
-          activityEdgeDisplay={activityEdgeDisplay}
-          stakeholdersDisplay={stakeholdersDisplay}
-          currentActNodeCountRef={currentActNodeCountRef}
-          origionalActCountRef={origionalActCountRef}
-          networkVeiw={networkVeiw}
-          completedDisplay={completedDisplay}
-          latestPrPeriodRef={latestPrPeriodRef}
-          prPeriod={prPeriod}
-          networkVeiwEls={networkVeiwEls}
-          setNetworkVeiwEls={setNetworkVeiwEls}
-          currentStory={currentStory}
-          maxEngScore={maxEngScore}
-          engScoreVeiw={engScoreVeiw}
-        />
+          <div id="sideP" data-open="false">
+            <SidePannel
+              selectedNode={selectedNode}
+              cyState={cyState}
+              setSelectedNode={setSelectedNode}
+              datesRef={datesRef}
+              prPeriod={prPeriod}
+              networkVeiw={networkVeiw}
+              setStakeholdersDisplay={setStakeholdersDisplay}
+            />
+          </div>
+        </SplitPane>
       </div>
     </div>
-    // </div>
   );
 }
 

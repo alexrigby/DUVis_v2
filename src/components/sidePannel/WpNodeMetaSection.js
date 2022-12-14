@@ -58,7 +58,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
           </h2>
           <h2>count: {uniqueStakeholders.length}</h2>
           <div style={style}>
-            <ul>{listLinks(uniqueStakeholders, setSelectedNode, cyState)} </ul>
+            <ul>{listLinks(uniqueStakeholders, setSelectedNode, cyState, setStakeholdersDisplay)} </ul>
           </div>
         </div>
       );
