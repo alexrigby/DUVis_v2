@@ -1,6 +1,4 @@
 export function vegaSpec(options, brushRange, selectedMetric) {
-  // const selectedMetric = "Activity Category";
-
   const startDate = brushRange.start;
   const endDate = brushRange.end;
 
@@ -59,13 +57,7 @@ export function vegaSpec(options, brushRange, selectedMetric) {
                 axis: { title: "", tickMinStep: 1 },
                 scale: { domainMin: 0.075 }, // hides 0 values from the graph
               },
-              // scale: { domain: { param: "brush" } }, // somehow works without this csale
               color: {
-                // condition: {
-                //   test: `datum['${selectedMetric}'] === '0'`,
-                //   value: "pink",
-                // },
-                // condition: { test: `datum['${selectedMetric}'] === "undefined" `, value: "grey" },
                 field: selectedMetric,
                 type: "nominal",
               },
@@ -109,7 +101,6 @@ export function vegaSpec(options, brushRange, selectedMetric) {
           y: { field: "count", type: "quantitative", axis: { title: "" } },
           tooltip: { field: "count", type: "quantitative" },
           color: {
-            // condition: { test: `datum['${selectedMetric}'] === "undefined" `, value: "grey" },
             field: selectedMetric,
           },
           opacity: {
@@ -123,8 +114,6 @@ export function vegaSpec(options, brushRange, selectedMetric) {
       view: { stroke: null },
       legend: {
         symbolStrokeColor: "grey",
-        // "datum.label == 'undefind' ? 'grey' : 'pink'",
-        // field: selectedMetric,
         title: "",
         fillColor: "white",
         labelFontSize: 12,

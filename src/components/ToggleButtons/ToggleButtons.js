@@ -72,11 +72,30 @@ export function ToggleButtons({
     <div className="displayButtons">
       <div className="cytoscapeButtons">
         <button onClick={changeLayout}>
-          Change Layout <i className="fa fa-repeat"></i>
+          Layout <i className="fa fa-repeat"></i>
+        </button>
+        <button onClick={toggleEdges}>
+          Connections <i className="fa fa-diagram-project"></i>
+        </button>
+        <button onClick={toggleCompleted} style={style(completedDisplay)}>
+          Completed <i className="fa fa-check"></i>
         </button>
         {/* <button title="flag activities with less than mean number of connections" onClick={toggleConnectionFlags}>
           Mean Connection Flag
         </button> */}
+      </div>
+      <div className="toggleButtons">
+        <button style={style(networkVeiw)} onClick={toggleNetworkVeiw}>
+          Network <i className="fa fa-circle-nodes"></i>
+        </button>
+        <button style={style(engScoreVeiw)} onClick={toggleEngScoreVeiw}>
+          Engagement <i className="fa fa-link"></i>
+        </button>
+        <button onClick={toggleStakeholders} style={style(stakeholdersDisplay)}>
+          Stakeholders <i className="fa fa-handshake-simple"></i>
+        </button>
+      </div>
+      <div className="toggleButtons">
         <button
           id="gantChartButton"
           onClick={toggleBottomPannelDisplay}
@@ -92,25 +111,7 @@ export function ToggleButtons({
           Analytics <i className="fa fa-chart-column"></i>
         </button>
       </div>
-      <div className="toggleButtons">
-        <button style={style(networkVeiw)} onClick={toggleNetworkVeiw}>
-          Network <i className="fa fa-circle-nodes"></i>
-        </button>
-        <button style={style(engScoreVeiw)} onClick={toggleEngScoreVeiw}>
-          Engagement <i className="fa fa-link"></i>
-        </button>
-        <button onClick={toggleStakeholders} style={style(stakeholdersDisplay)}>
-          Toggle Stakeholders <i className="fa fa-handshake-simple"></i>
-        </button>
-      </div>
-      <div className="toggleButtons">
-        <button onClick={toggleEdges}>
-          Toggle Connections <i className="fa fa-diagram-project"></i>
-        </button>
-        <button onClick={toggleCompleted} style={style(completedDisplay)}>
-          Toggle Completed <i className="fa fa-check"></i>
-        </button>
-      </div>
+
       {/* <div className="bottomPannelButtons"></div> */}
     </div>
   );

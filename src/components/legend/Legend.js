@@ -64,14 +64,15 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
     <div className="legend">
       <h2>Work Packages:</h2>
       {legendData.current.wps}
-      {engScoreVeiw && !stakeholdersDisplay && <h2>Engagement Ranking:</h2>}
-      {engScoreVeiw && !stakeholdersDisplay && engScoreScale}
+
       {/* <h2>{engScoreVeiw ? "Engagement Ranking:" : "Work Packages:"}</h2>
       {engScoreVeiw ? engScoreScale : legendData.current.wps} */}
       {/* <h2>Categorys:</h2>
       {legendData.current.categorys} */}
       {networkVeiw && !stakeholdersDisplay && engLegendItems.length !== 0 && <h2>Engagement Level:</h2>}
       {networkVeiw && !stakeholdersDisplay && engLegendItems.length !== 0 && engLegendItems}
+      {engScoreVeiw && !stakeholdersDisplay && <h2>Engagement Ranking:</h2>}
+      {engScoreVeiw && !stakeholdersDisplay && engScoreScale}
     </div>
   );
 }
