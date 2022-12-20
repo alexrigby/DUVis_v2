@@ -15,6 +15,7 @@ export function stylesheet(
   maxEngScore,
   engScoreVeiw
 ) {
+  const arrowShape = "vee";
   return [
     // ________NODES_______
     {
@@ -115,10 +116,50 @@ export function stylesheet(
       selector: "edge[type = 'stakeholderEdge']",
       style: {
         display: "none",
-        width: networkVeiw ? (ele) => ele.data().engagement * 2 : 1.5,
+        width: networkVeiw ? (ele) => ele.data().engagement : 1.5,
         "line-color": (ele) => ENGAGEMENT[ele.data("engagement") - 1],
+        "source-arrow-color": (ele) => ENGAGEMENT[ele.data("engagement") - 1],
+        "target-arrow-color": (ele) => ENGAGEMENT[ele.data("engagement") - 1],
       },
     },
+    {
+      //"1" = Activity inform Stakeholder
+      selector: "edge[type = 'stakeholderEdge'][engagement = '1'][network = 'yes']",
+      style: {
+        "curve-style": "bezier",
+        "source-arrow-shape": arrowShape,
+      },
+    },
+    {
+      //"2" = stakeholder inform activity
+      selector: "edge[type = 'stakeholderEdge'][engagement = '2'][network = 'yes']",
+      style: {
+        "curve-style": "bezier",
+        "target-arrow-shape": arrowShape,
+      },
+    },
+    {
+      // "3" = both inform one another
+      selector: "edge[type = 'stakeholderEdge'][engagement = '3'][network = 'yes']",
+      style: {
+        "curve-style": "bezier",
+        "source-arrow-shape": arrowShape,
+        "target-arrow-shape": arrowShape,
+        // "target-distance-from-node": "20px",
+      },
+    },
+
+    {
+      // "4" = both work together
+      selector: "edge[type = 'stakeholderEdge'][engagement = '4'][network = 'yes']",
+      style: {
+        "curve-style": "bezier",
+        "source-arrow-shape": arrowShape,
+        "target-arrow-shape": arrowShape,
+        // "target-distance-from-node": "20px",
+      },
+    },
+
     //______CLASSES__________
     {
       selector: ".lowConnections",

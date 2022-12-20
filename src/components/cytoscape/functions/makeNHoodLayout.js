@@ -15,17 +15,53 @@ export function makeNHoodLayout(cyState, selectedNode) {
     .closedNeighborhood()
     .edges("[type = 'stakeholderEdge']");
 
-  const newNHoodSEdges = nHoodSEdges.map((e) => ({
-    group: "edges",
-    classes: "networkEdge",
-    data: {
-      ...e.data(),
-      id: "N_" + e.id(),
-      source: "N_" + selectedNode.label,
-      target: selectedNode.type === "stakeholderNode" ? "N_" + e.data().target : "N_" + e.data().source,
-      network: "yes",
-    },
-  }));
+  // const newNHoodSEdges = nHoodSEdges.map((e) => {
+  //   return {
+  //     group: "edges",
+  //     classes: "networkEdge",
+  //     data: {
+  //       ...e.data(),
+  //       id: "N_" + e.id(),
+  //       source: "N_" + selectedNode.label,
+  //       target: selectedNode.type === "stakeholderNode" ? "N_" + e.data().target : "N_" + e.data().source,
+  //       network: "yes",
+  //     },
+  //   };
+  // });
+
+  // console.log(newNHoodSEdges);
+
+  const newNHoodSEdges = nHoodSEdges
+    .map((e) => {
+      return [
+        {
+          group: "edges",
+          classes: "networkEdge",
+          data: {
+            ...e.data(),
+            id: "N_" + e.id(),
+            source: "N_" + selectedNode.label,
+            target: selectedNode.type === "stakeholderNode" ? "N_" + e.data().target : "N_" + e.data().source,
+            network: "yes",
+          },
+        },
+        //create another edge is the engagement level is bi-directional
+        // e.data("engagement") === "4" && {
+        //   group: "edges",
+        //   classes: "networkEdge",
+        //   data: {
+        //     ...e.data(),
+        //     id: "N_" + e.id() + "_rev",
+        //     source: selectedNode.type === "stakeholderNode" ? "N_" + e.data().target : "N_" + e.data().source,
+        //     target: "N_" + selectedNode.label,
+        //     network: "yes",
+        //     revEdge: `rev_${e.data("engagement")}`,
+        //   },
+        // },
+      ];
+    })
+    .flat()
+    .filter((array) => array !== false);
 
   const newNHoodSNodes = nHoodSNodes.map((n) => ({
     group: "nodes",
@@ -76,7 +112,10 @@ export function makeNHoodLayout(cyState, selectedNode) {
     return a.data.meta.WP - b.data.meta.WP;
   });
 
-  return { ID: selectedNode.label, els: [newNHoodSNodes, newNHoodActNodes, newNHoodActEdges, newNHoodSEdges].flat() };
+  return {
+    ID: selectedNode.label,
+    els: [newNHoodSNodes, newNHoodActNodes, newNHoodActEdges, newNHoodSEdges].flat(),
+  };
 }
 
 export default makeNHoodLayout;
