@@ -5,7 +5,7 @@ export const actFields = {
   ACTIVITY: "Activity Name",
   STARTM: "Start Month",
   ENDM: "End Month/ Planned End Date",
-  COMPLETIONSTATUS: "ActivityStatus",
+  COMPLETIONSTATUS: "Activity Status",
   LINKEDWP: "Collaborating WPs",
   SUPPORTINGWP: "Supporting WP",
   CATEGORY: "Activity Category",

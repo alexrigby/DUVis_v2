@@ -61,7 +61,7 @@ export function CustomStory({
     setCustomStoryFilter((prevState) => [...prevState, { field: "", values: [] }]); // adds new blank filter object to array
     setSelectedValue(""); // resets input
     setSelectedField(""); //resets input
-    setDisabledName(true); //if another field is being added disables ability to add new name
+    // setDisabledName(true); //if another field is being added disables ability to add new name
   };
 
   // adds the name straight to customStory State
@@ -86,18 +86,28 @@ export function CustomStory({
 
   const updateFilterArray = (index, whichVal, newVal) => {
     let temporaryArray = customStoryFilter.slice(); // creates copy of customStoryFilter state
-    temporaryArray[index][whichVal] = newVal; // chnages the selected value of the selected index to new value
-    setCustomStoryFilter(temporaryArray); // sets the customSotryFilter state to the altered temporary array
+    let fieldIndex = temporaryArray.findIndex((el) => el.field === newVal); //finds index of selected field if already created
+
+    if (fieldIndex === -1) {
+      //-1 == field object not created so create it
+      temporaryArray[index][whichVal] = newVal; // chnages the selected value of the selected index to new value
+      setCustomStoryFilter(temporaryArray); // sets the customSotryFilter state to the altered temporary array
+    } else {
+      temporaryArray[fieldIndex][whichVal] = newVal; // chnages the selected value of the selected index to new value
+      temporaryArray.pop(); //if adding to an existing filend value list remove empty array for next field list
+      setCustomStoryFilter(temporaryArray); // sets the customSotryFilter state to the altered temporary array
+    }
   };
 
+  //adds the field to custom story
   const addCustomStoryFilterField = (event) => {
     // adds selected field to state
     if (event.target.type === "button") {
       updateFilterArray(filterCount, "values", []); // sets the values back to null if field is changed (so values arent chosen for wrong field)
-      updateFilterArray(filterCount, "filed", document.getElementById("customStoryField").value);
-    } else {
+      updateFilterArray(filterCount, "field", document.getElementById("customStoryField").value);
+    } else if (event.keyCode === 13) {
       updateFilterArray(filterCount, "values", []); // sets the values back to null if Field is changed (so values arent chosen for wrong field)
-      event.keyCode === 13 && updateFilterArray(filterCount, "field", event.target.value);
+      updateFilterArray(filterCount, "field", event.target.value);
     } // key code 13 === 'enter'
   };
 
@@ -121,13 +131,17 @@ export function CustomStory({
 
   function getCustomFilterIds() {
     // gets ids of activities in chosen filters
-    const ids = customStoryFilter.flatMap((filter) => {
+    const ids = customStoryFilter.map((filter) => {
       let values = filter.values;
       return values.flatMap((val) =>
         actDataRef.current.filter((act) => act[filter.field] === val).map((act) => act[actFields.ID])
       );
     });
-    return ids;
+
+    const intersect = ids.reduce((a, b) => a.filter((c) => b.includes(c))); //compares each ellement in each array and returns the matching ids (ids that eet the filter)
+    console.log(intersect);
+
+    return ids.length > 1 ? intersect : ids;
   }
 
   useEffect(() => {
@@ -192,8 +206,8 @@ export function CustomStory({
   //adds the options from the chosen field to a select list
   const chosenFieldOptions =
     customStoryFilter[filterCount].field !== "" &&
-    [...new Set(actDataRef.current.map((act) => act[customStoryFilter[filterCount].field]))].map((option) => (
-      <option value={option} key={option}>
+    [...new Set(actDataRef.current.map((act) => act[customStoryFilter[filterCount].field]))].map((option, i) => (
+      <option value={option} key={i}>
         {option}
       </option>
     ));

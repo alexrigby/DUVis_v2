@@ -57,7 +57,7 @@ export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
         return true;
       }
     },
-    // randomize: random,
+    randomize: random,
     fit: true,
     gravity: 3.8, //attraction to the center of the graph
     gravityRange: 0.1,
