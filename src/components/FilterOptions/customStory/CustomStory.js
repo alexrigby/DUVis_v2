@@ -139,9 +139,8 @@ export function CustomStory({
     });
 
     const intersect = ids.reduce((a, b) => a.filter((c) => b.includes(c))); //compares each ellement in each array and returns the matching ids (ids that eet the filter)
-    console.log(intersect);
 
-    return ids.length > 1 ? intersect : ids;
+    return intersect;
   }
 
   useEffect(() => {
@@ -208,7 +207,7 @@ export function CustomStory({
     customStoryFilter[filterCount].field !== "" &&
     [...new Set(actDataRef.current.map((act) => act[customStoryFilter[filterCount].field]))].map((option, i) => (
       <option value={option} key={i}>
-        {option}
+        {option === "" ? "Undefined" : option}
       </option>
     ));
 

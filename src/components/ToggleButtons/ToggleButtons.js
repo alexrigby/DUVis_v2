@@ -71,13 +71,17 @@ export function ToggleButtons({
   return (
     <div className="displayButtons">
       <div className="cytoscapeButtons">
-        <button onClick={changeLayout}>
+        <button onClick={changeLayout} title="rearrange node positions">
           Layout <i className="fa fa-repeat"></i>
         </button>
-        <button onClick={toggleEdges}>
+        <button onClick={toggleEdges} title="toggle connection types">
           Connections <i className="fa fa-diagram-project"></i>
         </button>
-        <button onClick={toggleCompleted} style={style(completedDisplay)}>
+        <button
+          onClick={toggleCompleted}
+          style={style(completedDisplay)}
+          title="grey out activities that have been completed"
+        >
           Completed <i className="fa fa-check"></i>
         </button>
         {/* <button title="flag activities with less than mean number of connections" onClick={toggleConnectionFlags}>
@@ -85,13 +89,17 @@ export function ToggleButtons({
         </button> */}
       </div>
       <div className="toggleButtons">
-        <button style={style(networkVeiw)} onClick={toggleNetworkVeiw}>
+        <button style={style(networkVeiw)} onClick={toggleNetworkVeiw} title="display network of the selected node">
           Network <i className="fa fa-circle-nodes"></i>
         </button>
-        <button style={style(engScoreVeiw)} onClick={toggleEngScoreVeiw}>
+        <button style={style(engScoreVeiw)} onClick={toggleEngScoreVeiw} title="display stakeholder engagement ranking">
           Engagement <i className="fa fa-link"></i>
         </button>
-        <button onClick={toggleStakeholders} style={style(stakeholdersDisplay)}>
+        <button
+          onClick={toggleStakeholders}
+          style={style(stakeholdersDisplay)}
+          title="toggle stakeholder nodes display"
+        >
           Stakeholders <i className="fa fa-handshake-simple"></i>
         </button>
       </div>
@@ -100,6 +108,7 @@ export function ToggleButtons({
           id="gantChartButton"
           onClick={toggleBottomPannelDisplay}
           style={style(selectedBottomVis === "gantChartButton")}
+          title="open gantt chart pannel"
         >
           Gantt Chart <i className="fa fa-chart-gantt"></i>
         </button>
@@ -107,6 +116,7 @@ export function ToggleButtons({
           id="vegaAnalyticsButton"
           onClick={toggleBottomPannelDisplay}
           style={style(selectedBottomVis === "vegaAnalyticsButton")}
+          title="open analytics pannel"
         >
           Analytics <i className="fa fa-chart-column"></i>
         </button>
