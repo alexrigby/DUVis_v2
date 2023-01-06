@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { ENGAGEMENT, BORDER, BG, ENGRANK } from "../../configs/COLORS";
+import { ENGAGEMENT, BORDER, BG, ENGRANK, EDGE } from "../../configs/COLORS";
 
 // import iconByCategory from "../cytoscape/functions/iconByCategory";
 
@@ -25,9 +25,19 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
     uniqueEng.map((e, i) => (
       <div key={i} className="boxContainer">
         <div className="engBox" style={styleEngLegend(e)}></div>
-        <p className="legendLable">Engagement level {e}</p>
+        <p className="legendLable">stakeholder engagement: {e}</p>
       </div>
     ));
+
+  // if the selected node isnt a stakeholder then add the activity edge legend
+  selectedNode.id !== "" &&
+    selectedNode.type !== "stakeholderNode" &&
+    engLegendItems.unshift(
+      <div key="actEdge" className="boxContainer">
+        <div className="engBox" style={{ backgroundColor: EDGE, height: "1.5px" }}></div>
+        <p className="legendLable">activity connection</p>
+      </div>
+    );
 
   useEffect(() => {
     // gets all WPS  and descriptions present in cy graph
@@ -69,7 +79,7 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
       {engScoreVeiw ? engScoreScale : legendData.current.wps} */}
       {/* <h2>Categorys:</h2>
       {legendData.current.categorys} */}
-      {networkVeiw && !stakeholdersDisplay && engLegendItems.length !== 0 && <h2>Engagement Level:</h2>}
+      {networkVeiw && !stakeholdersDisplay && engLegendItems.length !== 0 && <h2>Connections:</h2>}
       {networkVeiw && !stakeholdersDisplay && engLegendItems.length !== 0 && engLegendItems}
       {engScoreVeiw && !stakeholdersDisplay && <h2>Engagement Ranking:</h2>}
       {engScoreVeiw && !stakeholdersDisplay && engScoreScale}

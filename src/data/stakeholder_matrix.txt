@@ -41,7 +41,7 @@ S_40	Caulmert Ltd			3
 S_41	Centre for Alternative Technology Wales							3																																																					
 S_42	"Club Vitae Oranmore, Galway"										3																																																		
 S_43	Codema												2																																																
-S_44	Colman Hession and ÿAssociates Engineers					2																																																							
+S_44	Colman Hession and ï¿½Associates Engineers					2																																																							
 S_45	Commission for Energy Regulation	3																																																											
 S_46	Commission for Regulation of Utilities		3			2																																																							
 S_47	Consumer Council for Water		3																																																										

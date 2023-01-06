@@ -49,4 +49,5 @@ export const wpFields = {
   NAME: "name",
   CATEGORY: "category",
   PLATFORM: "platform",
+  SDGs: "SDGs",
 };

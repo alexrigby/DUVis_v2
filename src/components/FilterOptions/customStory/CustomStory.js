@@ -132,7 +132,7 @@ export function CustomStory({
   function getCustomFilterIds() {
     // gets ids of activities in chosen filters
     const ids = customStoryFilter.map((filter) => {
-      let values = filter.values;
+      let values = filter.values[0] === "Undefined" ? [""] : filter.values;
       return values.flatMap((val) =>
         actDataRef.current.filter((act) => act[filter.field] === val).map((act) => act[actFields.ID])
       );
@@ -206,7 +206,7 @@ export function CustomStory({
   const chosenFieldOptions =
     customStoryFilter[filterCount].field !== "" &&
     [...new Set(actDataRef.current.map((act) => act[customStoryFilter[filterCount].field]))].map((option, i) => (
-      <option value={option} key={i}>
+      <option value={option === "" ? "Undefined" : option} key={i}>
         {option === "" ? "Undefined" : option}
       </option>
     ));

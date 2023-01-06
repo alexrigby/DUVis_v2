@@ -4,7 +4,6 @@ export async function getTsvData(url) {
     .then((res) => res.text())
     .then((data) =>
       data
-        .trim()
         .replace(/\r/g, "")
         .split("\n")
         .map((row) => row.split("\t").map((item) => item.trim()))

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BG } from "../../configs/COLORS";
+import SDG_ICONS from "../../assets/sdg_icons/index";
 
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import hilightOnLiHover from "./functions/hilightOnLiHover";
@@ -9,7 +10,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
   const close = <i className="fa fa-angle-up"></i>;
 
   const engCount = [1, 2, 3, 4]; // add or remove numbers if engement level chnages
-  const subSections = ["activity", "stakeholder"]; // add or remove subsections
+  const subSections = ["activity", "stakeholder", "SDGs"]; // add or remove subsections
 
   const engObj = engCount.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
   const subSectionObj = subSections.reduce((p, c) => ({ ...p, [c]: false }), {}); // each subsection to onject- false
@@ -65,10 +66,27 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
     }
   }
 
+  const sdgIconStyle = { width: "92px", height: "92px", paddingRight: "4px" };
+
+  const sdgList = selectedNode.SDGs.map((sdg) => (
+    <a href={`${SDG_ICONS[sdg].link}`} key={sdg} to="route" target="_blank" rel="noopener noreferrer">
+      <img
+        src={SDG_ICONS[sdg].icon}
+        alt={`${SDG_ICONS[sdg].description}`}
+        title={`${SDG_ICONS[sdg].description}`}
+        style={sdgIconStyle}
+      />
+    </a>
+  ));
+
   const stakeholderCount = wpStakeholders.flat().length;
 
   const acivitiesListStyle = {
     display: !wpAccordion.activity ? "none" : "block",
+  };
+
+  const sdgListStyle = {
+    display: !wpAccordion.SDGs ? "none" : "block",
   };
 
   const stakeholderListDisplay = {
@@ -86,6 +104,14 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
       <div className="metaSection">
         <div className="metaSectionHead">
           <h1>
+            UN SDGs: <span onClick={() => openAccordion("click", "SDGs")}>{wpAccordion.SDGs ? close : open} </span>
+          </h1>
+        </div>
+        <div style={sdgListStyle}>{sdgList}</div>
+      </div>
+      <div className="metaSection">
+        <div className="metaSectionHead">
+          <h1>
             ACTIVITIES{" "}
             <span onClick={() => openAccordion("click", "activity")}>{wpAccordion.activity ? close : open}</span>
           </h1>
@@ -93,7 +119,6 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
         <h2>count: {activitiesList.length}</h2>
         <ul style={acivitiesListStyle}>{activitiesList}</ul>
       </div>
-
       <div className="metaSectionHead metaSection">
         <h1>
           LINKED STAKEHOLDERS{" "}

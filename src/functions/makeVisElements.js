@@ -27,6 +27,15 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   const dates = await parseDataset(datesData);
   // console.log(activityDataNoDate);
 
+  //adds list f SDGS to wpData object
+  for (let i = 0; i < wpData.length; i++) {
+    var SDGs = [];
+    for (let j = 0; j < 17; j++) {
+      wpData[i][`SDG_${j + 1}`] === "1" && SDGs.push(`SDG_${j + 1}`);
+    }
+    wpData[i].SDGs = SDGs;
+  }
+
   const convertedDates = dates.map((d, i) => ({
     ...d,
     date: convertDates(d.date, null),
