@@ -29,3 +29,13 @@
   border-top: 1px solid #e4e4e4;
   pointer-events: none !important;
 }
+
+.customOptions span {
+  pointer-events: all;
+  float: right;
+}
+
+.customOptions span:hover {
+  color: gray;
+  cursor: pointer;
+}
