@@ -11,6 +11,7 @@ export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, s
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
   const [storySectionDisplay, setStorySectionDisplay] = useState(false);
   const [customStoryDisplay, setCustomStoryDisplay] = useState(false);
+  const [storyFilterDisplay, setStoryFilterDisplay] = useState("");
 
   const [stories, setStories] = useState(STORIES);
   const [customFilter, setCustomFilter] = useState([{ field: "", values: [] }]);
@@ -64,6 +65,10 @@ export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, s
     display: prPeriod.pr === null && currentStory === null ? "none" : "inline-block",
   };
 
+  const filterStyle = (storyName) => {
+    return { display: storyFilterDisplay === storyName ? "block" : "none" };
+  };
+
   const selectedStoryStyle = (storyName) => {
     if (currentStory !== null && currentStory.name === storyName) {
       return { color: "grey" };
@@ -94,17 +99,52 @@ export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, s
     window.localStorage.setItem("customStory", JSON.stringify([...newLocalArray])); //set the new array minus deleted story to local storage
   };
 
+  const veiwFilter = (event) => {
+    setStoryFilterDisplay((prevState) =>
+      event.target.dataset.storyname === prevState ? "" : event.target.dataset.storyname
+    );
+  };
+  console.log(storyFilterDisplay);
   const storyOptions = stories.map((story, i) => {
     return (
       <div key={story.name}>
         <p title={story.name} data-ids={story.ids} style={selectedStoryStyle(story.name)} onClick={storyClickHandler}>
           {i + 1}. {story.name}
         </p>{" "}
-        <p>
-          {story.custom === true && (
-            <i onClick={deleteCustomStory} data-storyname={story.name} className="fa fa-trash"></i> // if it is a custom story then add delete icon to it
-          )}
-        </p>
+        {story.custom === true && (
+          <p className="veiwFilter">
+            {storyFilterDisplay === story.name ? (
+              <i className="fa fa-angle-up" onClick={veiwFilter} data-storyname={story.name}>
+                {" "}
+              </i>
+            ) : (
+              <i className="fa fa-angle-down" onClick={veiwFilter} data-storyname={story.name}></i>
+            )}
+          </p>
+        )}
+        {story.custom === true && (
+          <span className="deleteStory">
+            <i onClick={deleteCustomStory} data-storyname={story.name} className="fa fa-trash"></i>{" "}
+          </span>
+        )}
+        {story.custom === true && (
+          <div style={filterStyle(story.name)} className="filterDescription">
+            {story.filter.map((filter, i) => (
+              <div key={i}>
+                <div>
+                  <p className="customOptions">
+                    Field {i > 0 && i + 1}: {filter.field}{" "}
+                  </p>
+                </div>
+                <div>
+                  <p className="customOptions">
+                    Values {i > 0 && i + 1}: {String(filter.values)}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     );
   });

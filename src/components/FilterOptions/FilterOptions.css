@@ -80,3 +80,32 @@
   color: gray;
   cursor: pointer;
 }
+
+.filterDescription p:hover {
+  color: black;
+  pointer-events: none;
+}
+
+.deleteStory {
+  pointer-events: all;
+  float: right;
+  padding-right: 20px;
+}
+
+.deleteStory:hover {
+  color: gray;
+  cursor: pointer;
+}
+
+.veiwFilter {
+  padding-left: 20px;
+}
+
+.filterDescription p {
+  font-size: 9pt;
+  font-weight: 500;
+}
+
+.filterDescription {
+  padding-left: 15px;
+}

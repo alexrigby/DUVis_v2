@@ -3,7 +3,7 @@ import { actFields } from "../../../data";
 export const fieldFilters = [
   actFields.ID,
   actFields.RESEARCHER,
-  actFields.COMPLETIONSTATUS,
+  // actFields.COMPLETIONSTATUS,
   actFields.WP,
   actFields.CATEGORY,
   actFields.METHODCATEGORY,
