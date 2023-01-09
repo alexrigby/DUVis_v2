@@ -104,14 +104,14 @@ export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, s
       event.target.dataset.storyname === prevState ? "" : event.target.dataset.storyname
     );
   };
-  console.log(storyFilterDisplay);
+
   const storyOptions = stories.map((story, i) => {
     return (
       <div key={story.name}>
         <p title={story.name} data-ids={story.ids} style={selectedStoryStyle(story.name)} onClick={storyClickHandler}>
           {i + 1}. {story.name}
         </p>{" "}
-        {story.custom === true && (
+        {story.custom === true && ( //arrow for more info on story filter
           <p className="veiwFilter">
             {storyFilterDisplay === story.name ? (
               <i className="fa fa-angle-up" onClick={veiwFilter} data-storyname={story.name}>
@@ -122,12 +122,12 @@ export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, s
             )}
           </p>
         )}
-        {story.custom === true && (
+        {story.custom === true && ( // buton to delete custom sroty
           <span className="deleteStory">
             <i onClick={deleteCustomStory} data-storyname={story.name} className="fa fa-trash"></i>{" "}
           </span>
         )}
-        {story.custom === true && (
+        {story.custom === true && ( //description of custom story filter
           <div style={filterStyle(story.name)} className="filterDescription">
             {story.filter.map((filter, i) => (
               <div key={i}>

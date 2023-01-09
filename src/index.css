@@ -118,6 +118,19 @@ button:active {
   background: #414a4c;
 }
 
+.zoomButtons {
+  position: absolute;
+  bottom: 2px;
+  padding-left: 4px;
+}
+
+.zoomButtons button {
+  margin-bottom: 2px;
+  font-size: 10pt;
+  padding: 7px 7px 7px 6px;
+  margin-right: 2px;
+}
+
 /* /* .vertical.Pane2 {
   display: none;
 } */

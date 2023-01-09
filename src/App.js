@@ -79,6 +79,12 @@ export function App() {
     // addCategoryIcon(cyState.cy);
   }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory]);
 
+  const centerGraph = (event) => {
+    setTimeout(() => {
+      cyState.cy.fit();
+    }, 1);
+  };
+
   //need to think of something better than this!!!!!!!!!!!
   document.querySelectorAll(".Pane2").forEach((el) => {
     el.style.display = selectedNode.id === "" ? "none" : "block";
@@ -147,7 +153,21 @@ export function App() {
                   setEngeScoreVeiw={setEngeScoreVeiw}
                 />
               </div>
-
+              <div className="zoomButtons">
+                <div>
+                  <button title="zoom in">
+                    <i className="fa fa-magnifying-glass-plus"></i>
+                  </button>
+                </div>
+                <div>
+                  <button title="zoom out">
+                    <i className="fa fa-magnifying-glass-minus"></i>
+                  </button>
+                  <button onClick={centerGraph} title="center graph">
+                    <i className="fa fa-crosshairs"></i>
+                  </button>
+                </div>
+              </div>
               <BottomPannel
                 gantchartData={gantchartData}
                 cyState={cyState}

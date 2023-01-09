@@ -40,8 +40,25 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
     );
 
   useEffect(() => {
-    // gets all WPS  and descriptions present in cy graph
-    const wps = cyState.cy.nodes("[type = 'wp']").map((wp) => wp.data());
+    const workPackages = cyState.cy.nodes("[type = 'wp']").map((wp) => wp.data());
+
+    if (!networkVeiw) {
+      //if in normal veiw just return all wps
+      var wps = workPackages;
+    } else {
+      //if in networkveiw, find which wps are present and return them
+      const networWps = [
+        ...new Set(
+          cyState.cy
+            .nodes(`#${selectedNode.id}`)
+            .neighborhood()
+            .nodes("[type = 'activityNode']")
+            .map((n) => n.data("parent"))
+        ),
+      ];
+      wps = workPackages.filter((wp) => networWps.includes(wp.id));
+    }
+
     //sort WPS in number order before adding to legend
     wps.sort(function (a, b) {
       return a.id.slice(2) - b.id.slice(2);
@@ -60,7 +77,7 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
       </div>
     ));
     legendData.current = { wps: wpLegendItems };
-  }, [cyState.cy, cyState.elements.length, cyState]);
+  }, [cyState.cy, cyState.elements.length, cyState, networkVeiw, networkVeiwEls, selectedNode]);
 
   const engScoreScale = (
     <div className="scale">
