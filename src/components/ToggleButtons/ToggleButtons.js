@@ -40,6 +40,9 @@ export function ToggleButtons({
   const toggleNetworkVeiw = (event) => {
     // event.target.classList.toggle("activeButton");
     setNetworkVeiw((prevState) => !prevState);
+    setTimeout(() => {
+      cyState.cy.fit();
+    }, 1);
   };
 
   const toggleEngScoreVeiw = (event) => {

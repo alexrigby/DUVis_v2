@@ -116,7 +116,6 @@ export function App() {
                     currentStory={currentStory}
                     setCurrentStory={setCurrentStory}
                     actDataRef={actDataRef}
-                    matrixHeadersRef={matrixHeadersRef}
                   />
                   <Legend
                     cyState={cyState}

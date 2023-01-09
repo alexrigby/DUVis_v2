@@ -6,28 +6,18 @@ import PRScroll from "./PRScroll/PRScroll";
 
 import "./FilterOptions.css";
 
-export function FilterOptions({
-  datesRef,
-  prPeriod,
-  setPrPeriod,
-  currentStory,
-  setCurrentStory,
-  actDataRef,
-  matrixHeadersRef,
-}) {
+export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, setCurrentStory, actDataRef }) {
   const [filterOptionsDisplay, setFilterOptionsDisplay] = useState(false);
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
   const [storySectionDisplay, setStorySectionDisplay] = useState(false);
   const [customStoryDisplay, setCustomStoryDisplay] = useState(false);
 
   const [stories, setStories] = useState(STORIES);
-  const [customStoryFilter, setCustomStoryFilter] = useState([{ field: "", values: [] }]);
-  const [customStory, setCustomStory] = useState({ name: "", ids: [], custom: true });
+  const [customFilter, setCustomFilter] = useState([{ field: "", values: [] }]);
+  const [customStory, setCustomStory] = useState({ name: "", ids: [], filter: [], custom: true });
 
   const localStories = JSON.parse(window.localStorage.getItem("customStory"));
-
   const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
-
   const currentPr = findCurrentPrperiod(prOptions, datesRef);
 
   //runs fist time component is loaded - checks for data in local storage and adds it to the stories state
@@ -87,14 +77,13 @@ export function FilterOptions({
     setPrSectionDisplay(false); //hides open prperiod optons when filter optiosn is clicked
     setStorySectionDisplay(false);
     setCustomStory({ name: "", ids: [], custom: true });
-    setCustomStoryFilter([{ field: "", values: [] }]);
+    setCustomFilter([{ field: "", values: [] }]);
   };
 
   const storyClickHandler = (event) => {
     setCustomStoryDisplay(false);
     //set stte to array of id inn that story
     setCurrentStory({ ids: event.target.dataset.ids.split(",").map((i) => Number(i)), name: event.target.title });
-    // cyState.cy.layout(LAYOUTS.FCOSE).run();
   };
 
   const deleteCustomStory = (event) => {
@@ -168,13 +157,12 @@ export function FilterOptions({
             customStoryDisplay={customStoryDisplay}
             setCustomStory={setCustomStory}
             actDataRef={actDataRef}
-            customStoryFilter={customStoryFilter}
-            setCustomStoryFilter={setCustomStoryFilter}
+            customFilter={customFilter}
+            setCustomFilter={setCustomFilter}
             setStories={setStories}
             customStory={customStory}
             setCustomStoryDisplay={setCustomStoryDisplay}
             localStories={localStories}
-            matrixHeadersRef={matrixHeadersRef}
           />
         </div>
       </div>
