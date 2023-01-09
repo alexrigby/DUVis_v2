@@ -154,15 +154,15 @@ export function App() {
                 />
               </div>
               <div className="zoomButtons">
-                <div>
+                {/* <div>
                   <button title="zoom in">
                     <i className="fa fa-magnifying-glass-plus"></i>
                   </button>
-                </div>
+                </div> */}
                 <div>
-                  <button title="zoom out">
+                  {/* <button title="zoom out">
                     <i className="fa fa-magnifying-glass-minus"></i>
-                  </button>
+                  </button> */}
                   <button onClick={centerGraph} title="center graph">
                     <i className="fa fa-crosshairs"></i>
                   </button>

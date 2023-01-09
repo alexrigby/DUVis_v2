@@ -29,3 +29,15 @@
   border-top: 1px solid #e4e4e4;
   pointer-events: none !important;
 }
+
+.customOptions .fa {
+  pointer-events: all;
+  cursor: pointer;
+  float: right;
+  padding-right: 20px;
+  padding-top: 2px;
+}
+
+.customOptions .fa:hover {
+  color: grey;
+}

@@ -133,12 +133,12 @@ export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, s
               <div key={i}>
                 <div>
                   <p className="customOptions">
-                    Field {i > 0 && i + 1}: {filter.field}{" "}
+                    Field {i + 1}: {filter.field}{" "}
                   </p>
                 </div>
                 <div>
                   <p className="customOptions">
-                    Values {i > 0 && i + 1}: {String(filter.values)}
+                    Values {i + 1}: {String(filter.values)}
                   </p>
                 </div>
               </div>
