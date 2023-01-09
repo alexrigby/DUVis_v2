@@ -36,22 +36,23 @@ export function CustomStory({
   };
 
   // adds the name straight to customStory State
-  const addFilterName = (event) => {
-    if (event.target.type === "button") {
-      if (!storyNames.includes(document.getElementById("customStoryName").value)) {
+  const addFilterNameEnter = (event) => {
+    console.log("clocked", event.target.type);
+    if (event.keyCode === 13) {
+      !storyNames.includes(event.target.value) &&
         setCustomStory((prevState) => ({
           ...prevState,
-          name: document.getElementById("customStoryName").value,
+          name: event.target.value,
         }));
-      }
-    } else {
-      if (!storyNames.includes(event.target.value)) {
-        event.keyCode === 13 &&
-          setCustomStory((prevState) => ({
-            ...prevState,
-            name: event.target.value,
-          }));
-      } // key code 13 === 'enter'
+    }
+  };
+
+  const addFilterNameButton = (event) => {
+    if (!storyNames.includes(document.getElementById("customStoryName").value)) {
+      setCustomStory((prevState) => ({
+        ...prevState,
+        name: document.getElementById("customStoryName").value,
+      }));
     }
   };
 
@@ -220,9 +221,9 @@ export function CustomStory({
             placeholder="story name"
             value={selectedName}
             onChange={customStoryNameStyle}
-            onKeyDown={addFilterName}
+            onKeyDown={addFilterNameEnter}
           ></input>
-          <button type="button" onClick={addFilterName}>
+          <button type="button" data-value={selectedName} onClick={addFilterNameButton}>
             <i className="fa-solid fa-plus"></i>
           </button>
         </div>
