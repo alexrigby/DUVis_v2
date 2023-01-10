@@ -71,6 +71,7 @@ export function stylesheet(
     {
       selector: "node[type = 'stakeholderNode']",
       style: {
+        shape: "square",
         display: stakeholdersDisplay === false ? "element" : "none",
         "text-outline-color": "#666666",
         "text-outline-width": 2,
@@ -86,6 +87,7 @@ export function stylesheet(
           : BG.stakeholder,
         "border-color": BORDER.stakeholder,
         width: (ele) => 1 * Math.sqrt(ele.connectedEdges().connectedNodes().length + 1 / 1) * 20,
+        // heigth:
         height: (ele) => 1 * Math.sqrt(ele.connectedEdges().connectedNodes().length + 1 / 1) * 20,
       },
     },

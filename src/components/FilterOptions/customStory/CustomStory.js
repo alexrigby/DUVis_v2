@@ -239,7 +239,7 @@ export function CustomStory({
             onChange={(e) => setSelectedField(e.target.value)}
           >
             <option disabled={true} value="">
-              --matrix field--
+              --dataset field--
             </option>
             {matrixFieldOptions}
           </select>

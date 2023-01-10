@@ -9,12 +9,12 @@ export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBo
   const ganttChartRef = useRef(null);
   //when an item is clicked on the gantt chart it updates selected node id as well
   function itemClickHandler(props) {
-    props.item !== null &&
+    if (props.item !== null) {
       setSelectedNode((prevState) =>
         props.item === prevState.id ? { id: "" } : cyState.cy.nodes(`#${props.item}`).data()
       );
-
-    styleSelectedElements(cyState.cy, props.item);
+      styleSelectedElements(cyState.cy, props.item);
+    }
   }
 
   // CANT THINK OF BETTER STATE SOLUTION!!

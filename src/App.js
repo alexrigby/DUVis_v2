@@ -94,7 +94,7 @@ export function App() {
     <div className="container">
       <div className="Resizer">
         <SplitPane split="vertical" minSize={"20em"} defaultSize={"20em"} allowResize={true} primary="second">
-          <div onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState, networkVeiw)}>
+          <div>
             <div className="top-layer">
               {/* <SidePannel
               selectedNode={selectedNode}
@@ -168,6 +168,7 @@ export function App() {
                   </button>
                 </div>
               </div>
+
               <BottomPannel
                 gantchartData={gantchartData}
                 cyState={cyState}
@@ -179,25 +180,26 @@ export function App() {
                 setSelectedBottomVis={setSelectedBottomVis}
               />
             </div>
-
-            <CytoscapeVis
-              cyState={cyState}
-              setSelectedNode={setSelectedNode}
-              selectedNode={selectedNode}
-              activityEdgeDisplay={activityEdgeDisplay}
-              stakeholdersDisplay={stakeholdersDisplay}
-              currentActNodeCountRef={currentActNodeCountRef}
-              origionalActCountRef={origionalActCountRef}
-              networkVeiw={networkVeiw}
-              completedDisplay={completedDisplay}
-              latestPrPeriodRef={latestPrPeriodRef}
-              prPeriod={prPeriod}
-              networkVeiwEls={networkVeiwEls}
-              setNetworkVeiwEls={setNetworkVeiwEls}
-              currentStory={currentStory}
-              maxEngScore={maxEngScore}
-              engScoreVeiw={engScoreVeiw}
-            />
+            <div onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState, networkVeiw)}>
+              <CytoscapeVis
+                cyState={cyState}
+                setSelectedNode={setSelectedNode}
+                selectedNode={selectedNode}
+                activityEdgeDisplay={activityEdgeDisplay}
+                stakeholdersDisplay={stakeholdersDisplay}
+                currentActNodeCountRef={currentActNodeCountRef}
+                origionalActCountRef={origionalActCountRef}
+                networkVeiw={networkVeiw}
+                completedDisplay={completedDisplay}
+                latestPrPeriodRef={latestPrPeriodRef}
+                prPeriod={prPeriod}
+                networkVeiwEls={networkVeiwEls}
+                setNetworkVeiwEls={setNetworkVeiwEls}
+                currentStory={currentStory}
+                maxEngScore={maxEngScore}
+                engScoreVeiw={engScoreVeiw}
+              />
+            </div>
           </div>
           <div id="sideP" data-open="false">
             <SidePannel

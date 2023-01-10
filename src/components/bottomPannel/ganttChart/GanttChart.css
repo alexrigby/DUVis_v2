@@ -44,9 +44,10 @@
 }
 
 .selectedItem {
-  border-color: red !important;
+  border-color: black !important;
   border-width: 3px !important;
   line-height: 4px !important;
+  background-color: #5a5a5a !important;
 }
 
 .hilightedItem {

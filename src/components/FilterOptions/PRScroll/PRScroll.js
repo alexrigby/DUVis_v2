@@ -9,7 +9,7 @@ export function PRScroll({ setPrPeriod, currentPr, prPeriod, datesRef, prOptions
 
   //colors current PR period in red
   const radioLableStyle = (i) => {
-    return { color: currentPr === i + 1 ? "red" : "balck" };
+    return { color: currentPr === i + 1 ? "#007200" : "black" };
   };
 
   //allows user to set pr period using the arrow buttons
@@ -64,15 +64,15 @@ export function PRScroll({ setPrPeriod, currentPr, prPeriod, datesRef, prOptions
     <div>
       <div style={prStyle}>
         <div className="undefinedCheck">
-          <label htmlFor="prPeriod">Include Undefined</label>
-          <input
+          {/* <label htmlFor="prPeriod">Include Undefined</label> */}
+          {/* <input
             type="checkBox"
             id="undef"
             name="prPeriod"
             value="undef"
             onChange={prClickHandler}
             defaultChecked={true}
-          ></input>
+          ></input> */}
         </div>
       </div>
       <div className="prSelection" style={prStyle}>

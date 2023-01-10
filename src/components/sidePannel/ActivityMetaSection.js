@@ -222,7 +222,7 @@ export function ActivityMetaSection({
           <h2>Transdisciplinary Perspectives:</h2> <p>{meta[actFields.TDPERSPECTIVE]}</p>
         </div>
       </div>
-      <div className="metaSection">
+      {/* <div className="metaSection">
         <h1>
           IERLAND WATER <span onClick={() => openActAccordion("click", "IW")}>{actAccordion.IW ? CLOSE : OPEN}</span>{" "}
         </h1>
@@ -230,7 +230,7 @@ export function ActivityMetaSection({
           <h2>Aims and Objectives: </h2> <p>{meta[actFields.IW]}</p>
           <h2>Contribution:</h2> <p>{meta[actFields.IWCONTRIBUTION]}</p>
         </div>
-      </div>
+      </div> */}
       <div className="metaSection">
         <h1>
           LINKED ACTIVITIES{" "}

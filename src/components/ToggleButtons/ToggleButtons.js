@@ -85,7 +85,7 @@ export function ToggleButtons({
           style={style(completedDisplay)}
           title="grey out activities that have been completed"
         >
-          Completed <i className="fa fa-check"></i>
+          Toggle completed <i className="fa fa-check"></i>
         </button>
         {/* <button title="flag activities with less than mean number of connections" onClick={toggleConnectionFlags}>
           Mean Connection Flag
