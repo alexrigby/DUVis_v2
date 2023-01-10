@@ -131,16 +131,11 @@ export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, s
           <div style={filterStyle(story.name)} className="filterDescription">
             {story.filter.map((filter, i) => (
               <div key={i}>
-                <div>
-                  <p className="customOptions">
-                    Field {i + 1}: {filter.field}{" "}
-                  </p>
-                </div>
-                <div>
-                  <p className="customOptions">
-                    Values {i + 1}: {String(filter.values)}
-                  </p>
-                </div>
+                <p className="optionField">
+                  {i + 1}. {filter.field !== "" && filter.field + ": "}
+                </p>
+
+                <p>{String(filter.values).split(",").join(", ")}</p>
               </div>
             ))}
           </div>
@@ -174,7 +169,7 @@ export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, s
           prSectionDisplay={prSectionDisplay}
         />
       </div>
-      <div style={optionsStyle}>
+      <div style={optionsStyle} className="stories">
         <button onClick={displayStoryOptions} className="filterOptionButton">
           Stories {storySectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
         </button>

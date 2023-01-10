@@ -70,12 +70,14 @@ export function CustomStory({
   }
 
   //adds the field to customFilter
-  const addField = (event) => {
-    if (event.target.type === "button") {
-      updateField(document.getElementById("customStoryField").value);
-    } else if (event.keyCode === 13) {
+  const addFieldEnter = (event) => {
+    if (event.keyCode === 13) {
       updateField(event.target.value);
     } // key code 13 === 'enter'
+  };
+
+  const addFieldButton = (event) => {
+    updateField(document.getElementById("customStoryField").value);
   };
 
   function updateValues(newVal) {
@@ -84,14 +86,15 @@ export function CustomStory({
     setCustomFilter(temporaryArray);
   }
 
-  const addValues = (event) => {
+  const addValuesEnter = (event) => {
     const valueArray = customFilter[selectedFieldIndex].values; //current values in filter
-    if (event.target.type === "button") {
-      updateValues(checkForDuplicates(document.getElementById("customStoryValues").value, valueArray));
-    } else {
-      event.keyCode === 13 && updateValues(checkForDuplicates(event.target.value, valueArray));
-    }
+    event.keyCode === 13 && updateValues(checkForDuplicates(event.target.value, valueArray));
   };
+
+  function addValuesButton() {
+    const valueArray = customFilter[selectedFieldIndex].values; //current values in filter
+    updateValues(checkForDuplicates(document.getElementById("customStoryValues").value, valueArray));
+  }
 
   function getFilterIds() {
     // gets ids of activities in chosen filters
@@ -192,7 +195,7 @@ export function CustomStory({
   const filterOptionsText = customFilter.map((filter, i) => (
     <div key={i} className="filterText">
       <p className="customOptions">
-        Field {i > 0 && i + 1}: {filter.field}
+        {i + 1}. {filter.field !== "" && filter.field + " :"}
         <span>
           {filter.field !== "" && (
             <i
@@ -204,9 +207,7 @@ export function CustomStory({
           )}{" "}
         </span>
       </p>
-      <p className="customOptions">
-        Values {i > 0 && i + 1}: {String(filter.values)}
-      </p>
+      <p className="customOptions">{String(filter.values).split(",").join(", ")}</p>
     </div>
   ));
 
@@ -231,7 +232,7 @@ export function CustomStory({
           <select
             id="customStoryField"
             name="customStory"
-            onKeyUp={addField}
+            onKeyUp={addFieldEnter}
             onKeyDown={(e) => e.preventDefault()} //prevents 'enter' opening select dropdown
             // defaultValue=""
             value={selectedField}
@@ -242,7 +243,7 @@ export function CustomStory({
             </option>
             {matrixFieldOptions}
           </select>
-          <button type="button" onClick={addField}>
+          <button type="button" onClick={addFieldButton}>
             <i className="fa-solid fa-plus"></i>
           </button>
         </div>
@@ -253,7 +254,7 @@ export function CustomStory({
               name="field"
               className="fieldOptionSelect"
               id="customStoryValues"
-              onKeyUp={addValues}
+              onKeyUp={addValuesEnter}
               onKeyDown={(e) => e.preventDefault()}
               // defaultValue=""
               value={selectedValue}
@@ -264,13 +265,13 @@ export function CustomStory({
               </option>
               {chosenFieldOptions}
             </select>
-            <button type="button" onClick={addValues}>
+            <button type="button" onClick={addValuesButton}>
               <i className="fa-solid fa-plus"></i>
             </button>
           </div>
         )}
 
-        <p className="customName">Name: {customStory.name !== "" && customStory.name}</p>
+        <p className="customName">Story name: {customStory.name !== "" && customStory.name}</p>
         {filterOptionsText}
       </div>
       <button style={addFieldButtonStyle} onClick={addBlankFieldToFilter} className="customStoryButton">
