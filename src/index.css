@@ -115,7 +115,8 @@ button:active {
 .Pane2 {
   height: 100%;
   overflow-y: auto;
-  background: #414a4c;
+  background: #fafafa;
+  /* #414a4c */
 }
 
 .zoomButtons {

@@ -11,6 +11,7 @@ import ToggleButtons from "./components/ToggleButtons/ToggleButtons";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
+import { use } from "cytoscape";
 
 // import addCategoryIcon from "./components/cytoscape/functions/addCategoryIcons";
 
@@ -42,7 +43,8 @@ export function App() {
   const matrixHeadersRef = useRef(null);
   const origionalActCountRef = useRef(null);
   const latestPrPeriodRef = useRef(null);
-  const maxEngScore = useRef(100);
+
+  const engagementScoresRef = useRef(0);
 
   currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
   // console.log("render");
@@ -78,6 +80,54 @@ export function App() {
     addDataToCytoscape();
     // addCategoryIcon(cyState.cy);
   }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory]);
+
+  useEffect(() => {
+    function getEngLevels(pr) {
+      var individualEngLev = [];
+      var engLevel = [];
+      const stakeholders = cyState.cy.nodes("[type = 'stakeholderNode']");
+      for (let k = 0; k < stakeholders.length; k++) {
+        var engPrPeriod = [];
+        //4 for 4 engagement levels
+        for (let j = 0; j < 4; j++) {
+          var multiplyFactor = j + 1; // + 1 so not multiplied by
+          //number of each eng level multiplied
+          engPrPeriod.push(
+            stakeholders[k].outgoers(`[engagement = "${j + 1}"]`).targets(`[meta.startPrPeriod <= ${pr}]`).length *
+              multiplyFactor
+          );
+        }
+        const engScore = engPrPeriod.reduce((a, b) => a + b);
+        // stakeholders[k].data("weight", engScore);
+        individualEngLev.push({ id: stakeholders[k].id(), engRank: engScore }); //push sum of each stakeholder engagemnt
+        engLevel.push(engScore);
+      }
+      const maxEngScore = Math.max(...engLevel);
+      const individualEngScores = individualEngLev;
+      return { maxEngScore, individualEngScores };
+    }
+    var eachEngagementRanking = [];
+    // 13 for 13 pr periods
+    for (let i = 0; i < 13; i++) {
+      eachEngagementRanking.push(getEngLevels(i + 1));
+    }
+
+    engagementScoresRef.current = eachEngagementRanking;
+  }, [cyState.cy]);
+
+  useEffect(() => {
+    var pr = prPeriod.pr === null ? 13 : prPeriod.pr;
+    const stakeholders = networkVeiw
+      ? cyState.cy.nodes("[type = 'stakeholderNode'][network = 'yes']")
+      : cyState.cy.nodes("[type = 'stakeholderNode']");
+
+    stakeholders.map((s) => {
+      const sEngRank = engagementScoresRef.current[pr - 1].individualEngScores.filter((item) =>
+        networkVeiw ? `N_${item.id}` === s.id() : item.id === s.id()
+      );
+      s.data("weight", sEngRank[0].engRank);
+    });
+  }, [cyState.elements.length]);
 
   const centerGraph = (event) => {
     setTimeout(() => {
@@ -122,6 +172,7 @@ export function App() {
                     currentStory={currentStory}
                     setCurrentStory={setCurrentStory}
                     actDataRef={actDataRef}
+                    cyState={cyState}
                   />
                   <Legend
                     cyState={cyState}
@@ -196,8 +247,8 @@ export function App() {
                 networkVeiwEls={networkVeiwEls}
                 setNetworkVeiwEls={setNetworkVeiwEls}
                 currentStory={currentStory}
-                maxEngScore={maxEngScore}
                 engScoreVeiw={engScoreVeiw}
+                engagementScoresRef={engagementScoresRef}
               />
             </div>
           </div>

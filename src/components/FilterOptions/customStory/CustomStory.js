@@ -37,7 +37,6 @@ export function CustomStory({
 
   // adds the name straight to customStory State
   const addFilterNameEnter = (event) => {
-    console.log("clocked", event.target.type);
     if (event.keyCode === 13) {
       !storyNames.includes(event.target.value) &&
         setCustomStory((prevState) => ({

@@ -1,6 +1,6 @@
 import "./PRScroll.css";
 
-export function PRScroll({ setPrPeriod, currentPr, prPeriod, datesRef, prOptions, prSectionDisplay }) {
+export function PRScroll({ setPrPeriod, currentPr, prPeriod, datesRef, prOptions, prSectionDisplay, cyState }) {
   const maxPr = prOptions[prOptions.length - 1];
 
   const prStyle = {
@@ -29,6 +29,10 @@ export function PRScroll({ setPrPeriod, currentPr, prPeriod, datesRef, prOptions
   };
 
   const prClickHandler = (event) => {
+    cyState.cy.ready(() => {
+      cyState.cy.fit();
+    });
+
     if (prPeriod.pr === null) {
       setPrPeriod((prevState) => ({
         pr: event.target.type === "radio" ? parseFloat(event.target.value) : null,

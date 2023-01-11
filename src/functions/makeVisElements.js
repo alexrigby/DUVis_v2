@@ -61,6 +61,8 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   const trimmedWpData = wpData.filter((wp) => [...new Set(trimmedData.map((act) => act.WP))].includes(wp.id.slice(2)));
   const stakeholderData = await parseTDRMatrix(tdrDataset, trimmedData);
 
+  // console.log(stakeholderData);
+
   const gantChartItems = makeGantchartItems(
     trimmedData,
     trimmedWpData,
@@ -79,6 +81,8 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   const wpEdges = makeCyWpEdges(trimmedWpData);
 
   const stakeholderNodes = makeCyStakeholerNodes(stakeholderData);
+
+  // console.log(stakeholderNodes);
 
   const stakeholderEdges = makeStakeholderCyEdges(stakeholderData);
 

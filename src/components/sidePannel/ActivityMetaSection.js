@@ -40,23 +40,24 @@ export function ActivityMetaSection({
   function completedStyle() {
     if (prPeriod.pr === null) {
       if (selectedNode.meta.endPrPeriod === "undefined" || selectedNode.meta.endPrPeriod === "onGoing") {
-        return { color: "#ffbf00" };
+        return { color: "#ffbf00", opacity: "1" };
       } else {
-        return { color: selectedNode.meta.endPrPeriod <= latestPrPeriod ? "#39ff14" : "#ffbf00" };
+        return { color: selectedNode.meta.endPrPeriod < latestPrPeriod ? "#1fc700" : "#ffbf00", opacity: "1" };
       }
     } else {
       if (selectedNode.meta.endPrPeriod === "undefined" || selectedNode.meta.endPrPeriod === "onGoing") {
-        return { color: "#ffbf00" };
+        return { color: "#ffbf00", opacity: "1" };
       } else if (selectedNode.meta.startPrPeriod > prPeriod.pr) {
         return { color: "#EE4B2B", fontSize: "15pt", fontWeight: "900", opacity: "1" };
       } else {
-        return { color: selectedNode.meta.endPrPeriod <= prPeriod.pr ? "#39ff14" : "#ffbf00" };
+        return { color: selectedNode.meta.endPrPeriod < prPeriod.pr ? "#1fc700" : "#ffbf00", opacity: "1" };
       }
     }
   }
 
   const datesStyle = {
-    opacity: 0.7,
+    opacity: 1,
+    fontWeight: 550,
   };
 
   function completedText() {
@@ -64,7 +65,7 @@ export function ActivityMetaSection({
       if (selectedNode.meta.endPrPeriod === "undefined" || selectedNode.meta.endPrPeriod === "onGoing") {
         return "Ongoing";
       } else {
-        return selectedNode.meta.endPrPeriod <= latestPrPeriod ? "Completed" : "Ongoing";
+        return selectedNode.meta.endPrPeriod < latestPrPeriod ? "Completed" : "Ongoing";
       }
     } else {
       if (selectedNode.meta.endPrPeriod === "undefined" || selectedNode.meta.endPrPeriod === "onGoing") {
@@ -72,7 +73,7 @@ export function ActivityMetaSection({
       } else if (selectedNode.meta.startPrPeriod > prPeriod.pr) {
         return "Not Started";
       } else {
-        return selectedNode.meta.endPrPeriod <= prPeriod.pr ? "Completed" : "Ongoing";
+        return selectedNode.meta.endPrPeriod < prPeriod.pr ? "Completed" : "Ongoing";
       }
     }
   }
@@ -169,12 +170,13 @@ export function ActivityMetaSection({
         <h2> Category:</h2> <p>{meta[actFields.CATEGORY]}</p>
         <h2> Researcher:</h2> <p>{meta[actFields.RESEARCHER]}</p>
         <h2> End Users: </h2> <p>{meta[actFields.ENDUSER]}</p>
-        <h2> PDCA Cycle: </h2> <p>{meta[actFields.PDCA]}</p>
+        {/* <h2> PDCA Cycle: </h2> <p>{meta[actFields.PDCA]}</p> */}
         <h2> Contribution to DU: </h2> <p>{meta[actFields.PROJECTCONTRIBUTION]}</p>
       </div>
       <div className="metaSection">
         <h1>
-          DESCRIPTION{" "}
+          {/* DESCRIPTION{" "} */}
+          Description:
           <span onClick={() => openActAccordion("click", "description")}>
             {actAccordion.description ? CLOSE : OPEN}
           </span>
@@ -183,7 +185,8 @@ export function ActivityMetaSection({
       </div>
       <div className="metaSection">
         <h1>
-          RESEARCH{" "}
+          {/* RESEARCH{" "} */}
+          Research:
           <span onClick={() => openActAccordion("click", "research")}>{actAccordion.research ? CLOSE : OPEN}</span>{" "}
         </h1>
         <div style={style("research")}>
@@ -193,7 +196,8 @@ export function ActivityMetaSection({
       </div>
       <div className="metaSection">
         <h1>
-          METHODOLOGY{" "}
+          {/* METHODOLOGY{" "} */}
+          Methodology
           <span onClick={() => openActAccordion("click", "method")}>{actAccordion.method ? CLOSE : OPEN}</span>
         </h1>
         <div style={style("method")}>
@@ -203,7 +207,9 @@ export function ActivityMetaSection({
       </div>
       <div className="metaSection">
         <h1>
-          DATA <span onClick={() => openActAccordion("click", "data")}>{actAccordion.data ? CLOSE : OPEN}</span>{" "}
+          {/* DATA  */}
+          Data
+          <span onClick={() => openActAccordion("click", "data")}>{actAccordion.data ? CLOSE : OPEN}</span>{" "}
         </h1>
         <div style={style("data")}>
           <h2>Procurement Method: </h2> <p>{meta[actFields.DATAMETHOD]} </p>
@@ -213,8 +219,11 @@ export function ActivityMetaSection({
       </div>
       <div className="metaSection">
         <h1>
-          DISCIPLINE{" "}
-          <span onClick={() => openActAccordion("click", "discipline")}>{actAccordion.discipline ? CLOSE : OPEN}</span>{" "}
+          {/* DISCIPLINE{" "} */}
+          Discipline
+          <span onClick={() => openActAccordion("click", "discipline")}>
+            {actAccordion.discipline ? CLOSE : OPEN}
+          </span>{" "}
         </h1>
         <div style={style("discipline")}>
           <h2>Category: </h2> <p>{meta[actFields.CATEGORY]}</p>
@@ -233,7 +242,8 @@ export function ActivityMetaSection({
       </div> */}
       <div className="metaSection">
         <h1>
-          LINKED ACTIVITIES{" "}
+          {/* LINKED ACTIVITIES{" "} */}
+          Linked Activities
           <span onClick={() => openActAccordion("click", "activity")}>{actAccordion.activity ? CLOSE : OPEN}</span>{" "}
         </h1>
         <h2>count: {uniqueActLinks.length}</h2>
@@ -241,7 +251,8 @@ export function ActivityMetaSection({
       </div>
       <div className="metaSection">
         <h1>
-          LINKED STAKEHOLDERS{" "}
+          {/* LINKED STAKEHOLDERS{" "} */}
+          Linked External Stakeholders
           <span onClick={() => openActAccordion("click", "stakeholder")}>
             {actAccordion.stakeholder ? CLOSE : OPEN}
           </span>{" "}

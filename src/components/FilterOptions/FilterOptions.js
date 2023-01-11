@@ -6,7 +6,7 @@ import PRScroll from "./PRScroll/PRScroll";
 
 import "./FilterOptions.css";
 
-export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, setCurrentStory, actDataRef }) {
+export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, setCurrentStory, actDataRef, cyState }) {
   const [filterOptionsDisplay, setFilterOptionsDisplay] = useState(false);
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
   const [storySectionDisplay, setStorySectionDisplay] = useState(false);
@@ -41,6 +41,8 @@ export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, s
     //  setPrPeriod({ pr: null, undefined: true });
     setCurrentStory(null); // so all nodes are available to select from to make custom story
     setCustomStoryDisplay((prevState) => !prevState);
+    setPrPeriod({ pr: null, undefined: true });
+    setPrSectionDisplay(false);
   };
 
   const displayPrOptions = (event) => {
@@ -167,6 +169,7 @@ export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, s
           datesRef={datesRef}
           prOptions={prOptions}
           prSectionDisplay={prSectionDisplay}
+          cyState={cyState}
         />
       </div>
       <div style={optionsStyle} className="stories">

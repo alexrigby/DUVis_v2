@@ -12,8 +12,9 @@ export function stylesheet(
   networkVeiw,
   cyState,
   selectedNode,
-  maxEngScore,
-  engScoreVeiw
+
+  engScoreVeiw,
+  engagementScoresRef
 ) {
   const arrowShape = "vee";
   return [
@@ -83,7 +84,11 @@ export function stylesheet(
           ? (ele) => stakeholderOpacity(ele, latestPrPeriodRef, prPeriod, cyState)
           : statusOpacity.onGoing,
         "background-color": engScoreVeiw
-          ? `mapData(weight, 0, ${maxEngScore.current}, ${ENGRANK.low}, ${ENGRANK.high})`
+          ? `mapData(weight, 0, ${
+              prPeriod.pr !== null
+                ? engagementScoresRef.current[prPeriod.pr - 1].maxEngScore
+                : engagementScoresRef.current[engagementScoresRef.current.length - 1].maxEngScore
+            }, ${ENGRANK.low}, ${ENGRANK.high})`
           : BG.stakeholder,
         "border-color": BORDER.stakeholder,
         width: (ele) => 1 * Math.sqrt(ele.connectedEdges().connectedNodes().length + 1 / 1) * 20,

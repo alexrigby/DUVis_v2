@@ -4,6 +4,7 @@ export function makeStakeholderCyEdges(stakeholders) {
 
   return stakeholders.map((el, i) => {
     let linkedActivities = stakeholders[i].act.map((act) => act);
+
     //maps each link in i links to its array index (i + 1)
     return [
       //map linked activites (n)

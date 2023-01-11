@@ -26,6 +26,7 @@ export async function parseTDRMatrix(url, trimmedData) {
   const stakeholderLinks = newMatrix.map((row, i) => ({
     stakeholderID: stakeholders[i][0],
     name: stakeholders[i][1],
+    engagementRanking: row.map((el) => Number(el)).reduce((a, b) => a + b),
     act: row
       .map(
         (el, j) =>
@@ -41,5 +42,4 @@ export async function parseTDRMatrix(url, trimmedData) {
   const trimedStakeholders = stakeholderLinks.filter((s) => s.act.length !== 0);
   return trimedStakeholders;
 }
-
 export default parseTDRMatrix;
