@@ -99,6 +99,7 @@ export function FilterOptions({
   };
 
   const storyClickHandler = (event) => {
+    setNetworkVeiw(false); // prevents network being created with no nodes
     setCustomStoryDisplay(false);
     //set stte to array of id inn that story
     setCurrentStory({ ids: event.target.dataset.ids.split(",").map((i) => Number(i)), name: event.target.title });
