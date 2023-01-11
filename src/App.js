@@ -34,6 +34,7 @@ export function App() {
   const [selectedBottomVis, setSelectedBottomVis] = useState("");
   const [networkVeiwEls, setNetworkVeiwEls] = useState({ ID: "", els: [] });
   const [engScoreVeiw, setEngeScoreVeiw] = useState(false);
+  const [customStoryDisplay, setCustomStoryDisplay] = useState(false);
 
   const gantchartData = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
@@ -173,6 +174,9 @@ export function App() {
                     setCurrentStory={setCurrentStory}
                     actDataRef={actDataRef}
                     cyState={cyState}
+                    setNetworkVeiw={setNetworkVeiw}
+                    customStoryDisplay={customStoryDisplay}
+                    setCustomStoryDisplay={setCustomStoryDisplay}
                   />
                   <Legend
                     cyState={cyState}
@@ -202,6 +206,7 @@ export function App() {
                   selectedNode={selectedNode}
                   engScoreVeiw={engScoreVeiw}
                   setEngeScoreVeiw={setEngeScoreVeiw}
+                  setCustomStoryDisplay={setCustomStoryDisplay}
                 />
               </div>
               <div className="zoomButtons">

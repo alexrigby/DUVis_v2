@@ -6,11 +6,21 @@ import PRScroll from "./PRScroll/PRScroll";
 
 import "./FilterOptions.css";
 
-export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, setCurrentStory, actDataRef, cyState }) {
+export function FilterOptions({
+  datesRef,
+  prPeriod,
+  setPrPeriod,
+  currentStory,
+  setCurrentStory,
+  actDataRef,
+  cyState,
+  setNetworkVeiw,
+  customStoryDisplay,
+  setCustomStoryDisplay,
+}) {
   const [filterOptionsDisplay, setFilterOptionsDisplay] = useState(false);
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
   const [storySectionDisplay, setStorySectionDisplay] = useState(false);
-  const [customStoryDisplay, setCustomStoryDisplay] = useState(false);
   const [storyFilterDisplay, setStoryFilterDisplay] = useState("");
 
   const [stories, setStories] = useState(STORIES);
@@ -43,6 +53,7 @@ export function FilterOptions({ datesRef, prPeriod, setPrPeriod, currentStory, s
     setCustomStoryDisplay((prevState) => !prevState);
     setPrPeriod({ pr: null, undefined: true });
     setPrSectionDisplay(false);
+    setNetworkVeiw(false);
   };
 
   const displayPrOptions = (event) => {

@@ -21,6 +21,7 @@ export function ToggleButtons({
   selectedNode,
   engScoreVeiw,
   setEngeScoreVeiw,
+  setCustomStoryDisplay,
 }) {
   // TOGGLE CONTROLS /////////////
   function changeLayout() {
@@ -40,6 +41,7 @@ export function ToggleButtons({
   const toggleNetworkVeiw = (event) => {
     // event.target.classList.toggle("activeButton");
     setNetworkVeiw((prevState) => !prevState);
+    setCustomStoryDisplay(false);
     setTimeout(() => {
       cyState.cy.fit();
     }, 1);
