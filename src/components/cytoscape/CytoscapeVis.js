@@ -123,7 +123,7 @@ export function CytoscapeVis({
     setNetworkVeiwEls,
     networkVeiwEls.els,
   ]);
-
+  console.log(networkVeiw);
   const style = {
     display: cyState.display,
     // display: "none",
