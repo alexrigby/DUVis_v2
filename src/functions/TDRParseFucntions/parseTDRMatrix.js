@@ -40,6 +40,7 @@ export async function parseTDRMatrix(url, trimmedData) {
 
   //removes stakeholders with empty act array
   const trimedStakeholders = stakeholderLinks.filter((s) => s.act.length !== 0);
+
   return trimedStakeholders;
 }
 export default parseTDRMatrix;

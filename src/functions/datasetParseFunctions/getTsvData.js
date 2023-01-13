@@ -6,9 +6,8 @@ export async function getTsvData(url) {
       data
         .replace(/\r/g, "")
         .split("\n")
-        .map((row) => row.split("\t").map((item) => item.trim()))
+        .map((row) => row.split("\t").map((item) => item.trim().replace(/"|'/g, "")))
     );
-
   return { dataset: dataset.slice(1, dataset.length), headers: dataset[0] };
 }
 
