@@ -7,6 +7,8 @@ export function makeCyStakeholerNodes(stakeholders) {
         colorRef: "stakeholder",
         type: "stakeholderNode",
         size: 1,
+        sector: s.sector,
+        category: s.category,
         id: s.stakeholderID,
         label: s.stakeholderID,
         name: s.name,

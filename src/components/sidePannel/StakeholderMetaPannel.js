@@ -60,6 +60,8 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, 
       <div className="metaSection">
         <h1>{selectedNode.name}</h1>
         <h1>{selectedNode.id}</h1>
+        <h2>Sector: {selectedNode.sector}</h2>
+        <h2>Category: {selectedNode.category}</h2>
       </div>
 
       <div className="metaSection">
