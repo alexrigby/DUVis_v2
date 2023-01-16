@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { ENGAGEMENT, BORDER, BG, ENGRANK, EDGE } from "../../configs/COLORS";
+import engLevelWording from "../../configs/engLevelWording";
 
 // import iconByCategory from "../cytoscape/functions/iconByCategory";
 
@@ -24,8 +25,10 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
     selectedNode.id !== "" &&
     uniqueEng.map((e, i) => (
       <div key={i} className="boxContainer">
-        <div className="engBox" style={styleEngLegend(e)}></div>
-        <p className="legendLable">stakeholder engagement: {e}</p>
+        <div className="engBox" style={styleEngLegend(e)} title={engLevelWording[i][1]}></div>
+        <p className="legendLable">
+          {engLevelWording[i][0]} (engagement level {i + 1})
+        </p>
       </div>
     ));
 
@@ -34,7 +37,11 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
     selectedNode.type !== "stakeholderNode" &&
     engLegendItems.unshift(
       <div key="actEdge" className="boxContainer">
-        <div className="engBox" style={{ backgroundColor: EDGE, height: "1.5px" }}></div>
+        <div
+          className="engBox"
+          style={{ backgroundColor: EDGE, height: "1.5px" }}
+          title="connection between project activities"
+        ></div>
         <p className="legendLable">activity connection</p>
       </div>
     );

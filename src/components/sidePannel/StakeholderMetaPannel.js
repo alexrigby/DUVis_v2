@@ -2,6 +2,8 @@ import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import hilightOnLiHover from "./functions/hilightOnLiHover";
 import { useState } from "react";
 
+import engLevelWording from "../../configs/engLevelWording";
+
 export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, setStakeholdersDisplay }) {
   const open = <i className="fa fa-angle-down"></i>;
   const close = <i className="fa fa-angle-up"></i>;
@@ -40,11 +42,12 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, 
     if (acts.length !== 0) {
       activityLists.push(
         <div className="metaSection" key={i}>
-          <h2>
-            Level {i + 1} engagement:
+          <h2 title={engLevelWording[i][1]}>
+            Engagement level {i + 1} ({engLevelWording[i][0]}):
             <span onClick={() => openStaAccordion("click", `eng${i}`)}>{staAccordion[`eng${i}`] ? close : open}</span>
           </h2>
           <h2>count: {acts.length}</h2>
+          {/* <p>{engLevelWording[i][1]}</p> */}
           <div style={style(`eng${i}`)}>
             <ul>{listLinks(acts, setSelectedNode, cyState, setStakeholdersDisplay)} </ul>
           </div>

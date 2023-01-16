@@ -1,4 +1,4 @@
-import { actFields } from "../../../data";
+import { actFields } from "../data";
 
 export const fieldFilters = [
   actFields.ID,

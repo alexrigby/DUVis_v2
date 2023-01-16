@@ -1,5 +1,6 @@
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import hilightOnLiHover from "./functions/hilightOnLiHover";
+import engLevelWording from "../../configs/engLevelWording";
 import { actFields } from "../../data";
 import { useState } from "react";
 
@@ -119,9 +120,11 @@ export function ActivityMetaSection({
     if (stakeholders.length !== 0) {
       stakeholderList.push(
         <div className="metaSection" key={i}>
-          <h2>
-            Level {i + 1} engagement:{" "}
-            <span onClick={() => openActAccordion("click", `eng${i}`)}>{actAccordion[`eng${i}`] ? CLOSE : OPEN}</span>{" "}
+          <h2 title={engLevelWording[i][1]}>
+            Engagement level {i + 1} ({engLevelWording[i][0]}):
+            <span onClick={() => openActAccordion("click", `eng${i}`)}>
+              {actAccordion[`eng${i}`] ? CLOSE : OPEN}
+            </span>{" "}
           </h2>
           <h2>count: {stakeholders.length}</h2>
           <div style={style}>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BG } from "../../configs/COLORS";
 import SDG_ICONS from "../../assets/sdg_icons/index";
+import engLevelWording from "../../configs/engLevelWording";
 
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import hilightOnLiHover from "./functions/hilightOnLiHover";
@@ -53,8 +54,8 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
 
       wpStakeholdersList.push(
         <div className="metaSection" key={i}>
-          <h2>
-            Level {i + 1} engagement:{" "}
+          <h2 title={engLevelWording[i][1]}>
+            Engagement level {i + 1} ({engLevelWording[i][0]}):
             <span onClick={() => openAccordion("click", `eng${i}`)}>{wpAccordion[`eng${i}`] ? close : open}</span>
           </h2>
           <h2>count: {uniqueStakeholders.length}</h2>

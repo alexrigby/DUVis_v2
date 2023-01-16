@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import fieldFilters from "./fieldFilters";
+import fieldFilters from "../../../configs/fieldFilters";
 
 import "./CustomStory.css";
 
@@ -23,6 +23,8 @@ export function CustomStory({
 
   //input controls
 
+  const [confirmedFilterField, setConfirmendFilterField] = useState(null);
+
   const selectedFieldIndex = customFilter.findIndex((el) => el.field === selectedField); //finds index of selected field if already created
 
   const storyNames = stories.map((story) => story.name); // returns a list of the story names
@@ -33,6 +35,7 @@ export function CustomStory({
     setCustomFilter((prevState) => [...prevState, { field: "", values: [] }]); // adds new blank filter object to array
     setSelectedValue(""); // resets input
     setSelectedField(""); //resets input
+    setConfirmendFilterField(null);
   };
 
   // adds the name straight to customStory State
@@ -71,11 +74,13 @@ export function CustomStory({
   //adds the field to customFilter
   const addFieldEnter = (event) => {
     if (event.keyCode === 13) {
+      setConfirmendFilterField(event.target.value);
       updateField(event.target.value);
     } // key code 13 === 'enter'
   };
 
   const addFieldButton = (event) => {
+    setConfirmendFilterField(document.getElementById("customStoryField").value);
     updateField(document.getElementById("customStoryField").value);
   };
 
@@ -118,6 +123,7 @@ export function CustomStory({
     setSelectedValue(""); // reset input
     setSelectedField(""); // reset input
     setSelectedName(""); // reset input
+    setConfirmendFilterField(null);
     setStories((prevState) => [...prevState, customStory]); //adds the new story to the list of stories
     if (localStories === null) {
       // adds new story to local storage
@@ -133,7 +139,9 @@ export function CustomStory({
     <option
       value={field}
       key={field}
-      disabled={selectedFieldIndex !== -1 && customFilter[selectedFieldIndex].field !== "" ? true : null}
+      disabled={
+        selectedFieldIndex !== -1 && customFilter[selectedFieldIndex].field === confirmedFilterField ? true : null
+      }
     >
       {field}
     </option>
@@ -155,6 +163,7 @@ export function CustomStory({
     const filterClone = [...customFilter];
     filterClone.splice(indexToRemove, 1);
     setCustomFilter(hasEmptyFilter === -1 ? [...filterClone, { field: "", values: [] }] : filterClone);
+    setConfirmendFilterField(null);
   };
 
   //hides custom story options if a story is selected
@@ -194,7 +203,7 @@ export function CustomStory({
   const filterOptionsText = customFilter.map((filter, i) => (
     <div key={i} className="filterText">
       <p className="customOptions">
-        {i + 1}. {filter.field !== "" && filter.field + " :"}
+        {i + 1}. {filter.field !== "" && filter.field + ":"}
         <span>
           {filter.field !== "" && (
             <i
@@ -206,7 +215,7 @@ export function CustomStory({
           )}{" "}
         </span>
       </p>
-      <p className="customOptions">{String(filter.values).split(",").join(", ")}</p>
+      <p className="customOptions valuesText">{String(filter.values).split(",").join(", ")}</p>
     </div>
   ));
 

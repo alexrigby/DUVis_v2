@@ -41,3 +41,7 @@
 .customOptions .fa:hover {
   color: grey;
 }
+
+.valuesText {
+  padding-left: 10px;
+}
