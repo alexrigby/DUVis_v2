@@ -25,7 +25,6 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   const links = await parseLinks(actLinks);
   const wpData = await parseDataset(wpDataset);
   const dates = await parseDataset(datesData);
-  // console.log(activityDataNoDate);
 
   //adds list f SDGS to wpData object
   for (let i = 0; i < wpData.length; i++) {
@@ -40,6 +39,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
     ...d,
     date: convertDates(d.date, null),
   }));
+
   // This function somehow mutes convertedDates-- works but might need chnaging!!!!
   getPRPeriods(convertedDates);
 
