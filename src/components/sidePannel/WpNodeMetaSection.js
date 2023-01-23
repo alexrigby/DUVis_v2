@@ -20,7 +20,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
 
   const wpActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).children(); //gets all activities in wp
 
-  const activitiesList = listLinks(wpActivities, setSelectedNode, cyState); // makes list of acctivitis
+  const activitiesList = listLinks(wpActivities, setSelectedNode, cyState, setStakeholdersDisplay); // makes list of acctivitis
 
   const wpStakeholdersList = []; // JSX list of stakeholders and headings
   const wpStakeholders = []; // list of all stakehlders (to get total count)
