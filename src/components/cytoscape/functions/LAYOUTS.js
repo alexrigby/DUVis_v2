@@ -39,7 +39,7 @@ export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
         if (edge.connectedNodes()[0].data("parent") === edge.connectedNodes()[1].data("parent")) {
           return 100;
         } else {
-          return 550; //300
+          return 450; //300
         }
       }
     },
