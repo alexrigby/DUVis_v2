@@ -25,9 +25,9 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
     selectedNode.id !== "" &&
     uniqueEng.map((e, i) => (
       <div key={i} className="boxContainer">
-        <div className="engBox" style={styleEngLegend(e)} title={engLevelWording[i][1]}></div>
+        <div className="engBox" style={styleEngLegend(e)} title={engLevelWording[Number(e) - 1][1]}></div>
         <p className="legendLable">
-          {engLevelWording[i][0]} (engagement level {i + 1})
+          {engLevelWording[Number(e) - 1][0]} (engagement level {Number(e)})
         </p>
       </div>
     ));

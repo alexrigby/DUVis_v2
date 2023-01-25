@@ -134,7 +134,7 @@ export function stylesheet(
       selector: "edge[type = 'stakeholderEdge'][engagement = '1'][network = 'yes']",
       style: {
         "curve-style": "bezier",
-        "source-arrow-shape": arrowShape,
+        "target-arrow-shape": arrowShape,
       },
     },
     {
@@ -142,7 +142,7 @@ export function stylesheet(
       selector: "edge[type = 'stakeholderEdge'][engagement = '2'][network = 'yes']",
       style: {
         "curve-style": "bezier",
-        "target-arrow-shape": arrowShape,
+        "source-arrow-shape": arrowShape,
       },
     },
     {

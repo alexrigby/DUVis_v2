@@ -16,7 +16,6 @@ S_12	Ballinabranna Group Water Scheme	Utility	Water provider						3		2										
 S_14	Ballingate Group Water Scheme	Utility	Water provider						3																																																			
 S_15	Ballinguiroe Tankardstown GWS	Utility	Water provider																																																				2					
 S_16	Ballyshannon Leisure Centre	Sport Facilities	Ballyshannon Leisure Centre										3																																															
-S_17	Bangor University (BU)	Education	Higher Education	3	3	3	2	2	3	3		3	3			2	2	2					3	3			4	4	3															3	4	4	2	2		2	3			3			3	4	2	
 S_19	Birchfield Farm	Agriculture	Birchfield Farm			3																																																						
 S_20	Black & Veatch	"Professional, administration and support services"	Consultancy																																																			3						
 S_21	Black Boy Inn	Hospitality	Black Boy Inn													2																																												
@@ -187,7 +186,6 @@ S_191	The University of the West of England	Education	Higher Education		3
 S_192	The Watershed	Sport Facilities	Leisure Centre										3																																															
 S_193	The Watershed Kilkenny	Sport Facilities	Leisure Centre										3																																															
 S_194	Tipperary County Council	General Government	Local authority				2	2	3					2																																														
-S_195	Trinity College Dublin (TCD)	Education	Higher Education	3	3	3	2	2	3	3	2	3		2	2	2				4	3	3	4	4	4	4	4	4		2	2	2	2	2	2	2	2	2	2	2	2	2	2						2		3	2	2		2	2	3			2
 S_196	UCD	Education	Higher Education					2																																																				
 S_197	UMNG	Education	Higher Education														2																																											
 S_198	Universidad de Valencia	Education	Higher Education											2	2		2																																											
