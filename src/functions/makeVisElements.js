@@ -1,4 +1,5 @@
 import parseDataset from "./datasetParseFunctions/parseDataset";
+import parseActivityDataset from "./datasetParseFunctions/parseActivityDataset";
 import parseLinks from "./linksParseFunctions/parseLinks";
 import makeCyEdges from "./cyElements/makeCyEdges";
 import makeCyNodes from "./cyElements/makeCyNodes";
@@ -13,6 +14,7 @@ import parseTDRMatrix from "./TDRParseFucntions/parseTDRMatrix";
 import makeCyStakeholerNodes from "./cyElements/makeCyStakeholderNodes";
 import makeStakeholderCyEdges from "./cyElements/makeStakeholderCyEdges";
 import makeCyWpEdges from "./cyElements/makeCyWpEdges";
+import trimDates from "./datasetParseFunctions/trimDates";
 
 import actDataset from "../data/activity_matrix.txt";
 import actLinks from "../data/links.txt";
@@ -21,7 +23,7 @@ import datesData from "../data/dates.txt";
 import tdrDataset from "../data/stakeholder_matrix.txt";
 
 export async function makeVisElements(prPeriod, currentStory, completedDisplay) {
-  const activityDataNoDate = await parseDataset(actDataset);
+  const activityDataNoDate = await parseActivityDataset(actDataset);
   const links = await parseLinks(actLinks);
   const wpData = await parseDataset(wpDataset);
   const dates = await parseDataset(datesData);
@@ -40,6 +42,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
     date: convertDates(d.date, null),
   }));
 
+  const trimmedDates = trimDates(convertedDates);
   // This function somehow mutes convertedDates-- works but might need chnaging!!!!
   getPRPeriods(convertedDates);
 
@@ -82,8 +85,6 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
 
   const stakeholderNodes = makeCyStakeholerNodes(stakeholderData);
 
-  // console.log(stakeholderNodes);
-
   const stakeholderEdges = makeStakeholderCyEdges(stakeholderData);
 
   //node to hold all other nodes, prevents stakeholder nodes entering center of graph
@@ -125,7 +126,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
     cyElms: cyElms,
     gantChartItems: gantChartItems,
     activityData: trimmedData,
-    dates: convertedDates,
+    dates: trimmedDates,
     stakeholderData: stakeholderData,
     matrixHeaders: matrixHeaders,
     origionalActCount: origionalActCount,

@@ -49,7 +49,7 @@ export function App() {
 
   currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
   // console.log("render");
-
+  const currentPrPeriod = datesRef.current && datesRef.current[datesRef.current.length - 1].prPeriod;
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
     async function addDataToCytoscape() {
@@ -109,7 +109,7 @@ export function App() {
     }
     var eachEngagementRanking = [];
     // 13 for 13 pr periods
-    for (let i = 0; i < 13; i++) {
+    for (let i = 0; i < currentPrPeriod; i++) {
       eachEngagementRanking.push(getEngLevels(i + 1));
     }
 
@@ -117,7 +117,7 @@ export function App() {
   }, [cyState.cy]);
 
   useEffect(() => {
-    var pr = prPeriod.pr === null ? 13 : prPeriod.pr;
+    var pr = prPeriod.pr === null ? currentPrPeriod : prPeriod.pr;
     const stakeholders = networkVeiw
       ? cyState.cy.nodes("[type = 'stakeholderNode'][network = 'yes']")
       : cyState.cy.nodes("[type = 'stakeholderNode']");

@@ -29,7 +29,8 @@ export function FilterOptions({
 
   const localStories = JSON.parse(window.localStorage.getItem("customStory"));
   const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
-  const currentPr = findCurrentPrperiod(prOptions, datesRef);
+  const currentPr = datesRef.current && datesRef.current[datesRef.current.length - 1].prPeriod;
+  // findCurrentPrperiod(prOptions, datesRef);
 
   //runs fist time component is loaded - checks for data in local storage and adds it to the stories state
   useEffect(() => {
@@ -222,31 +223,31 @@ export function FilterOptions({
 
 export default FilterOptions;
 
-const convertToCSV = (data) => {
-  // Convert dataset to TSV and print
-  const headers = Object.keys(data[0]);
-  const csv = [headers.join(","), ...data.map((row) => headers.map((fieldName) => row[fieldName]).join(","))].join(
-    "\r\n"
-  );
+// const convertToCSV = (data) => {
+//   // Convert dataset to TSV and print
+//   const headers = Object.keys(data[0]);
+//   const csv = [headers.join(","), ...data.map((row) => headers.map((fieldName) => row[fieldName]).join(","))].join(
+//     "\r\n"
+//   );
 
-  return csv;
-};
+//   return csv;
+// };
 
-function findCurrentPrperiod(prOptions, datesRef) {
-  const pr = [];
-  //splits up dates into prperiods
-  for (let i = 0; i < prOptions.length; i++) {
-    pr.push(datesRef.current.filter((d) => d.prPeriod === prOptions[i]));
-  }
-  //checks if todays date is between start and end dates of each pr period and returns pr period
-  var currentPr = {};
-  for (let i = 0; i < pr.length; i++) {
-    if (
-      new Date().getTime(pr[i][0].date) <= new Date().getTime() &&
-      new Date().getTime() <= new Date(pr[i][pr[i].length - 1].date).getTime()
-    ) {
-      currentPr.currentPr = pr[i][0].prPeriod;
-    }
-  }
-  return currentPr.currentPr;
-}
+// function findCurrentPrperiod(prOptions, datesRef) {
+//   const pr = [];
+//   //splits up dates into prperiods
+//   for (let i = 0; i < prOptions.length; i++) {
+//     pr.push(datesRef.current.filter((d) => d.prPeriod === prOptions[i]));
+//   }
+//   //checks if todays date is between start and end dates of each pr period and returns pr period
+//   var currentPr = {};
+//   for (let i = 0; i < pr.length; i++) {
+//     if (
+//       new Date().getTime(pr[i][0].date) <= new Date().getTime() &&
+//       new Date().getTime() <= new Date(pr[i][pr[i].length - 1].date).getTime()
+//     ) {
+//       currentPr.currentPr = pr[i][0].prPeriod;
+//     }
+//   }
+//   return currentPr.currentPr;
+// }
