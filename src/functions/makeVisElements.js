@@ -44,9 +44,9 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
 
   const trimmedDates = trimDates(convertedDates);
   // This function somehow mutes convertedDates-- works but might need chnaging!!!!
-  getPRPeriods(convertedDates);
+  getPRPeriods(trimmedDates);
 
-  const latestPrPeriod = convertedDates[convertedDates.length - 1].prPeriod;
+  const latestPrPeriod = trimmedDates[trimmedDates.length - 1].prPeriod;
 
   //adds js readble start and end dates to activity array
   const activityData = activityDataNoDate.map((act, i) => ({
@@ -99,25 +99,25 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
     },
   };
 
-  const p = {
-    group: "nodes",
-    grabbable: false,
-    data: {
-      parent: "d",
-      id: "t",
-      type: "t",
-      label: "",
-    },
-  };
-  const d = {
-    group: "nodes",
-    grabbable: false,
-    data: {
-      id: "d",
-      type: "d",
-      label: "",
-    },
-  };
+  // const p = {
+  //   group: "nodes",
+  //   grabbable: false,
+  //   data: {
+  //     parent: "d",
+  //     id: "t",
+  //     type: "t",
+  //     label: "",
+  //   },
+  // };
+  // const d = {
+  //   group: "nodes",
+  //   grabbable: false,
+  //   data: {
+  //     id: "d",
+  //     type: "d",
+  //     label: "",
+  //   },
+  // };
   const origionalActCount = activityData.length;
 
   const cyElms = [nodes, stakeholderNodes, edges.flat(), stakeholderEdges.flat(), wpNodes, projectNode, wpEdges].flat();

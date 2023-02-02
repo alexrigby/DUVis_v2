@@ -28,7 +28,6 @@ export function FilterOptions({
   const [customStory, setCustomStory] = useState({ name: "", ids: [], filter: [], custom: true });
 
   const localStories = JSON.parse(window.localStorage.getItem("customStory"));
-  const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
   const currentPr = datesRef.current && datesRef.current[datesRef.current.length - 1].prPeriod;
   // findCurrentPrperiod(prOptions, datesRef);
 
@@ -180,7 +179,6 @@ export function FilterOptions({
           currentPr={currentPr}
           prPeriod={prPeriod}
           datesRef={datesRef}
-          prOptions={prOptions}
           prSectionDisplay={prSectionDisplay}
           cyState={cyState}
         />

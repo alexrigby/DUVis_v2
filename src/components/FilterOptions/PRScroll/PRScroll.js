@@ -1,6 +1,7 @@
 import "./PRScroll.css";
 
-export function PRScroll({ setPrPeriod, currentPr, prPeriod, datesRef, prOptions, prSectionDisplay, cyState }) {
+export function PRScroll({ setPrPeriod, currentPr, prPeriod, datesRef, prSectionDisplay, cyState }) {
+  const prOptions = datesRef.current !== null && [...new Set(datesRef.current.map((p) => p.prPeriod))];
   const maxPr = prOptions[prOptions.length - 1];
 
   const prStyle = {
