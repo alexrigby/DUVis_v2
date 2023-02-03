@@ -29,7 +29,8 @@ export async function parseTDRMatrix(url, trimmedData) {
     ? newMatrix
         .map((row, i) => ({
           stakeholderID: stakeholders[i][0],
-          name: stakeholders[i][1],
+          // name: `Stakeholder_${stakeholders[i][0].slice(2)}`, // ANNONOMISE STAKEHOLDERS
+          name: stakeholders[i][1], // INCLUDE STAKEHOLDER NAMES
           sector: stakeholders[i][2],
           category: stakeholders[i][3],
           engagementRanking: row.map((el) => Number(el)).reduce((a, b) => a + b),
