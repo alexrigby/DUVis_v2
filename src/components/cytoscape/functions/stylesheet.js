@@ -134,7 +134,8 @@ export function stylesheet(
       selector: "edge[type = 'stakeholderEdge'][engagement = '1'][network = 'yes']",
       style: {
         "curve-style": "bezier",
-        "target-arrow-shape": arrowShape,
+        "source-arrow-shape": selectedNode.type === "activityNode" ? "none" : arrowShape,
+        "target-arrow-shape": selectedNode.type === "activityNode" ? arrowShape : "none",
       },
     },
     {
@@ -142,7 +143,8 @@ export function stylesheet(
       selector: "edge[type = 'stakeholderEdge'][engagement = '2'][network = 'yes']",
       style: {
         "curve-style": "bezier",
-        "source-arrow-shape": arrowShape,
+        "source-arrow-shape": selectedNode.type === "activityNode" ? arrowShape : "none",
+        "target-arrow-shape": selectedNode.type === "activityNode" ? "none" : arrowShape,
       },
     },
     {
