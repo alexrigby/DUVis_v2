@@ -5,8 +5,8 @@ import "./ToggleButtons.css";
 export function ToggleButtons({
   selectedBottomVis,
   setSelectedBottomVis,
-  setConnectionFlagsDisplay,
-  connectionFlagsDisplay,
+  // setConnectionFlagsDisplay,
+  // connectionFlagsDisplay,
   setStakeholdersDisplay,
   currentActNodeCountRef,
   setActivityEdgeDisplay,

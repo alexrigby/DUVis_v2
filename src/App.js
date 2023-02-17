@@ -20,12 +20,12 @@ export function App() {
     cy: null,
     elements: [],
   });
-  const [selectedNode, setSelectedNode] = useState({ id: "" }); //sets initial state for selected node
-  const [prPeriod, setPrPeriod] = useState({ pr: null, undefined: true }); //sets state for pr period
-  const [currentStory, setCurrentStory] = useState(null); //sets story ids state
-  const [activityEdgeDisplay, setActivityEdgeDisplay] = useState("wp"); //sets if wp edges or activity edges are displayed
-  const [completedDisplay, setCompletedDisplay] = useState(false); //sets nodes opacity completion status
-  const [connectionFlagsDisplay, setConnectionFlagsDisplay] = useState(false);
+  const [selectedNode, setSelectedNode] = useState({ id: "" }); //what node is selected
+  const [prPeriod, setPrPeriod] = useState({ pr: null, undefined: true }); // selected prPeriod
+  const [currentStory, setCurrentStory] = useState(null); //story IDs
+  const [activityEdgeDisplay, setActivityEdgeDisplay] = useState("wp"); //toggle edges
+  const [completedDisplay, setCompletedDisplay] = useState(false); //sets nodes opacity
+  // const [connectionFlagsDisplay, setConnectionFlagsDisplay] = useState(false);
   const [stakeholdersDisplay, setStakeholdersDisplay] = useState(false); //show/hide stakeholders
   const [networkVeiw, setNetworkVeiw] = useState(false); // show/hide network veiw
   const [selectedBottomVis, setSelectedBottomVis] = useState(""); //which bottom pannel is open
@@ -77,7 +77,7 @@ export function App() {
       eachEngagementRanking.push(getEngLevels(i + 1, cyState));
     }
     engagementScoresRef.current = eachEngagementRanking;
-    console.log(eachEngagementRanking);
+
     //only run once, when cyState.cy is initialized
   }, [cyState.cy]);
 
@@ -149,8 +149,8 @@ export function App() {
                 <ToggleButtons
                   selectedBottomVis={selectedBottomVis}
                   setSelectedBottomVis={setSelectedBottomVis}
-                  setConnectionFlagsDisplay={setConnectionFlagsDisplay}
-                  connectionFlagsDisplay={connectionFlagsDisplay}
+                  // setConnectionFlagsDisplay={setConnectionFlagsDisplay}
+                  // connectionFlagsDisplay={connectionFlagsDisplay}
                   setStakeholdersDisplay={setStakeholdersDisplay}
                   currentActNodeCountRef={currentActNodeCountRef}
                   setActivityEdgeDisplay={setActivityEdgeDisplay}
