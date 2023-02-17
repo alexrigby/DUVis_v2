@@ -24,27 +24,25 @@ export function App() {
   const [prPeriod, setPrPeriod] = useState({ pr: null, undefined: true }); //sets state for pr period
   const [currentStory, setCurrentStory] = useState(null); //sets story ids state
   const [activityEdgeDisplay, setActivityEdgeDisplay] = useState("wp"); //sets if wp edges or activity edges are displayed
-  const [completedDisplay, setCompletedDisplay] = useState(false); //sets if nodes opacity is defined by completion status
+  const [completedDisplay, setCompletedDisplay] = useState(false); //sets nodes opacity completion status
   const [connectionFlagsDisplay, setConnectionFlagsDisplay] = useState(false);
-  const [stakeholdersDisplay, setStakeholdersDisplay] = useState(false);
-  const [networkVeiw, setNetworkVeiw] = useState(false);
-  const [selectedBottomVis, setSelectedBottomVis] = useState("");
-  const [networkVeiwEls, setNetworkVeiwEls] = useState({ ID: "", els: [] });
-  const [engScoreVeiw, setEngeScoreVeiw] = useState(false);
-  const [customStoryDisplay, setCustomStoryDisplay] = useState(false);
+  const [stakeholdersDisplay, setStakeholdersDisplay] = useState(false); //show/hide stakeholders
+  const [networkVeiw, setNetworkVeiw] = useState(false); // show/hide network veiw
+  const [selectedBottomVis, setSelectedBottomVis] = useState(""); //which bottom pannel is open
+  const [networkVeiwEls, setNetworkVeiwEls] = useState({ ID: "", els: [] }); //holds elements for network veiw
+  const [engScoreVeiw, setEngeScoreVeiw] = useState(false); // show engagement ranking
+  const [customStoryDisplay, setCustomStoryDisplay] = useState(false); //open custom filter options
 
   // ---------------------------USE REFS-------------------------------
   const gantchartData = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
   const actDataRef = useRef(null); //stores activity data
   const stakeholderDataRef = useRef(null); //stakeholder data
-  const currentActNodeCountRef = useRef(null);
-  const latestPrPeriodRef = useRef(null);
-  const engagementScoresRef = useRef(0);
+  const currentActNodeCountRef = useRef(null); //number of activitiy nodes
+  const latestPrPeriodRef = useRef(null); //current period in time
+  const engagementScoresRef = useRef(null); //engagment level and ranking
 
   currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
-
-  const currentPrPeriod = datesRef.current && datesRef.current[datesRef.current.length - 1].prPeriod;
 
   //----------------------- FETCH DATA FOR USE IN APP-----------------------------------
   useEffect(() => {
@@ -75,7 +73,7 @@ export function App() {
   // saves engagement ranking and level in object that persists between renders
   useEffect(() => {
     var eachEngagementRanking = [];
-    for (let i = 0; i < currentPrPeriod; i++) {
+    for (let i = 0; i < latestPrPeriodRef.current; i++) {
       eachEngagementRanking.push(getEngLevels(i + 1, cyState));
     }
     engagementScoresRef.current = eachEngagementRanking;
@@ -85,7 +83,7 @@ export function App() {
 
   // adds the engagement ranking to individual stakeholders
   useEffect(() => {
-    var pr = prPeriod.pr === null ? currentPrPeriod : prPeriod.pr; //use latest pr or filtered pr period
+    var pr = prPeriod.pr === null ? latestPrPeriodRef.current : prPeriod.pr; //use latest pr or filtered pr period
     const stakeholders = networkVeiw // use network items or full diagram
       ? cyState.cy.nodes("[type = 'stakeholderNode'][network = 'yes']")
       : cyState.cy.nodes("[type = 'stakeholderNode']");
