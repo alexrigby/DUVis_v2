@@ -1,4 +1,4 @@
-export function trimData(actData, prPeriod, currentStory) {
+export function trimActData(actData, prPeriod, currentStory) {
   //if no filter then return whole dataset
   if (currentStory === null && prPeriod.pr === null) {
     return actData;
@@ -24,7 +24,7 @@ export function trimData(actData, prPeriod, currentStory) {
   }
 }
 
-export default trimData;
+export default trimActData;
 
 // d = dataset, s = array of story activity ids
 export function filterStoryData(d, s) {

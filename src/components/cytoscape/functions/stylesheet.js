@@ -1,5 +1,5 @@
 import { BG, BORDER, ENGAGEMENT, ENGRANK, EDGE } from "../../../configs/COLORS";
-import activityOpacity from "../../../functions/activityOpacity";
+import activityOpacity from "../../../functions/ganttChartFucntions/activityOpacity";
 import statusOpacity from "../../../configs/statusOpacity";
 import wpEdgeStyle from "./wpEdgeStyle";
 

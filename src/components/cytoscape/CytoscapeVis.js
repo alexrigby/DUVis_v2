@@ -17,7 +17,6 @@ export function CytoscapeVis({
   activityEdgeDisplay,
   stakeholdersDisplay,
   currentActNodeCountRef,
-  origionalActCountRef,
   networkVeiw,
   completedDisplay,
   latestPrPeriodRef,
@@ -82,11 +81,11 @@ export function CytoscapeVis({
   //RUNS MAIN LAYOUT WHEN NODES ARE ADDED/REMOVED
   useEffect(() => {
     if (!networkVeiw && networkVeiwEls.els.length === 0) {
-      cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, false)).run();
+      cyState.cy.layout(FCOSE(currentActNodeCountRef.current, false)).run();
       cyState.cy.fit();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentActNodeCountRef, cyState.cy, cyState.elements.length, networkVeiw, origionalActCountRef]);
+  }, [currentActNodeCountRef, cyState.cy, cyState.elements.length, networkVeiw]);
 
   //RESTORES MAIN LAYOUT IF NETWORK VEIW IS FALSE
   useEffect(() => {
@@ -138,8 +137,7 @@ export function CytoscapeVis({
       cy={(cy) => {
         cyState.cy = cy;
         cy.on("resize", (_evt) => {
-          renderCounter.current === 1 &&
-            cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, false)).run();
+          renderCounter.current === 1 && cy.layout(FCOSE(currentActNodeCountRef.current, false)).run();
         });
       }}
       elements={cyState.elements}
@@ -158,7 +156,7 @@ export function CytoscapeVis({
         engScoreVeiw,
         engagementScoresRef
       )}
-      // layout={ FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, false)}
+      // layout={ FCOSE(currentActNodeCountRef.current, false)}
     />
   );
 }

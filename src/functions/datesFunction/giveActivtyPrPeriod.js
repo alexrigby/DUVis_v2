@@ -1,4 +1,4 @@
-import { actFields } from "../data";
+import { actFields } from "../../data";
 
 export function giveActivityPrPeriod(act, dates, se) {
   if (se === "start") {

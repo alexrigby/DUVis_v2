@@ -9,17 +9,11 @@ Cytoscape.use(fcose);
 
 Cytoscape.use(cola);
 
-export const FCOSE = (currentActNodeCount, origionalActCount, random) => {
+export const FCOSE = (currentActNodeCount, random) => {
   const nodeRepuslionFactor = 1000;
-  /// might be unnecicerily cnfusing
-  // const reducerConst = origionalActCount * 4;
-  // const multiplier = (reducerConst - nodeCount) / 100; // need to teat if this works for diffrent sized graphs
-  // const stakeholderedgelength = Math.pow(multiplier, 4);
 
   return {
-    //cose-bilkent is a cytoscape plugin
     name: "fcose",
-    // quality: currentActNodeCount < origionalActCount ? "default" : "proof",
     animationDuration: 1000,
     nodeDimensionsIncludeLabels: true,
     nodeRepulsion: function (node) {
@@ -77,7 +71,7 @@ export const COLA = {
   // animationDuration: 1000,
 };
 
-// export const FCOSE = (currentActNodeCount, origionalActCount, random) => ({
+// export const FCOSE = (currentActNodeCount, , random) => ({
 //   name: "cose-bilkent",
 //   nodeDimensionsIncludeLabels: true,
 //   animationDuration: 1000,

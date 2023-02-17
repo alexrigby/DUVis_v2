@@ -1,4 +1,3 @@
-import convertDates from "./convertDates";
 import { actFields } from "../../data";
 
 // converts to JS readable date format
@@ -14,7 +13,10 @@ export function convertMonthsToDates(act, months, se) {
       var endMonth = months.filter(function (d) {
         return d.month === act[actFields.ENDM];
       });
-      return convertDates(endMonth[0].date, se);
+      var endDate = endMonth[0].date.split("-");
+      endDate[2] = getLastDayOfMonth(endDate[0], endDate[1]);
+
+      return endDate.join("-");
     }
   } else if (se === "start") {
     if (act[actFields.STARTM] === "") {
@@ -23,9 +25,13 @@ export function convertMonthsToDates(act, months, se) {
       var startMonth = months.filter(function (d) {
         return d.month === act[actFields.STARTM];
       });
-      return convertDates(startMonth[0].date, se);
+      return startMonth[0].date;
     }
   }
 }
 
 export default convertMonthsToDates;
+
+function getLastDayOfMonth(year, month) {
+  return new Date(year, month, 0).getDate();
+}

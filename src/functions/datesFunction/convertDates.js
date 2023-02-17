@@ -1,3 +1,5 @@
+//REDUNDANT!!!!!!
+
 export function convertDates(date, se) {
   //converts from Jan-22 format to jan/01/2022 format
   const browserDate = date.replace(/-/g, "/"); // "/" works beterr than "-" for multiple browsers
@@ -6,6 +8,7 @@ export function convertDates(date, se) {
   const ld = getLastDayOfMonth(y, m);
 
   if (se === "start" || se === null) {
+    console.log(y + "-" + m + "-01");
     return y + "-" + m + "-01";
   } else if (se === "end") {
     return y + "-" + m + "-" + ld;

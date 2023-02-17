@@ -2,7 +2,7 @@
 
 import { actFields } from "../../data";
 
-export function makeCyNodes(data, prPeriod, completedDisplay, latestPrPeriod) {
+export function makeActNodes(data) {
   const cyNodes = [];
   for (let i = 0; i < data.length; i++) {
     const nodeOps = {
@@ -27,4 +27,4 @@ export function makeCyNodes(data, prPeriod, completedDisplay, latestPrPeriod) {
   return cyNodes;
 }
 
-export default makeCyNodes;
+export default makeActNodes;

@@ -1,6 +1,6 @@
 import { wpFields } from "../../data";
 
-export function makeCyWpEdges(wpData) {
+export function makeWpEdges(wpData) {
   const wpEdges = [];
 
   for (let i = 0; i < wpData.length - 1; i++) {
@@ -22,4 +22,4 @@ export function makeCyWpEdges(wpData) {
   return wpEdges;
 }
 
-export default makeCyWpEdges;
+export default makeWpEdges;

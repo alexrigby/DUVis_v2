@@ -1,6 +1,6 @@
-import getLinks from "../linksParseFunctions/getLinks";
+import getLinks from "./getLinks";
 
-export async function parseTDRMatrix(url, trimmedData) {
+export async function parseStakeholderDataset(url, trimmedData) {
   const data = await getLinks(url);
   const stakeholders = data.slice(4, data.length).map((s) => s.slice(0, 4)); // removes headers and gets 2 first collumns, tdr id and stakeholder name
   const activityIDs = data.slice(3, 4).flat().slice(4, data.length);
@@ -49,4 +49,4 @@ export async function parseTDRMatrix(url, trimmedData) {
 
   return stakeholderLinks;
 }
-export default parseTDRMatrix;
+export default parseStakeholderDataset;

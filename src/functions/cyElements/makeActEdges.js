@@ -1,4 +1,4 @@
-export function makeCyEdges(links, nodes) {
+export function makeActEdges(links, nodes) {
   //creats array of node in selection
   const nodeId = nodes.map((node) => parseFloat(node.data.id));
   //extractso only the link data for present nodes
@@ -32,7 +32,7 @@ export function makeCyEdges(links, nodes) {
   });
 }
 
-export default makeCyEdges;
+export default makeActEdges;
 
 function getCrossover(array1, array2) {
   return array1.filter((element) => array2.includes(element));

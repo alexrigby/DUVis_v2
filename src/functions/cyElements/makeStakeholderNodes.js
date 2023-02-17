@@ -1,4 +1,4 @@
-export function makeCyStakeholerNodes(stakeholders) {
+export function makeStakeholerNodes(stakeholders) {
   return stakeholders.map((s) => {
     // const stakeholderRanking = s.act.map((a) => Number(a.engagement)).reduce((a, b) => a + b);
     return {
@@ -19,4 +19,4 @@ export function makeCyStakeholerNodes(stakeholders) {
   });
 }
 
-export default makeCyStakeholerNodes;
+export default makeStakeholerNodes;

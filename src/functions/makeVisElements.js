@@ -1,91 +1,58 @@
-import parseDataset from "./datasetParseFunctions/parseDataset";
 import parseActivityDataset from "./datasetParseFunctions/parseActivityDataset";
-import parseLinks from "./linksParseFunctions/parseLinks";
-import makeCyEdges from "./cyElements/makeCyEdges";
-import makeCyNodes from "./cyElements/makeCyNodes";
-import convertMonthsToDates from "./datasetParseFunctions/convertMonthsToDates";
-import makeGantchartItems from "./makeGantchartItems";
-import convertDates from "./datasetParseFunctions/convertDates";
-import makeCyWpNodes from "./cyElements/makeCyWpNodes";
-import getPRPeriods from "./getPRPeriods";
-import giveActivityPrPeriod from "./giveActivtyPrPeriod";
-import trimData from "./trimData";
-import parseTDRMatrix from "./TDRParseFucntions/parseTDRMatrix";
-import makeCyStakeholerNodes from "./cyElements/makeCyStakeholderNodes";
-import makeStakeholderCyEdges from "./cyElements/makeStakeholderCyEdges";
-import makeCyWpEdges from "./cyElements/makeCyWpEdges";
-import trimDates from "./datasetParseFunctions/trimDates";
+import parseLinks from "./datasetParseFunctions/parseLinks";
+import makeActEdges from "./cyElements/makeActEdges";
+import makeActNodes from "./cyElements/makeActNodes";
+import makeGantchartItems from "./ganttChartFucntions/makeGantchartItems";
+import makeWpNodes from "./cyElements/makeWpNodes";
+import trimActData from "./trimDataFunctions/trimActData";
+import parseStakeholderDataset from "./datasetParseFunctions/parseStakeholderDataset";
+import makeStakeholerNodes from "./cyElements/makeStakeholderNodes";
+import makeStakeholderEdges from "./cyElements/makeStakeholderEdges";
+import makeWpEdges from "./cyElements/makeWpEdges";
+import makeDates from "./datesFunction/makeDates";
+import parseWPDataset from "./datasetParseFunctions/parseWPDataset";
 
 import actDataset from "../data/activity_matrix.txt";
 import actLinks from "../data/links.txt";
 import wpDataset from "../data/wp_names.txt";
-import datesData from "../data/dates.txt";
 import tdrDataset from "../data/stakeholder_matrix.txt";
 
 export async function makeVisElements(prPeriod, currentStory, completedDisplay) {
-  const activityDataNoDate = await parseActivityDataset(actDataset);
+  //-----------------MAKE DATES AND MONTHS ARRAY-----//
+  const startDate = "2016-09-01";
+  const todaysDate = new Date().toISOString().split("T")[0];
+  const dates = makeDates(startDate, todaysDate);
+
+  //-----------------FETCH AND PARSE DATA ----------
+  const activityData = await parseActivityDataset(actDataset, dates);
   const links = await parseLinks(actLinks);
-  const wpData = await parseDataset(wpDataset);
-  const dates = await parseDataset(datesData);
+  const wpData = await parseWPDataset(wpDataset);
 
-  //adds list f SDGS to wpData object
-  for (let i = 0; i < wpData.length; i++) {
-    var SDGs = [];
-    for (let j = 0; j < 17; j++) {
-      wpData[i][`SDG_${j + 1}`] === "1" && SDGs.push(`SDG_${j + 1}`);
-    }
-    wpData[i].SDGs = SDGs;
-  }
+  //-------------TRIM DATA TO FILTER SPECIFICATION ----------------
+  const latestPrPeriod = dates[dates.length - 1].prPeriod;
+  const trimmedActData = trimActData(activityData, prPeriod, currentStory);
+  const trimmedWpData = wpData.filter((wp) =>
+    [...new Set(trimmedActData.map((act) => act.WP))].includes(wp.id.slice(2))
+  );
 
-  const convertedDates = dates.map((d, i) => ({
-    ...d,
-    date: convertDates(d.date, null),
-  }));
+  // ----TRIM & FILTER STAKEHOLDERS-------
+  const stakeholderData = await parseStakeholderDataset(tdrDataset, trimmedActData);
 
-  const trimmedDates = trimDates(convertedDates);
-  // This function somehow mutes convertedDates-- works but might need chnaging!!!!
-  getPRPeriods(trimmedDates);
-
-  const latestPrPeriod = trimmedDates[trimmedDates.length - 1].prPeriod;
-
-  //adds js readble start and end dates to activity array
-  const activityData = activityDataNoDate.map((act, i) => ({
-    ...act,
-    startDate: convertMonthsToDates(act, dates, "start"),
-    endDate: convertMonthsToDates(act, dates, "end"),
-    startPrPeriod: giveActivityPrPeriod(act, convertedDates, "start"),
-    endPrPeriod: giveActivityPrPeriod(act, convertedDates, "end"),
-  }));
-
-  const matrixHeaders = activityData.slice(0, 1)[0];
-
-  //trims the data by filter option, used instead of raw data
-  const trimmedData = trimData(activityData, prPeriod, currentStory);
-  const trimmedWpData = wpData.filter((wp) => [...new Set(trimmedData.map((act) => act.WP))].includes(wp.id.slice(2)));
-  const stakeholderData = await parseTDRMatrix(tdrDataset, trimmedData);
-
-  // console.log(stakeholderData);
-
+  //----MAKE VIS ELEMENTS -------------
+  const actNodes = makeActNodes(trimmedActData, prPeriod, completedDisplay, latestPrPeriod);
+  const actEdges = makeActEdges(links, actNodes);
+  const wpNodes = makeWpNodes(trimmedWpData);
+  const wpEdges = makeWpEdges(trimmedWpData);
+  const stakeholderNodes = makeStakeholerNodes(stakeholderData);
+  const stakeholderEdges = makeStakeholderEdges(stakeholderData);
   const gantChartItems = makeGantchartItems(
-    trimmedData,
+    trimmedActData,
     trimmedWpData,
     prPeriod,
     completedDisplay,
     latestPrPeriod,
-    convertedDates
+    dates
   );
-
-  const nodes = makeCyNodes(trimmedData, prPeriod, completedDisplay, latestPrPeriod);
-
-  const edges = makeCyEdges(links, nodes);
-
-  const wpNodes = makeCyWpNodes(trimmedWpData);
-
-  const wpEdges = makeCyWpEdges(trimmedWpData);
-
-  const stakeholderNodes = makeCyStakeholerNodes(stakeholderData);
-
-  const stakeholderEdges = makeStakeholderCyEdges(stakeholderData);
 
   //node to hold all other nodes, prevents stakeholder nodes entering center of graph
   const projectNode = {
@@ -99,38 +66,24 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
     },
   };
 
-  // const p = {
-  //   group: "nodes",
-  //   grabbable: false,
-  //   data: {
-  //     parent: "d",
-  //     id: "t",
-  //     type: "t",
-  //     label: "",
-  //   },
-  // };
-  // const d = {
-  //   group: "nodes",
-  //   grabbable: false,
-  //   data: {
-  //     id: "d",
-  //     type: "d",
-  //     label: "",
-  //   },
-  // };
-  const origionalActCount = activityData.length;
-
-  const cyElms = [nodes, stakeholderNodes, edges.flat(), stakeholderEdges.flat(), wpNodes, projectNode, wpEdges].flat();
+  //----ALL CYTOSCAPE ELEMENTS-----
+  const cyElms = [
+    actNodes,
+    stakeholderNodes,
+    actEdges.flat(),
+    stakeholderEdges.flat(),
+    wpNodes,
+    projectNode,
+    wpEdges,
+  ].flat();
 
   return {
-    cyElms: cyElms,
-    gantChartItems: gantChartItems,
-    activityData: trimmedData,
-    dates: trimmedDates,
-    stakeholderData: stakeholderData,
-    matrixHeaders: matrixHeaders,
-    origionalActCount: origionalActCount,
-    latestPrPeriod: latestPrPeriod,
+    cyElms,
+    gantChartItems,
+    activityData,
+    dates,
+    stakeholderData,
+    latestPrPeriod,
   };
 }
 

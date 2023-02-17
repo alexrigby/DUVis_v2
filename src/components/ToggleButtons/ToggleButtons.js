@@ -9,7 +9,6 @@ export function ToggleButtons({
   connectionFlagsDisplay,
   setStakeholdersDisplay,
   currentActNodeCountRef,
-  origionalActCountRef,
   setActivityEdgeDisplay,
   setCompletedDisplay,
   cyState,
@@ -25,7 +24,7 @@ export function ToggleButtons({
 }) {
   // TOGGLE CONTROLS /////////////
   function changeLayout() {
-    !networkVeiw && cyState.cy.layout(FCOSE(currentActNodeCountRef.current, origionalActCountRef.current, true)).run();
+    !networkVeiw && cyState.cy.layout(FCOSE(currentActNodeCountRef.current, true)).run();
   }
 
   const toggleCompleted = (event) => {

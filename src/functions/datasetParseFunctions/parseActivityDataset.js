@@ -1,19 +1,28 @@
 import getTsvData from "./getTsvData";
 import tsvToJson from "./TsvToJson";
+import convertMonthsToDates from "../datesFunction/convertMonthsToDates";
+import giveActivityPrPeriod from "../datesFunction/giveActivtyPrPeriod";
 
-export async function parseActivityDataset(url) {
+export async function parseActivityDataset(url, dates) {
   const { dataset, headers } = await getTsvData(url);
-
   const data = tsvToJson(dataset, headers);
 
+  const activityData = data.map((act, i) => ({
+    ...act,
+    startDate: convertMonthsToDates(act, dates, "start"),
+    endDate: convertMonthsToDates(act, dates, "end"),
+    startPrPeriod: giveActivityPrPeriod(act, dates, "start"),
+    endPrPeriod: giveActivityPrPeriod(act, dates, "end"),
+  }));
+
   // // ------ USE TO ANNONYMISE THE TOOL ____________________
-  // const researchers = [...new Set(data.map((act) => act.Name))];
+  // const researchers = [...new Set(activityData.map((act) => act.Name))];
 
   // const researcherID = researchers.map((r, i) => {
   //   return { name: r, ID: `Resercher ${i + 1}` };
   // });
 
-  // const annonomusActData = data.map((act) => {
+  // const annonomusActData = activityData.map((act) => {
   //   const ID = researcherID.find((el) => el.name === act.Name);
 
   //   return { ...act, Name: ID.ID };
@@ -22,7 +31,7 @@ export async function parseActivityDataset(url) {
   // // console.log(annonomusActData);
 
   // return annonomusActData;
-  return data;
+  return activityData;
 }
 
 export default parseActivityDataset;

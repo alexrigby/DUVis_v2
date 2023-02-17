@@ -11,9 +11,6 @@ import ToggleButtons from "./components/ToggleButtons/ToggleButtons";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
-import { use } from "cytoscape";
-
-// import addCategoryIcon from "./components/cytoscape/functions/addCategoryIcons";
 
 export function App() {
   //sets state of cy
@@ -41,8 +38,6 @@ export function App() {
   const actDataRef = useRef(null); //stores activity data
   const stakeholderDataRef = useRef(null); //stakeholder data
   const currentActNodeCountRef = useRef(null);
-  const matrixHeadersRef = useRef(null);
-  const origionalActCountRef = useRef(null);
   const latestPrPeriodRef = useRef(null);
 
   const engagementScoresRef = useRef(0);
@@ -53,23 +48,16 @@ export function App() {
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
     async function addDataToCytoscape() {
-      const {
-        cyElms,
-        gantChartItems,
-        activityData,
-        dates,
-        stakeholderData,
-        matrixHeaders,
-        origionalActCount,
-        latestPrPeriod,
-      } = await makeVisElements(prPeriod, currentStory, completedDisplay); //all pre-processing of data
+      const { cyElms, gantChartItems, activityData, dates, stakeholderData, latestPrPeriod } = await makeVisElements(
+        prPeriod,
+        currentStory,
+        completedDisplay
+      ); //all pre-processing of data
 
       actDataRef.current = activityData; //ssigns activity data to ref
       stakeholderDataRef.current = stakeholderData;
       datesRef.current = dates; //assigns dates ro ref
       gantchartData.current = gantChartItems; //asign gant chart data to the ref
-      matrixHeadersRef.current = matrixHeaders;
-      origionalActCountRef.current = origionalActCount;
       latestPrPeriodRef.current = latestPrPeriod;
 
       setCyState((prevState) => ({
@@ -194,7 +182,6 @@ export function App() {
                   connectionFlagsDisplay={connectionFlagsDisplay}
                   setStakeholdersDisplay={setStakeholdersDisplay}
                   currentActNodeCountRef={currentActNodeCountRef}
-                  origionalActCountRef={origionalActCountRef}
                   setActivityEdgeDisplay={setActivityEdgeDisplay}
                   setCompletedDisplay={setCompletedDisplay}
                   cyState={cyState}
@@ -244,7 +231,6 @@ export function App() {
                 activityEdgeDisplay={activityEdgeDisplay}
                 stakeholdersDisplay={stakeholdersDisplay}
                 currentActNodeCountRef={currentActNodeCountRef}
-                origionalActCountRef={origionalActCountRef}
                 networkVeiw={networkVeiw}
                 completedDisplay={completedDisplay}
                 latestPrPeriodRef={latestPrPeriodRef}

@@ -1,4 +1,4 @@
-import statusOpacity from "../configs/statusOpacity";
+import statusOpacity from "../../configs/statusOpacity";
 
 export function activityOpacity(act, latestPrPeriod, prPeriod) {
   if (prPeriod.pr === null) {

@@ -1,4 +1,4 @@
-export function makeStakeholderCyEdges(stakeholders) {
+export function makeStakeholderEdges(stakeholders) {
   //   console.log(stakeholders.map((s) => s.act.map((act) => act.actID)));
   //   console.log(stakeholders);
 
@@ -27,4 +27,4 @@ export function makeStakeholderCyEdges(stakeholders) {
   });
 }
 
-export default makeStakeholderCyEdges;
+export default makeStakeholderEdges;
