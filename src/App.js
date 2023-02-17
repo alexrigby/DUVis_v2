@@ -6,20 +6,20 @@ import SidePannel from "./components/sidePannel/SidePannel";
 import CytoscapeVis from "./components/cytoscape/CytoscapeVis";
 import Legend from "./components/legend/Legend";
 import BottomPannel from "./components/bottomPannel/BottomPannel";
-import FilterOptions from "./components/FilterOptions/FilterOptions";
-import ToggleButtons from "./components/ToggleButtons/ToggleButtons";
+import FilterOptions from "./components/filterOptions/FilterOptions";
+import ToggleButtons from "./components/toggleButtons/ToggleButtons";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
+import getEngLevels from "./AppFunctions/getEngLevels";
 
 export function App() {
-  //sets state of cy
+  //-----------------SET STATES-------------------------
   const [cyState, setCyState] = useState({
     display: "none",
     cy: null,
     elements: [],
   });
-
   const [selectedNode, setSelectedNode] = useState({ id: "" }); //sets initial state for selected node
   const [prPeriod, setPrPeriod] = useState({ pr: null, undefined: true }); //sets state for pr period
   const [currentStory, setCurrentStory] = useState(null); //sets story ids state
@@ -33,18 +33,20 @@ export function App() {
   const [engScoreVeiw, setEngeScoreVeiw] = useState(false);
   const [customStoryDisplay, setCustomStoryDisplay] = useState(false);
 
+  // ---------------------------USE REFS-------------------------------
   const gantchartData = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
   const actDataRef = useRef(null); //stores activity data
   const stakeholderDataRef = useRef(null); //stakeholder data
   const currentActNodeCountRef = useRef(null);
   const latestPrPeriodRef = useRef(null);
-
   const engagementScoresRef = useRef(0);
 
   currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
-  // console.log("render");
+
   const currentPrPeriod = datesRef.current && datesRef.current[datesRef.current.length - 1].prPeriod;
+
+  //----------------------- FETCH DATA FOR USE IN APP-----------------------------------
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
     async function addDataToCytoscape() {
@@ -54,7 +56,7 @@ export function App() {
         completedDisplay
       ); //all pre-processing of data
 
-      actDataRef.current = activityData; //ssigns activity data to ref
+      actDataRef.current = activityData; //asigns activity data to ref
       stakeholderDataRef.current = stakeholderData;
       datesRef.current = dates; //assigns dates ro ref
       gantchartData.current = gantChartItems; //asign gant chart data to the ref
@@ -62,69 +64,49 @@ export function App() {
 
       setCyState((prevState) => ({
         ...prevState,
-        elements: cyElms, //if wpEdges exist then add them, if not use cyElms
+        elements: cyElms,
         display: "block",
-      })); //sets elements array as the cytoscape element
+      }));
     }
     addDataToCytoscape();
-    // addCategoryIcon(cyState.cy);
   }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory]);
 
+  //------------------------------------------ENGAGEMENT RANKING--------------------------------------------
+  // saves engagement ranking and level in object that persists between renders
   useEffect(() => {
-    function getEngLevels(pr) {
-      var individualEngLev = [];
-      var engLevel = [];
-      const stakeholders = cyState.cy.nodes("[type = 'stakeholderNode']");
-      for (let k = 0; k < stakeholders.length; k++) {
-        var engPrPeriod = [];
-        //4 for 4 engagement levels
-        for (let j = 0; j < 4; j++) {
-          var multiplyFactor = j + 1; // + 1 so not multiplied by
-          //number of each eng level multiplied
-          engPrPeriod.push(
-            stakeholders[k].outgoers(`[engagement = "${j + 1}"]`).targets(`[meta.startPrPeriod <= ${pr}]`).length *
-              multiplyFactor
-          );
-        }
-        const engScore = engPrPeriod.reduce((a, b) => a + b);
-        // stakeholders[k].data("weight", engScore);
-        individualEngLev.push({ id: stakeholders[k].id(), engRank: engScore }); //push sum of each stakeholder engagemnt
-        engLevel.push(engScore);
-      }
-      const maxEngScore = Math.max(...engLevel);
-      const individualEngScores = individualEngLev;
-      return { maxEngScore, individualEngScores };
-    }
     var eachEngagementRanking = [];
-    // 13 for 13 pr periods
     for (let i = 0; i < currentPrPeriod; i++) {
-      eachEngagementRanking.push(getEngLevels(i + 1));
+      eachEngagementRanking.push(getEngLevels(i + 1, cyState));
     }
-
     engagementScoresRef.current = eachEngagementRanking;
+    console.log(eachEngagementRanking);
+    //only run once, when cyState.cy is initialized
   }, [cyState.cy]);
 
+  // adds the engagement ranking to individual stakeholders
   useEffect(() => {
-    var pr = prPeriod.pr === null ? currentPrPeriod : prPeriod.pr;
-    const stakeholders = networkVeiw
+    var pr = prPeriod.pr === null ? currentPrPeriod : prPeriod.pr; //use latest pr or filtered pr period
+    const stakeholders = networkVeiw // use network items or full diagram
       ? cyState.cy.nodes("[type = 'stakeholderNode'][network = 'yes']")
       : cyState.cy.nodes("[type = 'stakeholderNode']");
-
-    stakeholders.map((s) => {
-      const sEngRank = engagementScoresRef.current[pr - 1].individualEngScores.filter((item) =>
+    //Add engagement rank to each stakeholder
+    stakeholders.forEach((s) => {
+      const engRank = engagementScoresRef.current[pr - 1].individualEngScores.filter((item) =>
         networkVeiw ? `N_${item.id}` === s.id() : item.id === s.id()
       );
-      s.data("weight", sEngRank[0].engRank);
+      s.data("weight", engRank[0].engRank);
     });
+    //run when length oof elements chnage i.e. pr period changes
   }, [cyState.elements.length]);
 
+  //---------------------- STYLE -------------------------------------
   const centerGraph = (event) => {
     setTimeout(() => {
       cyState.cy.fit();
     }, 1);
   };
 
-  //need to think of something better than this!!!!!!!!!!!
+  // HIDE SIDE PANNEL (bug in splitpane so this is best option)
   document.querySelectorAll(".Pane2").forEach((el) => {
     el.style.display = selectedNode.id === "" ? "none" : "block";
   });
@@ -135,15 +117,6 @@ export function App() {
         <SplitPane split="vertical" minSize={"20em"} defaultSize={"20em"} allowResize={true} primary="second">
           <div>
             <div className="top-layer">
-              {/* <SidePannel
-              selectedNode={selectedNode}
-             cyState={cyState}
-             setSelectedNode={setSelectedNode}
-             datesRef={datesRef}
-             prPeriod={prPeriod}
-             networkVeiw={networkVeiw}
-             setStakeholdersDisplay={setStakeholdersDisplay}
-               /> */}
               <div className="headSection">
                 <div className="rightSide">
                   <Header
@@ -197,15 +170,7 @@ export function App() {
                 />
               </div>
               <div className="zoomButtons">
-                {/* <div>
-                  <button title="zoom in">
-                    <i className="fa fa-magnifying-glass-plus"></i>
-                  </button>
-                </div> */}
                 <div>
-                  {/* <button title="zoom out">
-                    <i className="fa fa-magnifying-glass-minus"></i>
-                  </button> */}
                   <button onClick={centerGraph} title="center graph">
                     <i className="fa fa-crosshairs"></i>
                   </button>
@@ -237,7 +202,6 @@ export function App() {
                 prPeriod={prPeriod}
                 networkVeiwEls={networkVeiwEls}
                 setNetworkVeiwEls={setNetworkVeiwEls}
-                currentStory={currentStory}
                 engScoreVeiw={engScoreVeiw}
                 engagementScoresRef={engagementScoresRef}
               />

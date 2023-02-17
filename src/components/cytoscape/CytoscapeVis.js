@@ -1,14 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
-// import Cytoscape from "cytoscape";
-// import noOverlap from "cytoscape-no-overlap";
 
 import { FCOSE, CONCENTRIC } from "./functions/LAYOUTS";
 import stylesheet from "./functions/stylesheet";
 import nodeTooltip from "./functions/nodeTooltips";
 import styleSelectedElements from "./functions/styleSelectedElements";
 import makeNHoodLayout from "./functions/makeNHoodLayout";
-// Cytoscape.use(noOverlap);
 
 export function CytoscapeVis({
   cyState,
@@ -23,30 +20,9 @@ export function CytoscapeVis({
   prPeriod,
   networkVeiwEls,
   setNetworkVeiwEls,
-  currentStory,
-
   engScoreVeiw,
   engagementScoresRef,
 }) {
-  // useEffect(() => {
-  //   const allEngWeight = cyState.cy.nodes("[type = 'stakeholderNode']").map((n) => {
-  //     var engLev = [];
-  //     //4 for 4 engagement levels
-  //     for (let i = 0; i < 4; i++) {
-  //       var multiplyFactor = i + 1; // + 1 so not multiplied by 0
-  //       //number of each eng level multiplied
-  //       engLev.push(n.outgoers(`[engagement = "${i + 1}"]`).targets().length * multiplyFactor);
-  //     }
-  //     const engScore = engLev.reduce((a, b) => a + b);
-  //     n.data("weight", engScore);
-  //     return engScore;
-  //   });
-
-  //   // console.log(allEngWeight);
-  //   const maxEngLevel = Math.max(...allEngWeight);
-  //   maxEngScore.current = maxEngLevel;
-  // }, [cyState.cy, cyState.elements.length, maxEngScore]);
-
   const renderCounter = useRef(0);
   const selectedNodeNHoodCount = useRef(null);
   renderCounter.current = cyState.cy && renderCounter.current + 1;
@@ -152,7 +128,6 @@ export function CytoscapeVis({
         networkVeiw,
         cyState,
         selectedNode,
-
         engScoreVeiw,
         engagementScoresRef
       )}
