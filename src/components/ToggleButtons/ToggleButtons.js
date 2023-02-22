@@ -5,8 +5,6 @@ import "./ToggleButtons.css";
 export function ToggleButtons({
   selectedBottomVis,
   setSelectedBottomVis,
-  // setConnectionFlagsDisplay,
-  // connectionFlagsDisplay,
   setStakeholdersDisplay,
   currentActNodeCountRef,
   setActivityEdgeDisplay,
@@ -67,10 +65,6 @@ export function ToggleButtons({
     backgroundColor: state ? " #cfcfcf" : "#e4e4e4",
   });
 
-  const connectionButtonStyle = {
-    backgroundColor: activityEdgeDisplay === "wp" ? "#e4e4e4" : activityEdgeDisplay === "act" ? "#e9e9e9" : "#cfcfcf",
-  };
-
   //STYLING //////////////////////
   return (
     <div className="displayButtons">
@@ -88,9 +82,6 @@ export function ToggleButtons({
         >
           Toggle completed <i className="fa fa-check"></i>
         </button>
-        {/* <button title="flag activities with less than mean number of connections" onClick={toggleConnectionFlags}>
-          Mean Connection Flag
-        </button> */}
       </div>
       <div className="toggleButtons">
         <button style={style(networkVeiw)} onClick={toggleNetworkVeiw} title="display network of the selected node">

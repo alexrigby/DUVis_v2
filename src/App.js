@@ -25,7 +25,6 @@ export function App() {
   const [currentStory, setCurrentStory] = useState(null); //story IDs
   const [activityEdgeDisplay, setActivityEdgeDisplay] = useState("wp"); //toggle edges
   const [completedDisplay, setCompletedDisplay] = useState(false); //sets nodes opacity
-  // const [connectionFlagsDisplay, setConnectionFlagsDisplay] = useState(false);
   const [stakeholdersDisplay, setStakeholdersDisplay] = useState(false); //show/hide stakeholders
   const [networkVeiw, setNetworkVeiw] = useState(false); // show/hide network veiw
   const [selectedBottomVis, setSelectedBottomVis] = useState(""); //which bottom pannel is open
@@ -149,8 +148,6 @@ export function App() {
                 <ToggleButtons
                   selectedBottomVis={selectedBottomVis}
                   setSelectedBottomVis={setSelectedBottomVis}
-                  // setConnectionFlagsDisplay={setConnectionFlagsDisplay}
-                  // connectionFlagsDisplay={connectionFlagsDisplay}
                   setStakeholdersDisplay={setStakeholdersDisplay}
                   currentActNodeCountRef={currentActNodeCountRef}
                   setActivityEdgeDisplay={setActivityEdgeDisplay}

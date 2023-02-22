@@ -63,13 +63,7 @@ export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBo
       <div>
         <div className="gantchart">
           <div>
-            <Timeline
-              clickHandler={itemClickHandler}
-              ref={ganttChartRef}
-              // options={options}
-              // initialGroups={gantchartData.current.groups}
-              // initialItems={gantchartData.current.items}
-            />
+            <Timeline clickHandler={itemClickHandler} ref={ganttChartRef} />
           </div>
         </div>
       </div>

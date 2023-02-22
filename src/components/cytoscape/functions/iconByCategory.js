@@ -1,3 +1,5 @@
+//REDUNDANT !!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 export function iconByCategory(c) {
   if (c === "Tool") {
     return <i className="fa fa-hammer"></i>;

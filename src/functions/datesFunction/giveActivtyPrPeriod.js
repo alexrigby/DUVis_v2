@@ -1,20 +1,14 @@
 import { actFields } from "../../data";
 
 export function giveActivityPrPeriod(act, dates, se) {
-  if (se === "start") {
-    if (act[actFields.STARTM] === "") {
-      return "undefined";
-    } else {
-      return dates.filter((d) => d.month === act[actFields.STARTM])[0].prPeriod;
-    }
-  } else if (se === "end") {
-    if (act[actFields.ENDM] === "Ongoing") {
-      return "onGoing";
-    } else if (act[actFields.ENDM] === "") {
-      return "undefined";
-    } else {
-      return dates.filter((d) => d.month === act[actFields.ENDM])[0].prPeriod;
-    }
+  const startOrEnd = se === "start" ? actFields.STARTM : actFields.ENDM;
+
+  if (act[startOrEnd] === "Ongoing") {
+    return "onGoing";
+  } else if (act[startOrEnd] === "") {
+    return "undefined";
+  } else {
+    return dates.filter((d) => d.month === act[startOrEnd])[0].prPeriod;
   }
 }
 

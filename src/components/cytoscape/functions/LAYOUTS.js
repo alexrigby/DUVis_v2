@@ -26,15 +26,11 @@ export const FCOSE = (currentActNodeCount, random) => {
       }
     },
     idealEdgeLength: function (edge) {
-      // return 150;
+      const sameParent = edge.connectedNodes()[0].data("parent") === edge.connectedNodes()[1].data("parent");
       if (edge.data("type") === "stakeholderEdge") {
-        return 20; //1
+        return 20;
       } else {
-        if (edge.connectedNodes()[0].data("parent") === edge.connectedNodes()[1].data("parent")) {
-          return 100;
-        } else {
-          return 500; //500
-        }
+        return sameParent ? 100 : 500;
       }
     },
     edgeElasticity: (edge) => {
@@ -60,29 +56,6 @@ export const FCOSE = (currentActNodeCount, random) => {
     numIter: 300000,
   };
 };
-
-export const COLA = {
-  name: "cola",
-  edgeLength: 2000, // sets edge length directly in simulation
-  edgeJaccardLength: 2000, // jaccard edge length in simulation
-  // nodeRepulsion: 6000,
-  // idealEdgeLength: 200,
-  // edgeElasticity: 0.2,
-  // animationDuration: 1000,
-};
-
-// export const FCOSE = (currentActNodeCount, , random) => ({
-//   name: "cose-bilkent",
-//   nodeDimensionsIncludeLabels: true,
-//   animationDuration: 1000,
-//   randomize: random,
-//   fit: true,
-//   nodeRepulsion: 30000,
-//   idealEdgeLength: 300,
-//   nesttingFactor: 0.4,
-//   edgeElasticity: 0.3,
-//   gravity: 4,
-// });
 
 export const CONCENTRIC = {
   name: "concentric",

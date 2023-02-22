@@ -5,15 +5,15 @@ import statusOpacity from "../../configs/statusOpacity";
 
 export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, latestPrPeriod, convertedDates) {
   function handleNonDates(date, startOrEnd) {
+    const startDate = convertedDates[0].date;
+    const endDate = convertedDates[convertedDates.length - 1].date;
+
     if (date === "onGoing" || date === "undefined") {
-      return startOrEnd === "start" ? convertedDates[0].date : convertedDates[convertedDates.length - 1].date;
+      return startOrEnd === "start" ? startDate : endDate;
     } else {
       return date;
     }
   }
-
-  // console.log(latestPrPeriod, "lpr");
-  // console.log(prPeriod, "p");
 
   const groups = wpData.map((wp) => ({
     id: wp[wpFields.ID],
@@ -24,18 +24,22 @@ export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, l
   }));
 
   const items = actData.map((act) => {
+    const startDate = new Date(handleNonDates(act.startDate, "start")).getTime();
+    const endDate = new Date(handleNonDates(act.endDate, "end")).getTime();
+    const opacity = completedDisplay ? activityOpacity(act, latestPrPeriod, prPeriod) : statusOpacity.onGoing;
+
     return {
       group: `wp${act[actFields.WP]}`,
       id: act[actFields.ID],
       content: `${act[actFields.ID]}. ${act[actFields.ACTIVITY]}`,
-      start: new Date(handleNonDates(act.startDate, "start")).getTime(),
-      end: new Date(handleNonDates(act.endDate, "end")).getTime(), //if the end date is not a date value then return last date of project
+      start: startDate,
+      end: endDate,
       title: act[actFields.ACTIVITY],
       className: `item${act.ID}`,
       sMonth: act[actFields.STARTM],
-      style: `background-color: ${BG[`wp${act.WP}`]}; border-color: ${BORDER[`wp${act.WP}`]}; color: white; opacity: ${
-        completedDisplay ? activityOpacity(act, latestPrPeriod, prPeriod) : statusOpacity.onGoing
-      }`,
+      style: `background-color: ${BG[`wp${act.WP}`]}; border-color: ${
+        BORDER[`wp${act.WP}`]
+      }; color: white; opacity: ${opacity}`,
     };
   });
 

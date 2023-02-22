@@ -1,19 +1,17 @@
 import statusOpacity from "../../configs/statusOpacity";
 
 export function activityOpacity(act, latestPrPeriod, prPeriod) {
-  if (prPeriod.pr === null) {
-    if (act.endPrPeriod === "undefined" || act.endPrPeriod === "onGoing") {
-      //if ongoing or undefined then give full opacity (treat undefined as ongoing for now)
-      return statusOpacity.onGoing;
-    } else {
-      //if prPeriod is null then work from the latest pr period
-      return act.endPrPeriod < latestPrPeriod ? statusOpacity.completed : statusOpacity.onGoing;
-    }
-    //if prperiod is defined then work of the pr period
-  } else if (act.endPrPeriod === "undefined" || act.endPrPeriod === "onGoing") {
+  const undefOrOngoing = act.endPrPeriod === "undefined" || act.endPrPeriod === "onGoing";
+  const beforeLatestPr = act.endPrPeriod < latestPrPeriod ? statusOpacity.completed : statusOpacity.onGoing;
+  const beforeSelectedPr = act.endPrPeriod < prPeriod.pr ? statusOpacity.completed : statusOpacity.onGoing;
+
+  if (undefOrOngoing) {
+    //no matter what undef or ongoing acts will be styled as ongoing
     return statusOpacity.onGoing;
+  } else if (prPeriod.pr === null) {
+    return beforeLatestPr;
   } else {
-    return act.endPrPeriod < prPeriod.pr ? statusOpacity.completed : statusOpacity.onGoing;
+    return beforeSelectedPr;
   }
 }
 
