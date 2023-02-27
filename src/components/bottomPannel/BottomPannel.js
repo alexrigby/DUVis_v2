@@ -6,7 +6,7 @@ import VegaAnalytics from "./vegaAnalytics/VegaAnalytics";
 import "./BottomPannel.css";
 
 export function BottomPannel({
-  gantchartData,
+  gantchartDataRef,
   cyState,
   setSelectedNode,
   actDataRef,
@@ -25,7 +25,7 @@ export function BottomPannel({
         setSelectedBottomVis={setSelectedBottomVis}
       />
       <GanttChart
-        gantchartData={gantchartData}
+        gantchartDataRef={gantchartDataRef}
         cyState={cyState}
         setSelectedNode={setSelectedNode}
         selectedBottomVis={selectedBottomVis}

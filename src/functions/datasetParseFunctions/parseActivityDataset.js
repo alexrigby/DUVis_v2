@@ -5,6 +5,7 @@ import giveActivityPrPeriod from "../datesFunction/giveActivtyPrPeriod";
 
 export async function parseActivityDataset(url, dates) {
   const { dataset, headers } = await getTsvData(url);
+
   const data = tsvToJson(dataset, headers);
 
   const activityData = data.map((act, i) => ({

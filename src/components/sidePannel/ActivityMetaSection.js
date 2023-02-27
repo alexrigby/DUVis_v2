@@ -16,7 +16,7 @@ export function ActivityMetaSection({
   const meta = selectedNode.meta;
   const OPEN = <i className="fa fa-angle-down"></i>;
   const CLOSE = <i className="fa fa-angle-up"></i>;
-  const ENG_COUNT = [1, 2, 3, 4];
+  const ENG_COUNT = Array.from(Array(engLevelWording.length).keys());
   const SUBSECTIONS = ["description", "research", "method", "data", "discipline", "IW", "activity", "stakeholder"];
 
   const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}

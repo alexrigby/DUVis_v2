@@ -62,6 +62,7 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
     const closeVegaPannel = (event) => {
       setSelectedBottomVis("");
     };
+
     const { vegaData, options } = parseVegaData(actData, trimmedDates, brushRange, selectedMetric);
     const spec = vegaSpec(options, brushRange, selectedMetric);
 

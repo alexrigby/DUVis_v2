@@ -4,9 +4,10 @@ import "./GanttChart.css";
 import styleSelectedElements from "../../cytoscape/functions/styleSelectedElements";
 import { useEffect, useRef } from "react";
 
-export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBottomVis, datesRef }) {
+export function GanttChart({ gantchartDataRef, cyState, setSelectedNode, selectedBottomVis, datesRef }) {
   //sets ref to get access to timelineAPI
   const ganttChartRef = useRef(null);
+
   //when an item is clicked on the gantt chart it updates selected node id as well
   function itemClickHandler(props) {
     if (props.item !== null) {
@@ -17,7 +18,7 @@ export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBo
     }
   }
 
-  // CANT THINK OF BETTER STATE SOLUTION!!
+  // Hard to acces gantt chart items style
   useEffect(() => {
     const timeline = document.querySelectorAll(".vis-timeline");
     if (selectedBottomVis === "gantChartButton") {
@@ -34,7 +35,7 @@ export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBo
   const options = {
     start: datesRef.current !== null ? new Date(datesRef.current[0].date).getTime() : "2022-01-01",
     end:
-      datesRef.current !== null ? new Date(datesRef.current[datesRef.current.length - 1].date).getTime() : "2022-02-02",
+      datesRef.current !== null ? new Date(datesRef.current[datesRef.current.length - 1].date).getTime() : "2022-03-02",
     stack: true,
     showMajorLabels: true,
     showCurrentTime: true,
@@ -53,12 +54,12 @@ export function GanttChart({ gantchartData, cyState, setSelectedNode, selectedBo
 
   useEffect(() => {
     if (ganttChartRef.current !== null) {
-      ganttChartRef.current.timeline.setData(gantchartData.current);
+      ganttChartRef.current.timeline.setData(gantchartDataRef.current);
       ganttChartRef.current.timeline.setOptions(options);
     }
-  }, [gantchartData.current, ganttChartRef.current, gantchartData]);
+  }, [gantchartDataRef.current]);
 
-  if (gantchartData.current !== null) {
+  if (gantchartDataRef.current !== null) {
     return (
       <div>
         <div className="gantchart">

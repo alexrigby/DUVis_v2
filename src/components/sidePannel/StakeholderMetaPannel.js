@@ -8,11 +8,11 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, 
   const open = <i className="fa fa-angle-down"></i>;
   const close = <i className="fa fa-angle-up"></i>;
 
-  const engCount = [1, 2, 3, 4]; // add or remove numbers if engement level chnages
+  const engCount = Array.from(Array(engLevelWording.length).keys());
   const subSections = ["activity"]; // add or remove subsections
 
   const engObj = engCount.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
-  const subSectionObj = subSections.reduce((p, c) => ({ ...p, [c]: false }), {}); // each subsection to onject- false
+  const subSectionObj = subSections.reduce((p, c) => ({ ...p, [c]: false }), {}); // each subsection to object- false
 
   const [staAccordion, setStaAccordion] = useState({ ...engObj, ...subSectionObj });
 
@@ -29,7 +29,7 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, 
   const actCollection = [];
 
   //4 for 4 engagement levels
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < engLevelWording.length; i++) {
     //get collections of conected nodes by engagemnet level
     const acts = cyState.cy
       .nodes(`[id = "${selectedNode.id}"]`)

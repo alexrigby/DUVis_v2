@@ -10,7 +10,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
   const open = <i className="fa fa-angle-down"></i>;
   const close = <i className="fa fa-angle-up"></i>;
 
-  const engCount = [1, 2, 3, 4]; // add or remove numbers if engement level chnages
+  const engCount = Array.from(Array(engLevelWording.length).keys()); // add or remove numbers if engement level chnages
   const subSections = ["activity", "stakeholder", "SDGs"]; // add or remove subsections
 
   const engObj = engCount.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}

@@ -16,12 +16,10 @@ export function CustomStory({
   setCustomStoryDisplay,
   localStories,
 }) {
-  //input Controls
+  //---------------INPUT CONTROLS------------
   const [selectedName, setSelectedName] = useState("");
   const [selectedField, setSelectedField] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
-
-  //input controls
 
   const [confirmedFilterField, setConfirmendFilterField] = useState(null);
 
@@ -166,6 +164,7 @@ export function CustomStory({
     setConfirmendFilterField(null);
   };
 
+  //------------------------------STYLE----------------------------------------------------------
   //hides custom story options if a story is selected
   const customStoryStyle = () => {
     if (currentStory === null && customStoryDisplay === true) {

@@ -33,7 +33,7 @@ export function App() {
   const [customStoryDisplay, setCustomStoryDisplay] = useState(false); //open custom filter options
 
   // ---------------------------USE REFS-------------------------------
-  const gantchartData = useRef(null); //stores parsed gantchart data
+  const gantchartDataRef = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
   const actDataRef = useRef(null); //stores activity data
   const stakeholderDataRef = useRef(null); //stakeholder data
@@ -56,7 +56,7 @@ export function App() {
       actDataRef.current = activityData; //asigns activity data to ref
       stakeholderDataRef.current = stakeholderData;
       datesRef.current = dates; //assigns dates ro ref
-      gantchartData.current = gantChartItems; //asign gant chart data to the ref
+      gantchartDataRef.current = gantChartItems; //asign gant chart data to the ref
       latestPrPeriodRef.current = latestPrPeriod;
 
       setCyState((prevState) => ({
@@ -173,7 +173,7 @@ export function App() {
               </div>
 
               <BottomPannel
-                gantchartData={gantchartData}
+                gantchartDataRef={gantchartDataRef}
                 cyState={cyState}
                 setSelectedNode={setSelectedNode}
                 actDataRef={actDataRef}
