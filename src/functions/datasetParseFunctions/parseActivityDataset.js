@@ -16,7 +16,7 @@ export async function parseActivityDataset(url, dates) {
     endPrPeriod: giveActivityPrPeriod(act, dates, "end"),
   }));
 
-  // // ------ USE TO ANNONYMISE THE TOOL ____________________
+  // ------ USE TO ANNONYMISE THE TOOL ____________________
   // const researchers = [...new Set(activityData.map((act) => act.Name))];
 
   // const researcherID = researchers.map((r, i) => {
