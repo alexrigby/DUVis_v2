@@ -39,7 +39,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   const stakeholderData = await parseStakeholderDataset(tdrDataset, trimmedActData);
 
   //----MAKE VIS ELEMENTS -------------
-  const actNodes = makeActNodes(trimmedActData, prPeriod, completedDisplay, latestPrPeriod);
+  const actNodes = makeActNodes(trimmedActData);
   const actEdges = makeActEdges(links, actNodes);
   const wpNodes = makeWpNodes(trimmedWpData);
   const wpEdges = makeWpEdges(trimmedWpData);

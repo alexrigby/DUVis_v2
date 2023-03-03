@@ -6,7 +6,7 @@ export function giveActivityPrPeriod(act, dates, se) {
   if (act[startOrEnd] === "Ongoing") {
     return "onGoing";
   } else if (act[startOrEnd] === "") {
-    return "undefined";
+    return "";
   } else {
     return dates.filter((d) => d.month === act[startOrEnd])[0].prPeriod;
   }
