@@ -6,6 +6,9 @@ export const nodeNavigationHandler = (nodeId, setSelectedNode, cyState, setStake
   );
   setSelectedNode(() => cyState.cy.nodes(`[id = "${nodeId}"]`).data());
   cyState.cy.nodes().removeClass("hilightedNode");
+  document.querySelectorAll(`.vis-item`).forEach((el) => {
+    el.classList.remove("hilightedItem");
+  });
   styleSelectedElements(cyState.cy, nodeId);
 };
 
