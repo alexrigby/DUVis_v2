@@ -5,4 +5,7 @@ DUVis is a research project management and meta data exploration tool. DUVis foc
 ![Dŵr Uisce Work Package Visualiser teaser image](https://github.com/alexrigby/dwr-uisce-vis-react/blob/master/teaser2.png)
 
 
-Interface instructions [here](https://github.com/alexrigby/dwr-uisce-vis-react/blob/master/DUVis%20interface%20instructions.pdf)
+Interface documentation [here](https://github.com/alexrigby/dwr-uisce-vis-react/blob/master/DUVis%20interface%20instructions.pdf)
+Extended instructional video [here](https://studio.youtube.com/video/iXEZA1tqFbE/edit)
+
+
