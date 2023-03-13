@@ -1,6 +1,5 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Dŵr Uisce Work Package Visualiser (DUVis)
+DUVis is a research project management and meta data exploration tool. DUVis focuses on mapping communication and collaboration between both project activities and external stakeholders.  
 
 ## Available Scripts
 
