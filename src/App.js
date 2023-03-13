@@ -6,8 +6,8 @@ import SidePannel from "./components/sidePannel/SidePannel";
 import CytoscapeVis from "./components/cytoscape/CytoscapeVis";
 import Legend from "./components/legend/Legend";
 import BottomPannel from "./components/bottomPannel/BottomPannel";
-import FilterOptions from "./components/filterOptions/FilterOptions";
-import ToggleButtons from "./components/toggleButtons/ToggleButtons";
+import FilterOptions from "./components/FilterOptions/FilterOptions";
+import ToggleButtons from "./components/ToggleButtons/ToggleButtons";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";

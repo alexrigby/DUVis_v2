@@ -5,6 +5,7 @@ export const nodeNavigationHandler = (nodeId, setSelectedNode, cyState, setStake
     cyState.cy.nodes(`[id = "${nodeId}"]`).data("type") === "stakeholderNode" ? false : prevState
   );
   setSelectedNode(() => cyState.cy.nodes(`[id = "${nodeId}"]`).data());
+  cyState.cy.nodes().removeClass("hilightedNode");
   styleSelectedElements(cyState.cy, nodeId);
 };
 
