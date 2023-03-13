@@ -54,5 +54,5 @@
   "devDependencies": {
     "cytoscape-fcose": "^2.1.0"
   },
-  "homepage": "dwr-uisce-vis-dev"
+  "homepage": "duvis"
 }

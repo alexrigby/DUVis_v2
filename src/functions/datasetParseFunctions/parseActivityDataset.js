@@ -17,22 +17,22 @@ export async function parseActivityDataset(url, dates) {
   }));
 
   // ------ USE TO ANNONYMISE THE TOOL ____________________
-  // const researchers = [...new Set(activityData.map((act) => act.Name))];
+  const researchers = [...new Set(activityData.map((act) => act.Name))];
 
-  // const researcherID = researchers.map((r, i) => {
-  //   return { name: r, ID: `Resercher ${i + 1}` };
-  // });
+  const researcherID = researchers.map((r, i) => {
+    return { name: r, ID: `Researcher ${i + 1}` };
+  });
 
-  // const annonomusActData = activityData.map((act) => {
-  //   const ID = researcherID.find((el) => el.name === act.Name);
+  const annonomusActData = activityData.map((act) => {
+    const ID = researcherID.find((el) => el.name === act.Name);
 
-  //   return { ...act, Name: ID.ID };
-  // });
+    return { ...act, Name: ID.ID };
+  });
 
-  // // console.log(annonomusActData);
+  // console.log(annonomusActData);
 
-  // return annonomusActData;
-  return activityData;
+  return annonomusActData;
+  // return activityData;
 }
 
 export default parseActivityDataset;
