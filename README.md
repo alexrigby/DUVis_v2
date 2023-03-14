@@ -9,4 +9,8 @@ Interface documentation [here](https://github.com/alexrigby/dwr-uisce-vis-react/
 
 Extended instructional video [here](https://studio.youtube.com/video/iXEZA1tqFbE/edit)
 
+Video demo [here](https://youtu.be/xm0ksZV1c30)
+
+live demo [here](https://arigby.me/duvis/)
+
 
