@@ -9,7 +9,7 @@ export async function getLinks(url) {
         .split("\n")
         .map((row) => row.split("\t"))
     );
-
+  console.log(matrix);
   return matrix;
 }
 

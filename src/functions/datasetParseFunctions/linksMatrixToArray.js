@@ -1,31 +1,31 @@
-export function linksMatrixToArray(dataset) {
-  //deletes row headers
-  for (let i = 0; i < dataset.length; i++) {
-    dataset[i].splice(0, 3);
+export function linksMatrixToArray(linksArray) {
+  //remove first row (ID) and first and "ID" to get ids of the collumns
+  const collumnIds = linksArray.shift().slice(1);
+
+  // remove first collumn (ID) and gets the ids of the rows
+  var rowIds = [];
+  for (let i = 0; i < linksArray.length; i++) {
+    rowIds.push(linksArray[i].shift());
   }
 
-  //array of ids (incase not in order or some missing)
-  const datasetIds = dataset.slice(0, 1).flat();
-  //deletes column header
-  dataset.splice(0, 3);
-
   const allLinks = [];
-  //returns index (+1) of all instances of 'Y' i.e. IDs of linked activities
-  for (let i = 0; i < dataset.length; i++) {
-    var links = [];
-    for (let j = 0; j < dataset[i].length; j++) {
-      if (dataset[i][j] !== "") {
-        links.push(Number(datasetIds[j]));
+  for (let i = 0; i < linksArray.length; i++) {
+    var links = {
+      act: Number(rowIds[i]),
+      links: [],
+    };
+    // if there is an entry relating 2 ids then the id is pushed to links object
+    for (let j = 0; j < linksArray[i].length; j++) {
+      if (linksArray[i][j] !== "") {
+        links.links.push(Number(collumnIds[j]));
       }
     }
 
-    allLinks.push(links.flat());
+    allLinks.push(links);
   }
 
-  return allLinks.map((link, i) => ({
-    act: Number(datasetIds[i]),
-    links: link,
-  }));
+  //object containing id, and array of ids that it is linked to
+  return allLinks;
 }
 
 export default linksMatrixToArray;

@@ -1,3 +1,5 @@
+import * as XLSX from "xlsx";
+
 import parseActivityDataset from "./datasetParseFunctions/parseActivityDataset";
 import parseLinks from "./datasetParseFunctions/parseLinks";
 import makeActEdges from "./cyElements/makeActEdges";
@@ -11,22 +13,34 @@ import makeStakeholderEdges from "./cyElements/makeStakeholderEdges";
 import makeWpEdges from "./cyElements/makeWpEdges";
 import makeDates from "./datesFunction/makeDates";
 import parseWPDataset from "./datasetParseFunctions/parseWPDataset";
+import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
 
-import actDataset from "../data/activity_matrix.txt";
-import actLinks from "../data/links.txt";
-import wpDataset from "../data/wp_names.txt";
-import tdrDataset from "../data/stakeholder_matrix.txt";
+// import actDataset from "../data/activity_matrix.txt";
+// import actLinks from "../data/links.txt";
+// import wpDataset from "../data/wp_names.txt";
+// import tdrDataset from "../data/stakeholder_matrix.txt";
+import workBook from "../data/activity_data.xlsx";
 
 export async function makeVisElements(prPeriod, currentStory, completedDisplay) {
+  // ------------------------ FETCH CSV DATA -------------------------
+  const file = await (await fetch(workBook)).arrayBuffer();
+  const workBookData = XLSX.read(file);
+  // header: 1 returns array of arrays of csv rows, use for crosstab datasets
+  const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets["links"], { header: 1, defval: "" });
+  const tdr = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholders"], { header: 1, defval: "", raw: false });
+  // convert the csvs to JSON format
+  const actDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["Activities"], { defval: "", raw: false });
+  const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["work packages"], { defval: "", raw: false });
+
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
   const startDate = "2016-09-01";
   const todaysDate = new Date().toISOString().split("T")[0];
   const dates = makeDates(startDate, todaysDate);
 
-  //-----------------FETCH AND PARSE DATA ----------
-  const activityData = await parseActivityDataset(actDataset, dates);
-  const links = await parseLinks(actLinks);
-  const wpData = await parseWPDataset(wpDataset);
+  //-----------------PARSE DATA ----------
+  const activityData = parseActivityDataset(actDataset, dates);
+  const links = linksMatrixToArray(actLinks);
+  const wpData = parseWPDataset(wpDataset);
 
   //-------------TRIM DATA TO FILTER SPECIFICATION ----------------
   const latestPrPeriod = dates[dates.length - 1].prPeriod;
@@ -36,7 +50,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   );
 
   // ----TRIM & FILTER STAKEHOLDERS-------
-  const stakeholderData = await parseStakeholderDataset(tdrDataset, trimmedActData);
+  const stakeholderData = parseStakeholderDataset(tdr, trimmedActData);
 
   //----MAKE VIS ELEMENTS -------------
   const actNodes = makeActNodes(trimmedActData);

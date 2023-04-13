@@ -1,12 +1,13 @@
-import getTsvData from "./getTsvData";
-import tsvToJson from "./TsvToJson";
+// import getTsvData from "./getTsvData";
+// import tsvToJson from "./TsvToJson";
 import convertMonthsToDates from "../datesFunction/convertMonthsToDates";
 import giveActivityPrPeriod from "../datesFunction/giveActivtyPrPeriod";
 
-export async function parseActivityDataset(url, dates) {
-  const { dataset, headers } = await getTsvData(url);
+export function parseActivityDataset(data, dates) {
+  // const { dataset, headers } = await getTsvData(url);
 
-  const data = tsvToJson(dataset, headers);
+  // const data = tsvToJson(dataset, headers);
+  // console.log(data);
 
   const activityData = data.map((act, i) => ({
     ...act,
