@@ -1,7 +1,7 @@
 import * as XLSX from "xlsx";
 
 import parseActivityDataset from "./datasetParseFunctions/parseActivityDataset";
-import parseLinks from "./datasetParseFunctions/parseLinks";
+
 import makeActEdges from "./cyElements/makeActEdges";
 import makeActNodes from "./cyElements/makeActNodes";
 import makeGantchartItems from "./ganttChartFucntions/makeGantchartItems";
@@ -15,22 +15,20 @@ import makeDates from "./datesFunction/makeDates";
 import parseWPDataset from "./datasetParseFunctions/parseWPDataset";
 import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
 
-// import actDataset from "../data/activity_matrix.txt";
-// import actLinks from "../data/links.txt";
-// import wpDataset from "../data/wp_names.txt";
-// import tdrDataset from "../data/stakeholder_matrix.txt";
-import workBook from "../data/activity_data.xlsx";
+import workBookPath from "../data/activity_data.xlsx";
 
 export async function makeVisElements(prPeriod, currentStory, completedDisplay) {
   // ------------------------ FETCH CSV DATA -------------------------
-  const file = await (await fetch(workBook)).arrayBuffer();
-  const workBookData = XLSX.read(file);
+  const file = await (await fetch(workBookPath)).arrayBuffer();
+  const workBookData = XLSX.read(file); // reads the whole workbook
   // header: 1 returns array of arrays of csv rows, use for crosstab datasets
-  const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets["links"], { header: 1, defval: "" });
+  const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets["links"], { header: 1, defval: "", raw: false }); // TO DO raw false = doesnt convert types (e.g. 1 === "1") need to change as I continue
   const tdr = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholders"], { header: 1, defval: "", raw: false });
   // convert the csvs to JSON format
   const actDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["Activities"], { defval: "", raw: false });
   const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["work packages"], { defval: "", raw: false });
+
+  // const stakeholderTest = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholders"], { defval: "", raw: false });
 
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
   const startDate = "2016-09-01";
@@ -73,7 +71,6 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
     group: "nodes",
     grabbable: false,
     data: {
-      parent: "t",
       id: "project",
       type: "project",
       label: "",
@@ -83,11 +80,11 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   //----ALL CYTOSCAPE ELEMENTS-----
   const cyElms = [
     actNodes,
-    stakeholderNodes,
+    // stakeholderNodes,
     actEdges.flat(),
-    stakeholderEdges.flat(),
+    // stakeholderEdges.flat(),
     wpNodes,
-    projectNode,
+    // projectNode,
     wpEdges,
   ].flat();
 

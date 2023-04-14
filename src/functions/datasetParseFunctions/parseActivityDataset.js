@@ -1,14 +1,7 @@
-// import getTsvData from "./getTsvData";
-// import tsvToJson from "./TsvToJson";
 import convertMonthsToDates from "../datesFunction/convertMonthsToDates";
 import giveActivityPrPeriod from "../datesFunction/giveActivtyPrPeriod";
 
 export function parseActivityDataset(data, dates) {
-  // const { dataset, headers } = await getTsvData(url);
-
-  // const data = tsvToJson(dataset, headers);
-  // console.log(data);
-
   const activityData = data.map((act, i) => ({
     ...act,
     startDate: convertMonthsToDates(act, dates, "start"),
@@ -17,23 +10,23 @@ export function parseActivityDataset(data, dates) {
     endPrPeriod: giveActivityPrPeriod(act, dates, "end"),
   }));
 
-  // ------ USE TO ANNONYMISE THE TOOL ____________________
-  const researchers = [...new Set(activityData.map((act) => act.Name))];
+  // // ------ USE TO ANNONYMISE THE TOOL ____________________
+  // const researchers = [...new Set(activityData.map((act) => act.Name))];
 
-  const researcherID = researchers.map((r, i) => {
-    return { name: r, ID: `Researcher ${i + 1}` };
-  });
+  // const researcherID = researchers.map((r, i) => {
+  //   return { name: r, ID: `Researcher ${i + 1}` };
+  // });
 
-  const annonomusActData = activityData.map((act) => {
-    const ID = researcherID.find((el) => el.name === act.Name);
+  // const annonomusActData = activityData.map((act) => {
+  //   const ID = researcherID.find((el) => el.name === act.Name);
 
-    return { ...act, Name: ID.ID };
-  });
+  //   return { ...act, Name: ID.ID };
+  // });
 
   // console.log(annonomusActData);
 
-  return annonomusActData;
-  // return activityData;
+  // return annonomusActData;
+  return activityData;
 }
 
 export default parseActivityDataset;

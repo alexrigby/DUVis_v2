@@ -1,9 +1,4 @@
-// import getTsvData from "./getTsvData";
-// import tsvToJson from "./TsvToJson";
-
 export function parseWPDataset(data) {
-  // const { dataset, headers } = await getTsvData(url);
-  // const wpData = tsvToJson(dataset, headers);
   const wpData = [...data];
 
   // adds list f SDGS to wpData object

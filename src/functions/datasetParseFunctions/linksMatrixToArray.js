@@ -14,6 +14,7 @@ export function linksMatrixToArray(linksArray) {
       act: Number(rowIds[i]),
       links: [],
     };
+
     // if there is an entry relating 2 ids then the id is pushed to links object
     for (let j = 0; j < linksArray[i].length; j++) {
       if (linksArray[i][j] !== "") {

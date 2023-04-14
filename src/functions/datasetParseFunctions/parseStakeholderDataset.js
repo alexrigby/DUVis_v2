@@ -1,7 +1,4 @@
-// import getLinks from "./getLinks";
-
 export function parseStakeholderDataset(data, trimmedData) {
-  // const data = await getLinks(url);
   const stakeholders = data.slice(4, data.length).map((s) => s.slice(0, 4)); // removes headers and gets 2 first collumns, tdr id and stakeholder name
   const activityIDs = data.slice(3, 4).flat().slice(4, data.length);
 
@@ -27,23 +24,25 @@ export function parseStakeholderDataset(data, trimmedData) {
   //if thee are no stakeholders linked to any of the activites in the filter then redurn an empty array
   const stakeholderLinks = areThereStakeholders
     ? newMatrix
-        .map((row, i) => ({
-          stakeholderID: stakeholders[i][0],
-          name: `Stakeholder_${stakeholders[i][0].slice(2)}`, // ANNONOMISE STAKEHOLDERS
-          // name: stakeholders[i][1], // INCLUDE STAKEHOLDER NAMES
-          sector: stakeholders[i][2],
-          category: stakeholders[i][3],
-          engagementRanking: row.map((el) => Number(el)).reduce((a, b) => a + b),
-          act: row
-            .map(
-              (el, j) =>
-                (el === "1" || el === "2" || el === "3" || el === "4") && {
-                  actID: newActIds[j],
-                  engagement: el,
-                }
-            )
-            .filter((row) => row !== false),
-        }))
+        .map((row, i) => {
+          return {
+            stakeholderID: stakeholders[i][0],
+            name: `Stakeholder_${stakeholders[i][0].slice(2)}`, // ANNONOMISE STAKEHOLDERS
+            // name: stakeholders[i][1], // INCLUDE STAKEHOLDER NAMES
+            sector: stakeholders[i][2],
+            category: stakeholders[i][3],
+            engagementRanking: row.map((el) => Number(el)).reduce((a, b) => a + b),
+            act: row
+              .map(
+                (el, j) =>
+                  (el === "1" || el === "2" || el === "3" || el === "4") && {
+                    actID: newActIds[j],
+                    engagement: el,
+                  }
+              )
+              .filter((row) => row !== false),
+          };
+        })
         .filter((s) => s.act.length !== 0)
     : [];
 

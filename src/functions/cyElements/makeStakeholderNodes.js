@@ -13,7 +13,6 @@ export function makeStakeholerNodes(stakeholders) {
         label: s.stakeholderID,
         name: s.name,
         weight: s.engagementRanking,
-        //   parent: "stakeholders",
       },
     };
   });
