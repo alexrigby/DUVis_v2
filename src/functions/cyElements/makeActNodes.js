@@ -15,7 +15,7 @@ export function makeActNodes(data) {
         id: data[i][actFields.ID],
         // flag: data[i].ID + `*`, //so I can style flagged data
         label: data[i][actFields.ID],
-        name: data[i][actFields.ACTIVITY],
+        name: data[i][actFields.NAME],
         category: data[i][actFields.CATEGORY],
         meta: {
           ...data[i],
@@ -24,6 +24,7 @@ export function makeActNodes(data) {
     };
     cyNodes.push(nodeOps);
   }
+
   return cyNodes;
 }
 

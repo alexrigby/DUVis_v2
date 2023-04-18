@@ -67,18 +67,18 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
     }
   }
 
-  const sdgIconStyle = { width: "92px", height: "92px", paddingRight: "4px" };
+  // const sdgIconStyle = { width: "92px", height: "92px", paddingRight: "4px" };
 
-  const sdgList = selectedNode.SDGs.map((sdg) => (
-    <a href={`${SDG_ICONS[sdg].link}`} key={sdg} to="route" target="_blank" rel="noopener noreferrer">
-      <img
-        src={SDG_ICONS[sdg].icon}
-        alt={`${SDG_ICONS[sdg].description}`}
-        title={`${SDG_ICONS[sdg].description}`}
-        style={sdgIconStyle}
-      />
-    </a>
-  ));
+  // const sdgList = selectedNode.SDGs.map((sdg) => (
+  //   <a href={`${SDG_ICONS[sdg].link}`} key={sdg} to="route" target="_blank" rel="noopener noreferrer">
+  //     <img
+  //       src={SDG_ICONS[sdg].icon}
+  //       alt={`${SDG_ICONS[sdg].description}`}
+  //       title={`${SDG_ICONS[sdg].description}`}
+  //       style={sdgIconStyle}
+  //     />
+  //   </a>
+  // ));
 
   const stakeholderCount = wpStakeholders.flat().length;
 
@@ -86,30 +86,33 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
     display: !wpAccordion.activity ? "none" : "block",
   };
 
-  const sdgListStyle = {
-    display: !wpAccordion.SDGs ? "none" : "block",
-  };
+  // const sdgListStyle = {
+  //   display: !wpAccordion.SDGs ? "none" : "block",
+  // };
 
   const stakeholderListDisplay = {
     display: !wpAccordion.stakeholder ? "none" : "block",
   };
 
+  // if no name than use ID. Selecting from selected node as supposed to config file incase some have names and others dont
+  const wpName = selectedNode.name ? selectedNode.name : `Work Package ${selectedNode.id}`;
+
   return (
     <div>
       <div className="metaSection">
         <h1 style={{ backgroundColor: BG[selectedNode.id] }}>WP: {selectedNode.id.slice(2)}</h1>
-        <h1>{selectedNode.name}</h1>
-        <h2>Category:</h2>
-        <p>{selectedNode.category}</p>
+        <h1>{wpName}</h1>
+        {/* <h2>Category:</h2>
+        <p>{selectedNode.category}</p> */}
       </div>
-      <div className="metaSection">
+      {/* <div className="metaSection">
         <div className="metaSectionHead">
           <h1>
             UN SDGs: <span onClick={() => openAccordion("click", "SDGs")}>{wpAccordion.SDGs ? close : open} </span>
           </h1>
         </div>
         <div style={sdgListStyle}>{sdgList}</div>
-      </div>
+      </div> */}
       <div className="metaSection">
         <div className="metaSectionHead">
           <h1>

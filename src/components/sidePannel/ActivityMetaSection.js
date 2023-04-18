@@ -138,12 +138,15 @@ export function ActivityMetaSection({
 
   const style = (key) => ({ display: actAccordion[key] ? "block" : "none" });
 
+  //if no name isw provided return "Activity ID"
+  const actName = meta[actFields.NAME]
+    ? `${meta[actFields.ID]}. ${meta[actFields.NAME]}`
+    : `Activity ${meta[actFields.ID]}`;
+
   return (
     <div>
       <div className="metaSection">
-        <h1>
-          {meta.ID}. {meta[actFields.ACTIVITY]}
-        </h1>
+        <h1>{actName}</h1>
         <h1
           onClick={() => {
             !networkVeiw &&

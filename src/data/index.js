@@ -1,8 +1,8 @@
 export const actFields = {
-  ID: "ID",
-  RESEARCHER: "Name",
+  ID: "heyo",
+  NAME: "activity name",
   WP: "WP",
-  ACTIVITY: "Activity Name",
+
   STARTM: "Start Month",
   ENDM: "End Month/ Planned End Date",
   COMPLETIONSTATUS: "Activity Status",
@@ -46,8 +46,8 @@ export const actFields = {
 
 export const wpFields = {
   ID: "id",
-  NAME: "name",
-  CATEGORY: "category",
-  PLATFORM: "platform",
-  SDGs: "SDGs",
+  NAME: "wp name",
+  // CATEGORY: "category",
+
+  // SDGs: "SDGs",
 };

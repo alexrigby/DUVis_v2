@@ -46,6 +46,7 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
       </div>
     );
 
+  // ----------------------------Making work package legend-------------------------------
   useEffect(() => {
     const workPackages = cyState.cy.nodes("[type = 'wp']").map((wp) => wp.data());
 
@@ -71,18 +72,16 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
       return a.id.slice(2) - b.id.slice(2);
     });
 
-    const wpLegendItems = wps.map((wp) => (
-      <div key={wp.id} className="boxContainer">
-        <div
-          className="box"
-          title={`Category: ${wp.category}`}
-          style={{ backgroundColor: BG[wp.id], borderColor: BORDER[wp.id] }}
-        ></div>
-        <p className="legendLable" title={`Category: ${wp.category}`}>
-          {wp.id}: {wp.name}
-        </p>
-      </div>
-    ));
+    const wpLegendItems = wps.map((wp) => {
+      // if name is supplied then display, else display "work Package id"
+      const wpLegendLabel = wp.name ? `${wp.id}: ${wp.name}` : `Work Package ${wp.id}`;
+      return (
+        <div key={wp.id} className="boxContainer">
+          <div className="box" style={{ backgroundColor: BG[wp.id], borderColor: BORDER[wp.id] }}></div>
+          <p className="legendLable">{wpLegendLabel}</p>
+        </div>
+      );
+    });
     legendData.current = { wps: wpLegendItems };
   }, [cyState.cy, cyState.elements.length, cyState, networkVeiw, networkVeiwEls, selectedNode]);
 
