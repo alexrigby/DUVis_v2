@@ -2,9 +2,11 @@ export const actFields = {
   ID: "heyo",
   NAME: "activity name",
   WP: "WP",
-
   STARTM: "Start Month",
   ENDM: "End Month/ Planned End Date",
+
+  META_TEST: ["category", "Activity description"],
+
   COMPLETIONSTATUS: "Activity Status",
   LINKEDWP: "Collaborating WPs",
   SUPPORTINGWP: "Supporting WP",

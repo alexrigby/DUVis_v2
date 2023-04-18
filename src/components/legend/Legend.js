@@ -2,8 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { ENGAGEMENT, BORDER, BG, ENGRANK, EDGE } from "../../configs/COLORS";
 import engLevelWording from "../../configs/engLevelWording";
 
-// import iconByCategory from "../cytoscape/functions/iconByCategory";
-
 import "./Legend.css";
 
 export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, engScoreVeiw, stakeholdersDisplay }) {
@@ -74,7 +72,7 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
 
     const wpLegendItems = wps.map((wp) => {
       // if name is supplied then display, else display "work Package id"
-      const wpLegendLabel = wp.name ? `${wp.id}: ${wp.name}` : `Work Package ${wp.id}`;
+      const wpLegendLabel = wp.name ? `${wp.id}: ${wp.name}` : `Work Package ${wp.label}`;
       return (
         <div key={wp.id} className="boxContainer">
           <div className="box" style={{ backgroundColor: BG[wp.id], borderColor: BORDER[wp.id] }}></div>

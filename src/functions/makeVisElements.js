@@ -44,7 +44,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   const latestPrPeriod = dates[dates.length - 1].prPeriod;
   const trimmedActData = trimActData(activityData, prPeriod, currentStory);
   const trimmedWpData = wpData.filter((wp) =>
-    [...new Set(trimmedActData.map((act) => act.WP))].includes(wp.id.slice(2))
+    [...new Set(trimmedActData.map((act) => `WP_${act.WP}`))].includes(wp.id)
   );
 
   // ----TRIM & FILTER STAKEHOLDERS-------
@@ -54,6 +54,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   const actNodes = makeActNodes(trimmedActData);
   const actEdges = makeActEdges(links, actNodes);
   const wpNodes = makeWpNodes(trimmedWpData);
+
   const wpEdges = makeWpEdges(trimmedWpData);
   const stakeholderNodes = makeStakeholerNodes(stakeholderData);
   const stakeholderEdges = makeStakeholderEdges(stakeholderData);

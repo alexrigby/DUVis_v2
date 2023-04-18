@@ -1,25 +1,25 @@
 //background
 export const BG = {
-  wp1: "#1f78b4",
-  wp2: "#fb8072", //
-  wp3: "#66c2a5",
-  wp4: "#33a02c",
-  wp5: "#ffd92f",
-  wp6: "#beaed4", //
-  wp7: "#f768a1",
-  wp8: "#ff7f00",
+  WP_1: "#1f78b4",
+  WP_2: "#fb8072", //
+  WP_3: "#66c2a5",
+  WP_4: "#33a02c",
+  WP_5: "#ffd92f",
+  WP_6: "#beaed4", //
+  WP_7: "#f768a1",
+  WP_8: "#ff7f00",
   stakeholder: "#808080",
 };
 //border color
 export const BORDER = {
-  wp1: "#196090",
-  wp2: "#fa604f",
-  wp3: "#48b492",
-  wp4: "#298023",
-  wp5: "#ffd102",
-  wp6: "#967cb9",
-  wp7: "#f43682",
-  wp8: "#cc6600",
+  WP_1: "#196090",
+  WP_2: "#fa604f",
+  WP_3: "#48b492",
+  WP_4: "#298023",
+  WP_5: "#ffd102",
+  WP_6: "#967cb9",
+  WP_7: "#f43682",
+  WP_8: "#cc6600",
   stakeholder: "#666666",
 };
 

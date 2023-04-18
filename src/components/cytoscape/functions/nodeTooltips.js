@@ -6,11 +6,8 @@ import "tippy.js/dist/tippy.css";
 cytoscape.use(popper);
 // NODE TOOLTIP
 export function nodeTooltip(cy) {
-  const activityNodes = cy.nodes("[type != 'wp']");
-  //   const wpNodes = cy.nodes("[type = 'wp']");
-
-  makeTooltips(activityNodes, "mouseover", "mouseout");
-  //   makeTooltips(wpNodes, "click", "click"); propbably dont need as already have legend
+  const nodes = cy.nodes("[type != 'project']");
+  makeTooltips(nodes, "mouseover", "mouseout");
 }
 
 export default nodeTooltip;
@@ -24,12 +21,16 @@ function makeTooltips(nodes, triggerEvent, cancelEvent) {
     let tip = new tippy(dummyDomEle, {
       getReferenceClientRect: ref.getBoundingClientRect,
       trigger: "manual",
-      //content to show in tooltip
+      //content to show in toolti
       content: () => {
         let content = document.createElement("div");
-        content.innerHTML = node.data().name
-          ? `${node.data().label}. ${node.data("name")}`
-          : `Activity ${node.data().label}`;
+        if (node.data().name) {
+          content.innerHTML = `${node.data().label}. ${node.data("name")}`;
+        } else {
+          content.innerHTML =
+            node.data().type === "activityNode" ? `Activity ${node.data().label}` : `Work Package ${node.data().label}`;
+        }
+
         return content;
       },
     });

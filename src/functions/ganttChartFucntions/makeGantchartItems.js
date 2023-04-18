@@ -15,11 +15,11 @@ export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, l
     }
   }
 
+  // groups are work Packages
   const groups = wpData.map((wp) => ({
     id: wp[wpFields.ID],
     content: wp[wpFields.ID],
-    name: wp[wpFields.NAME],
-    category: wp[wpFields.CATEGORY],
+    // name: wp[wpFields.NAME],
     style: `background-color: ${BG[wp[wpFields.ID]]}; color: white`,
   }));
 
@@ -28,17 +28,22 @@ export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, l
     const endDate = new Date(handleNonDates(act.endDate, "end")).getTime();
     const opacity = completedDisplay ? activityOpacity(act, latestPrPeriod, prPeriod) : statusOpacity.onGoing;
 
+    // if no name is supplied then generate name from id
+    const itemName = act[actFields.NAME]
+      ? `${act[actFields.ID]}. ${act[actFields.NAME]}`
+      : `Activity ${act[actFields.ID]}`;
+
     return {
-      group: `wp${act[actFields.WP]}`,
+      group: `WP_${act[actFields.WP]}`,
       id: act[actFields.ID],
-      content: `${act[actFields.ID]}. ${act[actFields.ACTIVITY]}`,
+      content: itemName,
       start: startDate,
       end: endDate,
-      title: act[actFields.ACTIVITY],
-      className: `item${act.ID}`,
+      title: itemName,
+      className: `item${act[actFields.ID]}`,
       sMonth: act[actFields.STARTM],
-      style: `background-color: ${BG[`wp${act.WP}`]}; border-color: ${
-        BORDER[`wp${act.WP}`]
+      style: `background-color: ${BG[`WP_${act[actFields.WP]}`]}; border-color: ${
+        BORDER[`WP_${act[actFields.WP]}`]
       }; color: white; opacity: ${opacity}`,
     };
   });
