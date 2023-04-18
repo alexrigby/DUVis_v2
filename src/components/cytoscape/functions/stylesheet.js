@@ -43,10 +43,10 @@ export function stylesheet(
       style: {
         "border-width": 4,
         "background-opacity": completedDisplay
-          ? (ele) => activityOpacity(ele.data().meta, latestPrPeriodRef.current, prPeriod)
+          ? (ele) => activityOpacity(ele.data(), latestPrPeriodRef.current, prPeriod)
           : statusOpacity.onGoing,
         "border-opacity": completedDisplay
-          ? (ele) => activityOpacity(ele.data().meta, latestPrPeriodRef.current, prPeriod)
+          ? (ele) => activityOpacity(ele.data(), latestPrPeriodRef.current, prPeriod)
           : statusOpacity.onGoing,
         "background-color": (ele) => BG[ele.data("colorRef")],
         "border-color": (ele) => BORDER[ele.data("colorRef")],

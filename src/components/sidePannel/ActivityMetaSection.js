@@ -13,11 +13,12 @@ export function ActivityMetaSection({
   networkVeiw,
   setStakeholdersDisplay,
 }) {
-  const meta = selectedNode.meta;
+  const meta = selectedNode;
   const OPEN = <i className="fa fa-angle-down"></i>;
   const CLOSE = <i className="fa fa-angle-up"></i>;
   const ENG_COUNT = Array.from(Array(engLevelWording.length).keys());
-  const SUBSECTIONS = ["description", "research", "method", "data", "discipline", "IW", "activity", "stakeholder"];
+
+  const SUBSECTIONS = [...actFields.META_FIELDS]; // array of user defined meta fileds to display
 
   const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
   const subSectionObj = SUBSECTIONS.reduce((p, c) => ({ ...p, [c]: false }), {}); // each subsection to onject- false
@@ -40,18 +41,18 @@ export function ActivityMetaSection({
 
   function completedStyle() {
     if (prPeriod.pr === null) {
-      if (selectedNode.meta.endPrPeriod === "undefined" || selectedNode.meta.endPrPeriod === "onGoing") {
+      if (selectedNode.endPrPeriod === "undefined" || selectedNode.endPrPeriod === "onGoing") {
         return { color: "#ffbf00", opacity: "1" };
       } else {
-        return { color: selectedNode.meta.endPrPeriod < latestPrPeriod ? "#1fc700" : "#ffbf00", opacity: "1" };
+        return { color: selectedNode.endPrPeriod < latestPrPeriod ? "#1fc700" : "#ffbf00", opacity: "1" };
       }
     } else {
-      if (selectedNode.meta.endPrPeriod === "undefined" || selectedNode.meta.endPrPeriod === "onGoing") {
+      if (selectedNode.endPrPeriod === "undefined" || selectedNode.endPrPeriod === "onGoing") {
         return { color: "#ffbf00", opacity: "1" };
-      } else if (selectedNode.meta.startPrPeriod > prPeriod.pr) {
+      } else if (selectedNode.startPrPeriod > prPeriod.pr) {
         return { color: "#EE4B2B", fontSize: "15pt", fontWeight: "900", opacity: "1" };
       } else {
-        return { color: selectedNode.meta.endPrPeriod < prPeriod.pr ? "#1fc700" : "#ffbf00", opacity: "1" };
+        return { color: selectedNode.endPrPeriod < prPeriod.pr ? "#1fc700" : "#ffbf00", opacity: "1" };
       }
     }
   }
@@ -63,36 +64,37 @@ export function ActivityMetaSection({
 
   function completedText() {
     if (prPeriod.pr === null) {
-      if (selectedNode.meta.endPrPeriod === "undefined" || selectedNode.meta.endPrPeriod === "onGoing") {
+      if (selectedNode.endPrPeriod === "undefined" || selectedNode.endPrPeriod === "onGoing") {
         return "Ongoing";
       } else {
-        return selectedNode.meta.endPrPeriod < latestPrPeriod ? "Completed" : "Ongoing";
+        return selectedNode.endPrPeriod < latestPrPeriod ? "Completed" : "Ongoing";
       }
     } else {
-      if (selectedNode.meta.endPrPeriod === "undefined" || selectedNode.meta.endPrPeriod === "onGoing") {
+      if (selectedNode.endPrPeriod === "undefined" || selectedNode.endPrPeriod === "onGoing") {
         return "Ongoing";
-      } else if (selectedNode.meta.startPrPeriod > prPeriod.pr) {
+      } else if (selectedNode.startPrPeriod > prPeriod.pr) {
         return "Not Started";
       } else {
-        return selectedNode.meta.endPrPeriod < prPeriod.pr ? "Completed" : "Ongoing";
+        return selectedNode.endPrPeriod < prPeriod.pr ? "Completed" : "Ongoing";
       }
     }
   }
 
-  // if (prPeriod.pr === null || ) {
-  //   console.log(true);
-  // }
+  const linkedActivitiesList = uniqueActLinks.map((act) => {
+    //if no nmae is selcected generate name
+    const actName = act.data().name ? `${act.id()}. ${act.data().name}` : `Activity ${act.data().id}`;
 
-  const linkedActivitiesList = uniqueActLinks.map((activity) => (
-    <li
-      key={activity.id()}
-      onClick={() => nodeNavigationHandler(activity.id(), setSelectedNode, cyState, setStakeholdersDisplay)}
-      onMouseOver={() => hilightOnLiHover(activity.id(), cyState)}
-      onMouseOut={() => hilightOnLiHover(activity.id(), cyState)}
-    >
-      {activity.id()}. {activity.data().name}
-    </li>
-  ));
+    return (
+      <li
+        key={act.id()}
+        onClick={() => nodeNavigationHandler(act.id(), setSelectedNode, cyState, setStakeholdersDisplay)}
+        onMouseOver={() => hilightOnLiHover(act.id(), cyState)}
+        onMouseOut={() => hilightOnLiHover(act.id(), cyState)}
+      >
+        {actName}
+      </li>
+    );
+  });
 
   const openActAccordion = (event, key) => {
     setActAccordion((prevState) => ({
@@ -136,12 +138,32 @@ export function ActivityMetaSection({
   }
   const stakeholderCount = stakeholderCollection.flat().length;
 
+  //controls display state of slected accordion field
   const style = (key) => ({ display: actAccordion[key] ? "block" : "none" });
 
-  //if no name isw provided return "Activity ID"
-  const actName = meta[actFields.NAME]
-    ? `${meta[actFields.ID]}. ${meta[actFields.NAME]}`
-    : `Activity ${meta[actFields.ID]}`;
+  //---------------------------------------------USER DEFINED META FIELDS-----------------------------------------------
+  //lopps over user defined meta sections and accessed the corresponding data from the dataset
+  const metaSections = SUBSECTIONS.map((sec, i) => {
+    //sec = string key name of meta field
+    //capitalizing each word of fields
+    var secCopy = sec.slice();
+    var capSecWords = secCopy.split(" ");
+    capSecWords.forEach((word, i) => (capSecWords[i] = word[0].toUpperCase() + word.substring(1)));
+    var capitalilized = capSecWords.join(" ");
+
+    return (
+      <div className="metaSection" key={sec}>
+        <h1>
+          {capitalilized}:{" "}
+          <span onClick={() => openActAccordion("click", sec)}>{actAccordion[sec] ? CLOSE : OPEN}</span>
+        </h1>
+        <p style={style(sec)}>{selectedNode.meta[sec]}</p>
+      </div>
+    );
+  });
+
+  //if no name is provided return "Activity ID"
+  const actName = selectedNode.name ? `${selectedNode.id}. ${selectedNode.name}` : `Activity ${selectedNode.id}`;
 
   return (
     <div>
@@ -154,7 +176,7 @@ export function ActivityMetaSection({
           }}
           className="navigateToWp"
         >
-          WP: {selectedNode.parent.slice(2)}
+          WP: {cyState.cy.nodes(`#${selectedNode.id}`).parent().data().label}
         </h1>
         <p style={completedStyle()} className="completed">
           {/* {meta["Activity Status"]} */}
@@ -173,79 +195,8 @@ export function ActivityMetaSection({
           <span style={datesStyle}> PR Period: </span> {meta.startPrPeriod} -{" "}
           {meta.endPrPeriod === "onGoing" ? "Ongoing" : meta.endPrPeriod}
         </p>
-        <h2> Category:</h2> <p>{meta[actFields.CATEGORY]}</p>
-        <h2> Researcher:</h2> <p>{meta[actFields.RESEARCHER]}</p>
-        <h2> End Users: </h2> <p>{meta[actFields.ENDUSER]}</p>
-        {/* <h2> PDCA Cycle: </h2> <p>{meta[actFields.PDCA]}</p> */}
-        <h2> Contribution to DU: </h2> <p>{meta[actFields.PROJECTCONTRIBUTION]}</p>
       </div>
-      <div className="metaSection">
-        <h1>
-          {/* DESCRIPTION{" "} */}
-          Description:
-          <span onClick={() => openActAccordion("click", "description")}>
-            {actAccordion.description ? CLOSE : OPEN}
-          </span>
-        </h1>{" "}
-        <p style={style("description")}>{meta[actFields.DESCRIPTION]}</p>
-      </div>
-      <div className="metaSection">
-        <h1>
-          {/* RESEARCH{" "} */}
-          Research:
-          <span onClick={() => openActAccordion("click", "research")}>{actAccordion.research ? CLOSE : OPEN}</span>{" "}
-        </h1>
-        <div style={style("research")}>
-          <h2>Question Type:</h2> {researchQuestionType(meta)}
-          <h2>Question:</h2> <p> {meta[actFields.QUESTION]} </p>
-        </div>
-      </div>
-      <div className="metaSection">
-        <h1>
-          {/* METHODOLOGY{" "} */}
-          Methodology
-          <span onClick={() => openActAccordion("click", "method")}>{actAccordion.method ? CLOSE : OPEN}</span>
-        </h1>
-        <div style={style("method")}>
-          <h2>Category:</h2> <p>{meta[actFields.CATEGORY]}</p>
-          <h2>Methodology: </h2> <p>{meta[actFields.METHOD]} </p>
-        </div>
-      </div>
-      <div className="metaSection">
-        <h1>
-          {/* DATA  */}
-          Data
-          <span onClick={() => openActAccordion("click", "data")}>{actAccordion.data ? CLOSE : OPEN}</span>{" "}
-        </h1>
-        <div style={style("data")}>
-          <h2>Procurement Method: </h2> <p>{meta[actFields.DATAMETHOD]} </p>
-          <h2>Type:</h2> <p>{meta[actFields.DATATYPE]}</p>
-          <h2>Usage:</h2> <p>{meta[actFields.DATAUSAGE]}</p>
-        </div>
-      </div>
-      <div className="metaSection">
-        <h1>
-          {/* DISCIPLINE{" "} */}
-          Discipline
-          <span onClick={() => openActAccordion("click", "discipline")}>
-            {actAccordion.discipline ? CLOSE : OPEN}
-          </span>{" "}
-        </h1>
-        <div style={style("discipline")}>
-          <h2>Category: </h2> <p>{meta[actFields.CATEGORY]}</p>
-          <h2>Specific Perspective:</h2> <p>{meta[actFields.PERSPECTIVES]}</p>
-          <h2>Transdisciplinary Perspectives:</h2> <p>{meta[actFields.TDPERSPECTIVE]}</p>
-        </div>
-      </div>
-      {/* <div className="metaSection">
-        <h1>
-          IERLAND WATER <span onClick={() => openActAccordion("click", "IW")}>{actAccordion.IW ? CLOSE : OPEN}</span>{" "}
-        </h1>
-        <div style={style("IW")}>
-          <h2>Aims and Objectives: </h2> <p>{meta[actFields.IW]}</p>
-          <h2>Contribution:</h2> <p>{meta[actFields.IWCONTRIBUTION]}</p>
-        </div>
-      </div> */}
+      <div>{metaSections}</div>
       <div className="metaSection">
         <h1>
           {/* LINKED ACTIVITIES{" "} */}
@@ -301,16 +252,18 @@ function shortDates(node, se) {
 }
 
 function listLinks(nodes, setSelectedNode, cyState, setStakeholdersDisplay) {
-  return nodes.map((act) => (
-    <li
-      key={act.id()}
-      onClick={() => nodeNavigationHandler(act.id(), setSelectedNode, cyState, setStakeholdersDisplay)}
-      onMouseOver={() => hilightOnLiHover(act.id(), cyState)}
-      onMouseOut={() => hilightOnLiHover(act.id(), cyState)}
-    >
-      {act.id()}. {act.data().name}
-    </li>
-  ));
+  nodes.map((act) => {
+    return (
+      <li
+        key={act.id()}
+        onClick={() => nodeNavigationHandler(act.id(), setSelectedNode, cyState, setStakeholdersDisplay)}
+        onMouseOver={() => hilightOnLiHover(act.id(), cyState)}
+        onMouseOut={() => hilightOnLiHover(act.id(), cyState)}
+      >
+        {act.id()}. ${act.data().name}
+      </li>
+    );
+  });
 }
 
 // function flagText() {

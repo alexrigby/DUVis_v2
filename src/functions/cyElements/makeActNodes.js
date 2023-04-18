@@ -4,12 +4,10 @@ import { actFields } from "../../data";
 
 export function makeActNodes(data) {
   const cyNodes = [];
+
   for (let i = 0; i < data.length; i++) {
-    // loops over meta fields to return value of specified meta fields
-    const meta_fields = actFields.META_TEST.map((field) => {
-      // data in array format ["field name", "field value"]
-      return [field, data[i][field]];
-    });
+    // for each secified field creates object {meta field : field value }
+    const meta_fields = actFields.META_FIELDS.reduce((a, b) => ({ ...a, [b]: data[i][b] }), {});
 
     const node = {
       group: "nodes",
@@ -34,7 +32,7 @@ export function makeActNodes(data) {
         //   ...data[i],
         // },
 
-        meta: [...meta_fields],
+        meta: meta_fields,
       },
     };
     cyNodes.push(node);
