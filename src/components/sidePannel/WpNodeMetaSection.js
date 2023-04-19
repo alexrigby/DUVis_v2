@@ -2,28 +2,22 @@ import { useState } from "react";
 import { BG } from "../../configs/COLORS";
 import SDG_ICONS from "../../assets/sdg_icons/index";
 import engLevelWording from "../../configs/engLevelWording";
-
-import nodeNavigationHandler from "./functions/nodeNavigationHandler";
-import hilightOnLiHover from "./functions/hilightOnLiHover";
+import listLinks from "./functions/listLinks";
 
 export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setStakeholdersDisplay }) {
-  const open = <i className="fa fa-angle-down"></i>;
-  const close = <i className="fa fa-angle-up"></i>;
+  // --------------------------------------USEFULL VARS---------------------------------------------------//
+  const OPEN = <i className="fa fa-angle-down"></i>;
+  const CLOSE = <i className="fa fa-angle-up"></i>;
+  const ENG_COUNT = Array.from(Array(engLevelWording.length).keys()); // add or remove numbers if engement level chnages
+  const SUBSECTIONS = ["activity", "stakeholder", "SDGs"]; // add or remove subsections
+  // if no name supplied in excel then use ID. Selecting from selected node as supposed to config file incase some have names and others dont
+  const wpName = selectedNode.name ? selectedNode.name : `Work Package ${selectedNode.label}`;
 
-  const engCount = Array.from(Array(engLevelWording.length).keys()); // add or remove numbers if engement level chnages
-  const subSections = ["activity", "stakeholder", "SDGs"]; // add or remove subsections
-
-  const engObj = engCount.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
-  const subSectionObj = subSections.reduce((p, c) => ({ ...p, [c]: false }), {}); // each subsection to onject- false
+  //-------------------------------------ACCORDION STATE---------------------------------------------------//
+  const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
+  const subSectionObj = SUBSECTIONS.reduce((p, c) => ({ ...p, [c]: false }), {}); // each subsection to onject- false
 
   const [wpAccordion, setWPAccordion] = useState({ ...subSectionObj, ...engObj }); //add all sunsections to state
-
-  const wpActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).children(); //gets all activities in wp
-
-  const activitiesList = listLinks(wpActivities, setSelectedNode, cyState, setStakeholdersDisplay); // makes list of acctivitis
-
-  const wpStakeholdersList = []; // JSX list of stakeholders and headings
-  const wpStakeholders = []; // list of all stakehlders (to get total count)
 
   const openAccordion = (event, key) => {
     setWPAccordion((prevState) => ({
@@ -32,8 +26,17 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
     }));
   };
 
+  //------------------------------PANNEL TEXT-----------------------------------------------------//
+  //--------------------ACTIVITIES LIST ----------------------
+  const wpActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).children(); //gets all activities in wp
+  const activitiesList = listLinks(wpActivities, setSelectedNode, cyState, setStakeholdersDisplay); // makes JSX list of acctivitis
+
+  //---------------- STAKEHOLDER LIST-----------------
+  const wpStakeholdersList = []; // JSX list of stakeholders and headings
+  const wpStakeholders = []; // list of all stakehlders (to get total count)
+
   //loop over once for every level of engagemnt
-  for (let i = 0; i < engCount.length; i++) {
+  for (let i = 0; i < ENG_COUNT.length; i++) {
     const stakeholderList = [];
     //loop over alll wp activities and return there connected stakeholders by engement (1-4)
     for (let j = 0; j < wpActivities.length; j++) {
@@ -56,7 +59,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
         <div className="metaSection" key={i}>
           <h2 title={engLevelWording[i][1]}>
             Engagement level {i + 1} ({engLevelWording[i][0]}):
-            <span onClick={() => openAccordion("click", `eng${i}`)}>{wpAccordion[`eng${i}`] ? close : open}</span>
+            <span onClick={() => openAccordion("click", `eng${i}`)}>{wpAccordion[`eng${i}`] ? CLOSE : OPEN}</span>
           </h2>
           <h2>count: {uniqueStakeholders.length}</h2>
           <div style={style}>
@@ -67,6 +70,9 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
     }
   }
 
+  const stakeholderCount = wpStakeholders.flat().length;
+
+  //--------------------------SDGS------------------ (maybe remove to generalise)
   // const sdgIconStyle = { width: "92px", height: "92px", paddingRight: "4px" };
 
   // const sdgList = selectedNode.SDGs.map((sdg) => (
@@ -80,22 +86,18 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
   //   </a>
   // ));
 
-  const stakeholderCount = wpStakeholders.flat().length;
-
+  // -----------------------------------------------STYLE--------------------------------------------//
   const acivitiesListStyle = {
     display: !wpAccordion.activity ? "none" : "block",
   };
-
-  // const sdgListStyle = {
-  //   display: !wpAccordion.SDGs ? "none" : "block",
-  // };
 
   const stakeholderListDisplay = {
     display: !wpAccordion.stakeholder ? "none" : "block",
   };
 
-  // if no name than use ID. Selecting from selected node as supposed to config file incase some have names and others dont
-  const wpName = selectedNode.name ? selectedNode.name : `Work Package ${selectedNode.label}`;
+  // const sdgListStyle = {
+  //   display: !wpAccordion.SDGs ? "none" : "block",
+  // };
 
   return (
     <div>
@@ -117,7 +119,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
         <div className="metaSectionHead">
           <h1>
             ACTIVITIES{" "}
-            <span onClick={() => openAccordion("click", "activity")}>{wpAccordion.activity ? close : open}</span>
+            <span onClick={() => openAccordion("click", "activity")}>{wpAccordion.activity ? CLOSE : OPEN}</span>
           </h1>
         </div>
         <h2>count: {activitiesList.length}</h2>
@@ -126,7 +128,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
       <div className="metaSectionHead metaSection">
         <h1>
           LINKED STAKEHOLDERS{" "}
-          <span onClick={() => openAccordion("click", "stakeholder")}>{wpAccordion.stakeholder ? close : open}</span>
+          <span onClick={() => openAccordion("click", "stakeholder")}>{wpAccordion.stakeholder ? CLOSE : OPEN}</span>
         </h1>
         <h2>count: {stakeholderCount}</h2>
       </div>
@@ -136,51 +138,3 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
 }
 
 export default WpNodeMetaSection;
-
-function listLinks(nodes, setSelectedNode, cyState, setStakeholdersDisplay) {
-  return nodes.map((act) => (
-    <li
-      key={act.id()}
-      onClick={() => nodeNavigationHandler(act.id(), setSelectedNode, cyState, setStakeholdersDisplay)}
-      onMouseOver={() => hilightOnLiHover(act.id(), cyState)}
-      onMouseOut={() => hilightOnLiHover(act.id(), cyState)}
-    >
-      {act.id()}. {act.data().name}
-    </li>
-  ));
-}
-
-//   <div className="metaSection">
-//     <h2>
-//       Level 1 engagement:
-//       <span>{/* {accordion? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>} */}</span>
-//     </h2>
-//     <h2>count: {wpStakeholders[0].length}</h2>
-//     {wpStakeholdersList[0]}
-//   </div>
-//   <div className="metaSection">
-//     <h2>
-//       Level 2 engagement:
-//       <span>{/* {accordion? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>} */}</span>
-//     </h2>
-//     <h2>count: {wpStakeholders[1].length}</h2>
-//     {wpStakeholdersList[1]}
-//   </div>
-//   <div className="metaSection">
-//     <h2>
-//       Level 3 engagement:
-//       <span>{/* {accordion? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>} */}</span>
-//     </h2>
-//     <h2>count: {wpStakeholders[2].length}</h2>
-//     {wpStakeholdersList[2]}
-//   </div>
-//   <div className="metaSection">
-//     <h2>
-//       Level 4 engagement:
-//       <span>{/* {accordion? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>} */}</span>
-//     </h2>
-//     <h2>count: {wpStakeholders[3].length}</h2>
-//     {wpStakeholdersList[3]}
-//   </div>
-//   {/* <div style={stakeholderListDisplay}>{wpStakeholdersList}</div> */}
-// </div>

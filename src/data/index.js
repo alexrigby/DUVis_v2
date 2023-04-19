@@ -1,5 +1,5 @@
 export const actFields = {
-  ID: "heyo",
+  ID: "actividad",
   NAME: "activity name",
   WP: "WP",
   STARTM: "Start Month",
