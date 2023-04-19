@@ -1,4 +1,4 @@
-import vegaMetricFields from "../../../../configs/vegaMetricFields";
+import { actFields } from "../../../../data";
 
 export function parseVegaData(actData, dates, brushRange, selectedMetric) {
   function handleNonDates(date, startOrEnd) {
@@ -12,29 +12,29 @@ export function parseVegaData(actData, dates, brushRange, selectedMetric) {
   }
 
   //handles dates "onGoing" and "undefined"
-  var numericDate = actData.map((act) => ({
+  var actDataNumericDate = actData.map((act) => ({
     ...act,
     startDate: handleNonDates(act.startDate, "start"),
     endDate: handleNonDates(act.endDate, "end"),
   }));
 
-  // updates numeric date object so any blanks in vegafeilds are chnaged to "undefined"
-  for (var i = 0; i < numericDate.length; i++) {
-    for (var j = 0; j < vegaMetricFields.length; j++) {
-      if (numericDate[i][vegaMetricFields[j]] === "") {
-        numericDate[i][vegaMetricFields[j]] = "undefined";
+  // updates actDataNumericDate object so any blanks in selected vegafeilds are chnaged to create an "undefined" category
+  for (var i = 0; i < actDataNumericDate.length; i++) {
+    for (var j = 0; j < actFields.META_FIELDS.length; j++) {
+      if (actDataNumericDate[i][actFields.META_FIELDS[j]] === "") {
+        actDataNumericDate[i][actFields.META_FIELDS[j]] = "undefined";
       }
     }
   }
 
   //unique category names
-  const options = [...new Set(numericDate.map((act) => act[selectedMetric]))];
+  const options = [...new Set(actDataNumericDate.map((act) => act[selectedMetric]))];
 
   //get groups of each activities in category
-  const activityByOption = options.map((ops) => numericDate.filter((act) => act[selectedMetric] === ops));
+  const activityByOption = options.map((ops) => actDataNumericDate.filter((act) => act[selectedMetric] === ops));
 
   //finds all activitys whos start or end date extends into the brush range
-  const withinBrushRange = numericDate.filter(
+  const withinBrushRange = actDataNumericDate.filter(
     (act) =>
       (brushRange.start < new Date(act.startDate) || brushRange.start < new Date(act.endDate)) &&
       (brushRange.end > new Date(act.endDate) || brushRange.end > new Date(act.startDate))

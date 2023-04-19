@@ -81,7 +81,7 @@ export function ActivityMetaSection({
   }
 
   const linkedActivitiesList = uniqueActLinks.map((act) => {
-    //if no nmae is selcected generate name
+    //if no name is selcected generate name
     const actName = act.data().name ? `${act.id()}. ${act.data().name}` : `Activity ${act.data().id}`;
 
     return (

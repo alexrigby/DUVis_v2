@@ -6,6 +6,7 @@ import VegaSelect from "./VegaSelect";
 
 import vegaSpec from "./functions/vegaSpec";
 import parseVegaData from "./functions/parseVegaData";
+import { actFields } from "../../../data";
 import "./VegaAnalytics.css";
 
 export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPeriod, setSelectedBottomVis }) {
@@ -17,7 +18,7 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
 
   const [brushRange, setBrushRange] = useState("");
 
-  const [selectedMetric, setSelectedMetric] = useState("Activity Category");
+  const [selectedMetric, setSelectedMetric] = useState(actFields.META_FIELDS[0]);
   //sets brush range to full extent of project once the initial data is parsed
   useEffect(() => {
     if (dates !== null) {

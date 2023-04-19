@@ -1,12 +1,12 @@
 import Select from "react-select";
 
-import vegaMetricFields from "../../../configs/vegaMetricFields";
+import { actFields } from "../../../data";
 
 import "./VegaAnalytics.css";
 
 export function VegaSelect({ setSelectedMetric }) {
-  //maps over values from vegametricFields config file to create select options
-  const options = vegaMetricFields.map((field) => ({
+  //maps over values from user defined meta_fileds  to create select options
+  const options = actFields.META_FIELDS.map((field) => ({
     value: field,
     label: field,
   }));
