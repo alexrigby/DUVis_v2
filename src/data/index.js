@@ -15,3 +15,10 @@ export const wpFields = {
 
   // SDGs: "SDGs",
 };
+
+export const stFields = {
+  ID: "S_ID",
+  NAME: "stakeholder name",
+
+  META_FIELDS: ["Sector", "Category"],
+};

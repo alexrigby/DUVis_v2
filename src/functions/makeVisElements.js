@@ -23,12 +23,15 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   const workBookData = XLSX.read(file); // reads the whole workbook
   // header: 1 returns array of arrays of csv rows, use for crosstab datasets
   const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets["links"], { header: 1, defval: "", raw: false }); // TO DO raw false = doesnt convert types (e.g. 1 === "1") need to change as I continue
-  const tdr = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholders"], { header: 1, defval: "", raw: false });
+  const stLinks = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholder links"], {
+    header: 1,
+    defval: "",
+    raw: false,
+  });
   // convert the csvs to JSON format
   const actDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["Activities"], { defval: "", raw: false });
   const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["work packages"], { defval: "", raw: false });
-
-  // const stakeholderTest = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholders"], { defval: "", raw: false });
+  const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholder list"], { defval: "", raw: false });
 
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
   const startDate = "2016-09-01";
@@ -40,7 +43,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   const links = linksMatrixToArray(actLinks);
   const wpData = parseWPDataset(wpDataset);
 
-  //-------------TRIM DATA TO FILTER SPECIFICATION ----------------
+  //-------------TRIM ACT DATA TO FILTER SPECIFICATION ----------------
   const latestPrPeriod = dates[dates.length - 1].prPeriod;
   const trimmedActData = trimActData(activityData, prPeriod, currentStory);
   const trimmedWpData = wpData.filter((wp) =>
@@ -48,16 +51,17 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   );
 
   // ----TRIM & FILTER STAKEHOLDERS-------
-  const stakeholderData = parseStakeholderDataset(tdr, trimmedActData);
+  // creates ealily readable stakeholder object from stData and stLinks
+  const stakeholderData = parseStakeholderDataset(stLinks, stDataset, trimmedActData);
 
   //----MAKE VIS ELEMENTS -------------
   const actNodes = makeActNodes(trimmedActData);
   const actEdges = makeActEdges(links, actNodes);
   const wpNodes = makeWpNodes(trimmedWpData);
-
   const wpEdges = makeWpEdges(trimmedWpData);
   const stakeholderNodes = makeStakeholerNodes(stakeholderData);
   const stakeholderEdges = makeStakeholderEdges(stakeholderData);
+
   const gantChartItems = makeGantchartItems(
     trimmedActData,
     trimmedWpData,

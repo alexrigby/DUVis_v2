@@ -1,10 +1,6 @@
 export function makeStakeholderEdges(stakeholders) {
-  //   console.log(stakeholders.map((s) => s.act.map((act) => act.actID)));
-  //   console.log(stakeholders);
-
   return stakeholders.map((el, i) => {
     let linkedActivities = stakeholders[i].act.map((act) => act);
-
     //maps each link in i links to its array index (i + 1)
     return [
       //map linked activites (n)
