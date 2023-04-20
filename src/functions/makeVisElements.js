@@ -81,11 +81,11 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   //----ALL CYTOSCAPE ELEMENTS-----
   const cyElms = [
     actNodes,
-    // stakeholderNodes,
+    stakeholderNodes,
     actEdges.flat(),
-    // stakeholderEdges.flat(),
+    stakeholderEdges.flat(),
     wpNodes,
-    // projectNode,
+    projectNode,
     wpEdges,
   ].flat();
 

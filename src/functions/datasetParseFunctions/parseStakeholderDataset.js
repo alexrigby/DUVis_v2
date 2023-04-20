@@ -1,8 +1,10 @@
-export function parseStakeholderDataset(data, trimmedData) {
+import { actFields } from "../../data";
+
+export function parseStakeholderDataset(data, trimmedActData) {
   const stakeholders = data.slice(4, data.length).map((s) => s.slice(0, 4)); // removes headers and gets 2 first collumns, tdr id and stakeholder name
   const activityIDs = data.slice(3, 4).flat().slice(4, data.length); //gets activity ids present in stakeholder matrix
 
-  const trimmedDataIds = trimmedData.map((act) => act.ID);
+  const trimmedDataIds = trimmedActData.map((act) => act[actFields.ID]);
 
   const matrix = data.slice(3, data.length).map((s) => s.slice(4, data.length));
 
