@@ -1,7 +1,9 @@
 export const projectMeta = {
   NAME: "ALEXS TEST PROJECT",
-  STARTD: "2016-09-01",
-  ENDD: new Date().toISOString().split("T")[0],
+  // STARTD: "2016-09-01",
+  ENDD: false,
+  STARTD: false,
+  //   ENDD: new Date().toISOString().split("T")[0],
 };
 
 export const actFields = {

@@ -12,30 +12,33 @@ import { INCLUDE_DATES } from "../../../data";
 import "./VegaAnalytics.css";
 
 export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPeriod, setSelectedBottomVis }) {
-  const dates = datesRef.current;
-  const actData = actDataRef.current;
+  // ------------------------- SET STATE -----------------------------------------------------------//
+  const [brushRange, setBrushRange] = useState(""); // BRUSH RANGE STATE (ONLY USED IF DATE IS SUPPLIED)
+  const [selectedMetric, setSelectedMetric] = useState(actFields.META_FIELDS[0]);
+
   const closeVegaPannel = (event) => {
     setSelectedBottomVis("");
   };
 
+  //------------------------USEFUL VARIABLES---------------------------------------------//
+  const DATES = datesRef.current;
+  const ACT_DATA = actDataRef.current;
+  const options = ACT_DATA && [...new Set(ACT_DATA.map((act) => act[selectedMetric]))]; //unique category names for the selected metric
   const trimmedDates =
-    dates !== null && prPeriod.pr !== null ? dates.filter((date) => date.prPeriod <= prPeriod.pr) : dates; //trimes dates data down to pr period
-
-  const [brushRange, setBrushRange] = useState("");
-
-  const [selectedMetric, setSelectedMetric] = useState(actFields.META_FIELDS[0]);
+    DATES !== null && prPeriod.pr !== null ? DATES.filter((date) => date.prPeriod <= prPeriod.pr) : DATES; //trims dates object to match pr period
 
   //sets brush range to full extent of project once the initial data is parsed
   useEffect(() => {
-    if (dates !== null) {
+    if (DATES !== null && INCLUDE_DATES) {
       setBrushRange({
         start: new Date(trimmedDates[0].date).getTime(),
         end: new Date(trimmedDates[trimmedDates.length - 1].date).getTime(),
       });
     }
-  }, [dates]);
+  }, [DATES]);
 
-  //once brush range is set generate component
+  //-------------------------IF USER SUPPLIES DATES-----------------------------------//
+  //if brush range is set AND Dates are provided by the user generate both charts
   if (brushRange !== "" && INCLUDE_DATES) {
     const fullRange = {
       start: new Date(trimmedDates[0].date).getTime(),
@@ -66,8 +69,7 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
       setBrushRange(fullRange);
     };
 
-    const { vegaData, options } = parseVegaData(actData, trimmedDates, brushRange, selectedMetric);
-
+    const vegaData = parseVegaData(ACT_DATA, trimmedDates, brushRange, selectedMetric, options);
     const spec = vegaSpec(options, brushRange, selectedMetric);
 
     const title =
@@ -92,20 +94,15 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
         </div>
       );
     }
-  } else if (actData) {
-    //unique category names
-    const options = [...new Set(actData.map((act) => act[selectedMetric]))];
-
-    // console.log([...new Set(actData.reduce((a, b) => ({ ...a, [selectedMetric]: })))])
-    const noDateSpec = vegaSpecNoDate(options, selectedMetric);
+    //----------------------IF NO DATE IS SUPPLIED BY USER THEN ONLY GENERATE BAR CHART-------------------------------------------//
+  } else if (ACT_DATA) {
+    const noDateSpec = vegaSpecNoDate(selectedMetric);
     const noDateVegaData = {
       vegaData: options.map((ops) => ({
         [selectedMetric]: ops,
-        count: actData.filter((act) => act[selectedMetric] === ops).length,
+        count: ACT_DATA.filter((act) => act[selectedMetric] === ops).length,
       })),
     };
-
-    console.log(noDateVegaData);
 
     if (selectedBottomVis === "vegaAnalyticsButton") {
       return (

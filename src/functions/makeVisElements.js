@@ -17,6 +17,7 @@ import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
 
 import workBookPath from "../data/activity_data.xlsx";
 import { actFields } from "../data";
+import { projectMeta } from "../data";
 
 export async function makeVisElements(prPeriod, currentStory, completedDisplay) {
   const INCLUDE_DATES = !actFields.STARTM || !actFields.ENDM ? false : true; // if dates are not supplied then:
@@ -40,18 +41,18 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholder list"], { defval: "", raw: false });
 
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
-  const startDate = "2016-09-01";
-  const todaysDate = new Date().toISOString().split("T")[0];
-  const dates = makeDates(startDate, todaysDate);
+  const startDate = projectMeta.STARTD;
+  const todaysDate = projectMeta.ENDD;
+  const dates = INCLUDE_DATES && makeDates(startDate, todaysDate);
 
   //-----------------PARSE DATA ----------
-  // if not months are provided then dont add dates to data
+  // if no months are provided then dont add dates to data
   const activityData = INCLUDE_DATES ? parseActivityDataset(actDataset, dates) : actDataset;
   const links = linksMatrixToArray(actLinks);
   const wpData = parseWPDataset(wpDataset);
 
   //-------------TRIM ACT DATA TO FILTER SPECIFICATION ----------------
-  const latestPrPeriod = dates[dates.length - 1].prPeriod;
+  const latestPrPeriod = INCLUDE_DATES && dates[dates.length - 1].prPeriod;
   const trimmedActData = trimActData(activityData, prPeriod, currentStory);
   const trimmedWpData = wpData.filter((wp) =>
     [...new Set(trimmedActData.map((act) => `WP_${act.WP}`))].includes(wp.id)

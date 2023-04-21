@@ -1,21 +1,11 @@
 import { actFields } from "../../../../data";
 
-export function parseVegaData(actData, dates, brushRange, selectedMetric) {
-  function handleNonDates(date, startOrEnd) {
-    if (date === "onGoing" || date === "undefined") {
-      return startOrEnd === "start"
-        ? new Date(dates[0].date).getTime()
-        : new Date(dates[dates.length - 1].date).getTime();
-    } else {
-      return new Date(date).getTime();
-    }
-  }
-
+export function parseVegaData(actData, dates, brushRange, selectedMetric, options) {
   //handles dates "onGoing" and "undefined"
   var actDataNumericDate = actData.map((act) => ({
     ...act,
-    startDate: handleNonDates(act.startDate, "start"),
-    endDate: handleNonDates(act.endDate, "end"),
+    startDate: handleNonDates(act.startDate, "start", dates),
+    endDate: handleNonDates(act.endDate, "end", dates),
   }));
 
   // updates actDataNumericDate object so any blanks in selected vegafeilds are chnaged to create an "undefined" category
@@ -26,9 +16,6 @@ export function parseVegaData(actData, dates, brushRange, selectedMetric) {
       }
     }
   }
-
-  //unique category names
-  const options = [...new Set(actDataNumericDate.map((act) => act[selectedMetric]))];
 
   //get groups of each activities in category
   const activityByOption = options.map((ops) => actDataNumericDate.filter((act) => act[selectedMetric] === ops));
@@ -57,22 +44,23 @@ export function parseVegaData(actData, dates, brushRange, selectedMetric) {
     }))
   );
 
-  // console.log(
-  //   options.map((ops) => ({
-  //     [selectedMetric]: ops,
-  //     count: actData.filter((act) => act[selectedMetric] === ops).length,
-  //   }))
-  // );
-
   //flatten array or arrays and merge based on date collumn
   let plotData = {};
   optionPerDate.flat().forEach((a) => (plotData[a.date] = { ...plotData[a.date], ...a }));
   plotData = Object.values(plotData);
 
   //combines both bar and line plot data to use concat on vega veiws
-  const vegaData = { vegaData: [...plotData, ...barData] };
-
-  return { vegaData: vegaData, options: options };
+  return { vegaData: [...plotData, ...barData] };
 }
 
 export default parseVegaData;
+
+function handleNonDates(date, startOrEnd, dates) {
+  if (date === "onGoing" || date === "undefined") {
+    return startOrEnd === "start"
+      ? new Date(dates[0].date).getTime()
+      : new Date(dates[dates.length - 1].date).getTime();
+  } else {
+    return new Date(date).getTime();
+  }
+}

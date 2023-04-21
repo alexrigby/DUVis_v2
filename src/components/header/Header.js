@@ -1,6 +1,7 @@
 import "./Header.css";
 
 import { projectMeta } from "../../data";
+import { INCLUDE_DATES } from "../../data";
 
 export function Header({ cyState, datesRef, prPeriod, currentStory, completedDisplay, networkVeiw }) {
   return (
@@ -9,9 +10,9 @@ export function Header({ cyState, datesRef, prPeriod, currentStory, completedDis
         <h1>{projectMeta.NAME}</h1>
         <p className="subHeader">
           {currentStory === null ? "All Activities" : currentStory.name}
-          {" || "}
-          {datesRef.current !== null && prStartAndEndDate(datesRef, prPeriod).start} -{" "}
-          {datesRef.current !== null && prStartAndEndDate(datesRef, prPeriod).end}{" "}
+          {}
+          {INCLUDE_DATES && datesRef.current !== null && ` || ` + prStartAndEndDate(datesRef, prPeriod).start + ` - `}
+          {INCLUDE_DATES && datesRef.current !== null && prStartAndEndDate(datesRef, prPeriod).end}{" "}
           {completedDisplay !== false &&
             "|| " +
               completedActivityInfo(prPeriod, cyState.cy, datesRef.current, "completed", networkVeiw) +

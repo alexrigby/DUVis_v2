@@ -1,9 +1,11 @@
-export function vegaSpecNoDate(options, selectedMetric) {
+import capitalizeEachWord from "../../../sidePannel/functions/capitalizeEachWord";
+
+export function vegaSpecNoDate(selectedMetric) {
   const spec = {
     padding: 20,
     data: { name: "vegaData" },
     tooltip: true,
-    title: `${selectedMetric}`,
+    title: `${capitalizeEachWord(selectedMetric)}`,
     width: "container",
 
     params: [

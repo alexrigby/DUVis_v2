@@ -2,7 +2,7 @@ import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import engLevelWording from "../../configs/engLevelWording";
 import listLinks from "./functions/listLinks";
 import capitalizeEachWord from "./functions/capitalizeEachWord";
-import { actFields } from "../../data";
+import { actFields, INCLUDE_DATES } from "../../data";
 import { useState } from "react";
 
 export function ActivityMetaSection({
@@ -19,7 +19,7 @@ export function ActivityMetaSection({
   const CLOSE = <i className="fa fa-angle-up"></i>;
   const ENG_COUNT = Array.from(Array(engLevelWording.length).keys());
   const SUBSECTIONS = [...actFields.META_FIELDS]; // array of user defined meta fileds to display
-  const latestPrPeriod = datesRef.current[datesRef.current.length - 1].prPeriod;
+  const latestPrPeriod = INCLUDE_DATES && datesRef.current[datesRef.current.length - 1].prPeriod;
 
   //--------------------------------ACCORDION STATE----------------------------------------------------------------------------------------//
   const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
@@ -79,6 +79,26 @@ export function ActivityMetaSection({
   };
 
   // --------------------------------------------PANNEL TEXT--------------------------------------------------//
+  //--------------------DATES TEST--------------------
+  const datesText = (
+    <div>
+      {" "}
+      <p style={completedStyle()} className="completed">
+        {completedText()}
+      </p>
+      <h2>Start - End:</h2>
+      <p>
+        <span style={datesStyle}> Date: </span> {shortDates(selectedNode, "start")} - {shortDates(selectedNode, "end")}
+      </p>
+      <p>
+        <span style={datesStyle}> Months: </span> {selectedNode[actFields.STARTM]} - {selectedNode[actFields.ENDM]}
+      </p>
+      <p>
+        <span style={datesStyle}> PR Period: </span> {selectedNode.startPrPeriod} -{" "}
+        {selectedNode.endPrPeriod === "onGoing" ? "Ongoing" : selectedNode.endPrPeriod}
+      </p>
+    </div>
+  );
   //----------------------USER DEFINED META FIELDS-----------------------
   //lopps over user defined meta sections and accessed the corresponding data from the dataset
   const metaSections = SUBSECTIONS.map((field, i) => {
@@ -159,21 +179,7 @@ export function ActivityMetaSection({
         >
           {selectedNode.parent}
         </h1>
-        <p style={completedStyle()} className="completed">
-          {completedText()}
-        </p>
-        <h2>Start - End:</h2>
-        <p>
-          <span style={datesStyle}> Date: </span> {shortDates(selectedNode, "start")} -{" "}
-          {shortDates(selectedNode, "end")}
-        </p>
-        <p>
-          <span style={datesStyle}> Months: </span> {selectedNode[actFields.STARTM]} - {selectedNode[actFields.ENDM]}
-        </p>
-        <p>
-          <span style={datesStyle}> PR Period: </span> {selectedNode.startPrPeriod} -{" "}
-          {selectedNode.endPrPeriod === "onGoing" ? "Ongoing" : selectedNode.endPrPeriod}
-        </p>
+        {INCLUDE_DATES && datesText}
       </div>
       <div>{metaSections}</div>
       <div className="metaSection">
