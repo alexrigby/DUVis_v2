@@ -57,6 +57,13 @@ export function parseVegaData(actData, dates, brushRange, selectedMetric) {
     }))
   );
 
+  // console.log(
+  //   options.map((ops) => ({
+  //     [selectedMetric]: ops,
+  //     count: actData.filter((act) => act[selectedMetric] === ops).length,
+  //   }))
+  // );
+
   //flatten array or arrays and merge based on date collumn
   let plotData = {};
   optionPerDate.flat().forEach((a) => (plotData[a.date] = { ...plotData[a.date], ...a }));

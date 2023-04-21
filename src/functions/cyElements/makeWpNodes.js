@@ -29,7 +29,6 @@ export function makeWpNodes(data) {
     };
   });
 
-  console.log(wps);
   return wps;
 }
 

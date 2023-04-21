@@ -16,8 +16,14 @@ import parseWPDataset from "./datasetParseFunctions/parseWPDataset";
 import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
 
 import workBookPath from "../data/activity_data.xlsx";
+import { actFields } from "../data";
 
 export async function makeVisElements(prPeriod, currentStory, completedDisplay) {
+  const INCLUDE_DATES = !actFields.STARTM || !actFields.ENDM ? false : true; // if dates are not supplied then:
+  /*
+        -dont generate gantt chart items
+        -dont convert months to dates for act nodes
+   */
   // ------------------------ FETCH CSV DATA -------------------------
   const file = await (await fetch(workBookPath)).arrayBuffer();
   const workBookData = XLSX.read(file); // reads the whole workbook
@@ -39,7 +45,8 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   const dates = makeDates(startDate, todaysDate);
 
   //-----------------PARSE DATA ----------
-  const activityData = parseActivityDataset(actDataset, dates);
+  // if not months are provided then dont add dates to data
+  const activityData = INCLUDE_DATES ? parseActivityDataset(actDataset, dates) : actDataset;
   const links = linksMatrixToArray(actLinks);
   const wpData = parseWPDataset(wpDataset);
 
@@ -62,14 +69,9 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   const stakeholderNodes = makeStakeholerNodes(stakeholderData);
   const stakeholderEdges = makeStakeholderEdges(stakeholderData);
 
-  const gantChartItems = makeGantchartItems(
-    trimmedActData,
-    trimmedWpData,
-    prPeriod,
-    completedDisplay,
-    latestPrPeriod,
-    dates
-  );
+  const gantChartItems =
+    INCLUDE_DATES &&
+    makeGantchartItems(trimmedActData, trimmedWpData, prPeriod, completedDisplay, latestPrPeriod, dates);
 
   //node to hold all other nodes, prevents stakeholder nodes entering center of graph
   const projectNode = {

@@ -1,4 +1,5 @@
 import { FCOSE } from "../cytoscape/functions/LAYOUTS";
+import { INCLUDE_DATES } from "../../data";
 
 import "./ToggleButtons.css";
 
@@ -75,13 +76,15 @@ export function ToggleButtons({
         <button onClick={toggleEdges} title="toggle connection types">
           Connections <i className="fa fa-diagram-project"></i>
         </button>
-        <button
-          onClick={toggleCompleted}
-          style={style(completedDisplay)}
-          title="grey out activities that have been completed"
-        >
-          Toggle completed <i className="fa fa-check"></i>
-        </button>
+        {INCLUDE_DATES && (
+          <button
+            onClick={toggleCompleted}
+            style={style(completedDisplay)}
+            title="grey out activities that have been completed"
+          >
+            Toggle completed <i className="fa fa-check"></i>
+          </button>
+        )}
       </div>
       <div className="toggleButtons">
         <button style={style(networkVeiw)} onClick={toggleNetworkVeiw} title="display network of the selected node">
@@ -99,14 +102,16 @@ export function ToggleButtons({
         </button>
       </div>
       <div className="toggleButtons">
-        <button
-          id="gantChartButton"
-          onClick={toggleBottomPannelDisplay}
-          style={style(selectedBottomVis === "gantChartButton")}
-          title="open gantt chart pannel"
-        >
-          Gantt Chart <i className="fa fa-chart-gantt"></i>
-        </button>
+        {INCLUDE_DATES && (
+          <button
+            id="gantChartButton"
+            onClick={toggleBottomPannelDisplay}
+            style={style(selectedBottomVis === "gantChartButton")}
+            title="open gantt chart pannel"
+          >
+            Gantt Chart <i className="fa fa-chart-gantt"></i>
+          </button>
+        )}
         <button
           id="vegaAnalyticsButton"
           onClick={toggleBottomPannelDisplay}
@@ -116,8 +121,6 @@ export function ToggleButtons({
           Analytics <i className="fa fa-chart-column"></i>
         </button>
       </div>
-
-      {/* <div className="bottomPannelButtons"></div> */}
     </div>
   );
 }

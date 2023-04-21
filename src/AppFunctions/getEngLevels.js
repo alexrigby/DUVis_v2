@@ -25,6 +25,7 @@ export function getEngLevels(pr, cyState) {
 
   const maxEngScore = Math.max(...engLevel);
   const individualEngScores = individualEngLev;
+
   return { maxEngScore, individualEngScores };
 }
 

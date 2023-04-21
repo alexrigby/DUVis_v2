@@ -4,6 +4,7 @@ import STORIES from "../../configs/stories";
 import CustomStory from "./customStory/CustomStory";
 import PRScroll from "./PRScroll/PRScroll";
 
+import { INCLUDE_DATES } from "../../data";
 import "./FilterOptions.css";
 
 export function FilterOptions({
@@ -169,20 +170,22 @@ export function FilterOptions({
           Reset
         </button>
       </div>
-      <div style={optionsStyle}>
-        <button onClick={displayPrOptions} className="filterOptionButton">
-          Progress Report Period
-          {prSectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
-        </button>
-        <PRScroll
-          setPrPeriod={setPrPeriod}
-          currentPr={currentPr}
-          prPeriod={prPeriod}
-          datesRef={datesRef}
-          prSectionDisplay={prSectionDisplay}
-          cyState={cyState}
-        />
-      </div>
+      {INCLUDE_DATES && (
+        <div style={optionsStyle}>
+          <button onClick={displayPrOptions} className="filterOptionButton">
+            Progress Report Period
+            {prSectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
+          </button>
+          <PRScroll
+            setPrPeriod={setPrPeriod}
+            currentPr={currentPr}
+            prPeriod={prPeriod}
+            datesRef={datesRef}
+            prSectionDisplay={prSectionDisplay}
+            cyState={cyState}
+          />
+        </div>
+      )}
       <div style={optionsStyle} className="stories">
         <button onClick={displayStoryOptions} className="filterOptionButton">
           Stories {storySectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
@@ -193,12 +196,6 @@ export function FilterOptions({
             <button className="customStoryButton" onClick={displayCustomStoryOptions}>
               Custom Story <i className="fa fa-pencil"></i>
             </button>
-            {/* <a href={"data:text/csv;charset=utf-8," + escape(convertToCSV(stories))} download="stories"> */}
-            {/* allows stories to be downloaded as csv*/}
-            {/* <button className="customStoryButton">
-                Export Stories <i className="fa fa-download"></i>
-              </button>
-            </a> */}
           </div>
           <CustomStory
             stories={stories}

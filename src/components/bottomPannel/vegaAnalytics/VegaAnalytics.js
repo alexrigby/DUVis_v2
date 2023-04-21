@@ -5,13 +5,18 @@ import { Handler } from "vega-tooltip";
 import VegaSelect from "./VegaSelect";
 
 import vegaSpec from "./functions/vegaSpec";
+import vegaSpecNoDate from "./functions/vegaSpecNoDate";
 import parseVegaData from "./functions/parseVegaData";
 import { actFields } from "../../../data";
+import { INCLUDE_DATES } from "../../../data";
 import "./VegaAnalytics.css";
 
 export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPeriod, setSelectedBottomVis }) {
   const dates = datesRef.current;
   const actData = actDataRef.current;
+  const closeVegaPannel = (event) => {
+    setSelectedBottomVis("");
+  };
 
   const trimmedDates =
     dates !== null && prPeriod.pr !== null ? dates.filter((date) => date.prPeriod <= prPeriod.pr) : dates; //trimes dates data down to pr period
@@ -19,6 +24,7 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
   const [brushRange, setBrushRange] = useState("");
 
   const [selectedMetric, setSelectedMetric] = useState(actFields.META_FIELDS[0]);
+
   //sets brush range to full extent of project once the initial data is parsed
   useEffect(() => {
     if (dates !== null) {
@@ -30,7 +36,7 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
   }, [dates]);
 
   //once brush range is set generate component
-  if (brushRange !== "") {
+  if (brushRange !== "" && INCLUDE_DATES) {
     const fullRange = {
       start: new Date(trimmedDates[0].date).getTime(),
       end: new Date(trimmedDates[trimmedDates.length - 1].date).getTime(),
@@ -60,11 +66,8 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
       setBrushRange(fullRange);
     };
 
-    const closeVegaPannel = (event) => {
-      setSelectedBottomVis("");
-    };
-
     const { vegaData, options } = parseVegaData(actData, trimmedDates, brushRange, selectedMetric);
+
     const spec = vegaSpec(options, brushRange, selectedMetric);
 
     const title =
@@ -86,6 +89,32 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
             tooltip={new Handler().call}
             signalListeners={signalListeners}
           />
+        </div>
+      );
+    }
+  } else if (actData) {
+    //unique category names
+    const options = [...new Set(actData.map((act) => act[selectedMetric]))];
+
+    // console.log([...new Set(actData.reduce((a, b) => ({ ...a, [selectedMetric]: })))])
+    const noDateSpec = vegaSpecNoDate(options, selectedMetric);
+    const noDateVegaData = {
+      vegaData: options.map((ops) => ({
+        [selectedMetric]: ops,
+        count: actData.filter((act) => act[selectedMetric] === ops).length,
+      })),
+    };
+
+    console.log(noDateVegaData);
+
+    if (selectedBottomVis === "vegaAnalyticsButton") {
+      return (
+        <div className="vegaAnalytics">
+          <VegaSelect setSelectedMetric={setSelectedMetric} />
+          <p className="exitVega" onClick={closeVegaPannel} title="close analytics panel">
+            <i className="fa fa-xmark"></i>
+          </p>
+          <VegaLite data={noDateVegaData} spec={noDateSpec} actions={false} tooltip={new Handler().call} />
         </div>
       );
     }

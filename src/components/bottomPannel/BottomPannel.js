@@ -3,6 +3,7 @@ import React from "react";
 import GanttChart from "./ganttChart/GanttChart";
 import VegaAnalytics from "./vegaAnalytics/VegaAnalytics";
 
+import { INCLUDE_DATES } from "../../data";
 import "./BottomPannel.css";
 
 export function BottomPannel({
@@ -23,14 +24,18 @@ export function BottomPannel({
         datesRef={datesRef}
         prPeriod={prPeriod}
         setSelectedBottomVis={setSelectedBottomVis}
+        INCLUDE_DATES={INCLUDE_DATES}
       />
-      <GanttChart
-        gantchartDataRef={gantchartDataRef}
-        cyState={cyState}
-        setSelectedNode={setSelectedNode}
-        selectedBottomVis={selectedBottomVis}
-        datesRef={datesRef}
-      />
+      {/* do not generate gant chart if dates are not supplied */}
+      {INCLUDE_DATES && (
+        <GanttChart
+          gantchartDataRef={gantchartDataRef}
+          cyState={cyState}
+          setSelectedNode={setSelectedNode}
+          selectedBottomVis={selectedBottomVis}
+          datesRef={datesRef}
+        />
+      )}
     </div>
   );
 }

@@ -1,14 +1,17 @@
 import convertMonthsToDates from "../datesFunction/convertMonthsToDates";
 import giveActivityPrPeriod from "../datesFunction/giveActivtyPrPeriod";
+import { actFields } from "../../data";
 
 export function parseActivityDataset(data, dates) {
-  const activityData = data.map((act, i) => ({
-    ...act,
-    startDate: convertMonthsToDates(act, dates, "start"),
-    endDate: convertMonthsToDates(act, dates, "end"),
-    startPrPeriod: giveActivityPrPeriod(act, dates, "start"),
-    endPrPeriod: giveActivityPrPeriod(act, dates, "end"),
-  }));
+  const activityData = data.map((act, i) => {
+    return {
+      ...act,
+      startDate: convertMonthsToDates(act, dates, "start"),
+      endDate: convertMonthsToDates(act, dates, "end"),
+      startPrPeriod: giveActivityPrPeriod(act, dates, "start"),
+      endPrPeriod: giveActivityPrPeriod(act, dates, "end"),
+    };
+  });
 
   // // ------ USE TO ANNONYMISE THE TOOL ____________________
   // const researchers = [...new Set(activityData.map((act) => act.Name))];

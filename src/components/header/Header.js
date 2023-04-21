@@ -1,10 +1,12 @@
 import "./Header.css";
 
+import { projectMeta } from "../../data";
+
 export function Header({ cyState, datesRef, prPeriod, currentStory, completedDisplay, networkVeiw }) {
   return (
     <header>
       <div>
-        <h1>D{"\u0175"}r Uisce Work Package Visualiser</h1>
+        <h1>{projectMeta.NAME}</h1>
         <p className="subHeader">
           {currentStory === null ? "All Activities" : currentStory.name}
           {" || "}
