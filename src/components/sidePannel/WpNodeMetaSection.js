@@ -3,15 +3,15 @@ import { BG } from "../../configs/COLORS";
 import SDG_ICONS from "../../assets/sdg_icons/index";
 import engLevelWording from "../../configs/engLevelWording";
 import listLinks from "./functions/listLinks";
+import { wpFields } from "../../data";
+import capitalizeEachWord from "./functions/capitalizeEachWord";
 
 export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setStakeholdersDisplay }) {
   // --------------------------------------USEFULL VARS---------------------------------------------------//
   const OPEN = <i className="fa fa-angle-down"></i>;
   const CLOSE = <i className="fa fa-angle-up"></i>;
-  const ENG_COUNT = Array.from(Array(engLevelWording.length).keys()); // add or remove numbers if engement level chnages
-  const SUBSECTIONS = ["activity", "stakeholder", "SDGs"]; // add or remove subsections
-  // if no name supplied in excel then use ID. Selecting from selected node as supposed to config file incase some have names and others dont
-  const wpName = selectedNode.name ? selectedNode.name : `Work Package ${selectedNode.label}`;
+  const ENG_COUNT = Array.from(Array(engLevelWording.length).keys());
+  const SUBSECTIONS = [...wpFields.META_FIELDS];
 
   //-------------------------------------ACCORDION STATE---------------------------------------------------//
   const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
@@ -26,7 +26,23 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
     }));
   };
 
+  const style = (key) => ({ display: wpAccordion[key] ? "block" : "none" });
   //------------------------------PANNEL TEXT-----------------------------------------------------//
+  //-------------------USER DEFINED META FIELDS------------------
+
+  const metaSections = SUBSECTIONS.map((field, i) => {
+    var caps = capitalizeEachWord(field);
+
+    return (
+      <div className="metaSection" key={field}>
+        <h1>
+          {caps}: <span onClick={() => openAccordion("click", field)}>{wpAccordion[field] ? CLOSE : OPEN}</span>
+        </h1>
+        <p style={style(field)}>{selectedNode.meta[field]}</p>
+      </div>
+    );
+  });
+
   //--------------------ACTIVITIES LIST ----------------------
   const wpActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).children(); //gets all activities in wp
   const activitiesList = listLinks(wpActivities, setSelectedNode, cyState, setStakeholdersDisplay); // makes JSX list of acctivitis
@@ -103,10 +119,12 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
     <div>
       <div className="metaSection">
         <h1 style={{ backgroundColor: BG[selectedNode.id] }}>WP: {selectedNode.label}</h1>
-        <h1>{wpName}</h1>
+        <h1>{selectedNode.name}</h1>
+
         {/* <h2>Category:</h2>
         <p>{selectedNode.category}</p> */}
       </div>
+      <div>{metaSections}</div>
       {/* <div className="metaSection">
         <div className="metaSectionHead">
           <h1>

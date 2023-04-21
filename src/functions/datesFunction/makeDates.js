@@ -28,7 +28,7 @@ export function makeDates(startDate, today) {
       prPeriod: progressReport,
     };
   });
-
+  console.log(dateObj);
   return dateObj;
 }
 

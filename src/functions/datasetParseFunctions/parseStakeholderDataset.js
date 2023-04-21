@@ -30,7 +30,7 @@ export function parseStakeholderDataset(stLinks, stData, trimmedActData) {
           const meta_fields = stFields.META_FIELDS.reduce((a, b) => ({ ...a, [b]: stakeholderData[b] }), {});
 
           return {
-            stakeholderID: stIDs[i],
+            id: stIDs[i],
             name: stakeholderData[stFields.NAME],
             engRank: row.map((el) => Number(el)).reduce((a, b) => a + b), //adds eng levels to return eng ranking
             meta_fields: meta_fields,

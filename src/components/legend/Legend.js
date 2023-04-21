@@ -71,12 +71,10 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
     });
 
     const wpLegendItems = wps.map((wp) => {
-      // if name is supplied then display, else display "work Package id"
-      const wpLegendLabel = wp.name ? `${wp.id}: ${wp.name}` : `Work Package ${wp.label}`;
       return (
         <div key={wp.id} className="boxContainer">
           <div className="box" style={{ backgroundColor: BG[wp.id], borderColor: BORDER[wp.id] }}></div>
-          <p className="legendLable">{wpLegendLabel}</p>
+          <p className="legendLable">{wp.displayName}</p>
         </div>
       );
     });

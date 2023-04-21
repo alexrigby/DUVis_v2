@@ -1,6 +1,7 @@
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import engLevelWording from "../../configs/engLevelWording";
 import listLinks from "./functions/listLinks";
+import capitalizeEachWord from "./functions/capitalizeEachWord";
 import { actFields } from "../../data";
 import { useState } from "react";
 
@@ -19,7 +20,6 @@ export function ActivityMetaSection({
   const ENG_COUNT = Array.from(Array(engLevelWording.length).keys());
   const SUBSECTIONS = [...actFields.META_FIELDS]; // array of user defined meta fileds to display
   const latestPrPeriod = datesRef.current[datesRef.current.length - 1].prPeriod;
-  const actName = selectedNode.name ? `${selectedNode.id}. ${selectedNode.name}` : `Activity ${selectedNode.id}`; //if no name is provided return "Activity ID"
 
   //--------------------------------ACCORDION STATE----------------------------------------------------------------------------------------//
   const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
@@ -83,16 +83,12 @@ export function ActivityMetaSection({
   //lopps over user defined meta sections and accessed the corresponding data from the dataset
   const metaSections = SUBSECTIONS.map((field, i) => {
     //capitalizing each word of fields
-    var secCopy = field.slice();
-    var capSecWords = secCopy.split(" ");
-    capSecWords.forEach((word, i) => (capSecWords[i] = word[0].toUpperCase() + word.substring(1)));
-    var capitalilized = capSecWords.join(" ");
+    var caps = capitalizeEachWord(field);
 
     return (
       <div className="metaSection" key={field}>
         <h1>
-          {capitalilized}:{" "}
-          <span onClick={() => openActAccordion("click", field)}>{actAccordion[field] ? CLOSE : OPEN}</span>
+          {caps}: <span onClick={() => openActAccordion("click", field)}>{actAccordion[field] ? CLOSE : OPEN}</span>
         </h1>
         <p style={style(field)}>{selectedNode.meta[field]}</p>
       </div>
@@ -153,7 +149,7 @@ export function ActivityMetaSection({
   return (
     <div>
       <div className="metaSection">
-        <h1>{actName}</h1>
+        <h1>{selectedNode.name}</h1>
         <h1
           onClick={() => {
             !networkVeiw &&

@@ -3,40 +3,37 @@
 import { actFields } from "../../data";
 
 export function makeActNodes(data) {
-  const cyNodes = [];
+  const cyNodes = data.map((act) => {
+    // if user does not specify names then generate them
+    const actName = act[actFields.NAME] ? act[actFields.NAME] : `Activity ${act[actFields.ID]}`; // name with no id infront
+    const displayName = act[actFields.NAME]
+      ? `${act[actFields.ID]}. ${act[actFields.NAME]}`
+      : `Activity ${act[actFields.ID]}`; // name with id in front
 
-  for (let i = 0; i < data.length; i++) {
-    // for each secified field creates object {meta field : field value }
-    const meta_fields = actFields.META_FIELDS.reduce((a, b) => ({ ...a, [b]: data[i][b] }), {});
+    // if user specifies additional meta fields
+    const meta_fields = actFields.META_FIELDS.reduce((a, b) => ({ ...a, [b]: act[b] }), {});
 
-    const node = {
+    return {
       group: "nodes",
       data: {
         type: "activityNode",
         size: 1,
-        parent: `WP_${data[i][actFields.WP]}`,
-        colorRef: `WP_${data[i][actFields.WP]}`,
-        id: data[i][actFields.ID],
-        label: data[i][actFields.ID],
+        parent: `WP_${act[actFields.WP]}`,
+        colorRef: `WP_${act[actFields.WP]}`,
+        id: act[actFields.ID],
+        label: act[actFields.ID],
+        name: actName,
+        displayName: displayName,
 
-        name: data[i][actFields.NAME], // can be undefined
-
-        // Need to look into still
-        endPrPeriod: data[i].endPrPeriod,
-        startPrPeriod: data[i].startPrPeriod,
-        endDate: data[i].endDate,
-        startDate: data[i].startDate,
-
-        // meta: {
-        //   // all data from activity csv as defined by user
-        //   ...data[i],
-        // },
+        endPrPeriod: act.endPrPeriod,
+        startPrPeriod: act.startPrPeriod,
+        endDate: act.endDate,
+        startDate: act.startDate,
 
         meta: meta_fields,
       },
     };
-    cyNodes.push(node);
-  }
+  });
 
   return cyNodes;
 }

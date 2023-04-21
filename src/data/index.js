@@ -11,14 +11,14 @@ export const actFields = {
 export const wpFields = {
   ID: "id",
   NAME: "wp name",
-  // CATEGORY: "category",
-
   // SDGs: "SDGs",
+
+  META_FIELDS: ["category", "location test"],
 };
 
 export const stFields = {
   ID: "S_ID",
   NAME: "stakeholder name",
 
-  META_FIELDS: ["Sector", "Category"],
+  META_FIELDS: ["Sector", "Category test"],
 };

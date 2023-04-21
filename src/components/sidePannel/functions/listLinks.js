@@ -3,8 +3,6 @@ import hilightOnLiHover from "./hilightOnLiHover";
 
 export function listLinks(nodes, setSelectedNode, cyState, setStakeholdersDisplay) {
   return nodes.map((act) => {
-    //if no name is specifiedby uuser in the excel then  generate name
-    const actName = act.data().name ? `${act.id()}. ${act.data().name}` : `Activity ${act.data().id}`;
     return (
       <li
         key={act.id()}
@@ -12,7 +10,7 @@ export function listLinks(nodes, setSelectedNode, cyState, setStakeholdersDispla
         onMouseOver={() => hilightOnLiHover(act.id(), cyState)}
         onMouseOut={() => hilightOnLiHover(act.id(), cyState)}
       >
-        {actName}
+        {act.data().displayName}
       </li>
     );
   });

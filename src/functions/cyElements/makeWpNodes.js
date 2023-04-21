@@ -1,27 +1,35 @@
 import { wpFields } from "../../data";
 //for each work package a node is created, each WP is a parent to one of the activities
 export function makeWpNodes(data) {
-  const wps = [];
+  const wps = data.map((wp) => {
+    // gets the wp number from the wp id
+    const wpNumber = wp[wpFields.ID].charAt(wp[wpFields.ID].length - 1);
 
-  for (let i = 0; i < data.length; i++) {
-    const nodeOps = {
+    // if no name supplied in excel then use ID. Selecting from selected node as supposed to config file incase some have names and others dont
+    const wpName = wp[wpFields.NAME] ? wp[wpFields.NAME] : `Work Package ${wpNumber}`;
+    const wpDisplayName = wp[wpFields.NAME] ? `${wp[wpFields.ID]}. ${wpNumber}` : `Work Package ${wpNumber}`;
+
+    // if user specifies additional meta fields
+    const meta_fields = wpFields.META_FIELDS.reduce((a, b) => ({ ...a, [b]: wp[b] }), {});
+
+    return {
       group: "nodes",
       classes: "wpNodes",
       data: {
         parent: "project",
-        id: data[i][wpFields.ID],
-        label: data[i][wpFields.ID].charAt(data[i][wpFields.ID].length - 1),
+        id: wp[wpFields.ID],
+        label: wpNumber,
         type: "wp",
-        name: data[i][wpFields.NAME],
-        // SDGs: data[i][wpFields.SDGs],
-        meta: {
-          ...data[i],
-        },
+        name: wpName,
+        displayName: wpDisplayName,
+        // SDGs: item[wpFields.SDGs],
+
+        meta: meta_fields,
       },
     };
-    wps.push(nodeOps);
-  }
+  });
 
+  console.log(wps);
   return wps;
 }
 

@@ -24,12 +24,8 @@ function makeTooltips(nodes, triggerEvent, cancelEvent) {
       //content to show in toolti
       content: () => {
         let content = document.createElement("div");
-        if (node.data().name) {
-          content.innerHTML = `${node.data().label}. ${node.data("name")}`;
-        } else {
-          content.innerHTML =
-            node.data().type === "activityNode" ? `Activity ${node.data().label}` : `Work Package ${node.data().label}`;
-        }
+
+        content.innerHTML = node.data().displayName;
 
         return content;
       },

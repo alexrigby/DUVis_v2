@@ -1,20 +1,21 @@
-import nodeNavigationHandler from "./functions/nodeNavigationHandler";
-import hilightOnLiHover from "./functions/hilightOnLiHover";
 import { useState } from "react";
+import { stFields } from "../../data";
 
 import engLevelWording from "../../configs/engLevelWording";
-
+import listLinks from "./functions/listLinks";
+import capitalizeEachWord from "./functions/capitalizeEachWord";
 export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, setStakeholdersDisplay }) {
-  const open = <i className="fa fa-angle-down"></i>;
-  const close = <i className="fa fa-angle-up"></i>;
+  //--------------------------------------USEFULL VARIABLES -------------------------------//
+  const OPEN = <i className="fa fa-angle-down"></i>;
+  const CLOSE = <i className="fa fa-angle-up"></i>;
+  const SUBSECTIONS = [...stFields.META_FIELDS];
+  const ENG_COUNT = Array.from(Array(engLevelWording.length).keys()); // number of engagement levels
 
-  const engCount = Array.from(Array(engLevelWording.length).keys());
-  const subSections = ["activity"]; // add or remove subsections
+  //----------------------------------------------ACCORDION STATE----------------------------------//
+  const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
+  const subSectionObj = SUBSECTIONS.reduce((p, c) => ({ ...p, [c]: false }), {});
 
-  const engObj = engCount.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
-  const subSectionObj = subSections.reduce((p, c) => ({ ...p, [c]: false }), {}); // each subsection to object- false
-
-  const [staAccordion, setStaAccordion] = useState({ ...engObj, ...subSectionObj });
+  const [staAccordion, setStaAccordion] = useState({ ...engObj, ...subSectionObj }); // contains each section to be controled by accordion state
 
   const openStaAccordion = (event, key) => {
     setStaAccordion((prevState) => ({
@@ -23,8 +24,25 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, 
     }));
   };
 
+  //-----------------------------------------STYLE----------------------------------------//
   const style = (key) => ({ display: staAccordion[key] ? "block" : "none" });
 
+  //-------------------------------------------META TEXT------------------------------------------//
+  //---------USER DEFINED META FIELDS----------
+  const metaSections = SUBSECTIONS.map((field, i) => {
+    var caps = capitalizeEachWord(field);
+
+    return (
+      <div className="metaSection" key={field}>
+        <h1>
+          {caps}: <span onClick={() => openStaAccordion("click", field)}>{staAccordion[field] ? CLOSE : OPEN}</span>
+        </h1>
+        <p style={style(field)}>{selectedNode.meta[field]}</p>
+      </div>
+    );
+  });
+
+  //-----------------LINKED ACTIVITY PER ENGAGEMENT LEVEL---------------------
   const activityLists = [];
   const actCollection = [];
 
@@ -44,7 +62,7 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, 
         <div className="metaSection" key={i}>
           <h2 title={engLevelWording[i][1]}>
             Engagement level {i + 1} ({engLevelWording[i][0]}):
-            <span onClick={() => openStaAccordion("click", `eng${i}`)}>{staAccordion[`eng${i}`] ? close : open}</span>
+            <span onClick={() => openStaAccordion("click", `eng${i}`)}>{staAccordion[`eng${i}`] ? CLOSE : OPEN}</span>
           </h2>
           <h2>count: {acts.length}</h2>
           {/* <p>{engLevelWording[i][1]}</p> */}
@@ -63,14 +81,13 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, 
       <div className="metaSection">
         <h1>{selectedNode.name}</h1>
         <h1>{selectedNode.id}</h1>
-        <h2>Sector: {selectedNode.sector}</h2>
-        <h2>Category: {selectedNode.category}</h2>
       </div>
+      <div>{metaSections}</div>
 
       <div className="metaSection">
         <h1>
           LINKED ACTIVITIES
-          <span onClick={() => openStaAccordion("click", "activity")}>{staAccordion.activity ? close : open}</span>
+          <span onClick={() => openStaAccordion("click", "activity")}>{staAccordion.activity ? CLOSE : OPEN}</span>
         </h1>
         <h2>count: {actCount}</h2>
       </div>
@@ -80,16 +97,3 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, 
 }
 
 export default StakeholderMetaPannel;
-
-function listLinks(nodes, setSelectedNode, cyState, setStakeholdersDisplay) {
-  return nodes.map((act) => (
-    <li
-      key={act.id()}
-      onClick={() => nodeNavigationHandler(act.id(), setSelectedNode, cyState, setStakeholdersDisplay)}
-      onMouseOver={() => hilightOnLiHover(act.id(), cyState)}
-      onMouseOut={() => hilightOnLiHover(act.id(), cyState)}
-    >
-      {act.id()}. {act.data().name}
-    </li>
-  ));
-}

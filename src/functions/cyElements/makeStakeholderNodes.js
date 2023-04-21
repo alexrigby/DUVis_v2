@@ -11,12 +11,16 @@ export function makeStakeholerNodes(stData) {
   //   );
 
   const stNodes = stData.map((s) => {
+    const stNumber = s.id.slice(2, s.id.length - 1);
+    const stName = s.name ? s.name : `Stakeholder ${s.id}`;
+    const stDisplayName = s.name ? `${s.id}. ${s.name}` : `Stakeholder ${stNumber}`;
     return {
       group: "nodes",
       data: {
-        id: s.stakeholderID,
-        label: s.stakeholderID,
-        name: s.name,
+        id: s.id,
+        label: s.id,
+        name: stName,
+        displayName: stDisplayName,
         colorRef: "stakeholder",
         type: "stakeholderNode",
         size: 1,

@@ -8,8 +8,8 @@ export function makeStakeholderEdges(stakeholders) {
         .map((n) => ({
           group: "edges",
           data: {
-            id: `g${el.stakeholderID}e${n.actID}`,
-            source: `${el.stakeholderID}`,
+            id: `g${el.id}e${n.actID}`,
+            source: `${el.id}`,
             target: `${n.actID}`,
             type: "stakeholderEdge",
             engagement: n.engagement,
