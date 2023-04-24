@@ -16,7 +16,7 @@ import parseWPDataset from "./datasetParseFunctions/parseWPDataset";
 import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
 
 import workBookPath from "../data/activity_data.xlsx";
-import { actFields, projectMeta, INCLUDE_DATES } from "../data";
+import { projectMeta, INCLUDE_DATES } from "../data";
 
 export async function makeVisElements(prPeriod, currentStory, completedDisplay) {
   /* IF DATES ARE NOT INCLUDED:
@@ -36,10 +36,8 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   // convert the csvs to JSON format
   const actDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["Activities"], { defval: "", raw: false });
   const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["work packages"], { defval: "", raw: false });
-  const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholder list"], { defval: "", raw: false });
-
-  const test = XLSX.utils.sheet_to_json(workBookData.Sheets["test"], { defval: "", raw: false });
-  console.log(test);
+  const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholder lis"], { defval: "", raw: false });
+  projectMeta.STHOLDERS = stDataset.length === 0 ? false : true; // check if
 
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
   const startDate = projectMeta.STARTD;
@@ -63,17 +61,18 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
 
   // ----TRIM & FILTER STAKEHOLDERS-------
   // returns the max engagement score for the pr period (regardless of stroy filter)
-  const maxEngScore = parseStakeholderDataset(stLinks, stDataset, filteredByPr).maxEngScore;
+  const maxEngScore = projectMeta.STHOLDERS && parseStakeholderDataset(stLinks, stDataset, filteredByPr).maxEngScore;
   // creates ealily readable stakeholder object from stData and stLinks to match trimmed activity data
-  const stakeholderData = parseStakeholderDataset(stLinks, stDataset, trimmedActData).stakeholderData;
+  const stakeholderData =
+    projectMeta.STHOLDERS && parseStakeholderDataset(stLinks, stDataset, trimmedActData).stakeholderData;
 
   //----MAKE VIS ELEMENTS -------------
   const actNodes = makeActNodes(trimmedActData);
   const actEdges = makeActEdges(links, actNodes);
   const wpNodes = makeWpNodes(trimmedWpData);
   const wpEdges = makeWpEdges(trimmedWpData);
-  const stakeholderNodes = makeStakeholerNodes(stakeholderData);
-  const stakeholderEdges = makeStakeholderEdges(stakeholderData);
+  const stakeholderNodes = projectMeta.STHOLDERS && makeStakeholerNodes(stakeholderData);
+  const stakeholderEdges = projectMeta.STHOLDERS && makeStakeholderEdges(stakeholderData);
 
   const gantChartItems =
     INCLUDE_DATES &&
@@ -91,15 +90,9 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   };
 
   //----ALL CYTOSCAPE ELEMENTS-----
-  const cyElms = [
-    actNodes,
-    // stakeholderNodes,
-    actEdges.flat(),
-    // stakeholderEdges.flat(),
-    wpNodes,
-    projectNode,
-    wpEdges,
-  ].flat();
+  const cyElms = [actNodes, actEdges.flat(), wpNodes, wpEdges].flat();
+  //if stakeholders are included then add them to cy elements
+  projectMeta.STHOLDERS && cyElms.push(...stakeholderNodes, ...stakeholderEdges.flat(), projectNode);
 
   return {
     cyElms,

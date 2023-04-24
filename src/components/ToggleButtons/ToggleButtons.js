@@ -1,5 +1,5 @@
 import { FCOSE } from "../cytoscape/functions/LAYOUTS";
-import { INCLUDE_DATES } from "../../data";
+import { INCLUDE_DATES, projectMeta } from "../../data";
 
 import "./ToggleButtons.css";
 
@@ -90,16 +90,25 @@ export function ToggleButtons({
         <button style={style(networkVeiw)} onClick={toggleNetworkVeiw} title="display network of the selected node">
           Network <i className="fa fa-circle-nodes"></i>
         </button>
-        <button style={style(engScoreVeiw)} onClick={toggleEngScoreVeiw} title="display stakeholder engagement ranking">
-          Engagement <i className="fa fa-link"></i>
-        </button>
-        <button
-          onClick={toggleStakeholders}
-          style={style(stakeholdersDisplay)}
-          title="toggle stakeholder nodes display"
-        >
-          Stakeholders <i className="fa fa-handshake-simple"></i>
-        </button>
+        {/* if stakeholderds are included then allow stakeholder toggling */}
+        {projectMeta.STHOLDERS && (
+          <button
+            style={style(engScoreVeiw)}
+            onClick={toggleEngScoreVeiw}
+            title="display stakeholder engagement ranking"
+          >
+            Engagement <i className="fa fa-link"></i>
+          </button>
+        )}
+        {projectMeta.STHOLDERS && (
+          <button
+            onClick={toggleStakeholders}
+            style={style(stakeholdersDisplay)}
+            title="toggle stakeholder nodes display"
+          >
+            Stakeholders <i className="fa fa-handshake-simple"></i>
+          </button>
+        )}
       </div>
       <div className="toggleButtons">
         {INCLUDE_DATES && (

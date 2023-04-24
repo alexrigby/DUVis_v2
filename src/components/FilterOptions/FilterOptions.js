@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { STORIES } from "../../data";
 
 import CustomStory from "./customStory/CustomStory";
 import PRScroll from "./PRScroll/PRScroll";
 
-import { INCLUDE_DATES } from "../../data";
+import { INCLUDE_DATES, STORIES } from "../../data";
 import "./FilterOptions.css";
 
 export function FilterOptions({

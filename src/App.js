@@ -56,7 +56,6 @@ export function App() {
       latestPrPeriodRef.current = latestPrPeriod;
       engagementScoresRef.current = maxEngScore; // gives default maxEngScore
 
-      console.log(engagementScoresRef.current);
       setCyState((prevState) => ({
         ...prevState,
         elements: cyElms,

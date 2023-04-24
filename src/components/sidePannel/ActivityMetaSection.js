@@ -2,7 +2,7 @@ import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import engLevelWording from "../../configs/engLevelWording";
 import listLinks from "./functions/listLinks";
 import capitalizeEachWord from "./functions/capitalizeEachWord";
-import { actFields, INCLUDE_DATES } from "../../data";
+import { actFields, INCLUDE_DATES, projectMeta } from "../../data";
 import { useState } from "react";
 
 export function ActivityMetaSection({
@@ -20,6 +20,7 @@ export function ActivityMetaSection({
   const ENG_COUNT = Array.from(Array(engLevelWording.length).keys());
   const SUBSECTIONS = [...actFields.META_FIELDS]; // array of user defined meta fileds to display
   const latestPrPeriod = INCLUDE_DATES && datesRef.current[datesRef.current.length - 1].prPeriod;
+  const includeStakeholders = projectMeta.STHOLDERS;
 
   //--------------------------------ACCORDION STATE----------------------------------------------------------------------------------------//
   const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
@@ -191,17 +192,19 @@ export function ActivityMetaSection({
         <h2>count: {uniqueActLinks.length}</h2>
         <ul style={style("activity")}>{linkedActivitiesList}</ul>
       </div>
-      <div className="metaSection">
-        <h1>
-          {/* LINKED STAKEHOLDERS{" "} */}
-          Linked External Stakeholders
-          <span onClick={() => openActAccordion("click", "stakeholder")}>
-            {actAccordion.stakeholder ? CLOSE : OPEN}
-          </span>{" "}
-        </h1>
-        <h2>count: {stakeholderCount}</h2>
-      </div>
-      <div style={style("stakeholder")}>{stakeholderList}</div>
+      {includeStakeholders && (
+        <div className="metaSection">
+          <h1>
+            {/* LINKED STAKEHOLDERS{" "} */}
+            Linked External Stakeholders
+            <span onClick={() => openActAccordion("click", "stakeholder")}>
+              {actAccordion.stakeholder ? CLOSE : OPEN}
+            </span>{" "}
+          </h1>
+          <h2>count: {stakeholderCount}</h2>
+        </div>
+      )}
+      {includeStakeholders && <div style={style("stakeholder")}>{stakeholderList}</div>}
     </div>
   );
 }

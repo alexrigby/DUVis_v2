@@ -3,7 +3,7 @@ import { BG } from "../../configs/COLORS";
 import SDG_ICONS from "../../assets/sdg_icons/index";
 import engLevelWording from "../../configs/engLevelWording";
 import listLinks from "./functions/listLinks";
-import { wpFields } from "../../data";
+import { wpFields, projectMeta } from "../../data";
 import capitalizeEachWord from "./functions/capitalizeEachWord";
 
 export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setStakeholdersDisplay }) {
@@ -12,6 +12,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
   const CLOSE = <i className="fa fa-angle-up"></i>;
   const ENG_COUNT = Array.from(Array(engLevelWording.length).keys());
   const SUBSECTIONS = [...wpFields.META_FIELDS];
+  const includeStakeholders = projectMeta.STHOLDERS;
 
   //-------------------------------------ACCORDION STATE---------------------------------------------------//
   const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
@@ -120,9 +121,6 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
       <div className="metaSection">
         <h1 style={{ backgroundColor: BG[selectedNode.id] }}>WP: {selectedNode.label}</h1>
         <h1>{selectedNode.name}</h1>
-
-        {/* <h2>Category:</h2>
-        <p>{selectedNode.category}</p> */}
       </div>
       <div>{metaSections}</div>
       {/* <div className="metaSection">
@@ -143,14 +141,16 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
         <h2>count: {activitiesList.length}</h2>
         <ul style={acivitiesListStyle}>{activitiesList}</ul>
       </div>
-      <div className="metaSectionHead metaSection">
-        <h1>
-          LINKED STAKEHOLDERS{" "}
-          <span onClick={() => openAccordion("click", "stakeholder")}>{wpAccordion.stakeholder ? CLOSE : OPEN}</span>
-        </h1>
-        <h2>count: {stakeholderCount}</h2>
-      </div>
-      <div style={stakeholderListDisplay}>{wpStakeholdersList}</div>
+      {includeStakeholders && (
+        <div className="metaSectionHead metaSection">
+          <h1>
+            LINKED STAKEHOLDERS{" "}
+            <span onClick={() => openAccordion("click", "stakeholder")}>{wpAccordion.stakeholder ? CLOSE : OPEN}</span>
+          </h1>
+          <h2>count: {stakeholderCount}</h2>
+        </div>
+      )}
+      {includeStakeholders && <div style={stakeholderListDisplay}>{wpStakeholdersList}</div>}
     </div>
   );
 }
