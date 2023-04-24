@@ -1,4 +1,4 @@
-import { BG, BORDER, ENGAGEMENT, ENGRANK, EDGE } from "../../../configs/COLORS";
+import { ENGAGEMENT, ENGRANK, EDGE, STAKEHOLDER } from "../../../configs/COLORS";
 import activityOpacity from "../../../functions/ganttChartFucntions/activityOpacity";
 import statusOpacity from "../../../configs/statusOpacity";
 import wpEdgeStyle from "./wpEdgeStyle";
@@ -48,8 +48,8 @@ export function stylesheet(
         "border-opacity": completedDisplay
           ? (ele) => activityOpacity(ele.data(), latestPrPeriodRef.current, prPeriod)
           : statusOpacity.onGoing,
-        "background-color": (ele) => BG[ele.data("colorRef")],
-        "border-color": (ele) => BORDER[ele.data("colorRef")],
+        "background-color": (ele) => ele.parent().data("bgColor"),
+        "border-color": (ele) => ele.parent().data("borderColor"),
         //width and height displayed in accepted bubble area scale 'D2 = D1 * SQRT(X2/X1)' https://infonewt.com/circles/
         //+1 gives value to nodes with no connecting edges,
         width: (ele) =>
@@ -64,9 +64,7 @@ export function stylesheet(
         "border-width": 0,
         label: "",
         "background-opacity": 0.3,
-        "background-color": function (ele) {
-          return BG[ele.id()];
-        },
+        "background-color": "data(bgColor)",
       },
     },
     {
@@ -85,8 +83,8 @@ export function stylesheet(
           : statusOpacity.onGoing,
         "background-color": engScoreVeiw
           ? `mapData(weight, 0, ${engagementScoresRef.current}, ${ENGRANK.low}, ${ENGRANK.high})`
-          : BG.stakeholder,
-        "border-color": BORDER.stakeholder,
+          : STAKEHOLDER.bg,
+        "border-color": STAKEHOLDER.border,
         width: (ele) => 1 * Math.sqrt(ele.connectedEdges().connectedNodes().length + 1 / 1) * 20,
         height: (ele) => 1 * Math.sqrt(ele.connectedEdges().connectedNodes().length + 1 / 1) * 20,
       },

@@ -1,4 +1,3 @@
-import { BG, BORDER } from "../../configs/COLORS";
 import activityOpacity from "./activityOpacity";
 import { actFields, wpFields } from "../../data";
 import statusOpacity from "../../configs/statusOpacity";
@@ -20,8 +19,10 @@ export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, l
     id: wp[wpFields.ID],
     content: wp[wpFields.ID],
     // name: wp[wpFields.NAME],
-    style: `background-color: ${BG[wp[wpFields.ID]]}; color: white`,
+    style: `background-color: ${wp.bgColor}; color: white`,
   }));
+
+  const getColorRef = (wp, color) => wpData.filter((record) => record.id === wp)[0][color];
 
   const items = actData.map((act) => {
     const startDate = new Date(handleNonDates(act.startDate, "start")).getTime();
@@ -42,9 +43,8 @@ export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, l
       title: itemName,
       className: `item${act[actFields.ID]}`,
       sMonth: act[actFields.STARTM],
-      style: `background-color: ${BG[`WP_${act[actFields.WP]}`]}; border-color: ${
-        BORDER[`WP_${act[actFields.WP]}`]
-      }; color: white; opacity: ${opacity}`,
+      style: `background-color: ${getColorRef(`WP_${act[actFields.WP]}`, "bgColor")}; 
+      border-color: ${getColorRef(`WP_${act[actFields.WP]}`, "borderColor")}; color: white; opacity: ${opacity}`,
     };
   });
 

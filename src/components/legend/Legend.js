@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { ENGAGEMENT, BORDER, BG, ENGRANK, EDGE } from "../../configs/COLORS";
+import { ENGAGEMENT, ENGRANK, EDGE } from "../../configs/COLORS";
 import engLevelWording from "../../configs/engLevelWording";
 
 import "./Legend.css";
@@ -73,7 +73,7 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
     const wpLegendItems = wps.map((wp) => {
       return (
         <div key={wp.id} className="boxContainer">
-          <div className="box" style={{ backgroundColor: BG[wp.id], borderColor: BORDER[wp.id] }}></div>
+          <div className="box" style={{ backgroundColor: wp.bgColor, borderColor: wp.borderColor }}></div>
           <p className="legendLable">{wp.displayName}</p>
         </div>
       );
@@ -112,7 +112,7 @@ function styleEngLegend(eng) {
     ? { backgroundColor: ENGAGEMENT[2], height: "6px" }
     : eng === "4"
     ? { backgroundColor: ENGAGEMENT[3], height: "8px" }
-    : BORDER.other;
+    : EDGE;
 }
 
 // // returns unique array of activity categorys

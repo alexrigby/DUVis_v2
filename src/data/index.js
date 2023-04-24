@@ -1,22 +1,22 @@
 export const projectMeta = {
   NAME: "ALEX'S TEST PROJECT",
-  ENDD: false,
-  STARTD: false,
-  // ENDD: new Date().toISOString().split("T")[0],
-  // STARTD: "2016-09-01",
-  STHOLDERS: false,
+  // ENDD: false,
+  // STARTD: false,
+  ENDD: new Date().toISOString().split("T")[0],
+  STARTD: "2016-09-01",
+  STHOLDERS: true,
 };
 
 export const actFields = {
   ID: "actividad",
   NAME: "activity name",
   WP: "WP",
-  STARTM: false,
-  ENDM: false,
-  // STARTM: "Start Month",
-  // ENDM: "End Month",
+  // STARTM: false,
+  // ENDM: false,
+  STARTM: "Start Month",
+  ENDM: "End Month",
 
-  META_FIELDS: ["category", "Activity description"],
+  META_FIELDS: ["category", "Activity description", "test"],
 };
 
 export const wpFields = {

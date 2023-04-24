@@ -34,6 +34,7 @@ export function makeActNodes(data) {
       },
     };
   });
+  console.log(cyNodes);
 
   return cyNodes;
 }

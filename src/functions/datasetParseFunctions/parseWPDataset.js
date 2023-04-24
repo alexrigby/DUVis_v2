@@ -1,5 +1,11 @@
+import { colorPaletBg, colorPaletBorder } from "../../configs/COLORS";
+
 export function parseWPDataset(data) {
-  const wpData = [...data];
+  const wpData = data.map((wp, i) => ({
+    ...wp,
+    bgColor: colorPaletBg[i],
+    borderColor: colorPaletBorder[i],
+  }));
 
   // // adds list f SDGS to wpData object
   // for (let i = 0; i < wpData.length; i++) {

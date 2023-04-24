@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { BG } from "../../configs/COLORS";
 import SDG_ICONS from "../../assets/sdg_icons/index";
 import engLevelWording from "../../configs/engLevelWording";
 import listLinks from "./functions/listLinks";
@@ -119,7 +118,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
   return (
     <div>
       <div className="metaSection">
-        <h1 style={{ backgroundColor: BG[selectedNode.id] }}>WP: {selectedNode.label}</h1>
+        <h1 style={{ backgroundColor: selectedNode.bgColor }}>WP: {selectedNode.label}</h1>
         <h1>{selectedNode.name}</h1>
       </div>
       <div>{metaSections}</div>

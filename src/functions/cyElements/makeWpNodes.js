@@ -22,6 +22,8 @@ export function makeWpNodes(data) {
         type: "wp",
         name: wpName,
         displayName: wpDisplayName,
+        bgColor: wp.bgColor,
+        borderColor: wp.borderColor,
         // SDGs: item[wpFields.SDGs],
 
         meta: meta_fields,
