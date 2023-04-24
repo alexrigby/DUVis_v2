@@ -6,22 +6,27 @@ export function trimActData(actData, prPeriod, currentStory) {
   const filterByBoth = currentStory !== null && prPeriod.pr !== null;
 
   const filterByPrPeriod = (act) => act.startPrPeriod <= prPeriod.pr;
-  let filteredData = actData;
+  let filteredData = actData; //truly filtered data to use for nodes and gantt chart
+  let filteredByPr = actData; // only filrtered by pr to be able to get max engagement level
 
   if (!filterByStory && !filterByPr && !filterByBoth) {
     filteredData = actData;
+    filteredByPr = actData;
   } else if (filterByStory) {
     filteredData = filterStoryData(filteredData, currentStory.ids);
+    filteredByPr = actData;
   } else if (filterByPr) {
     filteredData = filteredData.filter(filterByPrPeriod);
+    filteredByPr = filteredData.filter(filterByPrPeriod);
   } else if (filterByBoth) {
+    filteredByPr = filteredData.filter(filterByPrPeriod);
     //first filter by story
     filteredData = filterStoryData(filteredData, currentStory.ids);
     //then filter that story data by prperiod
     filteredData = filteredData.filter(filterByPrPeriod);
   }
 
-  return filteredData;
+  return { trimmedActData: filteredData, filteredByPr };
 }
 export default trimActData;
 

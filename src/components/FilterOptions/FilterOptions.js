@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import STORIES from "../../configs/stories";
+import { STORIES } from "../../data";
 
 import CustomStory from "./customStory/CustomStory";
 import PRScroll from "./PRScroll/PRScroll";

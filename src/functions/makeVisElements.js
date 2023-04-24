@@ -16,12 +16,10 @@ import parseWPDataset from "./datasetParseFunctions/parseWPDataset";
 import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
 
 import workBookPath from "../data/activity_data.xlsx";
-import { actFields } from "../data";
-import { projectMeta } from "../data";
+import { actFields, projectMeta, INCLUDE_DATES } from "../data";
 
 export async function makeVisElements(prPeriod, currentStory, completedDisplay) {
-  const INCLUDE_DATES = !actFields.STARTM || !actFields.ENDM ? false : true; // if dates are not supplied then:
-  /*
+  /* IF DATES ARE NOT INCLUDED:
         -dont generate gantt chart items
         -dont convert months to dates for act nodes
    */
@@ -40,6 +38,9 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["work packages"], { defval: "", raw: false });
   const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholder list"], { defval: "", raw: false });
 
+  const test = XLSX.utils.sheet_to_json(workBookData.Sheets["test"], { defval: "", raw: false });
+  console.log(test);
+
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
   const startDate = projectMeta.STARTD;
   const todaysDate = projectMeta.ENDD;
@@ -53,14 +54,18 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
 
   //-------------TRIM ACT DATA TO FILTER SPECIFICATION ----------------
   const latestPrPeriod = INCLUDE_DATES && dates[dates.length - 1].prPeriod;
-  const trimmedActData = trimActData(activityData, prPeriod, currentStory);
+  //trimmedActData === current filter, filteredByPr === all data in curent pr period regardless of story filter
+  const { trimmedActData, filteredByPr } = trimActData(activityData, prPeriod, currentStory);
+
   const trimmedWpData = wpData.filter((wp) =>
     [...new Set(trimmedActData.map((act) => `WP_${act.WP}`))].includes(wp.id)
   );
 
   // ----TRIM & FILTER STAKEHOLDERS-------
-  // creates ealily readable stakeholder object from stData and stLinks
-  const stakeholderData = parseStakeholderDataset(stLinks, stDataset, trimmedActData);
+  // returns the max engagement score for the pr period (regardless of stroy filter)
+  const maxEngScore = parseStakeholderDataset(stLinks, stDataset, filteredByPr).maxEngScore;
+  // creates ealily readable stakeholder object from stData and stLinks to match trimmed activity data
+  const stakeholderData = parseStakeholderDataset(stLinks, stDataset, trimmedActData).stakeholderData;
 
   //----MAKE VIS ELEMENTS -------------
   const actNodes = makeActNodes(trimmedActData);
@@ -88,9 +93,9 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   //----ALL CYTOSCAPE ELEMENTS-----
   const cyElms = [
     actNodes,
-    stakeholderNodes,
+    // stakeholderNodes,
     actEdges.flat(),
-    stakeholderEdges.flat(),
+    // stakeholderEdges.flat(),
     wpNodes,
     projectNode,
     wpEdges,
@@ -103,6 +108,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
     dates,
     stakeholderData,
     latestPrPeriod,
+    maxEngScore,
   };
 }
 

@@ -11,7 +11,6 @@ import ToggleButtons from "./components/ToggleButtons/ToggleButtons";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
-import getEngLevels from "./AppFunctions/getEngLevels";
 
 export function App() {
   //-----------------SET STATES-------------------------
@@ -42,59 +41,31 @@ export function App() {
   const engagementScoresRef = useRef(null); //engagment level and ranking
 
   currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
-  console.log(prPeriod);
+
   //----------------------- FETCH DATA FOR USE IN APP-----------------------------------
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data
     async function addDataToCytoscape() {
-      const { cyElms, gantChartItems, activityData, dates, stakeholderData, latestPrPeriod } = await makeVisElements(
-        prPeriod,
-        currentStory,
-        completedDisplay
-      ); //all pre-processing of data
+      const { cyElms, gantChartItems, activityData, dates, stakeholderData, latestPrPeriod, maxEngScore } =
+        await makeVisElements(prPeriod, currentStory, completedDisplay); //all pre-processing of data
 
       actDataRef.current = activityData; //asigns activity data to ref
       stakeholderDataRef.current = stakeholderData;
       datesRef.current = dates; //assigns dates ro ref
       gantchartDataRef.current = gantChartItems; //asign gant chart data to the ref
       latestPrPeriodRef.current = latestPrPeriod;
+      engagementScoresRef.current = maxEngScore; // gives default maxEngScore
 
+      console.log(engagementScoresRef.current);
       setCyState((prevState) => ({
         ...prevState,
         elements: cyElms,
         display: "block",
       }));
     }
+
     addDataToCytoscape();
   }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory]);
-
-  //------------------------------------------ENGAGEMENT RANKING--------------------------------------------
-  // TODO------------------------------------------------need to rethink if time series isnt included
-  // saves engagement ranking and level in object that persists between renders
-  // useEffect(() => {
-  //   var eachEngagementRanking = [];
-  //   for (let i = 0; i < latestPrPeriodRef.current; i++) {
-  //     eachEngagementRanking.push(getEngLevels(i + 1, cyState));
-  //   }
-  //   engagementScoresRef.current = eachEngagementRanking;
-  //   //only run once, when cyState.cy is initialized
-  // }, [cyState.cy]);
-
-  // // adds the engagement ranking to individual stakeholders
-  // useEffect(() => {
-  //   var pr = prPeriod.pr === null ? latestPrPeriodRef.current : prPeriod.pr; //use latest pr or filtered pr period
-  //   const stakeholders = networkVeiw // use network items or full diagram
-  //     ? cyState.cy.nodes("[type = 'stakeholderNode'][network = 'yes']")
-  //     : cyState.cy.nodes("[type = 'stakeholderNode']");
-  //   //Add engagement rank to each stakeholder
-  //   stakeholders.forEach((s) => {
-  //     const engRank = engagementScoresRef.current[pr - 1].individualEngScores.filter((item) =>
-  //       networkVeiw ? `N_${item.id}` === s.id() : item.id === s.id()
-  //     );
-  //     s.data("weight", engRank[0].engRank);
-  //   });
-  //   //run when length oof elements chnage i.e. pr period changes
-  // }, [cyState.elements.length]);
 
   //---------------------- STYLE -------------------------------------
   const centerGraph = (event) => {

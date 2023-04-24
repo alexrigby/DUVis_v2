@@ -21,7 +21,7 @@ export function parseStakeholderDataset(stLinks, stData, trimmedActData) {
   const areThereStakeholders = newMatrix.flat().length === 0 ? false : true;
 
   //if thee are no stakeholders linked to any of the activites in the filter then redurn an empty array
-  const stakeholderLinks = areThereStakeholders
+  const stakeholderData = areThereStakeholders
     ? newMatrix
         .map((row, i) => {
           //returns coresponding info from stakeholder file
@@ -48,6 +48,8 @@ export function parseStakeholderDataset(stLinks, stData, trimmedActData) {
         .filter((s) => s.act.length !== 0)
     : [];
 
-  return stakeholderLinks;
+  const maxEngScore = Math.max(...stakeholderData.map((s) => s.engRank));
+
+  return { stakeholderData, maxEngScore };
 }
 export default parseStakeholderDataset;
