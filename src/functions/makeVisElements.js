@@ -36,7 +36,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   // convert the csvs to JSON format
   const actDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["Activities"], { defval: "", raw: false });
   const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["work packages"], { defval: "", raw: false });
-  const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholder list"], { defval: "", raw: false });
+  const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["takeholder list"], { defval: "", raw: false });
   projectMeta.STHOLDERS = stDataset.length === 0 ? false : true; // check if
 
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
@@ -98,7 +98,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   return {
     cyElms,
     gantChartItems,
-    activityData,
+    activityData: trimmedActData,
     dates,
     stakeholderData,
     latestPrPeriod,

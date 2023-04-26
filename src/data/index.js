@@ -5,7 +5,7 @@ export const projectMeta = {
   ENDD: new Date().toISOString().split("T")[0],
   STARTD: "2016-09-01",
   PR_PERIOD: 6,
-  STHOLDERS: true, //default true but changed if no stakeholder provided
+  STHOLDERS: false, //default true but changed if no stakeholder provided
 };
 
 export const actFields = {
@@ -50,7 +50,7 @@ export const stFields = {
   ],
 };
 
-export const INCLUDE_DATES = !actFields.START_DATE || !actFields.END_DATE ? false : true;
+export const INCLUDE_DATES = !projectMeta.STARTD || !projectMeta.ENDD ? false : true;
 //----------------------ARE DATES SUPPLIED BY USER? ----------------------//
 /*
     if no dates provided:

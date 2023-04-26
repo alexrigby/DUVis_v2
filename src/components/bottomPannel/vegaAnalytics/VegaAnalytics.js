@@ -72,7 +72,7 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
       setBrushRange(fullRange);
     };
 
-    const vegaData = parseVegaData(ACT_DATA, trimmedDates, brushRange, selectedMetric, options);
+    const vegaData = parseVegaData(ACT_DATA, trimmedDates, brushRange, selectedMetric, options, categoryArray);
     const spec = vegaSpec(options, brushRange, selectedMetric);
 
     const title =

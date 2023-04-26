@@ -31,8 +31,8 @@ export function makeActNodes(data) {
         dates: {
           endPrPeriod: act.endPrPeriod,
           startPrPeriod: act.startPrPeriod,
-          endDate: act[actFields.END_DATE],
-          startDate: act[actFields.START_DATE],
+          endDate: act.endDate,
+          startDate: act.startDate,
         },
 
         meta: meta_fields,

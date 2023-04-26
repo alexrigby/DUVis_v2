@@ -13,8 +13,8 @@ export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, l
 
   const items = actData.map((act) => {
     // console.log(act.endPrPeriod);
-    const startDate = new Date(act[actFields.START_DATE]).getTime();
-    const endDate = new Date(act[actFields.END_DATE]).getTime();
+    const startDate = new Date(act.startDate).getTime();
+    const endDate = new Date(act.endDate).getTime();
     const opacity = completedDisplay ? activityOpacity(act, latestPrPeriod, prPeriod) : statusOpacity.onGoing;
 
     // if no name is supplied then generate name from id

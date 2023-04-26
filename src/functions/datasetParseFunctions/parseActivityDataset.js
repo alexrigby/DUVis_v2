@@ -8,13 +8,13 @@ export function parseActivityDataset(data, dates, wpData) {
   const activityData = data.map((act, i) => {
     if (INCLUDE_DATES) {
       return {
-        ...act,
         bgColor: getColorRef(`WP_${act[actFields.WP]}`, "bgColor"),
         borderColor: getColorRef(`WP_${act[actFields.WP]}`, "borderColor"),
         startDate: dateIsValid(new Date(act[actFields.START_DATE])) ? act[actFields.START_DATE] : projectMeta.STARTD,
-        endDate: dateIsValid(new Date(act[actFields.END_DATE])) ? act[actFields.START_DATE] : projectMeta.ENDD,
+        endDate: dateIsValid(new Date(act[actFields.END_DATE])) ? act[actFields.END_DATE] : projectMeta.ENDD,
         startPrPeriod: giveActivityPrPeriod(act, dates, "start"),
         endPrPeriod: giveActivityPrPeriod(act, dates, "end"),
+        ...act,
       };
     } else {
       return {

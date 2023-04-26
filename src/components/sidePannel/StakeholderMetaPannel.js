@@ -34,7 +34,7 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, 
   // -------USER DEFINED CATEGORICAL META FIELDS------------
   const categoricalMetaSections = CATEGORICAL_SUBSECTIONS.map((field, i) => {
     var caps = capitalizeEachWord(field);
-    console.log(selectedNode.meta[field]);
+
     return (
       <div key={field}>
         <h2 style={{ display: "inline" }}>
