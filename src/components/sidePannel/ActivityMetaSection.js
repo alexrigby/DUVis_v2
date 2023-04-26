@@ -2,6 +2,7 @@ import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import engLevelWording from "../../configs/engLevelWording";
 import listLinks from "./functions/listLinks";
 import capitalizeEachWord from "./functions/capitalizeEachWord";
+import getTypeOptionsArray from "../../AppFunctions/getTypeOptionsArray";
 import { actFields, INCLUDE_DATES, projectMeta } from "../../data";
 import { useState } from "react";
 
@@ -18,13 +19,14 @@ export function ActivityMetaSection({
   const OPEN = <i className="fa fa-angle-down"></i>;
   const CLOSE = <i className="fa fa-angle-up"></i>;
   const ENG_COUNT = Array.from(Array(engLevelWording.length).keys());
-  const SUBSECTIONS = [...actFields.META_FIELDS]; // array of user defined meta fileds to display
+  const CATEGORICAL_SUBSECTIONS = getTypeOptionsArray(actFields.META_FIELDS, "categorical");
+  const TEXT_SUBSECTIONS = getTypeOptionsArray(actFields.META_FIELDS, "text"); // array of user defined text meta fileds to display in accordion
+
   const latestPrPeriod = INCLUDE_DATES && datesRef.current[datesRef.current.length - 1].prPeriod;
   const includeStakeholders = projectMeta.STHOLDERS;
-
   //--------------------------------ACCORDION STATE----------------------------------------------------------------------------------------//
   const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
-  const subSectionObj = SUBSECTIONS.reduce((p, c) => ({ ...p, [c]: false }), {}); // each subsection to onject- false
+  const subSectionObj = TEXT_SUBSECTIONS.reduce((p, c) => ({ ...p, [c]: false }), {}); // each text subsection to accordion
 
   const [actAccordion, setActAccordion] = useState({ ...engObj, ...subSectionObj });
 
@@ -38,71 +40,76 @@ export function ActivityMetaSection({
   //--------------------------------------------STYLE--------------------------------------------//
   function completedStyle() {
     if (prPeriod.pr === null) {
-      if (selectedNode.endPrPeriod === "undefined" || selectedNode.endPrPeriod === "onGoing") {
+      if (selectedNode.dates.endPrPeriod === "undefined" || selectedNode.dates.endPrPeriod === "onGoing") {
         return { color: "#ffbf00", opacity: "1" };
       } else {
-        return { color: selectedNode.endPrPeriod < latestPrPeriod ? "#1fc700" : "#ffbf00", opacity: "1" };
+        return { color: selectedNode.dates.endPrPeriod < latestPrPeriod ? "#1fc700" : "#ffbf00", opacity: "1" };
       }
     } else {
-      if (selectedNode.endPrPeriod === "undefined" || selectedNode.endPrPeriod === "onGoing") {
+      if (selectedNode.dates.endPrPeriod === "undefined" || selectedNode.dates.endPrPeriod === "onGoing") {
         return { color: "#ffbf00", opacity: "1" };
-      } else if (selectedNode.startPrPeriod > prPeriod.pr) {
+      } else if (selectedNode.dates.startPrPeriod > prPeriod.pr) {
         return { color: "#EE4B2B", fontSize: "15pt", fontWeight: "900", opacity: "1" };
       } else {
-        return { color: selectedNode.endPrPeriod < prPeriod.pr ? "#1fc700" : "#ffbf00", opacity: "1" };
+        return { color: selectedNode.dates.endPrPeriod < prPeriod.pr ? "#1fc700" : "#ffbf00", opacity: "1" };
       }
     }
   }
 
   function completedText() {
     if (prPeriod.pr === null) {
-      if (selectedNode.endPrPeriod === "undefined" || selectedNode.endPrPeriod === "onGoing") {
+      if (selectedNode.dates.endPrPeriod === "undefined" || selectedNode.dates.endPrPeriod === "onGoing") {
         return "Ongoing";
       } else {
-        return selectedNode.endPrPeriod < latestPrPeriod ? "Completed" : "Ongoing";
+        return selectedNode.dates.endPrPeriod < latestPrPeriod ? "Completed" : "Ongoing";
       }
     } else {
-      if (selectedNode.endPrPeriod === "undefined" || selectedNode.endPrPeriod === "onGoing") {
+      if (selectedNode.dates.endPrPeriod === "undefined" || selectedNode.dates.endPrPeriod === "onGoing") {
         return "Ongoing";
-      } else if (selectedNode.startPrPeriod > prPeriod.pr) {
+      } else if (selectedNode.dates.startPrPeriod > prPeriod.pr) {
         return "Not Started";
       } else {
-        return selectedNode.endPrPeriod < prPeriod.pr ? "Completed" : "Ongoing";
+        return selectedNode.dates.endPrPeriod < prPeriod.pr ? "Completed" : "Ongoing";
       }
     }
   }
   //controls display state of slected accordion field
   const style = (key) => ({ display: actAccordion[key] ? "block" : "none" });
 
-  const datesStyle = {
-    opacity: 1,
-    fontWeight: 550,
-  };
-
   // --------------------------------------------PANNEL TEXT--------------------------------------------------//
-  //--------------------DATES TEST--------------------
+  //--------------------DATES TEXT--------------------
   const datesText = (
     <div>
-      {" "}
       <p style={completedStyle()} className="completed">
         {completedText()}
       </p>
-      <h2>Start - End:</h2>
       <p>
-        <span style={datesStyle}> Date: </span> {shortDates(selectedNode, "start")} - {shortDates(selectedNode, "end")}
+        {shortDates(selectedNode, "start")} - {shortDates(selectedNode, "end")}
       </p>
       <p>
-        <span style={datesStyle}> Months: </span> {selectedNode[actFields.STARTM]} - {selectedNode[actFields.ENDM]}
-      </p>
-      <p>
-        <span style={datesStyle}> PR Period: </span> {selectedNode.startPrPeriod} -{" "}
-        {selectedNode.endPrPeriod === "onGoing" ? "Ongoing" : selectedNode.endPrPeriod}
+        PR period {selectedNode.dates.startPrPeriod} -
+        {selectedNode.dates.endPrPeriod === "onGoing" ? "Ongoing" : selectedNode.dates.endPrPeriod}
       </p>
     </div>
   );
-  //----------------------USER DEFINED META FIELDS-----------------------
-  //lopps over user defined meta sections and accessed the corresponding data from the dataset
-  const metaSections = SUBSECTIONS.map((field, i) => {
+
+  //-----------------USER DEFINED CATEGORICAL META FIELDS---------------------------
+  const categoricalMetaSections = CATEGORICAL_SUBSECTIONS.map((field, i) => {
+    var caps = capitalizeEachWord(field);
+
+    return (
+      <div key={field}>
+        <h2 style={{ display: "inline" }}>
+          {caps}:{"  "}
+        </h2>
+        <p style={{ display: "inline" }}>{selectedNode.meta[field]}</p>
+      </div>
+    );
+  });
+
+  //----------------------USER DEFINED TEXT META FIELDS-----------------------
+  //lopps over user defined text meta sections and accessed the corresponding data from the dataset
+  const TextMetaSections = TEXT_SUBSECTIONS.map((field, i) => {
     //capitalizing each word of fields
     var caps = capitalizeEachWord(field);
 
@@ -182,7 +189,11 @@ export function ActivityMetaSection({
         </h1>
         {INCLUDE_DATES && datesText}
       </div>
-      <div>{metaSections}</div>
+      <div className="metaSection">
+        <div>{categoricalMetaSections}</div>
+      </div>
+      <div>{TextMetaSections}</div>
+
       <div className="metaSection">
         <h1>
           {/* LINKED ACTIVITIES{" "} */}
@@ -213,16 +224,16 @@ export default ActivityMetaSection;
 
 function shortDates(node, se) {
   if (se === "end") {
-    if (node.endDate === "onGoing" || node.endDate === "undefined") {
+    if (node.dates.endDate === "onGoing" || node.dates.endDate === "undefined") {
       return "Ongoing";
     } else {
-      return new Date(node.endDate).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+      return new Date(node.dates.endDate).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
     }
   } else if (se === "start") {
-    if (node.startDate === "undefined") {
+    if (node.dates.startDate === "undefined") {
       return "undefined";
     } else {
-      return new Date(node.startDate).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+      return new Date(node.dates.startDate).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
     }
   }
 }

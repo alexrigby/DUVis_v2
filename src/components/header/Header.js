@@ -54,20 +54,20 @@ function completedActivityInfo(prPeriod, cy, dates, co, networkVeiw) {
   const latestPrPeriod = dates[dates.length - 1].prPeriod;
   if (co === "ongoing") {
     if (prPeriod.pr === null) {
-      return cy.nodes(`${nodeSelector}[meta.endPrPeriod >= "${latestPrPeriod}"]`).length;
+      return cy.nodes(`${nodeSelector}[dates.endPrPeriod >= "${latestPrPeriod}"]`).length;
     } else {
-      return cy.nodes(`${nodeSelector}[meta.endPrPeriod >= "${prPeriod.pr}"]`).length;
+      return cy.nodes(`${nodeSelector}[dates.endPrPeriod >= "${prPeriod.pr}"]`).length;
     }
   } else if (co === "completed") {
     if (prPeriod.pr === null) {
       return (
         cy.nodes(`${nodeSelector}[type ="activityNode"]`).length -
-        cy.nodes(`${nodeSelector}[meta.endPrPeriod >= "${latestPrPeriod}"]`).length
+        cy.nodes(`${nodeSelector}[dates.endPrPeriod >= "${latestPrPeriod}"]`).length
       );
     } else {
       return (
         cy.nodes(`${nodeSelector}[type ="activityNode"]`).length -
-        cy.nodes(`${nodeSelector}[meta.endPrPeriod >= "${prPeriod.pr}"]`).length
+        cy.nodes(`${nodeSelector}[dates.endPrPeriod >= "${prPeriod.pr}"]`).length
       );
     }
   }

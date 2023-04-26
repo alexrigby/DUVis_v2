@@ -4,19 +4,27 @@ export const projectMeta = {
   // STARTD: false,
   ENDD: new Date().toISOString().split("T")[0],
   STARTD: "2016-09-01",
-  STHOLDERS: true,
+  PR_PERIOD: 6,
+  STHOLDERS: true, //default true but changed if no stakeholder provided
 };
 
 export const actFields = {
   ID: "actividad",
   NAME: "activity name",
   WP: "WP",
+  START_DATE: "start date",
+  END_DATE: "end date",
   // STARTM: false,
   // ENDM: false,
-  STARTM: "Start Month",
-  ENDM: "End Month",
+  // STARTM: "Start Month",
+  // ENDM: "End Month",
 
-  META_FIELDS: ["category", "Activity description", "test"],
+  META_FIELDS_f: ["category", "Activity description", "test"],
+  META_FIELDS: [
+    { name: "category", type: "categorical" },
+    { name: "Activity description", type: "text" },
+    { name: "test", type: "categorical" },
+  ],
 };
 
 export const wpFields = {
@@ -24,17 +32,25 @@ export const wpFields = {
   NAME: "wp name",
   // SDGs: "SDGs",
 
-  META_FIELDS: ["category", "location test"],
+  META_FIELDS: [
+    { name: "category", type: "categorical" },
+    { name: "location test", type: "categorical" },
+    { name: "test text", type: "text" },
+  ],
 };
 
 export const stFields = {
   ID: "S_ID",
   NAME: "stakeholder name",
 
-  META_FIELDS: ["Sector", "Category test"],
+  META_FIELDS: [
+    { name: "Sector", type: "categorical" },
+    { name: "Category test", type: "categorical" },
+    { name: "test text type", type: "text" },
+  ],
 };
 
-export const INCLUDE_DATES = !actFields.STARTM || !actFields.ENDM ? false : true;
+export const INCLUDE_DATES = !actFields.START_DATE || !actFields.END_DATE ? false : true;
 //----------------------ARE DATES SUPPLIED BY USER? ----------------------//
 /*
     if no dates provided:

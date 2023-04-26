@@ -27,7 +27,7 @@ export function parseStakeholderDataset(stLinks, stData, trimmedActData) {
           //returns coresponding info from stakeholder file
           const stakeholderData = stData.filter((record) => record.S_ID === stIDs[i])[0];
           // for each user specified meta field create an object {meta_filed : field value}
-          const meta_fields = stFields.META_FIELDS.reduce((a, b) => ({ ...a, [b]: stakeholderData[b] }), {});
+          const meta_fields = stFields.META_FIELDS.reduce((a, b) => ({ ...a, [b.name]: stakeholderData[b.name] }), {});
 
           return {
             id: stIDs[i],

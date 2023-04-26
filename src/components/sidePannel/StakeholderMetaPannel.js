@@ -4,16 +4,19 @@ import { stFields } from "../../data";
 import engLevelWording from "../../configs/engLevelWording";
 import listLinks from "./functions/listLinks";
 import capitalizeEachWord from "./functions/capitalizeEachWord";
+import getTypeOptionsArray from "../../AppFunctions/getTypeOptionsArray";
+
 export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, setStakeholdersDisplay }) {
   //--------------------------------------USEFULL VARIABLES -------------------------------//
   const OPEN = <i className="fa fa-angle-down"></i>;
   const CLOSE = <i className="fa fa-angle-up"></i>;
-  const SUBSECTIONS = [...stFields.META_FIELDS];
+  const TEXT_SUBSECTIONS = getTypeOptionsArray(stFields.META_FIELDS, "text");
+  const CATEGORICAL_SUBSECTIONS = getTypeOptionsArray(stFields.META_FIELDS, "categorical");
   const ENG_COUNT = Array.from(Array(engLevelWording.length).keys()); // number of engagement levels
 
   //----------------------------------------------ACCORDION STATE----------------------------------//
   const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
-  const subSectionObj = SUBSECTIONS.reduce((p, c) => ({ ...p, [c]: false }), {});
+  const subSectionObj = TEXT_SUBSECTIONS.reduce((p, c) => ({ ...p, [c]: false }), {});
 
   const [staAccordion, setStaAccordion] = useState({ ...engObj, ...subSectionObj }); // contains each section to be controled by accordion state
 
@@ -28,8 +31,22 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, 
   const style = (key) => ({ display: staAccordion[key] ? "block" : "none" });
 
   //-------------------------------------------META TEXT------------------------------------------//
+  // -------USER DEFINED CATEGORICAL META FIELDS------------
+  const categoricalMetaSections = CATEGORICAL_SUBSECTIONS.map((field, i) => {
+    var caps = capitalizeEachWord(field);
+    console.log(selectedNode.meta[field]);
+    return (
+      <div key={field}>
+        <h2 style={{ display: "inline" }}>
+          {caps}:{"  "}
+        </h2>
+        <p style={{ display: "inline" }}>{selectedNode.meta[field]}</p>
+      </div>
+    );
+  });
+
   //---------USER DEFINED META FIELDS----------
-  const metaSections = SUBSECTIONS.map((field, i) => {
+  const textMetaSections = TEXT_SUBSECTIONS.map((field, i) => {
     var caps = capitalizeEachWord(field);
 
     return (
@@ -82,7 +99,8 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, 
         <h1>{selectedNode.name}</h1>
         <h1>{selectedNode.id}</h1>
       </div>
-      <div>{metaSections}</div>
+      <div className="metaSection">{categoricalMetaSections}</div>
+      <div>{textMetaSections}</div>
 
       <div className="metaSection">
         <h1>

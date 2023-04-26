@@ -36,7 +36,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   // convert the csvs to JSON format
   const actDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["Activities"], { defval: "", raw: false });
   const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["work packages"], { defval: "", raw: false });
-  const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholder lis"], { defval: "", raw: false });
+  const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholder list"], { defval: "", raw: false });
   projectMeta.STHOLDERS = stDataset.length === 0 ? false : true; // check if
 
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
@@ -46,15 +46,16 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
 
   //-----------------PARSE DATA ----------
   // if no months are provided then dont add dates to data
-  const activityData = INCLUDE_DATES ? parseActivityDataset(actDataset, dates) : actDataset;
-  const links = linksMatrixToArray(actLinks);
   const wpData = parseWPDataset(wpDataset);
+  const activityData = parseActivityDataset(actDataset, dates, wpData);
+  const links = linksMatrixToArray(actLinks);
 
   //-------------TRIM ACT DATA TO FILTER SPECIFICATION ----------------
   const latestPrPeriod = INCLUDE_DATES && dates[dates.length - 1].prPeriod;
   //trimmedActData === current filter, filteredByPr === all data in curent pr period regardless of story filter
   const { trimmedActData, filteredByPr } = trimActData(activityData, prPeriod, currentStory);
 
+  //only return wps that are present in actdataset
   const trimmedWpData = wpData.filter((wp) =>
     [...new Set(trimmedActData.map((act) => `WP_${act.WP}`))].includes(wp.id)
   );
@@ -90,7 +91,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   };
 
   //----ALL CYTOSCAPE ELEMENTS-----
-  const cyElms = [actNodes, actEdges.flat(), wpNodes, wpEdges].flat();
+  const cyElms = [...actNodes, ...actEdges.flat(), ...wpNodes, ...wpEdges].flat();
   //if stakeholders are included then add them to cy elements
   projectMeta.STHOLDERS && cyElms.push(...stakeholderNodes, ...stakeholderEdges.flat(), projectNode);
 

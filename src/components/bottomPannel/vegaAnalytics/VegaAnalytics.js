@@ -7,14 +7,17 @@ import VegaSelect from "./VegaSelect";
 import vegaSpec from "./functions/vegaSpec";
 import vegaSpecNoDate from "./functions/vegaSpecNoDate";
 import parseVegaData from "./functions/parseVegaData";
+import getTypeOptionsArray from "../../../AppFunctions/getTypeOptionsArray";
 import { actFields } from "../../../data";
 import { INCLUDE_DATES } from "../../../data";
 import "./VegaAnalytics.css";
 
 export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPeriod, setSelectedBottomVis }) {
   // ------------------------- SET STATE -----------------------------------------------------------//
+  const categoryArray = getTypeOptionsArray(actFields.META_FIELDS, "categorical"); //all categorical fileds
+
   const [brushRange, setBrushRange] = useState(""); // BRUSH RANGE STATE (ONLY USED IF DATE IS SUPPLIED)
-  const [selectedMetric, setSelectedMetric] = useState(actFields.META_FIELDS[0]);
+  const [selectedMetric, setSelectedMetric] = useState(categoryArray[0]);
 
   const closeVegaPannel = (event) => {
     setSelectedBottomVis("");

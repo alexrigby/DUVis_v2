@@ -1,3 +1,5 @@
+import { projectMeta } from "../../data";
+
 export function makeDates(startDate, today) {
   // largley taken from stackOverflow: Rob M. 's answer here https://stackoverflow.com/questions/30464628/javascript-get-all-months-between-two-dates
   const start = startDate.split("-");
@@ -21,7 +23,7 @@ export function makeDates(startDate, today) {
   var progressReport = 0;
   const dateObj = months.map((m, i) => {
     //every 6 months increas progress report period by 1
-    i % 6 === 0 && progressReport++;
+    i % projectMeta.PR_PERIOD === 0 && progressReport++;
     return {
       date: m,
       month: String(i + 1),

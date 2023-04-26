@@ -43,13 +43,13 @@ export function stylesheet(
       style: {
         "border-width": 4,
         "background-opacity": completedDisplay
-          ? (ele) => activityOpacity(ele.data(), latestPrPeriodRef.current, prPeriod)
+          ? (ele) => activityOpacity(ele.data().dates, latestPrPeriodRef.current, prPeriod)
           : statusOpacity.onGoing,
         "border-opacity": completedDisplay
-          ? (ele) => activityOpacity(ele.data(), latestPrPeriodRef.current, prPeriod)
+          ? (ele) => activityOpacity(ele.data().dates, latestPrPeriodRef.current, prPeriod)
           : statusOpacity.onGoing,
-        "background-color": (ele) => ele.parent().data("bgColor"),
-        "border-color": (ele) => ele.parent().data("borderColor"),
+        "background-color": (ele) => ele.data("bgColor"),
+        "border-color": (ele) => ele.data("borderColor"),
         //width and height displayed in accepted bubble area scale 'D2 = D1 * SQRT(X2/X1)' https://infonewt.com/circles/
         //+1 gives value to nodes with no connecting edges,
         width: (ele) =>

@@ -3,17 +3,6 @@ import { actFields, wpFields } from "../../data";
 import statusOpacity from "../../configs/statusOpacity";
 
 export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, latestPrPeriod, convertedDates) {
-  function handleNonDates(date, startOrEnd) {
-    const startDate = convertedDates[0].date;
-    const endDate = convertedDates[convertedDates.length - 1].date;
-
-    if (date === "onGoing" || date === "undefined") {
-      return startOrEnd === "start" ? startDate : endDate;
-    } else {
-      return date;
-    }
-  }
-
   // groups are work Packages
   const groups = wpData.map((wp) => ({
     id: wp[wpFields.ID],
@@ -22,11 +11,10 @@ export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, l
     style: `background-color: ${wp.bgColor}; color: white`,
   }));
 
-  const getColorRef = (wp, color) => wpData.filter((record) => record.id === wp)[0][color];
-
   const items = actData.map((act) => {
-    const startDate = new Date(handleNonDates(act.startDate, "start")).getTime();
-    const endDate = new Date(handleNonDates(act.endDate, "end")).getTime();
+    // console.log(act.endPrPeriod);
+    const startDate = new Date(act[actFields.START_DATE]).getTime();
+    const endDate = new Date(act[actFields.END_DATE]).getTime();
     const opacity = completedDisplay ? activityOpacity(act, latestPrPeriod, prPeriod) : statusOpacity.onGoing;
 
     // if no name is supplied then generate name from id
@@ -42,9 +30,8 @@ export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, l
       end: endDate,
       title: itemName,
       className: `item${act[actFields.ID]}`,
-      sMonth: act[actFields.STARTM],
-      style: `background-color: ${getColorRef(`WP_${act[actFields.WP]}`, "bgColor")}; 
-      border-color: ${getColorRef(`WP_${act[actFields.WP]}`, "borderColor")}; color: white; opacity: ${opacity}`,
+      style: `background-color: ${act.bgColor}; 
+      border-color: ${act.borderColor}; color: white; opacity: ${opacity}`,
     };
   });
 

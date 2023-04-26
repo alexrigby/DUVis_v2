@@ -2,20 +2,23 @@ import { useState } from "react";
 import SDG_ICONS from "../../assets/sdg_icons/index";
 import engLevelWording from "../../configs/engLevelWording";
 import listLinks from "./functions/listLinks";
-import { wpFields, projectMeta } from "../../data";
 import capitalizeEachWord from "./functions/capitalizeEachWord";
+import getTypeOptionsArray from "../../AppFunctions/getTypeOptionsArray";
+
+import { wpFields, projectMeta } from "../../data";
 
 export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setStakeholdersDisplay }) {
   // --------------------------------------USEFULL VARS---------------------------------------------------//
   const OPEN = <i className="fa fa-angle-down"></i>;
   const CLOSE = <i className="fa fa-angle-up"></i>;
   const ENG_COUNT = Array.from(Array(engLevelWording.length).keys());
-  const SUBSECTIONS = [...wpFields.META_FIELDS];
+  const CATEGORICAL_SUBSECTIONS = getTypeOptionsArray(wpFields.META_FIELDS, "categorical");
+  const TEXT_SUBSECTIONS = getTypeOptionsArray(wpFields.META_FIELDS, "text");
   const includeStakeholders = projectMeta.STHOLDERS;
 
   //-------------------------------------ACCORDION STATE---------------------------------------------------//
   const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
-  const subSectionObj = SUBSECTIONS.reduce((p, c) => ({ ...p, [c]: false }), {}); // each subsection to onject- false
+  const subSectionObj = TEXT_SUBSECTIONS.reduce((p, c) => ({ ...p, [c]: false }), {}); // each subsection to onject- false
 
   const [wpAccordion, setWPAccordion] = useState({ ...subSectionObj, ...engObj }); //add all sunsections to state
 
@@ -28,9 +31,23 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
 
   const style = (key) => ({ display: wpAccordion[key] ? "block" : "none" });
   //------------------------------PANNEL TEXT-----------------------------------------------------//
-  //-------------------USER DEFINED META FIELDS------------------
+  //----------------USER DEFINED CATEGORICAL META FIELDS----------
+  const categoricalMetaSection = CATEGORICAL_SUBSECTIONS.map((field, i) => {
+    var caps = capitalizeEachWord(field);
 
-  const metaSections = SUBSECTIONS.map((field, i) => {
+    return (
+      <div key={field}>
+        <h2 style={{ display: "inline" }}>
+          {caps}:{"  "}
+        </h2>
+        <p style={{ display: "inline" }}>{selectedNode.meta[field]}</p>
+      </div>
+    );
+  });
+
+  //-------------------USER DEFINED TEXT META FIELDS TO AD TO ACCORDION------------------
+
+  const textMetaSections = TEXT_SUBSECTIONS.map((field, i) => {
     var caps = capitalizeEachWord(field);
 
     return (
@@ -121,7 +138,8 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
         <h1 style={{ backgroundColor: selectedNode.bgColor }}>WP: {selectedNode.label}</h1>
         <h1>{selectedNode.name}</h1>
       </div>
-      <div>{metaSections}</div>
+      <div className="metaSection">{categoricalMetaSection}</div>
+      <div>{textMetaSections}</div>
       {/* <div className="metaSection">
         <div className="metaSectionHead">
           <h1>

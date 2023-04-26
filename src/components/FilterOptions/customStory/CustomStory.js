@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { actFields } from "../../../data";
 
 import "./CustomStory.css";
+import getTypeOptionsArray from "../../../AppFunctions/getTypeOptionsArray";
 
 export function CustomStory({
   stories,
@@ -31,8 +32,8 @@ export function CustomStory({
   const fieldCount = customFilter.length - 1; //keeps track of number of fields chosen for filter
 
   //-----------------------------ADDING OPTIONS TO SELECT LIST-------------------------------//
-  // returns select list of user specified meta_fields to filter data by
-  var matrixFieldOptions = actFields.META_FIELDS.map((field) =>
+  // returns select list of user specified categorical meta_fields to filter data by
+  var matrixFieldOptions = getTypeOptionsArray(actFields.META_FIELDS, "categorical").map((field) =>
     makeOption(field, selectedFieldIndex, customFilter, confirmedFilterField)
   );
 
@@ -133,6 +134,7 @@ export function CustomStory({
     const ids = customFilter.map((filter) => {
       let values = filter.values[0] === "Undefined" ? [""] : filter.values; // text == undefined but dataset = ""
       return values.flatMap((val) =>
+        //filtering the actData directly, beofre it is parsed in to nodes
         actDataRef.current.filter((act) => act[filter.field] === val).map((act) => act[actFields.ID])
       );
     });

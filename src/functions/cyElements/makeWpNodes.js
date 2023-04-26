@@ -10,7 +10,7 @@ export function makeWpNodes(data) {
     const wpDisplayName = wp[wpFields.NAME] ? `${wp[wpFields.ID]}. ${wpNumber}` : `Work Package ${wpNumber}`;
 
     // if user specifies additional meta fields
-    const meta_fields = wpFields.META_FIELDS.reduce((a, b) => ({ ...a, [b]: wp[b] }), {});
+    const meta_fields = wpFields.META_FIELDS.reduce((a, b) => ({ ...a, [b.name]: wp[b.name] }), {});
 
     return {
       group: "nodes",
