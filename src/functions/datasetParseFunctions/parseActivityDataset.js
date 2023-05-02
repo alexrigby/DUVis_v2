@@ -5,22 +5,27 @@ import { INCLUDE_DATES } from "../../data";
 export function parseActivityDataset(data, dates, wpData) {
   //finds what color gned and assignes it to activities
   const getColorRef = (wp, color) => wpData.filter((record) => record.id === wp)[0][color];
+
   const activityData = data.map((act, i) => {
     if (INCLUDE_DATES) {
       return {
-        bgColor: getColorRef(`WP_${act[actFields.WP]}`, "bgColor"),
-        borderColor: getColorRef(`WP_${act[actFields.WP]}`, "borderColor"),
-        startDate: dateIsValid(new Date(act[actFields.START_DATE])) ? act[actFields.START_DATE] : projectMeta.STARTD,
-        endDate: dateIsValid(new Date(act[actFields.END_DATE])) ? act[actFields.END_DATE] : projectMeta.ENDD,
+        ...act,
+        bgColor: getColorRef(`WP_${act[actFields.WP].trim()}`, "bgColor"),
+        borderColor: getColorRef(`WP_${act[actFields.WP].trim()}`, "borderColor"),
+        startDate: dateIsValid(new Date(act[actFields.START_DATE].trim()))
+          ? act[actFields.START_DATE]
+          : projectMeta.STARTD,
+        endDate: dateIsValid(new Date(act[actFields.END_DATE].trim())) ? act[actFields.END_DATE] : projectMeta.ENDD,
         startPrPeriod: giveActivityPrPeriod(act, dates, "start"),
         endPrPeriod: giveActivityPrPeriod(act, dates, "end"),
-        ...act,
+        ...(act[actFields.SDGs] && { SDGs: [...new Set(act[actFields.SDGs].trim().split(","))] }), // split comma seperated list of SDGs into unique array of sdgs if provided
       };
     } else {
       return {
         ...act,
-        bgColor: getColorRef(`WP_${act[actFields.WP]}`, "bgColor"),
-        borderColor: getColorRef(`WP_${act[actFields.WP]}`, "borderColor"),
+        bgColor: getColorRef(`WP_${act[actFields.WP.trim()]}`, "bgColor"),
+        borderColor: getColorRef(`WP_${act[actFields.WP.trim()]}`, "borderColor"),
+        ...(act[actFields.SDGs] && { SDGs: [...new Set(act[actFields.SDGs].trim().split(","))] }), // split comma seperated list of SDGs into unique array of sdgs if provided
       };
     }
   });

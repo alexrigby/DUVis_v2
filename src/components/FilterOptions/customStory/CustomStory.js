@@ -32,7 +32,7 @@ export function CustomStory({
   const fieldCount = customFilter.length - 1; //keeps track of number of fields chosen for filter
 
   //-----------------------------ADDING OPTIONS TO SELECT LIST-------------------------------//
-  // returns select list of user specified categorical meta_fields to filter data by
+  // returns select list of user specified categorical meta_fields to filter data by // if none provide returnes empty
   var matrixFieldOptions = getTypeOptionsArray(actFields.META_FIELDS, "categorical").map((field) =>
     makeOption(field, selectedFieldIndex, customFilter, confirmedFilterField)
   );

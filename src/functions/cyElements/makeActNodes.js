@@ -13,7 +13,6 @@ export function makeActNodes(data) {
     // if user specifies additional meta fields (only give name not type)
     const meta_fields = actFields.META_FIELDS.reduce((a, b) => ({ ...a, [b.name]: act[b.name] }), {});
 
-    // console.log(actFields.META_FIELDS_f.reduce((a, b) => ({ ...a, [b]: act[b] }), {}));
     return {
       group: "nodes",
       data: {
@@ -27,6 +26,7 @@ export function makeActNodes(data) {
         label: act[actFields.ID],
         name: actName,
         displayName: displayName,
+        ...(act.SDGs && { SDGs: act.SDGs }),
 
         dates: {
           endPrPeriod: act.endPrPeriod,

@@ -1,5 +1,5 @@
 import { FCOSE } from "../cytoscape/functions/LAYOUTS";
-import { INCLUDE_DATES, projectMeta } from "../../data";
+import { INCLUDE_DATES, projectMeta, CATEGORYS_PROVIDED } from "../../data";
 
 import "./ToggleButtons.css";
 
@@ -114,14 +114,16 @@ export function ToggleButtons({
           Gantt Chart <i className="fa fa-chart-gantt"></i>
         </button>
       )}
-      <button
-        id="vegaAnalyticsButton"
-        onClick={toggleBottomPannelDisplay}
-        style={style(selectedBottomVis === "vegaAnalyticsButton")}
-        title="open analytics pannel"
-      >
-        Analytics <i className="fa fa-chart-column"></i>
-      </button>
+      {CATEGORYS_PROVIDED && (
+        <button
+          id="vegaAnalyticsButton"
+          onClick={toggleBottomPannelDisplay}
+          style={style(selectedBottomVis === "vegaAnalyticsButton")}
+          title="open analytics pannel"
+        >
+          Analytics <i className="fa fa-chart-column"></i>
+        </button>
+      )}
     </div>
   );
 }

@@ -14,29 +14,24 @@ export const actFields = {
   WP: "WP",
   START_DATE: "start date",
   END_DATE: "end date",
-  // STARTM: false,
-  // ENDM: false,
-  // STARTM: "Start Month",
-  // ENDM: "End Month",
-
-  META_FIELDS_f: ["category", "Activity description", "test"],
-  META_FIELDS: [
-    { name: "category", type: "categorical" },
-    { name: "Activity description", type: "text" },
-    { name: "test", type: "categorical" },
-  ],
+  SDGs: "ODD",
+  META_FIELDS: [],
+  // META_FIELDS: [
+  //   { name: "category", type: "categorical" },
+  //   { name: "Activity description", type: "text" },
+  //   { name: "test", type: "categorical" },
+  // ],
 };
 
 export const wpFields = {
   ID: "id",
   NAME: "wp name",
-  // SDGs: "SDGs",
-
-  META_FIELDS: [
-    { name: "category", type: "categorical" },
-    { name: "location test", type: "categorical" },
-    { name: "test text", type: "text" },
-  ],
+  META_FIELDS: [],
+  // META_FIELDS: [
+  //   { name: "category", type: "categorical" },
+  //   { name: "location test", type: "categorical" },
+  //   { name: "test text", type: "text" },
+  // ],
 };
 
 export const stFields = {
@@ -49,6 +44,8 @@ export const stFields = {
     { name: "test text type", type: "text" },
   ],
 };
+
+export const CATEGORYS_PROVIDED = actFields.META_FIELDS.filter((f) => f.type === "categorical").length > 0;
 
 export const INCLUDE_DATES = !projectMeta.STARTD || !projectMeta.ENDD ? false : true;
 //----------------------ARE DATES SUPPLIED BY USER? ----------------------//

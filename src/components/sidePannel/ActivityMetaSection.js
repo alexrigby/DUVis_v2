@@ -1,10 +1,13 @@
+import { useState } from "react";
+import { actFields, INCLUDE_DATES, projectMeta } from "../../data";
+import SDG_ICONS from "../../assets/sdg_icons/index";
+
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import engLevelWording from "../../configs/engLevelWording";
 import listLinks from "./functions/listLinks";
 import capitalizeEachWord from "./functions/capitalizeEachWord";
 import getTypeOptionsArray from "../../AppFunctions/getTypeOptionsArray";
-import { actFields, INCLUDE_DATES, projectMeta } from "../../data";
-import { useState } from "react";
+import makeSDGList from "./functions/makeSDGList";
 
 export function ActivityMetaSection({
   selectedNode,
@@ -24,11 +27,17 @@ export function ActivityMetaSection({
 
   const latestPrPeriod = INCLUDE_DATES && datesRef.current[datesRef.current.length - 1].prPeriod;
   const includeStakeholders = projectMeta.STHOLDERS;
+
   //--------------------------------ACCORDION STATE----------------------------------------------------------------------------------------//
   const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
   const subSectionObj = TEXT_SUBSECTIONS.reduce((p, c) => ({ ...p, [c]: false }), {}); // each text subsection to accordion
+  const sdgSectionObj = { SDGs: false };
 
-  const [actAccordion, setActAccordion] = useState({ ...engObj, ...subSectionObj });
+  const [actAccordion, setActAccordion] = useState({
+    sdgSectionObj,
+    ...engObj,
+    ...subSectionObj,
+  });
 
   const openActAccordion = (event, key) => {
     setActAccordion((prevState) => ({
@@ -94,34 +103,51 @@ export function ActivityMetaSection({
   );
 
   //-----------------USER DEFINED CATEGORICAL META FIELDS---------------------------
-  const categoricalMetaSections = CATEGORICAL_SUBSECTIONS.map((field, i) => {
-    var caps = capitalizeEachWord(field);
+  const categoricalMetaSections = CATEGORICAL_SUBSECTIONS.length > 0 && (
+    <div className="metaSection">
+      {CATEGORICAL_SUBSECTIONS.map((field, i) => {
+        var caps = capitalizeEachWord(field);
+        return (
+          <div key={field}>
+            <h2 style={{ display: "inline" }}>
+              {caps}:{"  "}
+            </h2>
+            <p style={{ display: "inline" }}>{selectedNode.meta[field]}</p>
+          </div>
+        );
+      })}
+    </div>
+  );
+  // -----------------USER DEFINED SDGS-----------------------------------
 
-    return (
-      <div key={field}>
-        <h2 style={{ display: "inline" }}>
-          {caps}:{"  "}
-        </h2>
-        <p style={{ display: "inline" }}>{selectedNode.meta[field]}</p>
-      </div>
-    );
-  });
+  const sdgList = selectedNode.SDGs && ( // only make if sgd are included
+    <div className="metaSection">
+      <h1>
+        {" "}
+        {actFields.SDGs}{" "}
+        <span onClick={() => openActAccordion("click", "SDGs")}>{actAccordion["SDGs"] ? CLOSE : OPEN} </span>
+      </h1>
+      <div style={style("SDGs")}>{makeSDGList(selectedNode.SDGs)}</div>
+    </div>
+  );
 
   //----------------------USER DEFINED TEXT META FIELDS-----------------------
   //lopps over user defined text meta sections and accessed the corresponding data from the dataset
-  const TextMetaSections = TEXT_SUBSECTIONS.map((field, i) => {
-    //capitalizing each word of fields
-    var caps = capitalizeEachWord(field);
+  const TextMetaSections =
+    TEXT_SUBSECTIONS.length > 0 &&
+    TEXT_SUBSECTIONS.map((field, i) => {
+      //capitalizing each word of fields
+      var caps = capitalizeEachWord(field);
 
-    return (
-      <div className="metaSection" key={field}>
-        <h1>
-          {caps}: <span onClick={() => openActAccordion("click", field)}>{actAccordion[field] ? CLOSE : OPEN}</span>
-        </h1>
-        <p style={style(field)}>{selectedNode.meta[field]}</p>
-      </div>
-    );
-  });
+      return (
+        <div className="metaSection" key={field}>
+          <h1>
+            {caps}: <span onClick={() => openActAccordion("click", field)}>{actAccordion[field] ? CLOSE : OPEN}</span>
+          </h1>
+          <p style={style(field)}>{selectedNode.meta[field]}</p>
+        </div>
+      );
+    });
 
   //-------------------ACTIVITIES LIST------------------------
   const outgoingActivities = cyState.cy
@@ -189,9 +215,9 @@ export function ActivityMetaSection({
         </h1>
         {INCLUDE_DATES && datesText}
       </div>
-      <div className="metaSection">
-        <div>{categoricalMetaSections}</div>
-      </div>
+      <div>{categoricalMetaSections}</div>
+      <div>{sdgList}</div>
+
       <div>{TextMetaSections}</div>
 
       <div className="metaSection">
@@ -207,7 +233,6 @@ export function ActivityMetaSection({
         <div className="metaSection">
           <h1>
             {/* LINKED STAKEHOLDERS{" "} */}
-            Linked External Stakeholders
             <span onClick={() => openActAccordion("click", "stakeholder")}>
               {actAccordion.stakeholder ? CLOSE : OPEN}
             </span>{" "}

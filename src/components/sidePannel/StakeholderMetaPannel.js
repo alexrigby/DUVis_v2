@@ -32,32 +32,36 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, 
 
   //-------------------------------------------META TEXT------------------------------------------//
   // -------USER DEFINED CATEGORICAL META FIELDS------------
-  const categoricalMetaSections = CATEGORICAL_SUBSECTIONS.map((field, i) => {
-    var caps = capitalizeEachWord(field);
+  const categoricalMetaSections =
+    CATEGORICAL_SUBSECTIONS.length > 0 &&
+    CATEGORICAL_SUBSECTIONS.map((field, i) => {
+      var caps = capitalizeEachWord(field);
 
-    return (
-      <div key={field}>
-        <h2 style={{ display: "inline" }}>
-          {caps}:{"  "}
-        </h2>
-        <p style={{ display: "inline" }}>{selectedNode.meta[field]}</p>
-      </div>
-    );
-  });
+      return (
+        <div key={field} className="metaSection">
+          <h2 style={{ display: "inline" }}>
+            {caps}:{"  "}
+          </h2>
+          <p style={{ display: "inline" }}>{selectedNode.meta[field]}</p>
+        </div>
+      );
+    });
 
   //---------USER DEFINED META FIELDS----------
-  const textMetaSections = TEXT_SUBSECTIONS.map((field, i) => {
-    var caps = capitalizeEachWord(field);
+  const textMetaSections =
+    TEXT_SUBSECTIONS.length > 0 &&
+    TEXT_SUBSECTIONS.map((field, i) => {
+      var caps = capitalizeEachWord(field);
 
-    return (
-      <div className="metaSection" key={field}>
-        <h1>
-          {caps}: <span onClick={() => openStaAccordion("click", field)}>{staAccordion[field] ? CLOSE : OPEN}</span>
-        </h1>
-        <p style={style(field)}>{selectedNode.meta[field]}</p>
-      </div>
-    );
-  });
+      return (
+        <div className="metaSection" key={field}>
+          <h1>
+            {caps}: <span onClick={() => openStaAccordion("click", field)}>{staAccordion[field] ? CLOSE : OPEN}</span>
+          </h1>
+          <p style={style(field)}>{selectedNode.meta[field]}</p>
+        </div>
+      );
+    });
 
   //-----------------LINKED ACTIVITY PER ENGAGEMENT LEVEL---------------------
   const activityLists = [];
@@ -99,12 +103,12 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, 
         <h1>{selectedNode.name}</h1>
         <h1>{selectedNode.id}</h1>
       </div>
-      <div className="metaSection">{categoricalMetaSections}</div>
+      <div>{categoricalMetaSections}</div>
       <div>{textMetaSections}</div>
 
       <div className="metaSection">
         <h1>
-          LINKED ACTIVITIES
+          Linked Activities
           <span onClick={() => openStaAccordion("click", "activity")}>{staAccordion.activity ? CLOSE : OPEN}</span>
         </h1>
         <h2>count: {actCount}</h2>
