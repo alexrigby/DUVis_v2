@@ -1,0 +1,145 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DU  test",
+  "description": "A test for the DU config file",
+  "type": "object",
+  "required": ["activities", "workPackages"],
+
+  "properties": {
+    "projetName": {
+      "description": "Name of the project",
+      "type": "string"
+    },
+    "startDate": {
+      "description": "Start date of the project in format yyyy-mm-dd",
+      "type": "string",
+      "format": "date"
+    },
+    "endDate": {
+      "description": "End date of the project in format yyyy-mm-dd or specify 'today' to use current date",
+      "oneOf": [
+        { "format": "date", "type": "string" },
+        { "type": "string", "pattern": "today" }
+      ]
+    },
+    "progressReportPeriod": {
+      "description": "number of months per progress report period",
+      "type": "integer"
+    },
+
+    "activities": {
+      "description": "Field names as they appear in the activities worksheet",
+      "type": "object",
+      "required": ["id", "workPackage"],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/stringRef",
+          "description": "The activity id field heading as it appears in the worksheet"
+        },
+        "name": {
+          "$ref": "#/definitions/stringRef",
+          "description": "The activity name field heading as it appears in the worksheet"
+        },
+        "workPackage": {
+          "$ref": "#/definitions/stringRef",
+          "description": "The activites parent work package field as it appears in the worksheet"
+        },
+        "startDate": {
+          "$ref": "#/definitions/stringRef",
+          "description": "The activity start date field as it appears in the worksheet"
+        },
+        "endDate": {
+          "$ref": "#/definitions/stringRef",
+          "description": "The activity end date field as it appears in the worksheet"
+        },
+        "sustainableDevelopmentGoals": {
+          "$ref": "#/definitions/stringRef",
+          "description": "The activity UN Sustainable Development Goals field as it appears in the worksheet"
+        },
+        "metaFields": { "$ref": "#/definitions/metaFields" }
+      }
+    },
+
+    "workPackages": {
+      "description": "Field names as they appear in the work packages worksheet",
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/stringRef",
+          "description": "The workpackage id field heading as it appears in the worksheet"
+        },
+        "name": {
+          "$ref": "#/definitions/stringRef",
+          "description": "The workpackage name field heading as it appears in the worksheet"
+        },
+        "metaFields": { "$ref": "#/definitions/metaFields" }
+      }
+    },
+
+    "stakeholders": {
+      "description": "Field names as they appear in the work stakeholders worksheet",
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/stringRef",
+          "description": "The stakeholders id field heading as it appears in the worksheet"
+        },
+        "name": {
+          "$ref": "#/definitions/stringRef",
+          "description": "The stakeholders name field heading as it appears in the worksheet"
+        },
+        "metaFields": { "$ref": "#/definitions/metaFields" }
+      }
+    },
+
+    "stories": {
+      "description": "Names and activity ids peresnt in data stories {name: 'story name', ids: [1 , 2, 3, 4,]}",
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": ["name", "activityIds"],
+        "properties": {
+          "name": {
+            "$ref": "#/definitions/stringRef",
+            "description": "Name of data story"
+          },
+          "activityIds": {
+            "type": "array",
+            "description": "Array of ids to include in the 'data story'"
+          }
+        }
+      }
+    }
+  },
+
+  "definitions": {
+    "stringRef": { "type": "string", "minLength": 1 },
+
+    "metaFields": {
+      "description": "Names and types of optional addional meta fields in format {name: 'meta field name', type: 'category OR text'} ",
+      "type": "array",
+      "minItems": 0,
+      "items": {
+        "type": "object",
+        "required": ["name", "type"],
+        "properties": {
+          "name": {
+            "description": "meta field name",
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "description": "Type of meta data, either 'category or 'text'",
+            "oneOf": [
+              { "type": "string", "pattern": "category" },
+              { "type": "string", "pattern": "text" }
+            ]
+          }
+        }
+      }
+    }
+  }
+}

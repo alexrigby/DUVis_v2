@@ -14,8 +14,8 @@ export function parseActivityDataset(data, dates, wpData) {
         borderColor: getColorRef(`WP_${act[actFields.WP].trim()}`, "borderColor"),
         startDate: dateIsValid(new Date(act[actFields.START_DATE].trim()))
           ? act[actFields.START_DATE]
-          : projectMeta.STARTD,
-        endDate: dateIsValid(new Date(act[actFields.END_DATE].trim())) ? act[actFields.END_DATE] : projectMeta.ENDD,
+          : projectMeta.START_DATE,
+        endDate: dateIsValid(new Date(act[actFields.END_DATE].trim())) ? act[actFields.END_DATE] : projectMeta.END_DATE,
         startPrPeriod: giveActivityPrPeriod(act, dates, "start"),
         endPrPeriod: giveActivityPrPeriod(act, dates, "end"),
         ...(act[actFields.SDGs] && { SDGs: [...new Set(act[actFields.SDGs].trim().split(","))] }), // split comma seperated list of SDGs into unique array of sdgs if provided

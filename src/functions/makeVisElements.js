@@ -40,8 +40,8 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   projectMeta.STHOLDERS = stDataset.length === 0 ? false : true; // check if
 
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
-  const startDate = projectMeta.STARTD;
-  const todaysDate = projectMeta.ENDD;
+  const startDate = projectMeta.START_DATE;
+  const todaysDate = projectMeta.END_DATE;
   const dates = INCLUDE_DATES && makeDates(startDate, todaysDate);
 
   //-----------------PARSE DATA ----------

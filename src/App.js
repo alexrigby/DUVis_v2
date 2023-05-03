@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import SplitPane from "react-split-pane";
+import useDeepCompareEffect from "use-deep-compare-effect";
 
 import Header from "./components/header/Header";
 import SidePannel from "./components/sidePannel/SidePannel";
@@ -8,6 +9,8 @@ import Legend from "./components/legend/Legend";
 import BottomPannel from "./components/bottomPannel/BottomPannel";
 import FilterOptions from "./components/FilterOptions/FilterOptions";
 import ToggleButtons from "./components/ToggleButtons/ToggleButtons";
+
+import configHandler from "./grammar/configHandler";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
@@ -39,9 +42,22 @@ export function App() {
   const currentActNodeCountRef = useRef(null); //number of activitiy nodes
   const latestPrPeriodRef = useRef(null); //current period in time
   const engagementScoresRef = useRef(null); //engagment level and ranking
+  const configRef = useRef({ sample: { deeply: { nested: "object" } } });
 
   currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
 
+  //----------------------------------CONFIG-----------------------------------------
+  // deeply compares ref to check if any values chnage
+  // config values should not chnage unless new config is uploaded by user so should only run once
+  useDeepCompareEffect(() => {
+    //adding the config details to ref
+    const config = configHandler();
+    configRef.current = config;
+
+    console.log("reder");
+  }, [configRef.current]);
+
+  console.log(configRef.current);
   //----------------------- FETCH DATA FOR USE IN APP-----------------------------------
   useEffect(() => {
     //updates cyytoscape state to include node and edge data and creates gantchart data

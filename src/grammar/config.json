@@ -1,0 +1,36 @@
+{
+  "name": "TEST PROJECT",
+  "startDate": "2023-05-01",
+  "endDate": "today",
+  "progressReportPeriod": 6,
+  "activities": {
+    "id": "actividad",
+    "name": "activity name",
+    "workPackage": "WP",
+    "startDate": "start date",
+    "endDate": "end date",
+    "sustainableDevelopmentGoals": "ODD",
+    "metaFields": [
+      { "name": "activity category", "type": "category" },
+      { "name": "test", "type": "text" }
+    ]
+  },
+  "workPackages": {
+    "id": "id",
+    "name": "wp name",
+    "metaFields": []
+  },
+  "stakeholders": {
+    "id": "id",
+    "name": "wp name",
+    "metaFields": []
+  },
+  "stories": [
+    {
+      "name": "Hydropower Energy Recovery",
+      "activityIds": [1, 2, 3, 4, 5, 6, 7, 8, 25, 27, 31, 42, 51, 52, 53, 54, 55, 80]
+    },
+    { "name": "Drain Water Heat Recovery", "activityIds": [9, 10, 11, 12, 14, 15, 16, 43, 50] },
+    { "name": "Water-Energy Efficiency Audit", "activityIds": [36, 37, 38, 39, 40, 41, 56, 57, 58, 59] }
+  ]
+}

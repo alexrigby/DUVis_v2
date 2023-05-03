@@ -2,8 +2,8 @@ export const projectMeta = {
   NAME: "ALEX'S TEST PROJECT",
   // ENDD: false,
   // STARTD: false,
-  ENDD: new Date().toISOString().split("T")[0],
-  STARTD: "2016-09-01",
+  END_DATE: new Date().toISOString().split("T")[0],
+  START_DATE: "2016-09-01",
   PR_PERIOD: 6,
   STHOLDERS: false, //default true but changed if no stakeholder provided
 };
@@ -15,23 +15,23 @@ export const actFields = {
   START_DATE: "start date",
   END_DATE: "end date",
   SDGs: "ODD",
-  META_FIELDS: [],
-  // META_FIELDS: [
-  //   { name: "category", type: "categorical" },
-  //   { name: "Activity description", type: "text" },
-  //   { name: "test", type: "categorical" },
-  // ],
+  // META_FIELDS: [],
+  META_FIELDS: [
+    { name: "category", type: "categorical" },
+    { name: "Activity description", type: "text" },
+    { name: "test", type: "categorical" },
+  ],
 };
 
 export const wpFields = {
   ID: "id",
   NAME: "wp name",
-  META_FIELDS: [],
-  // META_FIELDS: [
-  //   { name: "category", type: "categorical" },
-  //   { name: "location test", type: "categorical" },
-  //   { name: "test text", type: "text" },
-  // ],
+  // META_FIELDS: [],
+  META_FIELDS: [
+    { name: "category", type: "categorical" },
+    { name: "location test", type: "categorical" },
+    { name: "test text", type: "text" },
+  ],
 };
 
 export const stFields = {
@@ -47,7 +47,7 @@ export const stFields = {
 
 export const CATEGORYS_PROVIDED = actFields.META_FIELDS.filter((f) => f.type === "categorical").length > 0;
 
-export const INCLUDE_DATES = !projectMeta.STARTD || !projectMeta.ENDD ? false : true;
+export const INCLUDE_DATES = !projectMeta.START_DATE || !projectMeta.END_DATE ? false : true;
 //----------------------ARE DATES SUPPLIED BY USER? ----------------------//
 /*
     if no dates provided:
