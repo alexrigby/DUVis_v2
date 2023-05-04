@@ -49,6 +49,8 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
     raw: false,
   });
 
+  console.log(config.INCLUDE_STHOLDERS);
+
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
   const startDate = config.START_DATE;
   const endDate = config.END_DATE;

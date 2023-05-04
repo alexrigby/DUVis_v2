@@ -21,8 +21,7 @@
     },
     "startDate": {
       "description": "Start date of the project in format yyyy-mm-dd",
-      "type": "string",
-      "format": "date"
+      "oneOf": [{ "type": "string", "format": "date" }, { "type": "null" }]
     },
     "endDate": {
       "description": "End date of the project in format yyyy-mm-dd or specify 'today' to use current date",
@@ -39,8 +38,9 @@
     "worksheets": {
       "description": "Name of each excel worksheet as they appear in the workbook",
       "type": "object",
+      "required": ["activities", "activityLinks", "workPackages", "stakeholders", "stakeholderLinks"],
       "properties": {
-        "activites": {
+        "activities": {
           "$ref": "#/definitions/stringRef",
           "description": "Name of the activites worksheet as it appears in the workbook"
         },

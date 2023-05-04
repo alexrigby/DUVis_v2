@@ -15,7 +15,10 @@ export function configHandler() {
       PR_PERIOD: configClone.progressReportPeriod,
       STORIES: configClone.stories,
       //-----------INFERRED----------
-      INCLUDE_STHOLDERS: configClone.stakeholders ? true : false, // infer if user has chosen to include stakeholders
+      INCLUDE_STHOLDERS:
+        !configClone.stakeholders || !configClone.worksheets.stakeholders || !configClone.worksheets.stakeholderLinks
+          ? false
+          : true, // infer if user has chosen to include stakeholders
       INCLUDE_DATES: !configClone.startDate || !configClone.endDate ? false : true, // infer if the project has dates
 
       WORKSHEETS: {

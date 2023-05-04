@@ -25,21 +25,13 @@
   },
   "workPackages": {
     "id": "id",
-    "name": "wp name",
-    "metaFields": [
-      { "name": "category", "type": "category" },
-      { "name": "location test", "type": "category" },
-      { "name": "test text", "type": "text" }
-    ]
+    "name": null,
+    "metaFields": []
   },
   "stakeholders": {
     "id": "id",
-    "name": "name",
-    "metaFields": [
-      { "name": "Sector", "type": "category" },
-      { "name": "Category test", "type": "category" },
-      { "name": "test text type", "type": "text" }
-    ]
+    "name": null,
+    "metaFields": []
   },
   "stories": [
     {
