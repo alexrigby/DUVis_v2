@@ -1,5 +1,5 @@
-export function trimActData(actData, prPeriod, currentStory, configRef) {
-  const actFields = configRef.current.actFields;
+export function trimActData(actData, prPeriod, currentStory, config) {
+  const actFields = config.actFields;
   const filterByStory = currentStory !== null && prPeriod.pr === null;
   const filterByPr = currentStory === null && prPeriod.pr !== null;
   const filterByBoth = currentStory !== null && prPeriod.pr !== null;
@@ -12,7 +12,7 @@ export function trimActData(actData, prPeriod, currentStory, configRef) {
     filteredData = actData;
     filteredByPr = actData;
   } else if (filterByStory) {
-    filteredData = filterStoryData(filteredData, currentStory.ids, actFields);
+    filteredData = filterStoryData(filteredData, currentStory.activityIds, actFields);
     filteredByPr = actData;
   } else if (filterByPr) {
     filteredData = filteredData.filter(filterByPrPeriod);
@@ -20,7 +20,7 @@ export function trimActData(actData, prPeriod, currentStory, configRef) {
   } else if (filterByBoth) {
     filteredByPr = filteredData.filter(filterByPrPeriod);
     //first filter by story
-    filteredData = filterStoryData(filteredData, currentStory.ids, actFields);
+    filteredData = filterStoryData(filteredData, currentStory.activityIds, actFields);
     //then filter that story data by prperiod
     filteredData = filteredData.filter(filterByPrPeriod);
   }

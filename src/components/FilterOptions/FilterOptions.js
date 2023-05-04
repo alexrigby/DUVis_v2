@@ -18,9 +18,9 @@ export function FilterOptions({
   setCustomStoryDisplay,
 }) {
   //----------------------CONFIG--------------------------
-  const configRef = useContext(ConfigContext);
-  const INCLUDE_DATES = configRef.current.INCLUDE_DATES;
-  const STORIES = configRef.current.STORIES;
+  const config = useContext(ConfigContext);
+  const INCLUDE_DATES = config.INCLUDE_DATES;
+  const STORIES = config.STORIES;
 
   const [filterOptionsDisplay, setFilterOptionsDisplay] = useState(false);
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
@@ -29,7 +29,7 @@ export function FilterOptions({
 
   const [stories, setStories] = useState(STORIES);
   const [customFilter, setCustomFilter] = useState([{ field: "", values: [] }]);
-  const [customStory, setCustomStory] = useState({ name: "", ids: [], filter: [], custom: true });
+  const [customStory, setCustomStory] = useState({ name: "", activityIds: [], filter: [], custom: true });
 
   const localStories = JSON.parse(window.localStorage.getItem("customStory"));
   const currentPr = datesRef.current && datesRef.current[datesRef.current.length - 1].prPeriod;
@@ -98,7 +98,7 @@ export function FilterOptions({
     setCurrentStory(null);
     setPrSectionDisplay(false); //hides open prperiod optons when filter optiosn is clicked
     setStorySectionDisplay(false);
-    setCustomStory({ name: "", ids: [], custom: true });
+    setCustomStory({ name: "", activityIds: [], custom: true });
     setCustomFilter([{ field: "", values: [] }]);
   };
 
@@ -106,7 +106,10 @@ export function FilterOptions({
     setNetworkVeiw(false); // prevents network being created with no nodes
     setCustomStoryDisplay(false);
     //set stte to array of id inn that story
-    setCurrentStory({ ids: event.target.dataset.ids.split(",").map((i) => i), name: event.target.title });
+    setCurrentStory({
+      activityIds: event.target.dataset.ids.split(",").map((i) => i),
+      name: event.target.title,
+    });
   };
 
   const deleteCustomStory = (event) => {
@@ -126,7 +129,12 @@ export function FilterOptions({
   const storyOptions = stories.map((story, i) => {
     return (
       <div key={story.name}>
-        <p title={story.name} data-ids={story.ids} style={selectedStoryStyle(story.name)} onClick={storyClickHandler}>
+        <p
+          title={story.name}
+          data-ids={story.activityIds}
+          style={selectedStoryStyle(story.name)}
+          onClick={storyClickHandler}
+        >
           {i + 1}. {story.name}
         </p>{" "}
         {story.custom === true && ( //arrow for more info on story filter

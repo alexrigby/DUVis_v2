@@ -1,6 +1,6 @@
 //for each work package a node is created, each WP is a parent to one of the activities
-export function makeWpNodes(data, configRef) {
-  const wpFields = configRef.current.wpFields;
+export function makeWpNodes(data, config) {
+  const wpFields = config.wpFields;
   const wps = data.map((wp) => {
     // gets the wp number from the wp id
     const wpNumber = wp[wpFields.ID].charAt(wp[wpFields.ID].length - 1);

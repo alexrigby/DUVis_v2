@@ -1,7 +1,8 @@
-import { actFields } from "../../data";
-import { stFields } from "../../data";
+export function parseStakeholderDataset(stLinks, stData, trimmedActData, config) {
+  //----------------CONFIG------
+  const actFields = config.actFields;
+  const stFields = config.stFields;
 
-export function parseStakeholderDataset(stLinks, stData, trimmedActData) {
   const stIDs = stLinks.slice(1, stLinks.length).flatMap((s) => s.slice(0, 1)); //return array of stakeholder ids
   const actIDs = stLinks[0].slice(1); //gets activity ids present in stakeholder matrix (so no stakeholders with no links are included)
   const trimmedActIDs = trimmedActData.map((act) => act[actFields.ID]); // gets ids present in trimmed act data (for when filters are applied)

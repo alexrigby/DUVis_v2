@@ -1,7 +1,6 @@
 import { useState, useContext } from "react";
 
 import ConfigContext from "../../context/ConfigContext";
-import SDG_ICONS from "../../assets/sdg_icons/index";
 
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
 import engLevelWording from "../../configs/engLevelWording";
@@ -19,9 +18,10 @@ export function ActivityMetaSection({
   networkVeiw,
   setStakeholdersDisplay,
 }) {
-  const configRef = useContext(ConfigContext);
-  const actFields = configRef.current.actFields;
-  const projectConfig = configRef.current;
+  const config = useContext(ConfigContext);
+  const actFields = config.actFields;
+  const projectConfig = config;
+  const INCLUDE_STHOLDERS = config.INCLUDE_STHOLDERS;
   // -----------------------------USEFULL VARS------------------------------------------//
   const OPEN = <i className="fa fa-angle-down"></i>;
   const CLOSE = <i className="fa fa-angle-up"></i>;
@@ -30,7 +30,6 @@ export function ActivityMetaSection({
   const TEXT_SUBSECTIONS = getTypeOptionsArray(actFields.META_FIELDS, "text"); // array of user defined text meta fileds to display in accordion
 
   const latestPrPeriod = projectConfig.INCLUDE_DATES && datesRef.current[datesRef.current.length - 1].prPeriod;
-  const includeStakeholders = projectConfig.STHOLDERS;
 
   //--------------------------------ACCORDION STATE----------------------------------------------------------------------------------------//
   const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
@@ -233,7 +232,7 @@ export function ActivityMetaSection({
         <h2>count: {uniqueActLinks.length}</h2>
         <ul style={style("activity")}>{linkedActivitiesList}</ul>
       </div>
-      {includeStakeholders && (
+      {INCLUDE_STHOLDERS && (
         <div className="metaSection">
           <h1>
             {/* LINKED STAKEHOLDERS{" "} */}
@@ -244,7 +243,7 @@ export function ActivityMetaSection({
           <h2>count: {stakeholderCount}</h2>
         </div>
       )}
-      {includeStakeholders && <div style={style("stakeholder")}>{stakeholderList}</div>}
+      {INCLUDE_STHOLDERS && <div style={style("stakeholder")}>{stakeholderList}</div>}
     </div>
   );
 }

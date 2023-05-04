@@ -1,17 +1,18 @@
-import { useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ConfigContext from "./ConfigContext";
 import configHandler from "../grammar/configHandler";
 
 export function ConfigContextProvider({ children }) {
-  const configRef = useRef(null);
+  const [config, setConfig] = useState(null);
   // runs once when add is loaded
   useEffect(() => {
     //adding the config details to ref
     const config = configHandler();
-    configRef.current = config;
+    setConfig(config);
+    // configRef.current = config;
   }, []);
 
-  return <ConfigContext.Provider value={configRef}>{children}</ConfigContext.Provider>;
+  return <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>;
 }
 
 export default ConfigContextProvider;

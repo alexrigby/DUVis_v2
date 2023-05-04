@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { stFields } from "../../data";
+import { useState, useContext } from "react";
+
+import ConfigContext from "../../context/ConfigContext";
 
 import engLevelWording from "../../configs/engLevelWording";
 import listLinks from "./functions/listLinks";
@@ -7,11 +8,14 @@ import capitalizeEachWord from "./functions/capitalizeEachWord";
 import getTypeOptionsArray from "../../AppFunctions/getTypeOptionsArray";
 
 export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, setStakeholdersDisplay }) {
+  //--------------CONFIG----------------
+  const config = useContext(ConfigContext);
+  const stFields = config.stFields;
   //--------------------------------------USEFULL VARIABLES -------------------------------//
   const OPEN = <i className="fa fa-angle-down"></i>;
   const CLOSE = <i className="fa fa-angle-up"></i>;
   const TEXT_SUBSECTIONS = getTypeOptionsArray(stFields.META_FIELDS, "text");
-  const CATEGORICAL_SUBSECTIONS = getTypeOptionsArray(stFields.META_FIELDS, "categorical");
+  const CATEGORICAL_SUBSECTIONS = getTypeOptionsArray(stFields.META_FIELDS, "category");
   const ENG_COUNT = Array.from(Array(engLevelWording.length).keys()); // number of engagement levels
 
   //----------------------------------------------ACCORDION STATE----------------------------------//
@@ -32,20 +36,23 @@ export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, 
 
   //-------------------------------------------META TEXT------------------------------------------//
   // -------USER DEFINED CATEGORICAL META FIELDS------------
-  const categoricalMetaSections =
-    CATEGORICAL_SUBSECTIONS.length > 0 &&
-    CATEGORICAL_SUBSECTIONS.map((field, i) => {
-      var caps = capitalizeEachWord(field);
+  const categoricalMetaSections = CATEGORICAL_SUBSECTIONS.length > 0 && (
+    <div className="metaSection">
+      {" "}
+      {CATEGORICAL_SUBSECTIONS.map((field, i) => {
+        var caps = capitalizeEachWord(field);
 
-      return (
-        <div key={field} className="metaSection">
-          <h2 style={{ display: "inline" }}>
-            {caps}:{"  "}
-          </h2>
-          <p style={{ display: "inline" }}>{selectedNode.meta[field]}</p>
-        </div>
-      );
-    });
+        return (
+          <div key={field}>
+            <h2 style={{ display: "inline" }}>
+              {caps}:{"  "}
+            </h2>
+            <p style={{ display: "inline" }}>{selectedNode.meta[field]}</p>
+          </div>
+        );
+      })}
+    </div>
+  );
 
   //---------USER DEFINED META FIELDS----------
   const textMetaSections =

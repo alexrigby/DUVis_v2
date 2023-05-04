@@ -16,42 +16,54 @@ import parseWPDataset from "./datasetParseFunctions/parseWPDataset";
 import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
 
 import workBookPath from "../data/activity_data.xlsx";
-import { projectMeta } from "../data";
 
-export async function makeVisElements(prPeriod, currentStory, completedDisplay, configRef) {
+export async function makeVisElements(prPeriod, currentStory, completedDisplay, config) {
   // ------------------------ FETCH CSV DATA -------------------------
+
   const file = await (await fetch(workBookPath)).arrayBuffer();
   const workBookData = XLSX.read(file); // reads the whole workbook
   // header: 1 returns array of arrays of csv rows, use for crosstab datasets
-  const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets["links"], { header: 1, defval: "", raw: false }); // TO DO raw false = doesnt convert types (e.g. 1 === "1") need to change as I continue
-  const stLinks = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholder links"], {
+  const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.ACTIVITY_LINKS], {
+    header: 1,
+    defval: "",
+    raw: false,
+  }); // TO DO raw false = doesnt convert types (e.g. 1 === "1") need to change as I continue
+
+  const stLinks = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.STAKEHOLDER_LINKS], {
     header: 1,
     defval: "",
     raw: false,
   });
 
-  console.log(configRef.current.INCLUDE_DATES);
   // convert the csvs to JSON format
-  const actDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["Activities"], { defval: "", raw: false });
-  const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["work packages"], { defval: "", raw: false });
-  const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["takeholder list"], { defval: "", raw: false });
-  projectMeta.STHOLDERS = stDataset.length === 0 ? false : true; // check if
+  const actDataset = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.ACTIVITIES], {
+    defval: "",
+    raw: false,
+  });
+  const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.WORKPACKAGES], {
+    defval: "",
+    raw: false,
+  });
+  const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.STAKEHOLDERS], {
+    defval: "",
+    raw: false,
+  });
 
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
-  const startDate = configRef.current.START_DATE;
-  const endDate = configRef.current.END_DATE;
-  const dates = configRef.current.INCLUDE_DATES && makeDates(startDate, endDate, configRef);
+  const startDate = config.START_DATE;
+  const endDate = config.END_DATE;
+  const dates = config.INCLUDE_DATES && makeDates(startDate, endDate, config);
 
   //-----------------PARSE DATA ----------
   // if no months are provided then dont add dates to data
   const wpData = parseWPDataset(wpDataset);
-  const activityData = parseActivityDataset(actDataset, dates, wpData, configRef);
+  const activityData = parseActivityDataset(actDataset, dates, wpData, config);
   const links = linksMatrixToArray(actLinks);
 
   //-------------TRIM ACT DATA TO FILTER SPECIFICATION ----------------
-  const latestPrPeriod = configRef.current.INCLUDE_DATES && dates[dates.length - 1].prPeriod;
+  const latestPrPeriod = config.INCLUDE_DATES && dates[dates.length - 1].prPeriod;
   //trimmedActData === current filter, filteredByPr === all data in curent pr period regardless of story filter
-  const { trimmedActData, filteredByPr } = trimActData(activityData, prPeriod, currentStory, configRef);
+  const { trimmedActData, filteredByPr } = trimActData(activityData, prPeriod, currentStory, config);
 
   //only return wps that are present in actdataset
   const trimmedWpData = wpData.filter((wp) =>
@@ -60,22 +72,23 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
 
   // ----TRIM & FILTER STAKEHOLDERS-------
   // returns the max engagement score for the pr period (regardless of stroy filter)
-  const maxEngScore = projectMeta.STHOLDERS && parseStakeholderDataset(stLinks, stDataset, filteredByPr).maxEngScore;
+  const maxEngScore =
+    config.INCLUDE_STHOLDERS && parseStakeholderDataset(stLinks, stDataset, filteredByPr, config).maxEngScore;
   // creates ealily readable stakeholder object from stData and stLinks to match trimmed activity data
   const stakeholderData =
-    projectMeta.STHOLDERS && parseStakeholderDataset(stLinks, stDataset, trimmedActData).stakeholderData;
+    config.INCLUDE_STHOLDERS && parseStakeholderDataset(stLinks, stDataset, trimmedActData, config).stakeholderData;
 
   //----MAKE VIS ELEMENTS -------------
-  const actNodes = makeActNodes(trimmedActData, configRef);
+  const actNodes = makeActNodes(trimmedActData, config);
   const actEdges = makeActEdges(links, actNodes);
-  const wpNodes = makeWpNodes(trimmedWpData, configRef);
-  const wpEdges = makeWpEdges(trimmedWpData);
-  const stakeholderNodes = projectMeta.STHOLDERS && makeStakeholerNodes(stakeholderData);
-  const stakeholderEdges = projectMeta.STHOLDERS && makeStakeholderEdges(stakeholderData);
+  const wpNodes = makeWpNodes(trimmedWpData, config);
+  const wpEdges = makeWpEdges(trimmedWpData, config);
+  const stakeholderNodes = config.INCLUDE_STHOLDERS && makeStakeholerNodes(stakeholderData);
+  const stakeholderEdges = config.INCLUDE_STHOLDERS && makeStakeholderEdges(stakeholderData);
 
   const gantChartItems =
-    configRef.current.INCLUDE_DATES &&
-    makeGantchartItems(trimmedActData, trimmedWpData, prPeriod, completedDisplay, latestPrPeriod, configRef);
+    config.INCLUDE_DATES &&
+    makeGantchartItems(trimmedActData, trimmedWpData, prPeriod, completedDisplay, latestPrPeriod, config);
 
   //node to hold all other nodes, prevents stakeholder nodes entering center of graph
   const projectNode = {
@@ -91,7 +104,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
   //----ALL CYTOSCAPE ELEMENTS-----
   const cyElms = [...actNodes, ...actEdges.flat(), ...wpNodes, ...wpEdges].flat();
   //if stakeholders are included then add them to cy elements
-  projectMeta.STHOLDERS && cyElms.push(...stakeholderNodes, ...stakeholderEdges.flat(), projectNode);
+  config.INCLUDE_STHOLDERS && cyElms.push(...stakeholderNodes, ...stakeholderEdges.flat(), projectNode);
 
   return {
     cyElms,

@@ -18,11 +18,11 @@ export function BottomPannel({
   selectedBottomVis,
   setSelectedBottomVis,
 }) {
-  const configRef = useContext(ConfigContext);
+  const config = useContext(ConfigContext);
 
   return (
     <div className="bottomPannel">
-      {CATEGORYS_PROVIDED && (
+      {config.actFields.CATEGORYS_PROVIDED && (
         <VegaAnalytics
           selectedBottomVis={selectedBottomVis}
           actDataRef={actDataRef}
@@ -32,7 +32,7 @@ export function BottomPannel({
         />
       )}
       {/* do not generate gant chart if dates are not supplied */}
-      {configRef.current.INCLUDE_DATES && (
+      {config.INCLUDE_DATES && (
         <GanttChart
           gantchartDataRef={gantchartDataRef}
           cyState={cyState}

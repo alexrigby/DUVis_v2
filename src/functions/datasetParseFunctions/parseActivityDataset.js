@@ -1,13 +1,15 @@
 import giveActivityPrPeriod from "../datesFunction/giveActivtyPrPeriod";
 
-export function parseActivityDataset(data, dates, wpData, configRef) {
-  const actFields = configRef.current.actFields;
-  const projectConfig = configRef.current;
+export function parseActivityDataset(actData, dates, wpData, config) {
+  //------------CONFIG-----------------
+  const actFields = config.actFields;
+  const projectConfig = config;
+
   //finds what color gned and assignes it to activities
   const getColorRef = (wp, color) => wpData.filter((record) => record.id === wp)[0][color];
 
-  const activityData = data.map((act, i) => {
-    if (configRef.current.INCLUDE_DATES) {
+  const activityData = actData.map((act, i) => {
+    if (config.INCLUDE_DATES) {
       return {
         ...act,
         bgColor: getColorRef(`WP_${act[actFields.WP].trim()}`, "bgColor"),
@@ -19,7 +21,7 @@ export function parseActivityDataset(data, dates, wpData, configRef) {
           ? act[actFields.END_DATE]
           : projectConfig.END_DATE,
         startPrPeriod: giveActivityPrPeriod(act, dates, "start", actFields),
-        endPrPeriod: giveActivityPrPeriod(act, dates, "end", projectConfig),
+        endPrPeriod: giveActivityPrPeriod(act, dates, "end", actFields),
         ...(act[actFields.SDGs] && { SDGs: [...new Set(act[actFields.SDGs].trim().split(","))] }), // split comma seperated list of SDGs into unique array of sdgs if provided
       };
     } else {

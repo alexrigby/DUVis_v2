@@ -1,6 +1,5 @@
-import { wpFields } from "../../data";
-
-export function makeWpEdges(wpData) {
+export function makeWpEdges(wpData, config) {
+  const wpFields = config.wpFields;
   const wpEdges = [];
 
   for (let i = 0; i < wpData.length - 1; i++) {

@@ -4,13 +4,13 @@ import "./Header.css";
 import ConfigContext from "../../context/ConfigContext";
 
 export function Header({ cyState, datesRef, prPeriod, currentStory, completedDisplay, networkVeiw }) {
-  const configRef = useContext(ConfigContext);
-  const INCLUDE_DATES = configRef.current.INCLUDE_DATES;
+  const config = useContext(ConfigContext);
+  const INCLUDE_DATES = config.INCLUDE_DATES;
 
   return (
     <header>
       <div>
-        <h1>{configRef.current.NAME}</h1>
+        <h1>{config.NAME}</h1>
         <p className="subHeader">
           {currentStory === null ? "All Activities" : currentStory.name}
           {}

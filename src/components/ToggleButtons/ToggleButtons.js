@@ -2,7 +2,6 @@ import { useContext } from "react";
 
 import ConfigContext from "../../context/ConfigContext";
 import { FCOSE } from "../cytoscape/functions/LAYOUTS";
-import { projectMeta, CATEGORYS_PROVIDED } from "../../data";
 
 import "./ToggleButtons.css";
 
@@ -23,7 +22,11 @@ export function ToggleButtons({
   setEngeScoreVeiw,
   setCustomStoryDisplay,
 }) {
-  const configRef = useContext(ConfigContext);
+  // --------------CONFIG------------------
+  const config = useContext(ConfigContext);
+  const INCLUDE_DATES = config.INCLUDE_DATES;
+  const CATEGORYS_PROVIDED = config.actFields.CATEGORYS_PROVIDED;
+  const INCLUDE_STHOLDERS = config.INCLUDE_STHOLDERS;
 
   // TOGGLE CONTROLS /////////////
   function changeLayout() {
@@ -79,7 +82,7 @@ export function ToggleButtons({
       <button onClick={toggleEdges} title="toggle connection types">
         Connections <i className="fa fa-diagram-project"></i>
       </button>
-      {configRef.current.INCLUDE_DATES && (
+      {INCLUDE_DATES && (
         <button
           onClick={toggleCompleted}
           style={style(completedDisplay)}
@@ -93,12 +96,12 @@ export function ToggleButtons({
         Network <i className="fa fa-circle-nodes"></i>
       </button>
       {/* if stakeholderds are included then allow stakeholder toggling */}
-      {projectMeta.STHOLDERS && (
+      {INCLUDE_STHOLDERS && (
         <button style={style(engScoreVeiw)} onClick={toggleEngScoreVeiw} title="display stakeholder engagement ranking">
           Engagement <i className="fa fa-link"></i>
         </button>
       )}
-      {projectMeta.STHOLDERS && (
+      {INCLUDE_STHOLDERS && (
         <button
           onClick={toggleStakeholders}
           style={style(stakeholdersDisplay)}
@@ -108,7 +111,7 @@ export function ToggleButtons({
         </button>
       )}
 
-      {configRef.current.INCLUDE_DATES && (
+      {INCLUDE_DATES && (
         <button
           id="gantChartButton"
           onClick={toggleBottomPannelDisplay}

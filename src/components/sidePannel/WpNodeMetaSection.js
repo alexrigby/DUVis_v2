@@ -1,22 +1,25 @@
-import { useState } from "react";
-import SDG_ICONS from "../../assets/sdg_icons/index";
+import { useState, useContext } from "react";
+
+import ConfigContext from "../../context/ConfigContext";
 import engLevelWording from "../../configs/engLevelWording";
 import listLinks from "./functions/listLinks";
 import capitalizeEachWord from "./functions/capitalizeEachWord";
 import getTypeOptionsArray from "../../AppFunctions/getTypeOptionsArray";
 import makeSDGList from "./functions/makeSDGList";
 
-import { wpFields, projectMeta, actFields } from "../../data";
-import { TEXT } from "vega-lite/build/src/channel";
-
 export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setStakeholdersDisplay }) {
+  //-------------CONFIG----------------
+  const config = useContext(ConfigContext);
+  const INCLUDE_STHOLDERS = config.INCLUDE_STHOLDERS;
+  const wpFields = config.wpFields;
+  const actFields = config.actFields;
+
   // --------------------------------------USEFULL VARS---------------------------------------------------//
   const OPEN = <i className="fa fa-angle-down"></i>;
   const CLOSE = <i className="fa fa-angle-up"></i>;
   const ENG_COUNT = Array.from(Array(engLevelWording.length).keys());
-  const CATEGORICAL_SUBSECTIONS = getTypeOptionsArray(wpFields.META_FIELDS, "categorical");
+  const CATEGORICAL_SUBSECTIONS = getTypeOptionsArray(wpFields.META_FIELDS, "category");
   const TEXT_SUBSECTIONS = getTypeOptionsArray(wpFields.META_FIELDS, "text");
-  const includeStakeholders = projectMeta.STHOLDERS;
   const wpActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).children(); //gets all activities in wp
 
   //-------------------------------------ACCORDION STATE---------------------------------------------------//
@@ -158,7 +161,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
         <h2>count: {activitiesList.length}</h2>
         <ul style={style("activity")}>{activitiesList}</ul>
       </div>
-      {includeStakeholders && (
+      {INCLUDE_STHOLDERS && (
         <div className="metaSectionHead metaSection">
           <h1>
             Stakeholders
@@ -167,7 +170,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
           <h2>count: {stakeholderCount}</h2>
         </div>
       )}
-      {includeStakeholders && <div style={style("stakeholder")}>{wpStakeholdersList}</div>}
+      {INCLUDE_STHOLDERS && <div style={style("stakeholder")}>{wpStakeholdersList}</div>}
     </div>
   );
 }

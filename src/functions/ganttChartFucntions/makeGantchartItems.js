@@ -1,9 +1,9 @@
 import activityOpacity from "./activityOpacity";
 import statusOpacity from "../../configs/statusOpacity";
 
-export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, latestPrPeriod, configRef) {
-  const actFields = configRef.current.actFields;
-  const wpFields = configRef.current.wpFields;
+export function makeGantchartacts(actData, wpData, prPeriod, completedDisplay, latestPrPeriod, config) {
+  const actFields = config.actFields;
+  const wpFields = config.wpFields;
 
   // groups are work Packages
   const groups = wpData.map((wp) => ({

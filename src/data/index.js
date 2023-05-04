@@ -1,53 +1,53 @@
-export const projectMeta = {
-  NAME: "ALEX'S TEST PROJECT",
-  // ENDD: false,
-  // STARTD: false,
-  END_DATE: new Date().toISOString().split("T")[0],
-  START_DATE: "2016-09-01",
-  PR_PERIOD: 6,
-  STHOLDERS: false, //default true but changed if no stakeholder provided
-};
+// export const projectMeta = {
+//   NAME: "ALEX'S TEST PROJECT",
+//   // ENDD: false,
+//   // STARTD: false,
+//   END_DATE: new Date().toISOString().split("T")[0],
+//   START_DATE: "2016-09-01",
+//   PR_PERIOD: 6,
+//   STHOLDERS: false, //default true but changed if no stakeholder provided
+// };
 
-export const actFields = {
-  ID: "actividad",
-  NAME: "activity name",
-  WP: "WP",
-  START_DATE: "start date",
-  END_DATE: "end date",
-  SDGs: "ODD",
-  // META_FIELDS: [],
-  META_FIELDS: [
-    { name: "category", type: "categorical" },
-    { name: "Activity description", type: "text" },
-    { name: "test", type: "categorical" },
-  ],
-};
+// export const actFields = {
+//   ID: "actividad",
+//   NAME: "activity name",
+//   WP: "WP",
+//   START_DATE: "start date",
+//   END_DATE: "end date",
+//   SDGs: "ODD",
+//   // META_FIELDS: [],
+//   META_FIELDS: [
+//     { name: "category", type: "categorical" },
+//     { name: "Activity description", type: "text" },
+//     { name: "test", type: "categorical" },
+//   ],
+// };
 
-export const wpFields = {
-  ID: "id",
-  NAME: "wp name",
-  // META_FIELDS: [],
-  META_FIELDS: [
-    { name: "category", type: "categorical" },
-    { name: "location test", type: "categorical" },
-    { name: "test text", type: "text" },
-  ],
-};
+// export const wpFields = {
+//   ID: "id",
+//   NAME: "wp name",
+//   // META_FIELDS: [],
+//   META_FIELDS: [
+//     { name: "category", type: "categorical" },
+//     { name: "location test", type: "categorical" },
+//     { name: "test text", type: "text" },
+//   ],
+// };
 
-export const stFields = {
-  ID: "S_ID",
-  NAME: "stakeholder name",
+// export const stFields = {
+//   ID: "S_ID",
+//   NAME: "stakeholder name",
 
-  META_FIELDS: [
-    { name: "Sector", type: "categorical" },
-    { name: "Category test", type: "categorical" },
-    { name: "test text type", type: "text" },
-  ],
-};
+//   META_FIELDS: [
+//     { name: "Sector", type: "categorical" },
+//     { name: "Category test", type: "categorical" },
+//     { name: "test text type", type: "text" },
+//   ],
+// };
 
-export const CATEGORYS_PROVIDED = actFields.META_FIELDS.filter((f) => f.type === "categorical").length > 0;
+// export const CATEGORYS_PROVIDED = actFields.META_FIELDS.filter((f) => f.type === "categorical").length > 0;
 
-export const INCLUDE_DATES = !projectMeta.START_DATE || !projectMeta.END_DATE ? false : true;
+// export const INCLUDE_DATES = !projectMeta.START_DATE || !projectMeta.END_DATE ? false : true;
 //----------------------ARE DATES SUPPLIED BY USER? ----------------------//
 /*
     if no dates provided:
@@ -59,9 +59,9 @@ export const INCLUDE_DATES = !projectMeta.START_DATE || !projectMeta.END_DATE ? 
 
 */
 
-export const STORIES = [
-  { name: "Hydropower Energy Recovery", ids: [1, 2, 3, 4, 5, 6, 7, 8, 25, 27, 31, 42, 51, 52, 53, 54, 55, 80] },
-  { name: "Drain Water Heat Recovery", ids: [9, 10, 11, 12, 14, 15, 16, 43, 50] },
-  { name: "Water-Energy Efficiency Audit", ids: [36, 37, 38, 39, 40, 41, 56, 57, 58, 59] },
-  { name: "test", ids: [1, 4, 5, 6, 75, 354] },
-];
+// export const STORIES = [
+//   { name: "Hydropower Energy Recovery", ids: [1, 2, 3, 4, 5, 6, 7, 8, 25, 27, 31, 42, 51, 52, 53, 54, 55, 80] },
+//   { name: "Drain Water Heat Recovery", ids: [9, 10, 11, 12, 14, 15, 16, 43, 50] },
+//   { name: "Water-Energy Efficiency Audit", ids: [36, 37, 38, 39, 40, 41, 56, 57, 58, 59] },
+//   { name: "test", ids: [1, 4, 5, 6, 75, 354] },
+// ];

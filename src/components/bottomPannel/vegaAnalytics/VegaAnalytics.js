@@ -13,10 +13,11 @@ import { INCLUDE_DATES } from "../../../data";
 import "./VegaAnalytics.css";
 
 export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPeriod, setSelectedBottomVis }) {
-  const configRef = useContext(ConfigContext);
+  const config = useContext(ConfigContext);
+  const actFields = config.actFields;
 
   // ------------------------- SET STATE -----------------------------------------------------------//
-  const categoryArray = getTypeOptionsArray(actFields.META_FIELDS, "categorical"); //all categorical fileds
+  const categoryArray = getTypeOptionsArray(actFields.META_FIELDS, "category"); //all categorical fileds
 
   const [brushRange, setBrushRange] = useState(""); // BRUSH RANGE STATE (ONLY USED IF DATE IS SUPPLIED)
   const [selectedMetric, setSelectedMetric] = useState(categoryArray[0]);
@@ -34,7 +35,7 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
 
   //sets brush range to full extent of project once the initial data is parsed
   useEffect(() => {
-    if (DATES !== null && configRef.current.INCLUDE_DATES) {
+    if (DATES !== null && config.INCLUDE_DATES) {
       setBrushRange({
         start: new Date(trimmedDates[0].date).getTime(),
         end: new Date(trimmedDates[trimmedDates.length - 1].date).getTime(),
@@ -44,7 +45,7 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
 
   //-------------------------IF USER SUPPLIES DATES-----------------------------------//
   //if brush range is set AND Dates are provided by the user generate both charts
-  if (brushRange !== "" && configRef.current.INCLUDE_DATES) {
+  if (brushRange !== "" && config.INCLUDE_DATES) {
     const fullRange = {
       start: new Date(trimmedDates[0].date).getTime(),
       end: new Date(trimmedDates[trimmedDates.length - 1].date).getTime(),

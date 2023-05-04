@@ -3,6 +3,13 @@
   "startDate": "2016-09-01",
   "endDate": "today",
   "progressReportPeriod": 6,
+  "worksheets": {
+    "activities": "Activities",
+    "activityLinks": "links",
+    "workPackages": "work packages",
+    "stakeholders": "stakeholder list",
+    "stakeholderLinks": "stakeholder links"
+  },
   "activities": {
     "id": "actividad",
     "name": "activity name",

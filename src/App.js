@@ -44,30 +44,33 @@ export function App() {
   currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
 
   //----------------------------------CONFIG-----------------------------------------
-  const configRef = useContext(ConfigContext);
+  const config = useContext(ConfigContext);
   //----------------------- FETCH DATA FOR USE IN APP-----------------------------------
+
   useEffect(() => {
-    //updates cyytoscape state to include node and edge data and creates gantchart data
-    async function addDataToCytoscape() {
-      const { cyElms, gantChartItems, activityData, dates, stakeholderData, latestPrPeriod, maxEngScore } =
-        await makeVisElements(prPeriod, currentStory, completedDisplay, configRef); //all pre-processing of data
+    if (config) {
+      //updates cyytoscape state to include node and edge data and creates gantchart data
+      async function addDataToCytoscape() {
+        const { cyElms, gantChartItems, activityData, dates, stakeholderData, latestPrPeriod, maxEngScore } =
+          await makeVisElements(prPeriod, currentStory, completedDisplay, config); //all pre-processing of data
 
-      actDataRef.current = activityData; //asigns activity data to ref
-      stakeholderDataRef.current = stakeholderData;
-      datesRef.current = dates; //assigns dates ro ref
-      gantchartDataRef.current = gantChartItems; //asign gant chart data to the ref
-      latestPrPeriodRef.current = latestPrPeriod;
-      engagementScoresRef.current = maxEngScore; // gives default maxEngScore
+        actDataRef.current = activityData; //asigns activity data to ref
+        stakeholderDataRef.current = stakeholderData;
+        datesRef.current = dates; //assigns dates ro ref
+        gantchartDataRef.current = gantChartItems; //asign gant chart data to the ref
+        latestPrPeriodRef.current = latestPrPeriod;
+        engagementScoresRef.current = maxEngScore; // gives default maxEngScore
 
-      setCyState((prevState) => ({
-        ...prevState,
-        elements: cyElms,
-        display: "block",
-      }));
+        setCyState((prevState) => ({
+          ...prevState,
+          elements: cyElms,
+          display: "block",
+        }));
+      }
+
+      addDataToCytoscape();
     }
-
-    addDataToCytoscape();
-  }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory, configRef]);
+  }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory, config]);
 
   //---------------------- STYLE -------------------------------------
   const centerGraph = (event) => {
@@ -81,7 +84,7 @@ export function App() {
     el.style.display = selectedNode.id === "" ? "none" : "block";
   });
 
-  if (configRef.current) {
+  if (config) {
     return (
       <div className="container">
         <div className="Resizer">

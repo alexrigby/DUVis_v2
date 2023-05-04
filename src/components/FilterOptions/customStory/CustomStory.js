@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 
-import { actFields } from "../../../data";
+import ConfigContext from "../../../context/ConfigContext";
 
 import "./CustomStory.css";
 import getTypeOptionsArray from "../../../AppFunctions/getTypeOptionsArray";
@@ -18,6 +18,10 @@ export function CustomStory({
   setCustomStoryDisplay,
   localStories,
 }) {
+  //---------------------------CONFIG------------------
+  const config = useContext(ConfigContext);
+  const actFields = config.actFields;
+
   //------------------------------INPUT ELEMENT CONTROL STATES------------------------//
   const [selectedName, setSelectedName] = useState("");
   const [selectedField, setSelectedField] = useState("");
@@ -33,7 +37,7 @@ export function CustomStory({
 
   //-----------------------------ADDING OPTIONS TO SELECT LIST-------------------------------//
   // returns select list of user specified categorical meta_fields to filter data by // if none provide returnes empty
-  var matrixFieldOptions = getTypeOptionsArray(actFields.META_FIELDS, "categorical").map((field) =>
+  var matrixFieldOptions = getTypeOptionsArray(actFields.META_FIELDS, "category").map((field) =>
     makeOption(field, selectedFieldIndex, customFilter, confirmedFilterField)
   );
 
@@ -129,9 +133,9 @@ export function CustomStory({
   }
 
   //-------------------FILTERING NODES------
-  // gets ids of activities that fall within chosen filters
+  // gets activityIds of activities that fall within chosen filters
   function getFilterIds() {
-    const ids = customFilter.map((filter) => {
+    const activityIds = customFilter.map((filter) => {
       let values = filter.values[0] === "Undefined" ? [""] : filter.values; // text == undefined but dataset = ""
       return values.flatMap((val) =>
         //filtering the actData directly, beofre it is parsed in to nodes
@@ -139,14 +143,18 @@ export function CustomStory({
       );
     });
 
-    const intersect = ids.reduce((a, b) => a.filter((c) => b.includes(c))); //compares each ellement in each array and returns the matching ids (ids that eet the filter)
+    const intersect = activityIds.reduce((a, b) => a.filter((c) => b.includes(c))); //compares each ellement in each array and returns the matching activityIds (activityIds that eet the filter)
 
     return intersect;
   }
 
   useEffect(() => {
     // every time customStoryFilter state chnages, update the custom story state
-    setCustomStory((prevState) => ({ ...prevState, ids: [...new Set(getFilterIds())], filter: [...customFilter] }));
+    setCustomStory((prevState) => ({
+      ...prevState,
+      activityIds: [...new Set(getFilterIds())],
+      filter: [...customFilter],
+    }));
   }, [customFilter]);
 
   // ------------------------------------CUSTOM STORY IN STORY LIST--------------------------------------------------//
@@ -164,7 +172,7 @@ export function CustomStory({
     } else {
       window.localStorage.setItem("customStory", JSON.stringify([...localStories, customStory]));
     }
-    setCustomStory({ name: "", ids: [], custom: true }); // resets the custom story to empty
+    setCustomStory({ name: "", activityIds: [], custom: true }); // resets the custom story to empty
     setCustomFilter([{ field: "", values: [] }]); // restes filter state to empty
   };
 
@@ -218,18 +226,18 @@ export function CustomStory({
   };
 
   const addStoryButtonStyle = {
-    // only displays generate story button if a story has been created (with ids and a name)
-    display: customStory.ids.length === 0 || customStory.name === "" ? "none" : "flex",
+    // only displays generate story button if a story has been created (with activityIds and a name)
+    display: customStory.activityIds.length === 0 || customStory.name === "" ? "none" : "flex",
   };
 
   const noIdsSelectedButtonStyle = {
     //displays when the selected filter removes all node IDs
-    display: customStory.ids.length === 0 && customFilter[fieldCount].values.length > 0 ? "flex" : "none",
+    display: customStory.activityIds.length === 0 && customFilter[fieldCount].values.length > 0 ? "flex" : "none",
   };
 
   const addFieldButtonStyle = {
-    // only displays add field button if values have been chosen to filter ids from
-    display: customStory.ids.length === 0 ? "none" : "flex",
+    // only displays add field button if values have been chosen to filter activityIds from
+    display: customStory.activityIds.length === 0 ? "none" : "flex",
   };
 
   return (

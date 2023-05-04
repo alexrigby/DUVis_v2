@@ -3,12 +3,21 @@
   "title": "DU  test",
   "description": "A test for the DU config file",
   "type": "object",
-  "required": ["activities", "workPackages"],
+  "required": [
+    "activities",
+    "workPackages",
+    "stories",
+    "stakeholders",
+    "startDate",
+    "endDate",
+    "name",
+    "progressReportPeriod"
+  ],
 
   "properties": {
     "projetName": {
       "description": "Name of the project",
-      "type": "string"
+      "$ref": "#/definitions/stringOrNullref"
     },
     "startDate": {
       "description": "Start date of the project in format yyyy-mm-dd",
@@ -18,13 +27,40 @@
     "endDate": {
       "description": "End date of the project in format yyyy-mm-dd or specify 'today' to use current date",
       "oneOf": [
-        { "format": "date", "type": "string" },
-        { "type": "string", "pattern": "today" }
+        { "format": "date", "type": "string", "minLength": 1 },
+        { "type": "string", "pattern": "today" },
+        { "type": "null" }
       ]
     },
     "progressReportPeriod": {
       "description": "number of months per progress report period",
-      "type": "integer"
+      "oneOf": [{ "type": "integer" }, { "type": "null" }]
+    },
+    "worksheets": {
+      "description": "Name of each excel worksheet as they appear in the workbook",
+      "type": "object",
+      "properties": {
+        "activites": {
+          "$ref": "#/definitions/stringRef",
+          "description": "Name of the activites worksheet as it appears in the workbook"
+        },
+        "activityLinks": {
+          "$ref": "#/definitions/stringRef",
+          "description": "Name of the activity links worksheet as it appears in the workbook"
+        },
+        "workPackages": {
+          "$ref": "#/definitions/stringRef",
+          "description": "Name of the workpackages worksheet as it appears in the workbook"
+        },
+        "stakeholders": {
+          "$ref": "#/definitions/stringOrNullref",
+          "description": "Name of the stakeholders worksheet as it apears in the workbook"
+        },
+        "stakeholderLinks": {
+          "$ref": "#/definitions/stringOrNullref",
+          "description": "Name of the stakeholder links worksheet as it apears in the workbook"
+        }
+      }
     },
 
     "activities": {
@@ -80,19 +116,27 @@
 
     "stakeholders": {
       "description": "Field names as they appear in the work stakeholders worksheet",
-      "type": "object",
-      "required": ["id", "name", "metaFields"],
-      "properties": {
-        "id": {
-          "$ref": "#/definitions/stringRef",
-          "description": "The stakeholders id field heading as it appears in the worksheet"
+
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["id", "name", "metaFields"],
+          "properties": {
+            "id": {
+              "$ref": "#/definitions/stringRef",
+              "description": "The stakeholders id field heading as it appears in the worksheet"
+            },
+            "name": {
+              "$ref": "#/definitions/stringOrNullref",
+              "description": "The stakeholders name field heading as it appears in the worksheet"
+            },
+            "metaFields": { "$ref": "#/definitions/metaFields" }
+          }
         },
-        "name": {
-          "$ref": "#/definitions/stringOrNullref",
-          "description": "The stakeholders name field heading as it appears in the worksheet"
-        },
-        "metaFields": { "$ref": "#/definitions/metaFields" }
-      }
+        {
+          "type": "null"
+        }
+      ]
     },
 
     "stories": {
@@ -118,7 +162,7 @@
 
   "definitions": {
     "stringRef": { "type": "string", "minLength": 1 },
-    "stringOrNullref": { "anyOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }] },
+    "stringOrNullref": { "oneOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }] },
 
     "metaFields": {
       "description": "Names and types of optional addional meta fields in format {name: 'meta field name', type: 'category OR text'} ",
