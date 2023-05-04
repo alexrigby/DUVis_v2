@@ -8,7 +8,7 @@ export function configHandler() {
   if (valid) {
     const configClone = cloneDeep(_config); // clone config so as not to edit origional
 
-    const projectMeta = {
+    const configObj = {
       NAME: configClone.name,
       START_DATE: configClone.startDate,
       END_DATE: configClone.endDate === "today" ? new Date().toISOString().split("T")[0] : configClone.endDate,
@@ -16,7 +16,7 @@ export function configHandler() {
       STORIES: configClone.stories,
       //-----------INFERRED----------
       STHOLDERS: configClone.stakeholders ? true : false, // infer if user has chosen to include stakeholders
-      INCLUDE_DATES: configClone.startDate || configClone.endDate ? true : false, // infer if the project has dates
+      INCLUDE_DATES: !configClone.startDate || !configClone.endDate ? false : true, // infer if the project has dates
 
       actFields: {
         ID: configClone.activities.id,
@@ -44,7 +44,7 @@ export function configHandler() {
       },
     };
 
-    return projectMeta;
+    return configObj;
   }
 }
 

@@ -30,30 +30,31 @@
     "activities": {
       "description": "Field names as they appear in the activities worksheet",
       "type": "object",
-      "required": ["id", "workPackage"],
+      "required": ["id", "workPackage", "name", "startDate", "endDate", "sustainableDevelopmentGoals", "metaFields"],
       "properties": {
         "id": {
           "$ref": "#/definitions/stringRef",
           "description": "The activity id field heading as it appears in the worksheet"
         },
-        "name": {
-          "$ref": "#/definitions/stringRef",
-          "description": "The activity name field heading as it appears in the worksheet"
-        },
         "workPackage": {
           "$ref": "#/definitions/stringRef",
           "description": "The activites parent work package field as it appears in the worksheet"
         },
+        "name": {
+          "$ref": "#/definitions/stringOrNullref",
+          "description": "The activity name field heading as it appears in the worksheet"
+        },
+
         "startDate": {
-          "$ref": "#/definitions/stringRef",
+          "$ref": "#/definitions/stringOrNullref",
           "description": "The activity start date field as it appears in the worksheet"
         },
         "endDate": {
-          "$ref": "#/definitions/stringRef",
+          "$ref": "#/definitions/stringOrNullref",
           "description": "The activity end date field as it appears in the worksheet"
         },
         "sustainableDevelopmentGoals": {
-          "$ref": "#/definitions/stringRef",
+          "$ref": "#/definitions/stringOrNullref",
           "description": "The activity UN Sustainable Development Goals field as it appears in the worksheet"
         },
         "metaFields": { "$ref": "#/definitions/metaFields" }
@@ -63,14 +64,14 @@
     "workPackages": {
       "description": "Field names as they appear in the work packages worksheet",
       "type": "object",
-      "required": ["id"],
+      "required": ["id", "name", "metaFields"],
       "properties": {
         "id": {
           "$ref": "#/definitions/stringRef",
           "description": "The workpackage id field heading as it appears in the worksheet"
         },
         "name": {
-          "$ref": "#/definitions/stringRef",
+          "$ref": "#/definitions/stringOrNullref",
           "description": "The workpackage name field heading as it appears in the worksheet"
         },
         "metaFields": { "$ref": "#/definitions/metaFields" }
@@ -80,14 +81,14 @@
     "stakeholders": {
       "description": "Field names as they appear in the work stakeholders worksheet",
       "type": "object",
-      "required": ["id"],
+      "required": ["id", "name", "metaFields"],
       "properties": {
         "id": {
           "$ref": "#/definitions/stringRef",
           "description": "The stakeholders id field heading as it appears in the worksheet"
         },
         "name": {
-          "$ref": "#/definitions/stringRef",
+          "$ref": "#/definitions/stringOrNullref",
           "description": "The stakeholders name field heading as it appears in the worksheet"
         },
         "metaFields": { "$ref": "#/definitions/metaFields" }
@@ -117,6 +118,7 @@
 
   "definitions": {
     "stringRef": { "type": "string", "minLength": 1 },
+    "stringOrNullref": { "anyOf": [{ "type": "string", "minLength": 1 }, { "type": "null" }] },
 
     "metaFields": {
       "description": "Names and types of optional addional meta fields in format {name: 'meta field name', type: 'category OR text'} ",

@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { actFields, INCLUDE_DATES, projectMeta } from "../../data";
+import { useState, useContext } from "react";
+
+import ConfigContext from "../../context/ConfigContext";
 import SDG_ICONS from "../../assets/sdg_icons/index";
 
 import nodeNavigationHandler from "./functions/nodeNavigationHandler";
@@ -18,15 +19,18 @@ export function ActivityMetaSection({
   networkVeiw,
   setStakeholdersDisplay,
 }) {
+  const configRef = useContext(ConfigContext);
+  const actFields = configRef.current.actFields;
+  const projectConfig = configRef.current;
   // -----------------------------USEFULL VARS------------------------------------------//
   const OPEN = <i className="fa fa-angle-down"></i>;
   const CLOSE = <i className="fa fa-angle-up"></i>;
   const ENG_COUNT = Array.from(Array(engLevelWording.length).keys());
-  const CATEGORICAL_SUBSECTIONS = getTypeOptionsArray(actFields.META_FIELDS, "categorical");
+  const CATEGORICAL_SUBSECTIONS = getTypeOptionsArray(actFields.META_FIELDS, "category");
   const TEXT_SUBSECTIONS = getTypeOptionsArray(actFields.META_FIELDS, "text"); // array of user defined text meta fileds to display in accordion
 
-  const latestPrPeriod = INCLUDE_DATES && datesRef.current[datesRef.current.length - 1].prPeriod;
-  const includeStakeholders = projectMeta.STHOLDERS;
+  const latestPrPeriod = projectConfig.INCLUDE_DATES && datesRef.current[datesRef.current.length - 1].prPeriod;
+  const includeStakeholders = projectConfig.STHOLDERS;
 
   //--------------------------------ACCORDION STATE----------------------------------------------------------------------------------------//
   const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
@@ -213,7 +217,7 @@ export function ActivityMetaSection({
         >
           {selectedNode.parent}
         </h1>
-        {INCLUDE_DATES && datesText}
+        {projectConfig.INCLUDE_DATES && datesText}
       </div>
       <div>{categoricalMetaSections}</div>
       <div>{sdgList}</div>

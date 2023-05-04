@@ -1,5 +1,8 @@
+import { useContext } from "react";
+
+import ConfigContext from "../../context/ConfigContext";
 import { FCOSE } from "../cytoscape/functions/LAYOUTS";
-import { INCLUDE_DATES, projectMeta, CATEGORYS_PROVIDED } from "../../data";
+import { projectMeta, CATEGORYS_PROVIDED } from "../../data";
 
 import "./ToggleButtons.css";
 
@@ -13,7 +16,6 @@ export function ToggleButtons({
   cyState,
   setNetworkVeiw,
   networkVeiw,
-  activityEdgeDisplay,
   completedDisplay,
   stakeholdersDisplay,
   selectedNode,
@@ -21,6 +23,8 @@ export function ToggleButtons({
   setEngeScoreVeiw,
   setCustomStoryDisplay,
 }) {
+  const configRef = useContext(ConfigContext);
+
   // TOGGLE CONTROLS /////////////
   function changeLayout() {
     !networkVeiw && cyState.cy.layout(FCOSE(currentActNodeCountRef.current, true)).run();
@@ -75,7 +79,7 @@ export function ToggleButtons({
       <button onClick={toggleEdges} title="toggle connection types">
         Connections <i className="fa fa-diagram-project"></i>
       </button>
-      {INCLUDE_DATES && (
+      {configRef.current.INCLUDE_DATES && (
         <button
           onClick={toggleCompleted}
           style={style(completedDisplay)}
@@ -104,7 +108,7 @@ export function ToggleButtons({
         </button>
       )}
 
-      {INCLUDE_DATES && (
+      {configRef.current.INCLUDE_DATES && (
         <button
           id="gantChartButton"
           onClick={toggleBottomPannelDisplay}

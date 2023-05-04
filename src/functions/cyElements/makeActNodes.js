@@ -1,8 +1,7 @@
 //creats a Node object for each activity
 
-import { actFields } from "../../data";
-
-export function makeActNodes(data) {
+export function makeActNodes(data, configRef) {
+  const actFields = configRef.current.actFields;
   const cyNodes = data.map((act) => {
     // if user does not specify names then generate them
     const actName = act[actFields.NAME] ? act[actFields.NAME] : `Activity ${act[actFields.ID]}`; // name with no id infront

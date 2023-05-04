@@ -1,6 +1,6 @@
 {
   "name": "TEST PROJECT",
-  "startDate": "2023-05-01",
+  "startDate": "2016-09-01",
   "endDate": "today",
   "progressReportPeriod": 6,
   "activities": {
@@ -11,19 +11,28 @@
     "endDate": "end date",
     "sustainableDevelopmentGoals": "ODD",
     "metaFields": [
-      { "name": "activity category", "type": "category" },
-      { "name": "test", "type": "text" }
+      { "name": "category", "type": "category" },
+      { "name": "Activity description", "type": "text" },
+      { "name": "test", "type": "category" }
     ]
   },
   "workPackages": {
     "id": "id",
     "name": "wp name",
-    "metaFields": []
+    "metaFields": [
+      { "name": "category", "type": "category" },
+      { "name": "location test", "type": "category" },
+      { "name": "test text", "type": "text" }
+    ]
   },
   "stakeholders": {
     "id": "id",
-    "name": "wp name",
-    "metaFields": []
+    "name": "name",
+    "metaFields": [
+      { "name": "Sector", "type": "category" },
+      { "name": "Category test", "type": "category" },
+      { "name": "test text type", "type": "text" }
+    ]
   },
   "stories": [
     {

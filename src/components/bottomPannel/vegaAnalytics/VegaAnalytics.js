@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { VegaLite } from "react-vega";
 import { Handler } from "vega-tooltip";
-
+import ConfigContext from "../../../context/ConfigContext";
 import VegaSelect from "./VegaSelect";
 
 import vegaSpec from "./functions/vegaSpec";
@@ -13,6 +13,8 @@ import { INCLUDE_DATES } from "../../../data";
 import "./VegaAnalytics.css";
 
 export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPeriod, setSelectedBottomVis }) {
+  const configRef = useContext(ConfigContext);
+
   // ------------------------- SET STATE -----------------------------------------------------------//
   const categoryArray = getTypeOptionsArray(actFields.META_FIELDS, "categorical"); //all categorical fileds
 
@@ -32,7 +34,7 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
 
   //sets brush range to full extent of project once the initial data is parsed
   useEffect(() => {
-    if (DATES !== null && INCLUDE_DATES) {
+    if (DATES !== null && configRef.current.INCLUDE_DATES) {
       setBrushRange({
         start: new Date(trimmedDates[0].date).getTime(),
         end: new Date(trimmedDates[trimmedDates.length - 1].date).getTime(),
@@ -42,7 +44,7 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
 
   //-------------------------IF USER SUPPLIES DATES-----------------------------------//
   //if brush range is set AND Dates are provided by the user generate both charts
-  if (brushRange !== "" && INCLUDE_DATES) {
+  if (brushRange !== "" && configRef.current.INCLUDE_DATES) {
     const fullRange = {
       start: new Date(trimmedDates[0].date).getTime(),
       end: new Date(trimmedDates[trimmedDates.length - 1].date).getTime(),

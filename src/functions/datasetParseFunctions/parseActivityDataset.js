@@ -1,23 +1,25 @@
 import giveActivityPrPeriod from "../datesFunction/giveActivtyPrPeriod";
-import { actFields, projectMeta } from "../../data";
-import { INCLUDE_DATES } from "../../data";
 
-export function parseActivityDataset(data, dates, wpData) {
+export function parseActivityDataset(data, dates, wpData, configRef) {
+  const actFields = configRef.current.actFields;
+  const projectConfig = configRef.current;
   //finds what color gned and assignes it to activities
   const getColorRef = (wp, color) => wpData.filter((record) => record.id === wp)[0][color];
 
   const activityData = data.map((act, i) => {
-    if (INCLUDE_DATES) {
+    if (configRef.current.INCLUDE_DATES) {
       return {
         ...act,
         bgColor: getColorRef(`WP_${act[actFields.WP].trim()}`, "bgColor"),
         borderColor: getColorRef(`WP_${act[actFields.WP].trim()}`, "borderColor"),
         startDate: dateIsValid(new Date(act[actFields.START_DATE].trim()))
           ? act[actFields.START_DATE]
-          : projectMeta.START_DATE,
-        endDate: dateIsValid(new Date(act[actFields.END_DATE].trim())) ? act[actFields.END_DATE] : projectMeta.END_DATE,
-        startPrPeriod: giveActivityPrPeriod(act, dates, "start"),
-        endPrPeriod: giveActivityPrPeriod(act, dates, "end"),
+          : projectConfig.START_DATE,
+        endDate: dateIsValid(new Date(act[actFields.END_DATE].trim()))
+          ? act[actFields.END_DATE]
+          : projectConfig.END_DATE,
+        startPrPeriod: giveActivityPrPeriod(act, dates, "start", actFields),
+        endPrPeriod: giveActivityPrPeriod(act, dates, "end", projectConfig),
         ...(act[actFields.SDGs] && { SDGs: [...new Set(act[actFields.SDGs].trim().split(","))] }), // split comma seperated list of SDGs into unique array of sdgs if provided
       };
     } else {

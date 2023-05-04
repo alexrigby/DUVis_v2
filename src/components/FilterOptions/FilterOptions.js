@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-
+import { useEffect, useState, useContext } from "react";
+import ConfigContext from "../../context/ConfigContext";
 import CustomStory from "./customStory/CustomStory";
 import PRScroll from "./PRScroll/PRScroll";
 
-import { INCLUDE_DATES, STORIES } from "../../data";
 import "./FilterOptions.css";
 
 export function FilterOptions({
@@ -18,6 +17,11 @@ export function FilterOptions({
   customStoryDisplay,
   setCustomStoryDisplay,
 }) {
+  //----------------------CONFIG--------------------------
+  const configRef = useContext(ConfigContext);
+  const INCLUDE_DATES = configRef.current.INCLUDE_DATES;
+  const STORIES = configRef.current.STORIES;
+
   const [filterOptionsDisplay, setFilterOptionsDisplay] = useState(false);
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
   const [storySectionDisplay, setStorySectionDisplay] = useState(false);

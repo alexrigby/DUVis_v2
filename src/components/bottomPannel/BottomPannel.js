@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
+
+import ConfigContext from "../../context/ConfigContext";
 
 import GanttChart from "./ganttChart/GanttChart";
 import VegaAnalytics from "./vegaAnalytics/VegaAnalytics";
@@ -16,6 +18,8 @@ export function BottomPannel({
   selectedBottomVis,
   setSelectedBottomVis,
 }) {
+  const configRef = useContext(ConfigContext);
+
   return (
     <div className="bottomPannel">
       {CATEGORYS_PROVIDED && (
@@ -25,11 +29,10 @@ export function BottomPannel({
           datesRef={datesRef}
           prPeriod={prPeriod}
           setSelectedBottomVis={setSelectedBottomVis}
-          INCLUDE_DATES={INCLUDE_DATES}
         />
       )}
       {/* do not generate gant chart if dates are not supplied */}
-      {INCLUDE_DATES && (
+      {configRef.current.INCLUDE_DATES && (
         <GanttChart
           gantchartDataRef={gantchartDataRef}
           cyState={cyState}

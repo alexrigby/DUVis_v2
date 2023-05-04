@@ -24,7 +24,6 @@
     "react-vega": "^7.6.0",
     "react-vis-timeline-2": "^2.1.6",
     "tippy.js": "^6.3.7",
-    "use-deep-compare-effect": "^1.8.1",
     "vega": "^5.22.1",
     "vega-lite": "^5.5.0",
     "vega-tooltip": "^0.28.0",

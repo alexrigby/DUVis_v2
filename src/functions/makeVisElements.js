@@ -16,13 +16,9 @@ import parseWPDataset from "./datasetParseFunctions/parseWPDataset";
 import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
 
 import workBookPath from "../data/activity_data.xlsx";
-import { projectMeta, INCLUDE_DATES } from "../data";
+import { projectMeta } from "../data";
 
-export async function makeVisElements(prPeriod, currentStory, completedDisplay) {
-  /* IF DATES ARE NOT INCLUDED:
-        -dont generate gantt chart items
-        -dont convert months to dates for act nodes
-   */
+export async function makeVisElements(prPeriod, currentStory, completedDisplay, configRef) {
   // ------------------------ FETCH CSV DATA -------------------------
   const file = await (await fetch(workBookPath)).arrayBuffer();
   const workBookData = XLSX.read(file); // reads the whole workbook
@@ -33,6 +29,8 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
     defval: "",
     raw: false,
   });
+
+  console.log(configRef.current.INCLUDE_DATES);
   // convert the csvs to JSON format
   const actDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["Activities"], { defval: "", raw: false });
   const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["work packages"], { defval: "", raw: false });
@@ -40,20 +38,20 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   projectMeta.STHOLDERS = stDataset.length === 0 ? false : true; // check if
 
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
-  const startDate = projectMeta.START_DATE;
-  const todaysDate = projectMeta.END_DATE;
-  const dates = INCLUDE_DATES && makeDates(startDate, todaysDate);
+  const startDate = configRef.current.START_DATE;
+  const endDate = configRef.current.END_DATE;
+  const dates = configRef.current.INCLUDE_DATES && makeDates(startDate, endDate, configRef);
 
   //-----------------PARSE DATA ----------
   // if no months are provided then dont add dates to data
   const wpData = parseWPDataset(wpDataset);
-  const activityData = parseActivityDataset(actDataset, dates, wpData);
+  const activityData = parseActivityDataset(actDataset, dates, wpData, configRef);
   const links = linksMatrixToArray(actLinks);
 
   //-------------TRIM ACT DATA TO FILTER SPECIFICATION ----------------
-  const latestPrPeriod = INCLUDE_DATES && dates[dates.length - 1].prPeriod;
+  const latestPrPeriod = configRef.current.INCLUDE_DATES && dates[dates.length - 1].prPeriod;
   //trimmedActData === current filter, filteredByPr === all data in curent pr period regardless of story filter
-  const { trimmedActData, filteredByPr } = trimActData(activityData, prPeriod, currentStory);
+  const { trimmedActData, filteredByPr } = trimActData(activityData, prPeriod, currentStory, configRef);
 
   //only return wps that are present in actdataset
   const trimmedWpData = wpData.filter((wp) =>
@@ -68,16 +66,16 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
     projectMeta.STHOLDERS && parseStakeholderDataset(stLinks, stDataset, trimmedActData).stakeholderData;
 
   //----MAKE VIS ELEMENTS -------------
-  const actNodes = makeActNodes(trimmedActData);
+  const actNodes = makeActNodes(trimmedActData, configRef);
   const actEdges = makeActEdges(links, actNodes);
-  const wpNodes = makeWpNodes(trimmedWpData);
+  const wpNodes = makeWpNodes(trimmedWpData, configRef);
   const wpEdges = makeWpEdges(trimmedWpData);
   const stakeholderNodes = projectMeta.STHOLDERS && makeStakeholerNodes(stakeholderData);
   const stakeholderEdges = projectMeta.STHOLDERS && makeStakeholderEdges(stakeholderData);
 
   const gantChartItems =
-    INCLUDE_DATES &&
-    makeGantchartItems(trimmedActData, trimmedWpData, prPeriod, completedDisplay, latestPrPeriod, dates);
+    configRef.current.INCLUDE_DATES &&
+    makeGantchartItems(trimmedActData, trimmedWpData, prPeriod, completedDisplay, latestPrPeriod, configRef);
 
   //node to hold all other nodes, prevents stakeholder nodes entering center of graph
   const projectNode = {

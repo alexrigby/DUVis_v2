@@ -1,6 +1,4 @@
-import { actFields } from "../../data";
-
-export function giveActivityPrPeriod(act, dates, se) {
+export function giveActivityPrPeriod(act, dates, se, actFields) {
   const startOrEnd = se === "start" ? actFields.START_DATE : actFields.END_DATE;
   const startOrEndPR = se === "start" ? dates[0].prPeriod : dates[dates.length - 1].prPeriod;
   if (!dateIsValid(new Date(act[startOrEnd]))) {
