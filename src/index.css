@@ -40,6 +40,11 @@ button:active {
   background-color: #cfcfcf;
 }
 
+input {
+  pointer-events: all;
+  cursor: pointer;
+}
+
 .top-layer {
   position: absolute;
   top: 0;

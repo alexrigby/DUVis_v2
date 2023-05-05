@@ -24,10 +24,6 @@
     "name": null,
     "metaFields": []
   },
-  "stakeholders": {
-    "id": "id",
-    "name": null,
-    "metaFields": []
-  },
+  "stakeholders": null,
   "stories": []
 }
