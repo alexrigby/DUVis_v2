@@ -15,13 +15,9 @@ import makeDates from "./datesFunction/makeDates";
 import parseWPDataset from "./datasetParseFunctions/parseWPDataset";
 import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
 
-import workBookPath from "../data/activity_data.xlsx";
-
-export async function makeVisElements(prPeriod, currentStory, completedDisplay, config) {
+export async function makeVisElements(prPeriod, currentStory, completedDisplay, config, excelDataset) {
   // ------------------------ FETCH CSV DATA -------------------------
-
-  const file = await (await fetch(workBookPath)).arrayBuffer();
-  const workBookData = XLSX.read(file); // reads the whole workbook
+  const workBookData = XLSX.read(excelDataset);
   // header: 1 returns array of arrays of csv rows, use for crosstab datasets
   const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.ACTIVITY_LINKS], {
     header: 1,
@@ -48,8 +44,6 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
     defval: "",
     raw: false,
   });
-
-  console.log(config.INCLUDE_STHOLDERS);
 
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
   const startDate = config.START_DATE;

@@ -40,7 +40,7 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
-export function MyDropzone({ userFiles, setUserFiles }) {
+export function MyDropzone({ userFiles, setUserFiles, setExcelDataset }) {
   const { config, setConfig } = useContext(ConfigContext);
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -72,13 +72,27 @@ export function MyDropzone({ userFiles, setUserFiles }) {
               },
             }));
           }
+        } else if (file.type === fileTypes.EXCEL) {
+          try {
+            setExcelDataset(reader.result);
+            setUserFiles((prevState) => ({
+              ...prevState,
+              dataset: {
+                fileName: file.path,
+                errors: null,
+              },
+            }));
+          } catch (error) {
+            setUserFiles((prevState) => ({
+              ...prevState,
+              dataset: {
+                fileName: file.path,
+                errors: error,
+              },
+            }));
+            console.error(error);
+          }
         }
-
-        // setUserFiles((prevState) => ({
-        //   ...prevState,
-        //   // ...(file.type === fileTypes.JSON && { config: { fileName: file.path, error: } }),
-        //   // ...(file.type === fileTypes.EXCEL && { dataset: { fileName: file.path, file: reader.result } }),
-        // }));
       };
       // return array buffer if excel, or text if json
       file.type === fileTypes.JSON && reader.readAsText(file);

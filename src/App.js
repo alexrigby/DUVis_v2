@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import ConfigContext from "./context/ConfigContext";
 import SplitPane from "react-split-pane";
 
+import * as XLSX from "xlsx";
+
 import Header from "./components/header/Header";
 import SidePannel from "./components/sidePannel/SidePannel";
 import CytoscapeVis from "./components/cytoscape/CytoscapeVis";
@@ -11,6 +13,8 @@ import FilterOptions from "./components/FilterOptions/FilterOptions";
 import ToggleButtons from "./components/ToggleButtons/ToggleButtons";
 import MyDropzone from "./components/upload/MyDropzone/MyDropzone";
 import Upload from "./components/upload/Upload";
+
+import workBookPath from "../src/data/activity_data.xlsx";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
@@ -39,6 +43,8 @@ export function App() {
     dataset: { fileName: null, errors: null },
   });
 
+  const [excelDataset, setExcelDataset] = useState(null);
+
   // ---------------------------USE REFS-------------------------------
   const gantchartDataRef = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
@@ -53,13 +59,21 @@ export function App() {
   //----------------------------------CONFIG-----------------------------------------
   const { config } = useContext(ConfigContext);
   //----------------------- FETCH DATA FOR USE IN APP-----------------------------------
+  // TO BE REPLACE WITH LOCAL STORAGE METHOD
+  useEffect(() => {
+    async function getWorkbook() {
+      const file = await (await fetch(workBookPath)).arrayBuffer();
+      setExcelDataset(file);
+    }
+    getWorkbook();
+  }, []);
 
   useEffect(() => {
-    if (config) {
+    if (config && excelDataset) {
       //updates cyytoscape state to include node and edge data and creates gantchart data
       async function addDataToCytoscape() {
         const { cyElms, gantChartItems, activityData, dates, stakeholderData, latestPrPeriod, maxEngScore } =
-          await makeVisElements(prPeriod, currentStory, completedDisplay, config); //all pre-processing of data
+          await makeVisElements(prPeriod, currentStory, completedDisplay, config, excelDataset); //all pre-processing of data
 
         actDataRef.current = activityData; //asigns activity data to ref
         stakeholderDataRef.current = stakeholderData;
@@ -77,7 +91,7 @@ export function App() {
 
       addDataToCytoscape();
     }
-  }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory, config]);
+  }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory, config, excelDataset]);
 
   //---------------------- STYLE -------------------------------------
 
@@ -104,6 +118,7 @@ export function App() {
     });
   };
 
+  console.log(excelDataset);
   if (config) {
     return (
       <div className="container">
@@ -197,7 +212,9 @@ export function App() {
                 </div>
               </div>
 
-              {uploadVeiw && <Upload userFiles={userFiles} setUserFiles={setUserFiles} />}
+              {uploadVeiw && (
+                <Upload userFiles={userFiles} setUserFiles={setUserFiles} setExcelDataset={setExcelDataset} />
+              )}
 
               <div className="zoomButtons">
                 <button onClick={openUploadVeiw}>

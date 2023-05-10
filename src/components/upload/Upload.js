@@ -1,7 +1,7 @@
 import MyDropzone from "./MyDropzone/MyDropzone";
 import "./Upload.css";
 
-export function Upload({ userFiles, setUserFiles }) {
+export function Upload({ userFiles, setUserFiles, setExcelDataset }) {
   console.log(userFiles);
 
   const configError =
@@ -16,7 +16,7 @@ export function Upload({ userFiles, setUserFiles }) {
 
   return (
     <div className="dropzoneContainer">
-      <MyDropzone userFiles={userFiles} setUserFiles={setUserFiles} />
+      <MyDropzone userFiles={userFiles} setUserFiles={setUserFiles} setExcelDataset={setExcelDataset} />
 
       <div>
         {userFiles.config.fileName && (
@@ -25,7 +25,12 @@ export function Upload({ userFiles, setUserFiles }) {
             {userFiles.config.errors && <p>Errors: {configError}</p>}
           </div>
         )}
-        {userFiles.dataset.fileName && <p>Dataset: {userFiles.dataset.fileName}</p>}
+        {userFiles.dataset.fileName && (
+          <div>
+            <p>Dataset: {userFiles.dataset.fileName}</p>
+            {userFiles.dataset.errors && <p>Errors: {userFiles.dataset.errors} </p>}
+          </div>
+        )}
       </div>
     </div>
   );
