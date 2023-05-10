@@ -5,7 +5,7 @@ import ConfigContext from "../../../context/ConfigContext";
 import "./VegaAnalytics.css";
 
 export function VegaSelect({ setSelectedMetric }) {
-  const config = useContext(ConfigContext);
+  const { config } = useContext(ConfigContext);
   const actFields = config.actFields;
   //maps over values from user defined categorical meta_fileds  to create select options
   const options = actFields.META_FIELDS.filter((f) => f.type === "category").map((field) => ({

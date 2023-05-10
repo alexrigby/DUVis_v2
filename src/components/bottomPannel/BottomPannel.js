@@ -5,7 +5,6 @@ import ConfigContext from "../../context/ConfigContext";
 import GanttChart from "./ganttChart/GanttChart";
 import VegaAnalytics from "./vegaAnalytics/VegaAnalytics";
 
-import { INCLUDE_DATES, CATEGORYS_PROVIDED } from "../../data";
 import "./BottomPannel.css";
 
 export function BottomPannel({
@@ -18,7 +17,7 @@ export function BottomPannel({
   selectedBottomVis,
   setSelectedBottomVis,
 }) {
-  const config = useContext(ConfigContext);
+  const { config } = useContext(ConfigContext);
 
   return (
     <div className="bottomPannel">

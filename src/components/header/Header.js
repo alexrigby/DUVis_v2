@@ -4,7 +4,7 @@ import "./Header.css";
 import ConfigContext from "../../context/ConfigContext";
 
 export function Header({ cyState, datesRef, prPeriod, currentStory, completedDisplay, networkVeiw }) {
-  const config = useContext(ConfigContext);
+  const { config } = useContext(ConfigContext);
   const INCLUDE_DATES = config.INCLUDE_DATES;
 
   return (

@@ -9,7 +9,7 @@ import makeSDGList from "./functions/makeSDGList";
 
 export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setStakeholdersDisplay }) {
   //-------------CONFIG----------------
-  const config = useContext(ConfigContext);
+  const { config } = useContext(ConfigContext);
   const INCLUDE_STHOLDERS = config.INCLUDE_STHOLDERS;
   const wpFields = config.wpFields;
   const actFields = config.actFields;

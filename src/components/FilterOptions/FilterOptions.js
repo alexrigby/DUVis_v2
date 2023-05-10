@@ -18,7 +18,7 @@ export function FilterOptions({
   setCustomStoryDisplay,
 }) {
   //----------------------CONFIG--------------------------
-  const config = useContext(ConfigContext);
+  const { config } = useContext(ConfigContext);
   const INCLUDE_DATES = config.INCLUDE_DATES;
   const STORIES = config.STORIES;
 

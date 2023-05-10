@@ -8,12 +8,11 @@ import vegaSpec from "./functions/vegaSpec";
 import vegaSpecNoDate from "./functions/vegaSpecNoDate";
 import parseVegaData from "./functions/parseVegaData";
 import getTypeOptionsArray from "../../../AppFunctions/getTypeOptionsArray";
-import { actFields } from "../../../data";
-import { INCLUDE_DATES } from "../../../data";
+
 import "./VegaAnalytics.css";
 
 export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPeriod, setSelectedBottomVis }) {
-  const config = useContext(ConfigContext);
+  const { config } = useContext(ConfigContext);
   const actFields = config.actFields;
 
   // ------------------------- SET STATE -----------------------------------------------------------//

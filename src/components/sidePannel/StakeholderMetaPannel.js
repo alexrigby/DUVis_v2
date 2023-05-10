@@ -9,7 +9,7 @@ import getTypeOptionsArray from "../../AppFunctions/getTypeOptionsArray";
 
 export function StakeholderMetaPannel({ selectedNode, setSelectedNode, cyState, setStakeholdersDisplay }) {
   //--------------CONFIG----------------
-  const config = useContext(ConfigContext);
+  const { config } = useContext(ConfigContext);
   const stFields = config.stFields;
   //--------------------------------------USEFULL VARIABLES -------------------------------//
   const OPEN = <i className="fa fa-angle-down"></i>;

@@ -1,5 +1,8 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useContext } from "react";
 import { useDropzone } from "react-dropzone";
+import ConfigContext from "../../../context/ConfigContext";
+
+import configHandler from "../../../grammar/configHandler";
 
 const fileTypes = {
   JSON: "application/json",
@@ -38,19 +41,44 @@ const rejectStyle = {
 };
 
 export function MyDropzone({ userFiles, setUserFiles }) {
+  const { config, setConfig } = useContext(ConfigContext);
+
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach((file) => {
       const reader = new FileReader();
-      console.log(file.path);
+
       reader.onabort = () => console.log("file reading was aborted");
       reader.onerror = () => console.log("file reading has failed");
 
       reader.onload = () => {
-        setUserFiles((prevState) => ({
-          ...prevState,
-          ...(file.type === fileTypes.JSON && { config: { fileName: file.path, file: JSON.parse(reader.result) } }),
-          ...(file.type === fileTypes.EXCEL && { dataset: { fileName: file.path, file: reader.result } }),
-        }));
+        if (file.type === fileTypes.JSON) {
+          const { configObj, errors } = configHandler(JSON.parse(reader.result)); // returns undefined if error with JSON schema
+          if (!errors) {
+            configObj && setConfig(configObj); //parses and sets config from user uploaded JSON file
+            configObj &&
+              setUserFiles((prevState) => ({
+                ...prevState,
+                config: {
+                  errors: null,
+                  fileName: file.path,
+                },
+              }));
+          } else {
+            setUserFiles((prevState) => ({
+              ...prevState,
+              config: {
+                fileName: file.path,
+                errors: errors,
+              },
+            }));
+          }
+        }
+
+        // setUserFiles((prevState) => ({
+        //   ...prevState,
+        //   // ...(file.type === fileTypes.JSON && { config: { fileName: file.path, error: } }),
+        //   // ...(file.type === fileTypes.EXCEL && { dataset: { fileName: file.path, file: reader.result } }),
+        // }));
       };
       // return array buffer if excel, or text if json
       file.type === fileTypes.JSON && reader.readAsText(file);
@@ -58,7 +86,6 @@ export function MyDropzone({ userFiles, setUserFiles }) {
     });
   }, []);
 
-  console.log(userFiles);
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
     onDrop,
     accept: {
@@ -81,11 +108,6 @@ export function MyDropzone({ userFiles, setUserFiles }) {
     <div {...getRootProps({ style })}>
       <input {...getInputProps()} />
       <p>drop files here or click to browse</p>
-
-      <div>
-        {userFiles.config && <p>Config: {userFiles.config.fileName}</p>}
-        {userFiles.dataset && <p>Dataset: {userFiles.dataset.fileName}</p>}
-      </div>
     </div>
   );
 }

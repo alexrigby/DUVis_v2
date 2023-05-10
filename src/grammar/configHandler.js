@@ -1,14 +1,14 @@
 import cloneDeep from "lodash.clonedeep";
-import _config from "./config.json";
+
 import validateConfig from "./validateConfig.js";
 
-export function configHandler() {
-  const valid = validateConfig(_config); // checks if config is valid
+export function configHandler(_config) {
+  const { valid, errors } = validateConfig(_config); // checks if config is valid
 
   if (valid) {
     const configClone = cloneDeep(_config); // clone config so as not to edit origional
 
-    const configObj = {
+    var configObj = {
       NAME: configClone.name,
       START_DATE: configClone.startDate,
       END_DATE: configClone.endDate === "today" ? new Date().toISOString().split("T")[0] : configClone.endDate,
@@ -54,9 +54,10 @@ export function configHandler() {
         META_FIELDS: configClone.stakeholders ? configClone.stakeholders.metaFields : false,
       },
     };
-
-    return configObj;
+  } else {
+    configObj = null;
   }
+  return { configObj, errors };
 }
 
 export default configHandler;

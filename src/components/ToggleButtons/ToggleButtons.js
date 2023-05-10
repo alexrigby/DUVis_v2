@@ -23,7 +23,7 @@ export function ToggleButtons({
   setCustomStoryDisplay,
 }) {
   // --------------CONFIG------------------
-  const config = useContext(ConfigContext);
+  const { config } = useContext(ConfigContext);
   const INCLUDE_DATES = config.INCLUDE_DATES;
   const CATEGORYS_PROVIDED = config.actFields.CATEGORYS_PROVIDED;
   const INCLUDE_STHOLDERS = config.INCLUDE_STHOLDERS;

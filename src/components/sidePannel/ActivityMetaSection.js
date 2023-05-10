@@ -18,7 +18,7 @@ export function ActivityMetaSection({
   networkVeiw,
   setStakeholdersDisplay,
 }) {
-  const config = useContext(ConfigContext);
+  const { config } = useContext(ConfigContext);
   const actFields = config.actFields;
   const projectConfig = config;
   const INCLUDE_STHOLDERS = config.INCLUDE_STHOLDERS;

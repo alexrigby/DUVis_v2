@@ -20,8 +20,7 @@ export function validateConfig(config) {
     });
   }
 
-  // console.log(valid);
-  return valid;
+  return { valid, errors: validate.errors };
 }
 
 export default validateConfig;

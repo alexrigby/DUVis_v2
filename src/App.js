@@ -34,7 +34,10 @@ export function App() {
   const [engScoreVeiw, setEngeScoreVeiw] = useState(false); // show engagement ranking
   const [customStoryDisplay, setCustomStoryDisplay] = useState(false); //open custom filter options
   const [uploadVeiw, setUploadVeiw] = useState(false);
-  const [userFiles, setUserFiles] = useState({ config: null, dataset: null });
+  const [userFiles, setUserFiles] = useState({
+    config: { fileName: null, errors: null },
+    dataset: { fileName: null, errors: null },
+  });
 
   // ---------------------------USE REFS-------------------------------
   const gantchartDataRef = useRef(null); //stores parsed gantchart data
@@ -48,7 +51,7 @@ export function App() {
   currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
 
   //----------------------------------CONFIG-----------------------------------------
-  const config = useContext(ConfigContext);
+  const { config } = useContext(ConfigContext);
   //----------------------- FETCH DATA FOR USE IN APP-----------------------------------
 
   useEffect(() => {
@@ -95,6 +98,10 @@ export function App() {
 
   const openUploadVeiw = (evt) => {
     setUploadVeiw((prevState) => !prevState);
+    setUserFiles({
+      config: { fileName: null, errors: null },
+      dataset: { fileName: null, errors: null },
+    });
   };
 
   if (config) {

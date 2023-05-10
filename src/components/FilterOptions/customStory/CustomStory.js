@@ -19,7 +19,7 @@ export function CustomStory({
   localStories,
 }) {
   //---------------------------CONFIG------------------
-  const config = useContext(ConfigContext);
+  const { config } = useContext(ConfigContext);
   const actFields = config.actFields;
 
   //------------------------------INPUT ELEMENT CONTROL STATES------------------------//
