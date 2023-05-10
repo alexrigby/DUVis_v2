@@ -10,9 +10,6 @@ export function Header({ cyState, datesRef, prPeriod, currentStory, completedDis
   return (
     <header>
       <div>
-        <input type="file"></input>
-      </div>
-      <div>
         <h1>{config.NAME}</h1>
         <p className="subHeader">
           {currentStory === null ? "All Activities" : currentStory.name}

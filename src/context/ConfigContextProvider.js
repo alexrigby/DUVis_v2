@@ -9,6 +9,7 @@ export function ConfigContextProvider({ children }) {
     //adding the config details to ref
     const config = configHandler();
     setConfig(config);
+    console.log(config);
     // configRef.current = config;
   }, []);
 

@@ -4,7 +4,6 @@ import "./index.css";
 import ConfigContextProvider from "./context/ConfigContextProvider";
 
 import App from "./App";
-import ConfigLoaded from "./ConfigLoaded";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

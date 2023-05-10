@@ -9,6 +9,8 @@ import Legend from "./components/legend/Legend";
 import BottomPannel from "./components/bottomPannel/BottomPannel";
 import FilterOptions from "./components/FilterOptions/FilterOptions";
 import ToggleButtons from "./components/ToggleButtons/ToggleButtons";
+import MyDropzone from "./components/upload/MyDropzone/MyDropzone";
+import Upload from "./components/upload/Upload";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
@@ -31,6 +33,8 @@ export function App() {
   const [networkVeiwEls, setNetworkVeiwEls] = useState({ ID: "", els: [] }); //holds elements for network veiw
   const [engScoreVeiw, setEngeScoreVeiw] = useState(false); // show engagement ranking
   const [customStoryDisplay, setCustomStoryDisplay] = useState(false); //open custom filter options
+  const [uploadVeiw, setUploadVeiw] = useState(false);
+  const [userFiles, setUserFiles] = useState({ config: null, dataset: null });
 
   // ---------------------------USE REFS-------------------------------
   const gantchartDataRef = useRef(null); //stores parsed gantchart data
@@ -73,16 +77,25 @@ export function App() {
   }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory, config]);
 
   //---------------------- STYLE -------------------------------------
-  const centerGraph = (event) => {
-    setTimeout(() => {
-      cyState.cy.fit();
-    }, 1);
-  };
 
   // HIDE SIDE PANNEL (bug in splitpane so this is best option)
   document.querySelectorAll(".Pane2").forEach((el) => {
     el.style.display = selectedNode.id === "" ? "none" : "block";
   });
+
+  const veiwStyle = {
+    opacity: uploadVeiw ? 0.2 : 1.0,
+    pointerEvents: uploadVeiw ? "none" : "all",
+  };
+
+  // cyState.cy &&
+  //   cyState.cy.nodes().forEach((node) => {
+  //     node.style("events", "no");
+  //   });
+
+  const openUploadVeiw = (evt) => {
+    setUploadVeiw((prevState) => !prevState);
+  };
 
   if (config) {
     return (
@@ -90,92 +103,99 @@ export function App() {
         <div className="Resizer">
           <SplitPane split="vertical" minSize={"20em"} defaultSize={"20em"} allowResize={true} primary="second">
             <div>
-              <div className="top-layer">
-                <div className="headSection">
-                  <div className="rightSide">
-                    <Header
-                      cyState={cyState}
-                      datesRef={datesRef}
-                      prPeriod={prPeriod}
-                      currentStory={currentStory}
-                      completedDisplay={completedDisplay}
-                      networkVeiw={networkVeiw}
-                    />
-                    <FilterOptions
-                      datesRef={datesRef}
-                      prPeriod={prPeriod}
-                      setPrPeriod={setPrPeriod}
-                      currentStory={currentStory}
-                      setCurrentStory={setCurrentStory}
-                      actDataRef={actDataRef}
-                      cyState={cyState}
-                      setNetworkVeiw={setNetworkVeiw}
-                      customStoryDisplay={customStoryDisplay}
-                      setCustomStoryDisplay={setCustomStoryDisplay}
-                    />
-                    <Legend
-                      cyState={cyState}
-                      networkVeiw={networkVeiw}
-                      selectedNode={selectedNode}
-                      networkVeiwEls={networkVeiwEls}
-                      engScoreVeiw={engScoreVeiw}
-                      stakeholdersDisplay={stakeholdersDisplay}
-                    />
+              <div style={veiwStyle}>
+                <div className="top-layer">
+                  <div className="headSection">
+                    <div className="rightSide">
+                      <Header
+                        cyState={cyState}
+                        datesRef={datesRef}
+                        prPeriod={prPeriod}
+                        currentStory={currentStory}
+                        completedDisplay={completedDisplay}
+                        networkVeiw={networkVeiw}
+                      />
+                      {!uploadVeiw && (
+                        <FilterOptions
+                          datesRef={datesRef}
+                          prPeriod={prPeriod}
+                          setPrPeriod={setPrPeriod}
+                          currentStory={currentStory}
+                          setCurrentStory={setCurrentStory}
+                          actDataRef={actDataRef}
+                          cyState={cyState}
+                          setNetworkVeiw={setNetworkVeiw}
+                          customStoryDisplay={customStoryDisplay}
+                          setCustomStoryDisplay={setCustomStoryDisplay}
+                        />
+                      )}
+                      <Legend
+                        cyState={cyState}
+                        networkVeiw={networkVeiw}
+                        selectedNode={selectedNode}
+                        networkVeiwEls={networkVeiwEls}
+                        engScoreVeiw={engScoreVeiw}
+                        stakeholdersDisplay={stakeholdersDisplay}
+                      />
+                    </div>
+                    {!uploadVeiw && (
+                      <ToggleButtons
+                        selectedBottomVis={selectedBottomVis}
+                        setSelectedBottomVis={setSelectedBottomVis}
+                        setStakeholdersDisplay={setStakeholdersDisplay}
+                        currentActNodeCountRef={currentActNodeCountRef}
+                        setActivityEdgeDisplay={setActivityEdgeDisplay}
+                        setCompletedDisplay={setCompletedDisplay}
+                        cyState={cyState}
+                        setNetworkVeiw={setNetworkVeiw}
+                        networkVeiw={networkVeiw}
+                        completedDisplay={completedDisplay}
+                        stakeholdersDisplay={stakeholdersDisplay}
+                        selectedNode={selectedNode}
+                        engScoreVeiw={engScoreVeiw}
+                        setEngeScoreVeiw={setEngeScoreVeiw}
+                        setCustomStoryDisplay={setCustomStoryDisplay}
+                      />
+                    )}
                   </div>
-                  <ToggleButtons
+
+                  <BottomPannel
+                    gantchartDataRef={gantchartDataRef}
+                    cyState={cyState}
+                    setSelectedNode={setSelectedNode}
+                    actDataRef={actDataRef}
+                    datesRef={datesRef}
+                    prPeriod={prPeriod}
                     selectedBottomVis={selectedBottomVis}
                     setSelectedBottomVis={setSelectedBottomVis}
-                    setStakeholdersDisplay={setStakeholdersDisplay}
-                    currentActNodeCountRef={currentActNodeCountRef}
-                    setActivityEdgeDisplay={setActivityEdgeDisplay}
-                    setCompletedDisplay={setCompletedDisplay}
-                    cyState={cyState}
-                    setNetworkVeiw={setNetworkVeiw}
-                    networkVeiw={networkVeiw}
-                    completedDisplay={completedDisplay}
-                    stakeholdersDisplay={stakeholdersDisplay}
-                    selectedNode={selectedNode}
-                    engScoreVeiw={engScoreVeiw}
-                    setEngeScoreVeiw={setEngeScoreVeiw}
-                    setCustomStoryDisplay={setCustomStoryDisplay}
                   />
                 </div>
-                <div className="zoomButtons">
-                  <div>
-                    <button onClick={centerGraph} title="center graph">
-                      <i className="fa fa-crosshairs"></i>
-                    </button>
-                  </div>
+                <div onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState, networkVeiw)}>
+                  <CytoscapeVis
+                    cyState={cyState}
+                    setSelectedNode={setSelectedNode}
+                    selectedNode={selectedNode}
+                    activityEdgeDisplay={activityEdgeDisplay}
+                    stakeholdersDisplay={stakeholdersDisplay}
+                    currentActNodeCountRef={currentActNodeCountRef}
+                    networkVeiw={networkVeiw}
+                    completedDisplay={completedDisplay}
+                    latestPrPeriodRef={latestPrPeriodRef}
+                    prPeriod={prPeriod}
+                    networkVeiwEls={networkVeiwEls}
+                    setNetworkVeiwEls={setNetworkVeiwEls}
+                    engScoreVeiw={engScoreVeiw}
+                    engagementScoresRef={engagementScoresRef}
+                  />
                 </div>
-
-                <BottomPannel
-                  gantchartDataRef={gantchartDataRef}
-                  cyState={cyState}
-                  setSelectedNode={setSelectedNode}
-                  actDataRef={actDataRef}
-                  datesRef={datesRef}
-                  prPeriod={prPeriod}
-                  selectedBottomVis={selectedBottomVis}
-                  setSelectedBottomVis={setSelectedBottomVis}
-                />
               </div>
-              <div onDoubleClick={() => resetVeiwOnDoubleClick(setSelectedNode, cyState, networkVeiw)}>
-                <CytoscapeVis
-                  cyState={cyState}
-                  setSelectedNode={setSelectedNode}
-                  selectedNode={selectedNode}
-                  activityEdgeDisplay={activityEdgeDisplay}
-                  stakeholdersDisplay={stakeholdersDisplay}
-                  currentActNodeCountRef={currentActNodeCountRef}
-                  networkVeiw={networkVeiw}
-                  completedDisplay={completedDisplay}
-                  latestPrPeriodRef={latestPrPeriodRef}
-                  prPeriod={prPeriod}
-                  networkVeiwEls={networkVeiwEls}
-                  setNetworkVeiwEls={setNetworkVeiwEls}
-                  engScoreVeiw={engScoreVeiw}
-                  engagementScoresRef={engagementScoresRef}
-                />
+
+              {uploadVeiw && <Upload userFiles={userFiles} setUserFiles={setUserFiles} />}
+
+              <div className="zoomButtons">
+                <button onClick={openUploadVeiw}>
+                  Upload new dataset <i className="fa fa-upload"></i>
+                </button>
               </div>
             </div>
             <div id="sideP" data-open="false">

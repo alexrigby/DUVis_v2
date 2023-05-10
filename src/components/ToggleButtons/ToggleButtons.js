@@ -65,6 +65,12 @@ export function ToggleButtons({
     const target = event.currentTarget.id;
     setSelectedBottomVis((prevState) => (prevState === target ? "" : target)); //if the same button is  clicked twice set state to ""
   };
+
+  const centerGraph = (event) => {
+    setTimeout(() => {
+      cyState.cy.fit();
+    }, 1);
+  };
   // TOGGLE CONTROLS /////////////
 
   //STYLING //////////////////////
@@ -79,6 +85,11 @@ export function ToggleButtons({
       <button onClick={changeLayout} title="rearrange node positions">
         Layout <i className="fa fa-repeat"></i>
       </button>
+
+      <button title="center graph" onClick={centerGraph}>
+        Recenter <i className="fa fa-crosshairs"></i>
+      </button>
+
       <button onClick={toggleEdges} title="toggle connection types">
         Connections <i className="fa fa-diagram-project"></i>
       </button>

@@ -5,19 +5,29 @@
 }
 
 .toggleButtons {
-  /* display: flex;
-  flex-wrap: wrap;
-  flex-direction: row-reverse; */
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   height: fit-content;
 }
 
-/* .toggleButtons > * {
-  align-self: start;
-  flex: 0 0 30%;
-} */
-
 .fa {
   padding-left: 3px;
+}
+
+@media (min-height: 200px) {
+  .toggleButtons {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-height: 700px) {
+  .toggleButtons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-height: 1000px) {
+  .toggleButtons {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
