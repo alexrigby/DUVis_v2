@@ -33,7 +33,6 @@ export function FilterOptions({
 
   const localStories = JSON.parse(window.localStorage.getItem("customStory"));
   const currentPr = datesRef.current && datesRef.current[datesRef.current.length - 1].prPeriod;
-  // findCurrentPrperiod(prOptions, datesRef);
 
   //runs fist time component is loaded - checks for data in local storage and adds it to the stories state
   useEffect(() => {

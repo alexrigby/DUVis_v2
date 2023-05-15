@@ -2,8 +2,6 @@ import MyDropzone from "./MyDropzone/MyDropzone";
 import "./Upload.css";
 
 export function Upload({ userFiles, setUserFiles, setExcelDataset }) {
-  console.log(userFiles);
-
   const configError =
     userFiles.config.errors &&
     userFiles.config.errors.map((err, i) => {

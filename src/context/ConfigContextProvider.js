@@ -7,11 +7,16 @@ export function ConfigContextProvider({ children }) {
   const [config, setConfig] = useState(null);
   // runs once when add is loaded
   useEffect(() => {
-    //adding the config details to ref
-    const { configObj, errors } = configHandler(_config);
+    const localConfig = JSON.parse(window.localStorage.getItem("config"));
 
-    setConfig(configObj);
-    // configRef.current = config;
+    //adding the config details to state
+    if (localConfig) {
+      const { configObj, errors } = configHandler(localConfig);
+
+      setConfig(configObj);
+    } else {
+      setConfig(null);
+    }
   }, []);
 
   return <ConfigContext.Provider value={{ config, setConfig }}>{children}</ConfigContext.Provider>;

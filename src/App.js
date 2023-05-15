@@ -2,8 +2,6 @@ import React, { useEffect, useRef, useState, useContext } from "react";
 import ConfigContext from "./context/ConfigContext";
 import SplitPane from "react-split-pane";
 
-import * as XLSX from "xlsx";
-
 import Header from "./components/header/Header";
 import SidePannel from "./components/sidePannel/SidePannel";
 import CytoscapeVis from "./components/cytoscape/CytoscapeVis";
@@ -11,10 +9,7 @@ import Legend from "./components/legend/Legend";
 import BottomPannel from "./components/bottomPannel/BottomPannel";
 import FilterOptions from "./components/FilterOptions/FilterOptions";
 import ToggleButtons from "./components/ToggleButtons/ToggleButtons";
-import MyDropzone from "./components/upload/MyDropzone/MyDropzone";
 import Upload from "./components/upload/Upload";
-
-import workBookPath from "../src/data/activity_data.xlsx";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
@@ -58,14 +53,20 @@ export function App() {
 
   //----------------------------------CONFIG-----------------------------------------
   const { config } = useContext(ConfigContext);
+
+  console.log(config);
   //----------------------- FETCH DATA FOR USE IN APP-----------------------------------
   // TO BE REPLACE WITH LOCAL STORAGE METHOD
   useEffect(() => {
-    async function getWorkbook() {
-      const file = await (await fetch(workBookPath)).arrayBuffer();
+    const fileString = window.localStorage.getItem("excelDataset");
+
+    if (fileString) {
+      const file = new Uint8Array(fileString.split(",")).buffer;
       setExcelDataset(file);
+    } else {
+      setExcelDataset(null);
     }
-    getWorkbook();
+    // sets string repreentation of array buffer to array bufffer
   }, []);
 
   useEffect(() => {
@@ -90,6 +91,8 @@ export function App() {
       }
 
       addDataToCytoscape();
+    } else {
+      setUploadVeiw(true);
     }
   }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory, config, excelDataset]);
 
@@ -105,11 +108,6 @@ export function App() {
     pointerEvents: uploadVeiw ? "none" : "all",
   };
 
-  // cyState.cy &&
-  //   cyState.cy.nodes().forEach((node) => {
-  //     node.style("events", "no");
-  //   });
-
   const openUploadVeiw = (evt) => {
     setUploadVeiw((prevState) => !prevState);
     setUserFiles({
@@ -118,7 +116,6 @@ export function App() {
     });
   };
 
-  console.log(excelDataset);
   if (config) {
     return (
       <div className="container">
@@ -237,6 +234,8 @@ export function App() {
         </div>
       </div>
     );
+  } else {
+    return <Upload userFiles={userFiles} setUserFiles={setUserFiles} setExcelDataset={setExcelDataset} />;
   }
 }
 
