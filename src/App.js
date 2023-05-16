@@ -38,6 +38,8 @@ export function App() {
     dataset: { fileName: null, errors: null },
   });
 
+  const [fieldWarning, setFieldWarning] = useState(null);
+
   const [excelDataset, setExcelDataset] = useState(null);
 
   // ---------------------------USE REFS-------------------------------
@@ -54,27 +56,32 @@ export function App() {
   //----------------------------------CONFIG-----------------------------------------
   const { config } = useContext(ConfigContext);
 
-  console.log(config);
-  //----------------------- FETCH DATA FOR USE IN APP-----------------------------------
-  // TO BE REPLACE WITH LOCAL STORAGE METHOD
+  //----------------------- FETCH EXCEL DATA FOR USE IN APP-----------------------------------
   useEffect(() => {
     const fileString = window.localStorage.getItem("excelDataset");
-
     if (fileString) {
+      // sets string repreentation of array buffer to array bufffer
       const file = new Uint8Array(fileString.split(",")).buffer;
       setExcelDataset(file);
     } else {
       setExcelDataset(null);
     }
-    // sets string repreentation of array buffer to array bufffer
   }, []);
 
   useEffect(() => {
     if (config && excelDataset) {
       //updates cyytoscape state to include node and edge data and creates gantchart data
       async function addDataToCytoscape() {
-        const { cyElms, gantChartItems, activityData, dates, stakeholderData, latestPrPeriod, maxEngScore } =
-          await makeVisElements(prPeriod, currentStory, completedDisplay, config, excelDataset); //all pre-processing of data
+        const {
+          cyElms,
+          gantChartItems,
+          activityData,
+          dates,
+          stakeholderData,
+          latestPrPeriod,
+          maxEngScore,
+          missingFieldWarning,
+        } = await makeVisElements(prPeriod, currentStory, completedDisplay, config, excelDataset); //all pre-processing of data
 
         actDataRef.current = activityData; //asigns activity data to ref
         stakeholderDataRef.current = stakeholderData;
@@ -83,6 +90,7 @@ export function App() {
         latestPrPeriodRef.current = latestPrPeriod;
         engagementScoresRef.current = maxEngScore; // gives default maxEngScore
 
+        setFieldWarning(missingFieldWarning);
         setCyState((prevState) => ({
           ...prevState,
           elements: cyElms,
@@ -91,8 +99,6 @@ export function App() {
       }
 
       addDataToCytoscape();
-    } else {
-      setUploadVeiw(true);
     }
   }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory, config, excelDataset]);
 
@@ -105,6 +111,7 @@ export function App() {
 
   const veiwStyle = {
     opacity: uploadVeiw ? 0.2 : 1.0,
+    // filter: "brightness(50%)",
     pointerEvents: uploadVeiw ? "none" : "all",
   };
 
@@ -116,7 +123,7 @@ export function App() {
     });
   };
 
-  if (config) {
+  if (config && excelDataset) {
     return (
       <div className="container">
         <div className="Resizer">
