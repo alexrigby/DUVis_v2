@@ -5,30 +5,33 @@ export function parseActivityDataset(actData, dates, wpData, config) {
   const actFields = config.actFields;
   const projectConfig = config;
 
-  //finds what color gned and assignes it to activities
-  const getColorRef = (wp, color) => wpData.filter((record) => record.id === wp)[0][color];
+  //finds what color gned and assignes it to activities, assignes neon red to parentless nodes
+  const getColorRef = (wp, color) =>
+    wp ? wpData.filter((record) => record.id === `WP_${wp.trim()}`)[0][color] : "#FF3131";
 
   const activityData = actData.map((act, i) => {
+    // if user specifies additional meta fields (only give name not type)
+    const meta_fields = actFields.META_FIELDS.reduce((a, b) => ({ ...a, [b.name]: act[b.name] }), {});
+
     if (config.INCLUDE_DATES) {
       return {
         ...act,
-        bgColor: getColorRef(`WP_${act[actFields.WP].trim()}`, "bgColor"),
-        borderColor: getColorRef(`WP_${act[actFields.WP].trim()}`, "borderColor"),
-        startDate: dateIsValid(new Date(act[actFields.START_DATE].trim()))
+        bgColor: getColorRef(act[actFields.WP], "bgColor"),
+        borderColor: getColorRef(act[actFields.WP], "borderColor"),
+        startDate: dateIsValid(new Date(act[actFields.START_DATE]))
           ? act[actFields.START_DATE]
           : projectConfig.START_DATE,
-        endDate: dateIsValid(new Date(act[actFields.END_DATE].trim()))
-          ? act[actFields.END_DATE]
-          : projectConfig.END_DATE,
+        endDate: dateIsValid(new Date(act[actFields.END_DATE])) ? act[actFields.END_DATE] : projectConfig.END_DATE,
         startPrPeriod: giveActivityPrPeriod(act, dates, "start", actFields),
         endPrPeriod: giveActivityPrPeriod(act, dates, "end", actFields),
+        meta: meta_fields,
         ...(act[actFields.SDGs] && { SDGs: [...new Set(act[actFields.SDGs].trim().split(","))] }), // split comma seperated list of SDGs into unique array of sdgs if provided
       };
     } else {
       return {
         ...act,
-        bgColor: getColorRef(`WP_${act[actFields.WP.trim()]}`, "bgColor"),
-        borderColor: getColorRef(`WP_${act[actFields.WP.trim()]}`, "borderColor"),
+        bgColor: getColorRef(act[actFields.WP], "bgColor"),
+        borderColor: getColorRef(act[actFields.WP], "borderColor"),
         ...(act[actFields.SDGs] && { SDGs: [...new Set(act[actFields.SDGs].trim().split(","))] }), // split comma seperated list of SDGs into unique array of sdgs if provided
       };
     }

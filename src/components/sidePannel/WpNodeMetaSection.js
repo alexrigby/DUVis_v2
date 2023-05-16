@@ -52,7 +52,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
             <h2 style={{ display: "inline" }}>
               {caps}:{"  "}
             </h2>
-            <p style={{ display: "inline" }}>{selectedNode.meta[field]}</p>
+            <p style={{ display: "inline" }}>{selectedNode.meta[field] ? selectedNode.meta[field] : "Undefined"}</p>
           </div>
         );
       })}
@@ -92,7 +92,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
           <h1>
             {caps}: <span onClick={() => openAccordion("click", field)}>{wpAccordion[field] ? CLOSE : OPEN}</span>
           </h1>
-          <p style={style(field)}>{selectedNode.meta[field]}</p>
+          <p style={style(field)}>{selectedNode.meta[field] ? selectedNode.meta[field] : "Undefined"}</p>
         </div>
       );
     });

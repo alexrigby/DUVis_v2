@@ -37,7 +37,7 @@ export function ActivityMetaSection({
   const sdgSectionObj = { SDGs: false };
 
   const [actAccordion, setActAccordion] = useState({
-    sdgSectionObj,
+    ...sdgSectionObj,
     ...engObj,
     ...subSectionObj,
   });
@@ -115,7 +115,7 @@ export function ActivityMetaSection({
             <h2 style={{ display: "inline" }}>
               {caps}:{"  "}
             </h2>
-            <p style={{ display: "inline" }}>{selectedNode.meta[field]}</p>
+            <p style={{ display: "inline" }}>{selectedNode.meta[field] ? selectedNode.meta[field] : "Undefined"}</p>
           </div>
         );
       })}
@@ -147,7 +147,7 @@ export function ActivityMetaSection({
           <h1>
             {caps}: <span onClick={() => openActAccordion("click", field)}>{actAccordion[field] ? CLOSE : OPEN}</span>
           </h1>
-          <p style={style(field)}>{selectedNode.meta[field]}</p>
+          <p style={style(field)}>{selectedNode.meta[field] ? selectedNode.meta[field] : "undefined"}</p>
         </div>
       );
     });
@@ -207,15 +207,19 @@ export function ActivityMetaSection({
     <div>
       <div className="metaSection">
         <h1>{selectedNode.name}</h1>
-        <h1
-          onClick={() => {
-            !networkVeiw &&
-              nodeNavigationHandler(selectedNode.parent, setSelectedNode, cyState, setStakeholdersDisplay);
-          }}
-          className="navigateToWp"
-        >
-          {selectedNode.parent}
-        </h1>
+        {selectedNode.parent ? (
+          <h1
+            onClick={() => {
+              !networkVeiw &&
+                nodeNavigationHandler(selectedNode.parent, setSelectedNode, cyState, setStakeholdersDisplay);
+            }}
+            className="navigateToWp"
+          >
+            {selectedNode.parent}
+          </h1>
+        ) : (
+          <p> No parent work package</p>
+        )}
         {projectConfig.INCLUDE_DATES && datesText}
       </div>
       <div>{categoricalMetaSections}</div>
@@ -225,7 +229,6 @@ export function ActivityMetaSection({
 
       <div className="metaSection">
         <h1>
-          {/* LINKED ACTIVITIES{" "} */}
           Linked Activities
           <span onClick={() => openActAccordion("click", "activity")}>{actAccordion.activity ? CLOSE : OPEN}</span>{" "}
         </h1>
@@ -235,7 +238,7 @@ export function ActivityMetaSection({
       {INCLUDE_STHOLDERS && (
         <div className="metaSection">
           <h1>
-            {/* LINKED STAKEHOLDERS{" "} */}
+            Linked stakeholders
             <span onClick={() => openActAccordion("click", "stakeholder")}>
               {actAccordion.stakeholder ? CLOSE : OPEN}
             </span>{" "}

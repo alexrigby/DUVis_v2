@@ -18,6 +18,7 @@ import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
 export async function makeVisElements(prPeriod, currentStory, completedDisplay, config, excelDataset) {
   // ------------------------ FETCH CSV DATA -------------------------
   const workBookData = XLSX.read(excelDataset);
+
   // header: 1 returns array of arrays of csv rows, use for crosstab datasets
   const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.ACTIVITY_LINKS], {
     header: 1,
@@ -36,6 +37,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
     defval: "",
     raw: false,
   });
+
   const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.WORKPACKAGES], {
     defval: "",
     raw: false,
@@ -44,6 +46,26 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
     defval: "",
     raw: false,
   });
+
+  function getMissingFields(dataset, config) {
+    const datasetHeaders = Object.keys(dataset[0]);
+    const { META_FIELDS, CATEGORYS_PROVIDED, ...rest } = config;
+    const configHeaders = [...Object.values(rest), ...META_FIELDS.map((f) => f.name)];
+
+    // if the field is not specified as null then return litst of missing header fields
+    const missingFields = configHeaders.filter((h) => h && !datasetHeaders.includes(h));
+    return missingFields;
+  }
+
+  const missingWpFields = getMissingFields(wpDataset, config.wpFields);
+  const missingActFields = getMissingFields(actDataset, config.actFields);
+  const missingStFields = getMissingFields(stDataset, config.stFields);
+
+  const missingFieldWarning = {
+    wpFields: missingWpFields,
+    actFields: missingActFields,
+    stFields: missingStFields,
+  };
 
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
   const startDate = config.START_DATE;
@@ -54,6 +76,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
   // if no months are provided then dont add dates to data
   const wpData = parseWPDataset(wpDataset);
   const activityData = parseActivityDataset(actDataset, dates, wpData, config);
+
   const links = linksMatrixToArray(actLinks);
 
   //-------------TRIM ACT DATA TO FILTER SPECIFICATION ----------------
@@ -110,6 +133,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
     stakeholderData,
     latestPrPeriod,
     maxEngScore,
+    missingFieldWarning,
   };
 }
 

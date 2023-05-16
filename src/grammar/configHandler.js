@@ -19,7 +19,13 @@ export function configHandler(_config) {
         !configClone.stakeholders || !configClone.worksheets.stakeholders || !configClone.worksheets.stakeholderLinks
           ? false
           : true, // infer if user has chosen to include stakeholders
-      INCLUDE_DATES: !configClone.startDate || !configClone.endDate ? false : true, // infer if the project has dates
+      INCLUDE_DATES:
+        !configClone.startDate ||
+        !configClone.endDate ||
+        !configClone.activities.startDate ||
+        !configClone.activities.endDate
+          ? false
+          : true, // infer if the project has dates
 
       WORKSHEETS: {
         ACTIVITIES: configClone.worksheets.activities,

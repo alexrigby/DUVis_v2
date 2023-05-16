@@ -20,10 +20,10 @@ const baseStyle = {
   padding: "20px",
   borderWidth: 2,
   borderRadius: 2,
-  borderColor: "#eeeeee",
+  borderColor: "#818181",
   borderStyle: "dashed",
-  backgroundColor: "#fafafa",
-  color: "#bdbdbd",
+  backgroundColor: "#e6e6e6",
+  color: "#818181",
   outline: "none",
   transition: "border .24s ease-in-out",
 };
@@ -124,7 +124,7 @@ export function MyDropzone({ userFiles, setUserFiles, setExcelDataset }) {
   return (
     <div {...getRootProps({ style })}>
       <input {...getInputProps()} />
-      <p>drop files here or click to browse</p>
+      <p>Drop files here or click to browse</p>
     </div>
   );
 }

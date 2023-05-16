@@ -9,9 +9,6 @@ export function makeActNodes(data, config) {
       ? `${act[actFields.ID]}. ${act[actFields.NAME]}`
       : `Activity ${act[actFields.ID]}`; // name with id in front
 
-    // if user specifies additional meta fields (only give name not type)
-    const meta_fields = actFields.META_FIELDS.reduce((a, b) => ({ ...a, [b.name]: act[b.name] }), {});
-
     return {
       group: "nodes",
       data: {
@@ -34,7 +31,7 @@ export function makeActNodes(data, config) {
           startDate: act.startDate,
         },
 
-        meta: meta_fields,
+        meta: act.meta,
       },
     };
   });
