@@ -3,9 +3,8 @@ export function parseVegaData(actData, dates, brushRange, selectedMetric, option
 
   // updates actData object so any blanks in selected vegafeilds are chnaged to create an "undefined" category
   for (var i = 0; i < actDataset.length; i++) {
-    for (var j = 0; j < categoryArray; j++) {
+    for (var j = 0; j < categoryArray.length; j++) {
       if (actDataset[i][categoryArray[j]] === "") {
-        console.log(actDataset[i]);
         actDataset[i][categoryArray[j]] = "undefined";
       }
     }

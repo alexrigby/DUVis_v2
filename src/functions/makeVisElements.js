@@ -60,7 +60,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
 
   const missingWpFields = getMissingFields(wpDataset, config.wpFields);
   const missingActFields = getMissingFields(actDataset, config.actFields);
-  const missingStFields = getMissingFields(stDataset, config.stFields);
+  const missingStFields = config.INCLUDE_STHOLDERS && getMissingFields(stDataset, config.stFields);
 
   const missingFieldWarning = {
     ...(missingWpFields.length > 0 && { [config.WORKSHEETS.WORKPACKAGES]: missingWpFields }),

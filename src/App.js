@@ -230,7 +230,7 @@ export function App() {
 
               <div className="zoomButtons">
                 <button onClick={openUploadVeiw}>
-                  Upload new dataset <i className="fa fa-upload"></i>
+                  Upload new files <i className="fa fa-upload"></i>
                 </button>
               </div>
             </div>

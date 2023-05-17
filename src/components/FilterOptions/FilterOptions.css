@@ -79,8 +79,9 @@
 
 .deleteStory {
   /* pointer-events: all; */
-  float: right;
-  padding-right: 20px;
+  /* float: right; */
+  float: none;
+  padding-left: 40px;
 }
 
 .deleteStory:hover {

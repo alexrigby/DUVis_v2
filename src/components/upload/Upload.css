@@ -7,3 +7,13 @@
   transform: translateY(-50%);
   width: 100%;
 }
+
+.uploadedFile {
+  padding: 0 20px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.uploadedFile div {
+  padding-bottom: 10px;
+}

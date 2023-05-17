@@ -54,11 +54,13 @@ export function configHandler(_config) {
       },
 
       //can omit stakeholders from config but still need object to check in js
-      stFields: {
-        ID: configClone.stakeholders ? configClone.stakeholders.id : false,
-        NAME: configClone.stakeholders ? configClone.stakeholders.name : false,
-        META_FIELDS: configClone.stakeholders ? configClone.stakeholders.metaFields : false,
-      },
+      ...(configClone.stakeholders && {
+        stFields: {
+          ID: configClone.stakeholders ? configClone.stakeholders.id : false,
+          NAME: configClone.stakeholders ? configClone.stakeholders.name : false,
+          META_FIELDS: configClone.stakeholders ? configClone.stakeholders.metaFields : false,
+        },
+      }),
     };
   } else {
     configObj = null;

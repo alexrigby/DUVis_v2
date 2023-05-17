@@ -16,14 +16,14 @@
   cursor: pointer;
 }
 
-p {
+.warningBar p {
   margin: 0;
 }
 
-span {
+.warningBar span {
   float: right;
 }
 
-h3 {
+.warningBar h3 {
   margin: 5px 0 0 0;
 }

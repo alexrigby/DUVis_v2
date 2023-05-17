@@ -76,7 +76,7 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
 
     const vegaData = parseVegaData(ACT_DATA, trimmedDates, brushRange, selectedMetric, options, categoryArray);
     const spec = vegaSpec(options, brushRange, selectedMetric);
-
+    console.log(selectedMetric);
     const title =
       brushRange.start !== fullRange.start && brushRange.end !== fullRange.end
         ? "double click to reset date range"
@@ -100,7 +100,8 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
       );
     }
     //----------------------IF NO DATE IS SUPPLIED BY USER THEN ONLY GENERATE BAR CHART-------------------------------------------//
-  } else if (ACT_DATA) {
+  } else if (!config.INCLUDE_DATES && ACT_DATA) {
+    console.log("test");
     const noDateSpec = vegaSpecNoDate(selectedMetric);
     const noDateVegaData = {
       vegaData: options.map((ops) => ({

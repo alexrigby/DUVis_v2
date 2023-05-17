@@ -7,7 +7,7 @@ export function makeWpNodes(data, config) {
 
     // if no name supplied in excel then use ID. Selecting from selected node as supposed to config file incase some have names and others dont
     const wpName = wp[wpFields.NAME] ? wp[wpFields.NAME] : `Work Package ${wpNumber}`;
-    const wpDisplayName = wp[wpFields.NAME] ? `${wp[wpFields.ID]}. ${wpNumber}` : `Work Package ${wpNumber}`;
+    const wpDisplayName = wp[wpFields.NAME] ? `${wp[wpFields.ID]}. ${wp[wpFields.NAME]}` : `Work Package ${wpNumber}`;
 
     // if user specifies additional meta fields
     const meta_fields = wpFields.META_FIELDS.reduce((a, b) => ({ ...a, [b.name]: wp[b.name] }), {});

@@ -124,7 +124,9 @@ export function MyDropzone({ userFiles, setUserFiles, setExcelDataset }) {
   return (
     <div {...getRootProps({ style })}>
       <input {...getInputProps()} />
-      <p>Drop files here or click to browse</p>
+      <p>
+        Drop <b>.json</b> and <b>.xlsx</b> files here or click to browse
+      </p>
     </div>
   );
 }

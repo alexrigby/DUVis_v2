@@ -12,21 +12,29 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset }) {
       );
     });
 
+  const style = (expression) => ({
+    color: expression ? "red" : "green",
+  });
+
   return (
     <div className="dropzoneContainer">
       <MyDropzone userFiles={userFiles} setUserFiles={setUserFiles} setExcelDataset={setExcelDataset} />
 
-      <div>
+      <div className="uploadedFile">
         {userFiles.config.fileName && (
-          <div>
+          <div style={style(userFiles.config.errors)}>
             <p>Config: {userFiles.config.fileName}</p>
-            {userFiles.config.errors && <p>Errors: {configError}</p>}
+            {userFiles.config.errors && (
+              <>
+                <p>Config error: {configError}</p> <p>FILE NOT UPDATED!</p>
+              </>
+            )}
           </div>
         )}
         {userFiles.dataset.fileName && (
-          <div>
+          <div style={style(userFiles.dataset.errors)}>
             <p>Dataset: {userFiles.dataset.fileName}</p>
-            {userFiles.dataset.errors && <p>Errors: {userFiles.dataset.errors} </p>}
+            {userFiles.dataset.errors && <p>Dataset Error: {userFiles.dataset.errors} </p>}
           </div>
         )}
       </div>
