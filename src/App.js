@@ -10,6 +10,7 @@ import BottomPannel from "./components/bottomPannel/BottomPannel";
 import FilterOptions from "./components/FilterOptions/FilterOptions";
 import ToggleButtons from "./components/ToggleButtons/ToggleButtons";
 import Upload from "./components/upload/Upload";
+import WarningBar from "./components/warningBar/WarningBar";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
@@ -39,6 +40,7 @@ export function App() {
   });
 
   const [fieldWarning, setFieldWarning] = useState(null);
+  const [warningBarDisplay, setWarningBarDisplay] = useState(true);
 
   const [excelDataset, setExcelDataset] = useState(null);
 
@@ -131,6 +133,9 @@ export function App() {
             <div>
               <div style={veiwStyle}>
                 <div className="top-layer">
+                  {fieldWarning && warningBarDisplay && Object.keys(fieldWarning).length > 0 && (
+                    <WarningBar fieldWarning={fieldWarning} setWarningBarDisplay={setWarningBarDisplay} />
+                  )}
                   <div className="headSection">
                     <div className="rightSide">
                       <Header
@@ -140,6 +145,9 @@ export function App() {
                         currentStory={currentStory}
                         completedDisplay={completedDisplay}
                         networkVeiw={networkVeiw}
+                        warningBarDisplay={warningBarDisplay}
+                        setWarningBarDisplay={setWarningBarDisplay}
+                        fieldWarning={fieldWarning}
                       />
                       {!uploadVeiw && (
                         <FilterOptions

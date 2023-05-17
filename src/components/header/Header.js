@@ -3,15 +3,41 @@ import { useContext } from "react";
 import "./Header.css";
 import ConfigContext from "../../context/ConfigContext";
 
-export function Header({ cyState, datesRef, prPeriod, currentStory, completedDisplay, networkVeiw }) {
+export function Header({
+  cyState,
+  datesRef,
+  prPeriod,
+  currentStory,
+  completedDisplay,
+  networkVeiw,
+  warningBarDisplay,
+  setWarningBarDisplay,
+  fieldWarning,
+}) {
   const { config } = useContext(ConfigContext);
   const INCLUDE_DATES = config.INCLUDE_DATES;
+
+  const totalWarnings = fieldWarning && Object.values(fieldWarning).reduce((a, b) => a + b.length, 0);
+
+  const expandWarning = (evt) => {
+    setWarningBarDisplay(true);
+  };
 
   return (
     <header>
       <div>
-        <h1>{config.NAME}</h1>
-        <p className="subHeader">
+        <h1>{config.NAME} </h1>
+
+        <div className="subHeader">
+          {!warningBarDisplay && (
+            <div className="warning">
+              <sup>{totalWarnings}</sup>
+              <i className="fa fa-triangle-exclamation" onClick={expandWarning} title="click to expand">
+                {" "}
+              </i>
+            </div>
+          )}
+          {!warningBarDisplay && ` || `}
           {currentStory === null ? "All Activities" : currentStory.name}
           {}
           {INCLUDE_DATES && datesRef.current !== null && ` || ` + prStartAndEndDate(datesRef, prPeriod).start + ` - `}
@@ -22,7 +48,7 @@ export function Header({ cyState, datesRef, prPeriod, currentStory, completedDis
               " completed - " +
               completedActivityInfo(prPeriod, cyState.cy, datesRef.current, "ongoing", networkVeiw) +
               " ongoing "}
-        </p>
+        </div>
       </div>
     </header>
   );

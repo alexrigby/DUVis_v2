@@ -47,6 +47,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
     raw: false,
   });
 
+  //----------------FIND FILEDS SPECIFIED IN CONFIG BUT NOT IN DATASET------------------------------//
   function getMissingFields(dataset, config) {
     const datasetHeaders = Object.keys(dataset[0]);
     const { META_FIELDS, CATEGORYS_PROVIDED, ...rest } = config;
@@ -62,9 +63,9 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
   const missingStFields = getMissingFields(stDataset, config.stFields);
 
   const missingFieldWarning = {
-    wpFields: missingWpFields,
-    actFields: missingActFields,
-    stFields: missingStFields,
+    ...(missingWpFields.length > 0 && { [config.WORKSHEETS.WORKPACKAGES]: missingWpFields }),
+    ...(missingActFields.length > 0 && { [config.WORKSHEETS.ACTIVITIES]: missingActFields }),
+    ...(missingStFields.length > 0 && { [config.WORKSHEETS.STAKEHOLDERS]: missingStFields }),
   };
 
   //-----------------MAKE DATES AND MONTHS ARRAY-----//

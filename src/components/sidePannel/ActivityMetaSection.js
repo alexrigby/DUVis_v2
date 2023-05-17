@@ -110,6 +110,7 @@ export function ActivityMetaSection({
     <div className="metaSection">
       {CATEGORICAL_SUBSECTIONS.map((field, i) => {
         var caps = capitalizeEachWord(field);
+
         return (
           <div key={field}>
             <h2 style={{ display: "inline" }}>

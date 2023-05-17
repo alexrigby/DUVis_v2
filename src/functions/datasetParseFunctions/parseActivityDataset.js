@@ -30,6 +30,7 @@ export function parseActivityDataset(actData, dates, wpData, config) {
     } else {
       return {
         ...act,
+        meta: meta_fields,
         bgColor: getColorRef(act[actFields.WP], "bgColor"),
         borderColor: getColorRef(act[actFields.WP], "borderColor"),
         ...(act[actFields.SDGs] && { SDGs: [...new Set(act[actFields.SDGs].trim().split(","))] }), // split comma seperated list of SDGs into unique array of sdgs if provided
