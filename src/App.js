@@ -82,6 +82,7 @@ export function App() {
 
       setFatalErrorState(fatalErrors); //if there is a fatal error with dataset == true
       if (!fatalErrors) {
+        window.localStorage.setItem("excelDataset", new Uint8Array(excelDataset).toString()); // if no fatal errros then create local storage
         //updates cyytoscape state to include node and edge data and creates gantchart data
         async function addDataToCytoscape() {
           const {

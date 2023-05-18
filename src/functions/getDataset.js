@@ -70,8 +70,6 @@ export function getDataset(excelDataset, config) {
 
   const fatalErrors = errors.length > 0 ? errors : null;
 
-  !fatalErrors && window.localStorage.setItem("excelDataset", new Uint8Array(excelDataset).toString()); // if no fatal errros then create local storage
-
   return { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing, fatalErrors };
 }
 
