@@ -14,6 +14,7 @@ import WarningBar from "./components/warningBar/WarningBar";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
+import getDataset from "./functions/getDataset";
 
 export function App() {
   //-----------------SET STATES-------------------------
@@ -44,6 +45,8 @@ export function App() {
 
   const [excelDataset, setExcelDataset] = useState(null);
 
+  const [fatalErrorState, setFatalErrorState] = useState([]);
+
   // ---------------------------USE REFS-------------------------------
   const gantchartDataRef = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
@@ -72,35 +75,55 @@ export function App() {
 
   useEffect(() => {
     if (config && excelDataset) {
-      //updates cyytoscape state to include node and edge data and creates gantchart data
-      async function addDataToCytoscape() {
-        const {
-          cyElms,
-          gantChartItems,
-          activityData,
-          dates,
-          stakeholderData,
-          latestPrPeriod,
-          maxEngScore,
-          missingFieldWarning,
-        } = await makeVisElements(prPeriod, currentStory, completedDisplay, config, excelDataset); //all pre-processing of data
+      const { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing, fatalErrors } = getDataset(
+        excelDataset,
+        config
+      );
 
-        actDataRef.current = activityData; //asigns activity data to ref
-        stakeholderDataRef.current = stakeholderData;
-        datesRef.current = dates; //assigns dates ro ref
-        gantchartDataRef.current = gantChartItems; //asign gant chart data to the ref
-        latestPrPeriodRef.current = latestPrPeriod;
-        engagementScoresRef.current = maxEngScore; // gives default maxEngScore
+      setFatalErrorState(fatalErrors); //if there is a fatal error with dataset == true
+      if (!fatalErrors) {
+        //updates cyytoscape state to include node and edge data and creates gantchart data
+        async function addDataToCytoscape() {
+          const {
+            cyElms,
+            gantChartItems,
+            activityData,
+            dates,
+            stakeholderData,
+            latestPrPeriod,
+            maxEngScore,
+            missingFieldWarning,
+          } = await makeVisElements(
+            prPeriod,
+            currentStory,
+            completedDisplay,
+            config,
+            excelDataset,
+            actLinks,
+            stLinks,
+            actDataset,
+            wpDataset,
+            stDataset,
+            stWorksheetMissing
+          ); //all pre-processing of data
 
-        setFieldWarning(missingFieldWarning);
-        setCyState((prevState) => ({
-          ...prevState,
-          elements: cyElms,
-          display: "block",
-        }));
+          actDataRef.current = activityData; //asigns activity data to ref
+          stakeholderDataRef.current = stakeholderData;
+          datesRef.current = dates; //assigns dates ro ref
+          gantchartDataRef.current = gantChartItems; //asign gant chart data to the ref
+          latestPrPeriodRef.current = latestPrPeriod;
+          engagementScoresRef.current = maxEngScore; // gives default maxEngScore
+
+          setFieldWarning(missingFieldWarning);
+          setCyState((prevState) => ({
+            ...prevState,
+            elements: cyElms,
+            display: "block",
+          }));
+        }
+
+        addDataToCytoscape();
       }
-
-      addDataToCytoscape();
     }
   }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory, config, excelDataset]);
 
@@ -113,7 +136,7 @@ export function App() {
 
   const veiwStyle = {
     opacity: uploadVeiw ? 0.2 : 1.0,
-    // filter: "brightness(50%)",
+
     pointerEvents: uploadVeiw ? "none" : "all",
   };
 
@@ -125,7 +148,7 @@ export function App() {
     });
   };
 
-  if (config && excelDataset) {
+  if (config && excelDataset && !fatalErrorState) {
     return (
       <div className="container">
         <div className="Resizer">
@@ -250,7 +273,14 @@ export function App() {
       </div>
     );
   } else {
-    return <Upload userFiles={userFiles} setUserFiles={setUserFiles} setExcelDataset={setExcelDataset} />;
+    return (
+      <Upload
+        userFiles={userFiles}
+        setUserFiles={setUserFiles}
+        setExcelDataset={setExcelDataset}
+        fatalErrorState={fatalErrorState}
+      />
+    );
   }
 }
 

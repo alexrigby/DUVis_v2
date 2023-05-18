@@ -1,5 +1,3 @@
-import * as XLSX from "xlsx";
-
 import parseActivityDataset from "./datasetParseFunctions/parseActivityDataset";
 
 import makeActEdges from "./cyElements/makeActEdges";
@@ -15,37 +13,23 @@ import makeDates from "./datesFunction/makeDates";
 import parseWPDataset from "./datasetParseFunctions/parseWPDataset";
 import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
 
-export async function makeVisElements(prPeriod, currentStory, completedDisplay, config, excelDataset) {
+import getDataset from "./getDataset";
+
+export async function makeVisElements(
+  prPeriod,
+  currentStory,
+  completedDisplay,
+  config,
+  excelDataset,
+  actLinks,
+  stLinks,
+  actDataset,
+  wpDataset,
+  stDataset,
+  stWorksheetMissing,
+  datasetError
+) {
   // ------------------------ FETCH CSV DATA -------------------------
-  const workBookData = XLSX.read(excelDataset);
-
-  // header: 1 returns array of arrays of csv rows, use for crosstab datasets
-  const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.ACTIVITY_LINKS], {
-    header: 1,
-    defval: "",
-    raw: false,
-  }); // TO DO raw false = doesnt convert types (e.g. 1 === "1") need to change as I continue
-
-  const stLinks = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.STAKEHOLDER_LINKS], {
-    header: 1,
-    defval: "",
-    raw: false,
-  });
-
-  // convert the csvs to JSON format
-  const actDataset = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.ACTIVITIES], {
-    defval: "",
-    raw: false,
-  });
-
-  const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.WORKPACKAGES], {
-    defval: "",
-    raw: false,
-  });
-  const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.STAKEHOLDERS], {
-    defval: "",
-    raw: false,
-  });
 
   //----------------FIND FILEDS SPECIFIED IN CONFIG BUT NOT IN DATASET------------------------------//
   function getMissingFields(dataset, config) {
@@ -63,6 +47,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
   const missingStFields = config.INCLUDE_STHOLDERS && getMissingFields(stDataset, config.stFields);
 
   const missingFieldWarning = {
+    ...(stWorksheetMissing.length > 0 && { worksheets: stWorksheetMissing }),
     ...(missingWpFields.length > 0 && { [config.WORKSHEETS.WORKPACKAGES]: missingWpFields }),
     ...(missingActFields.length > 0 && { [config.WORKSHEETS.ACTIVITIES]: missingActFields }),
     ...(missingStFields.length > 0 && { [config.WORKSHEETS.STAKEHOLDERS]: missingStFields }),
@@ -101,6 +86,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
   //----MAKE VIS ELEMENTS -------------
   const actNodes = makeActNodes(trimmedActData, config);
   const actEdges = makeActEdges(links, actNodes);
+
   const wpNodes = makeWpNodes(trimmedWpData, config);
   const wpEdges = makeWpEdges(trimmedWpData, config);
   const stakeholderNodes = config.INCLUDE_STHOLDERS && makeStakeholerNodes(stakeholderData);

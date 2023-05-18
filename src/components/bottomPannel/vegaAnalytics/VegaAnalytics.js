@@ -122,7 +122,6 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
         count: ACT_DATA.filter((act) => act[selectedMetric] === ops).length,
       })),
     };
-    console.log(noDateVegaData);
 
     if (selectedBottomVis === "vegaAnalyticsButton") {
       return (
