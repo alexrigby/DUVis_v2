@@ -116,7 +116,7 @@ export function vegaSpec(options, brushRange, selectedMetric) {
         symbolStrokeColor: "grey",
         title: "",
         fillColor: "white",
-        labelFontSize: 12,
+        // labelFontSize: 12,
         symbolStrokeWidth: 10,
         direction: "horizontal",
         orient: "top",

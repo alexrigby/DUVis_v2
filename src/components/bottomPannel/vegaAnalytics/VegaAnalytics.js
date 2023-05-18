@@ -27,8 +27,22 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
 
   //------------------------USEFUL VARIABLES---------------------------------------------//
   const DATES = datesRef.current;
-  const ACT_DATA = actDataRef.current;
-  const options = ACT_DATA && [...new Set(ACT_DATA.map((act) => act[selectedMetric]))]; //unique category names for the selected metric
+  var ACT_DATA = actDataRef.current && [...actDataRef.current]; //create copy so not to modify origional ref
+
+  //make "" values "undefined"
+  if (ACT_DATA) {
+    for (var i = 0; i < ACT_DATA.length; i++) {
+      for (var j = 0; j < categoryArray.length; j++) {
+        if (ACT_DATA[i][categoryArray[j]] === "") {
+          ACT_DATA[i][categoryArray[j]] = "undefined";
+        }
+      }
+    }
+  }
+
+  const options =
+    ACT_DATA && [...new Set(ACT_DATA.map((act) => act[selectedMetric]))].map((op) => (op === "" ? "undefined" : op)); //unique category names for the selected metric
+
   const trimmedDates =
     DATES !== null && prPeriod.pr !== null ? DATES.filter((date) => date.prPeriod <= prPeriod.pr) : DATES; //trims dates object to match pr period
 
@@ -76,7 +90,7 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
 
     const vegaData = parseVegaData(ACT_DATA, trimmedDates, brushRange, selectedMetric, options, categoryArray);
     const spec = vegaSpec(options, brushRange, selectedMetric);
-    console.log(selectedMetric);
+
     const title =
       brushRange.start !== fullRange.start && brushRange.end !== fullRange.end
         ? "double click to reset date range"
@@ -101,7 +115,6 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
     }
     //----------------------IF NO DATE IS SUPPLIED BY USER THEN ONLY GENERATE BAR CHART-------------------------------------------//
   } else if (!config.INCLUDE_DATES && ACT_DATA) {
-    console.log("test");
     const noDateSpec = vegaSpecNoDate(selectedMetric);
     const noDateVegaData = {
       vegaData: options.map((ops) => ({
@@ -109,6 +122,7 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
         count: ACT_DATA.filter((act) => act[selectedMetric] === ops).length,
       })),
     };
+    console.log(noDateVegaData);
 
     if (selectedBottomVis === "vegaAnalyticsButton") {
       return (

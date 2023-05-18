@@ -1,20 +1,20 @@
 export function parseVegaData(actData, dates, brushRange, selectedMetric, options, categoryArray) {
-  var actDataset = [...actData];
+  // var actData = [...actData];
 
-  // updates actData object so any blanks in selected vegafeilds are chnaged to create an "undefined" category
-  for (var i = 0; i < actDataset.length; i++) {
-    for (var j = 0; j < categoryArray.length; j++) {
-      if (actDataset[i][categoryArray[j]] === "") {
-        actDataset[i][categoryArray[j]] = "undefined";
-      }
-    }
-  }
+  // // updates actData object so any blanks in selected vegafeilds are chnaged to create an "undefined" category
+  // for (var i = 0; i < actData.length; i++) {
+  //   for (var j = 0; j < categoryArray.length; j++) {
+  //     if (actData[i][categoryArray[j]] === "") {
+  //       actData[i][categoryArray[j]] = "undefined";
+  //     }
+  //   }
+  // }
 
   //get groups of each activities in category
-  const activityByOption = options.map((ops) => actDataset.filter((act) => act[selectedMetric] === ops));
+  const activityByOption = options.map((ops) => actData.filter((act) => act[selectedMetric] === ops));
 
   //finds all activitys whos start or end date extends into the brush range
-  const withinBrushRange = actDataset.filter(
+  const withinBrushRange = actData.filter(
     (act) =>
       (brushRange.start < new Date(act.startDate) || brushRange.start < new Date(act.endDate)) &&
       (brushRange.end > new Date(act.endDate) || brushRange.end > new Date(act.startDate))
