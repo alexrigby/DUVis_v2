@@ -1,7 +1,8 @@
 import * as XLSX from "xlsx";
 export function getDataset(excelDataset, config) {
+  console.log(excelDataset);
   // ------------------------ FETCH CSV DATA -------------------------
-  const workBookData = XLSX.read(excelDataset.file);
+  const workBookData = XLSX.read(excelDataset);
 
   // header: 1 returns array of arrays of csv rows, use for crosstab datasets
   const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.ACTIVITY_LINKS], {
@@ -10,6 +11,7 @@ export function getDataset(excelDataset, config) {
     raw: false,
   }); // TO DO raw false = doesnt convert types (e.g. 1 === "1") need to change as I continue
 
+  console.log(actLinks);
   const stLinks = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.STAKEHOLDER_LINKS], {
     header: 1,
     defval: "",
@@ -69,7 +71,7 @@ export function getDataset(excelDataset, config) {
 
   // const fatalErrors = errors;
 
-  return { visData: { actLinks, stLinks, actDataset, wpDataset, stDataset }, stWorksheetMissing };
+  return { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing };
 }
 
 export default getDataset;

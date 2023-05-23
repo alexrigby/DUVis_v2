@@ -13,6 +13,7 @@ import makeWpEdges from "./cyElements/makeWpEdges";
 import makeDates from "./datesFunction/makeDates";
 import parseWPDataset from "./datasetParseFunctions/parseWPDataset";
 import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
+import getDataset from "./getDataset";
 
 import workBookPath from "../data/activity_full.xlsx";
 
@@ -20,30 +21,12 @@ export async function makeVisElements(
   prPeriod,
   currentStory,
   completedDisplay,
-  config
+  config,
+  excelDataset
   // { actLinks, stLinks, actDataset, wpDataset, stDataset }
 ) {
-  // stWorksheetMissing
   // ------------------------ FETCH CSV DATA -------------------------
-  const file = await (await fetch(workBookPath)).arrayBuffer();
-  const workBookData = XLSX.read(file); // reads the whole workbook
-  // header: 1 returns array of arrays of csv rows, use for crosstab datasets
-  const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets["activity links"], {
-    header: 1,
-    defval: "",
-    raw: false,
-  }); // TO DO raw false = doesnt convert types (e.g. 1 === "1") need to change as I continue
-  const stLinks = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholder links"], {
-    header: 1,
-    defval: "",
-    raw: false,
-  });
-
-  // convert the csvs to JSON format
-  const actDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["activities"], { defval: "", raw: false });
-  const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["work packages"], { defval: "", raw: false });
-  const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholders"], { defval: "", raw: false });
-  console.log(actDataset);
+  const { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing } = getDataset(excelDataset, config);
 
   // projectMeta.STHOLDERS = stDataset.length === 0 ? false : true; // check if
   //----------------FIND FILEDS SPECIFIED IN CONFIG BUT NOT IN DATASET------------------------------//

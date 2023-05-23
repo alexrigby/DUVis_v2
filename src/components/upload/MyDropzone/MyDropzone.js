@@ -75,7 +75,7 @@ export function MyDropzone({ userFiles, setUserFiles, setExcelDataset }) {
           }
         } else if (file.type === fileTypes.EXCEL) {
           try {
-            setExcelDataset({ file: reader.result, loaded: true });
+            setExcelDataset(reader.result);
             //sets local storage to string representation of excel file array buffer
             window.localStorage.setItem("excelDataset", new Uint8Array(reader.result).toString());
             setUserFiles((prevState) => ({

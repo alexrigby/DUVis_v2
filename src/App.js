@@ -43,7 +43,7 @@ export function App() {
   const [fieldWarning, setFieldWarning] = useState(null);
   const [warningBarDisplay, setWarningBarDisplay] = useState(true);
 
-  const [excelDataset, setExcelDataset] = useState({ file: null, loaded: false });
+  const [excelDataset, setExcelDataset] = useState(null);
 
   const [fatalErrorState, setFatalErrorState] = useState([]);
 
@@ -64,16 +64,16 @@ export function App() {
   const { config } = useContext(ConfigContext);
 
   //----------------------- FETCH EXCEL DATA FOR USE IN APP-----------------------------------
-  // useEffect(() => {
-  //   const fileString = window.localStorage.getItem("excelDataset");
-  //   if (fileString) {
-  //     // sets string repreentation of array buffer to array bufffer
-  //     const file = new Uint8Array(fileString.split(",")).buffer;
-  //     setExcelDataset({ file: file, loaded: true });
-  //   } else {
-  //     setExcelDataset({ file: null, loaded: false });
-  //   }
-  // }, []);
+  useEffect(() => {
+    const fileString = window.localStorage.getItem("excelDataset");
+    if (fileString) {
+      // sets string repreentation of array buffer to array bufffer
+      const file = new Uint8Array(fileString.split(",")).buffer;
+      setExcelDataset(file);
+    } else {
+      setExcelDataset(null);
+    }
+  }, []);
 
   // useEffect(() => {
   //   if (config && excelDataset.file) {
@@ -84,7 +84,7 @@ export function App() {
   // console.log(visDatasets);
 
   useEffect(() => {
-    if (config) {
+    if (config && excelDataset) {
       // const { visData, stWorksheetMissing } = getDataset(excelDataset, config);
 
       // setFatalErrorState(fatalErrors); //if there is a fatal error with dataset == true
@@ -105,7 +105,8 @@ export function App() {
           prPeriod,
           currentStory,
           completedDisplay,
-          config
+          config,
+          excelDataset
           // visDatasets
           // stWorksheetMissing
         ); //all pre-processing of data
@@ -135,7 +136,7 @@ export function App() {
     prPeriod,
     currentStory,
     config,
-    // excelDataset,
+    excelDataset,
     // visDatasets,
   ]);
 
@@ -160,7 +161,7 @@ export function App() {
     });
   };
   console.log(cyState);
-  if (config) {
+  if (config && excelDataset) {
     return (
       <div className="container">
         <div className="Resizer">
@@ -284,17 +285,16 @@ export function App() {
         </div>
       </div>
     );
+  } else {
+    return (
+      <Upload
+        userFiles={userFiles}
+        setUserFiles={setUserFiles}
+        setExcelDataset={setExcelDataset}
+        fatalErrorState={fatalErrorState}
+      />
+    );
   }
-  // else {
-  //   return (
-  //     <Upload
-  //       userFiles={userFiles}
-  //       setUserFiles={setUserFiles}
-  //       setExcelDataset={setExcelDataset}
-  //       fatalErrorState={fatalErrorState}
-  //     />
-  //   );
-  // }
 }
 
 export default App;
