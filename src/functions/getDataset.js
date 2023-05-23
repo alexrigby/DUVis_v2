@@ -1,8 +1,7 @@
-import { error } from "vega";
 import * as XLSX from "xlsx";
 export function getDataset(excelDataset, config) {
   // ------------------------ FETCH CSV DATA -------------------------
-  const workBookData = XLSX.read(excelDataset);
+  const workBookData = XLSX.read(excelDataset.file);
 
   // header: 1 returns array of arrays of csv rows, use for crosstab datasets
   const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.ACTIVITY_LINKS], {
@@ -34,43 +33,43 @@ export function getDataset(excelDataset, config) {
 
   var stWorksheetMissing = [];
   // Removes stakeholders if the stakeholder worksheet is misspelt or has no values
-  if (stLinks.length === 0) {
-    config.INCLUDE_STHOLDERS = false;
-    //if value is not null then return the string to display as an error
-    config.WORKSHEETS.STAKEHOLDER_LINKS && stWorksheetMissing.push(config.WORKSHEETS.STAKEHOLDER_LINKS);
-  }
+  // if (stLinks.length === 0) {
+  //   config.INCLUDE_STHOLDERS = false;
+  //   //if value is not null then return the string to display as an error
+  //   config.WORKSHEETS.STAKEHOLDER_LINKS && stWorksheetMissing.push(config.WORKSHEETS.STAKEHOLDER_LINKS);
+  // }
 
-  if (stDataset.length === 0) {
-    config.INCLUDE_STHOLDERS = false;
-    config.WORKSHEETS.STAKEHOLDER_LINKS && stWorksheetMissing.push(config.WORKSHEETS.STAKEHOLDERS);
-  }
+  // if (stDataset.length === 0) {
+  //   config.INCLUDE_STHOLDERS = false;
+  //   config.WORKSHEETS.STAKEHOLDER_LINKS && stWorksheetMissing.push(config.WORKSHEETS.STAKEHOLDERS);
+  // }
 
-  var errors = [];
-  //error messages if workseets not found --- block updating of local storage
-  if (actDataset.length === 0) {
-    errors.push(config.WORKSHEETS.ACTIVITIES);
-    // alert(`ERROR!! Cound not find the "${config.WORKSHEETS.ACTIVITIES}" worksheet,
-    // make sure that the config and dataset spellings match`);
-    // localStorage.removeItem("excelDataset");
-  }
+  // var errors = [];
+  // //error messages if workseets not found --- block updating of local storage
+  // if (actDataset.length === 0) {
+  //   errors.push(config.WORKSHEETS.ACTIVITIES);
+  //   // alert(`ERROR!! Cound not find the "${config.WORKSHEETS.ACTIVITIES}" worksheet,
+  //   // make sure that the config and dataset spellings match`);
+  //   // localStorage.removeItem("excelDataset");
+  // }
 
-  if (wpDataset.length === 0) {
-    errors.push(config.WORKSHEETS.WORKPACKAGES);
-    // alert(`ERROR!! Cound not find the "${config.WORKSHEETS.WORKPACKAGES}" worksheet,
-    // make sure that the config and dataset spellings match`);
-    // localStorage.removeItem("excelDataset");
-  }
+  // if (wpDataset.length === 0) {
+  //   errors.push(config.WORKSHEETS.WORKPACKAGES);
+  //   // alert(`ERROR!! Cound not find the "${config.WORKSHEETS.WORKPACKAGES}" worksheet,
+  //   // make sure that the config and dataset spellings match`);
+  //   // localStorage.removeItem("excelDataset");
+  // }
 
-  if (actLinks.length === 0) {
-    errors.push(config.WORKSHEETS.ACTIVITY_LINKS);
-    // alert(`ERROR!! Cound not find the "${config.WORKSHEETS.ACTIVITY_LINKS}" worksheet,
-    // make sure that the config and dataset spellings match`);
-    // localStorage.removeItem("excelDataset");
-  }
+  // if (actLinks.length === 0) {
+  //   errors.push(config.WORKSHEETS.ACTIVITY_LINKS);
+  //   // alert(`ERROR!! Cound not find the "${config.WORKSHEETS.ACTIVITY_LINKS}" worksheet,
+  //   // make sure that the config and dataset spellings match`);
+  //   // localStorage.removeItem("excelDataset");
+  // }
 
-  const fatalErrors = errors.length > 0 ? errors : null;
+  // const fatalErrors = errors;
 
-  return { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing, fatalErrors };
+  return { visData: { actLinks, stLinks, actDataset, wpDataset, stDataset }, stWorksheetMissing };
 }
 
 export default getDataset;

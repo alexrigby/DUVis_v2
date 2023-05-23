@@ -43,9 +43,11 @@ export function App() {
   const [fieldWarning, setFieldWarning] = useState(null);
   const [warningBarDisplay, setWarningBarDisplay] = useState(true);
 
-  const [excelDataset, setExcelDataset] = useState(null);
+  const [excelDataset, setExcelDataset] = useState({ file: null, loaded: false });
 
   const [fatalErrorState, setFatalErrorState] = useState([]);
+
+  const [visDatasets, setVisDatasets] = useState(null);
 
   // ---------------------------USE REFS-------------------------------
   const gantchartDataRef = useRef(null); //stores parsed gantchart data
@@ -62,71 +64,80 @@ export function App() {
   const { config } = useContext(ConfigContext);
 
   //----------------------- FETCH EXCEL DATA FOR USE IN APP-----------------------------------
-  useEffect(() => {
-    const fileString = window.localStorage.getItem("excelDataset");
-    if (fileString) {
-      // sets string repreentation of array buffer to array bufffer
-      const file = new Uint8Array(fileString.split(",")).buffer;
-      setExcelDataset(file);
-    } else {
-      setExcelDataset(null);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const fileString = window.localStorage.getItem("excelDataset");
+  //   if (fileString) {
+  //     // sets string repreentation of array buffer to array bufffer
+  //     const file = new Uint8Array(fileString.split(",")).buffer;
+  //     setExcelDataset({ file: file, loaded: true });
+  //   } else {
+  //     setExcelDataset({ file: null, loaded: false });
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   if (config && excelDataset.file) {
+  //     const { visData } = getDataset(excelDataset, config);
+  //     setVisDatasets(visData);
+  //   }
+  // }, [config, excelDataset]);
+  // console.log(visDatasets);
 
   useEffect(() => {
-    if (config && excelDataset) {
-      const { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing, fatalErrors } = getDataset(
-        excelDataset,
-        config
-      );
+    if (config) {
+      // const { visData, stWorksheetMissing } = getDataset(excelDataset, config);
 
-      setFatalErrorState(fatalErrors); //if there is a fatal error with dataset == true
-      if (!fatalErrors) {
-        window.localStorage.setItem("excelDataset", new Uint8Array(excelDataset).toString()); // if no fatal errros then create local storage
-        //updates cyytoscape state to include node and edge data and creates gantchart data
-        async function addDataToCytoscape() {
-          const {
-            cyElms,
-            gantChartItems,
-            activityData,
-            dates,
-            stakeholderData,
-            latestPrPeriod,
-            maxEngScore,
-            missingFieldWarning,
-          } = await makeVisElements(
-            prPeriod,
-            currentStory,
-            completedDisplay,
-            config,
-            excelDataset,
-            actLinks,
-            stLinks,
-            actDataset,
-            wpDataset,
-            stDataset,
-            stWorksheetMissing
-          ); //all pre-processing of data
+      // setFatalErrorState(fatalErrors); //if there is a fatal error with dataset == true
+      // if (!fatalErrors.length > 0) {
+      // window.localStorage.setItem("excelDataset", new Uint8Array(excelDataset).toString()); // if no fatal errros then create local storage
+      //updates cyytoscape state to include node and edge data and creates gantchart data
+      async function addDataToCytoscape() {
+        const {
+          cyElms,
+          gantChartItems,
+          activityData,
+          dates,
+          stakeholderData,
+          latestPrPeriod,
+          maxEngScore,
+          missingFieldWarning,
+        } = await makeVisElements(
+          prPeriod,
+          currentStory,
+          completedDisplay,
+          config
+          // visDatasets
+          // stWorksheetMissing
+        ); //all pre-processing of data
 
-          actDataRef.current = activityData; //asigns activity data to ref
-          stakeholderDataRef.current = stakeholderData;
-          datesRef.current = dates; //assigns dates ro ref
-          gantchartDataRef.current = gantChartItems; //asign gant chart data to the ref
-          latestPrPeriodRef.current = latestPrPeriod;
-          engagementScoresRef.current = maxEngScore; // gives default maxEngScore
+        actDataRef.current = activityData; //asigns activity data to ref
+        stakeholderDataRef.current = stakeholderData;
+        datesRef.current = dates; //assigns dates ro ref
+        gantchartDataRef.current = gantChartItems; //asign gant chart data to the ref
+        latestPrPeriodRef.current = latestPrPeriod;
+        engagementScoresRef.current = maxEngScore; // gives default maxEngScore
 
-          setFieldWarning(missingFieldWarning);
-          setCyState((prevState) => ({
-            ...prevState,
-            elements: cyElms,
-            display: "block",
-          }));
-        }
-
-        addDataToCytoscape();
+        // setFieldWarning(missingFieldWarning);
+        setCyState((prevState) => ({
+          ...prevState,
+          elements: cyElms,
+          display: "block",
+        }));
       }
+
+      addDataToCytoscape();
     }
-  }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory, config, excelDataset]);
+    // }
+  }, [
+    completedDisplay,
+    cyState.cy,
+    // cyState.elements.length,
+    prPeriod,
+    currentStory,
+    config,
+    // excelDataset,
+    // visDatasets,
+  ]);
 
   //---------------------- STYLE -------------------------------------
 
@@ -148,8 +159,8 @@ export function App() {
       dataset: { fileName: null, errors: null },
     });
   };
-
-  if (config && excelDataset && !fatalErrorState) {
+  console.log(cyState);
+  if (config) {
     return (
       <div className="container">
         <div className="Resizer">
@@ -273,16 +284,17 @@ export function App() {
         </div>
       </div>
     );
-  } else {
-    return (
-      <Upload
-        userFiles={userFiles}
-        setUserFiles={setUserFiles}
-        setExcelDataset={setExcelDataset}
-        fatalErrorState={fatalErrorState}
-      />
-    );
   }
+  // else {
+  //   return (
+  //     <Upload
+  //       userFiles={userFiles}
+  //       setUserFiles={setUserFiles}
+  //       setExcelDataset={setExcelDataset}
+  //       fatalErrorState={fatalErrorState}
+  //     />
+  //   );
+  // }
 }
 
 export default App;

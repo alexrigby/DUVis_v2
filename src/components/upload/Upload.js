@@ -26,7 +26,7 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
   const style = (expression) => ({
     color: expression ? "red" : "green",
   });
-
+  console.log(fatalErrorState);
   return (
     <div className="dropzoneContainer">
       <MyDropzone userFiles={userFiles} setUserFiles={setUserFiles} setExcelDataset={setExcelDataset} />
@@ -43,10 +43,10 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
           </div>
         )}
         {userFiles.dataset.fileName && (
-          <div style={style(userFiles.dataset.errors || (fatalErrorState && fatalErrorState.length > 0))}>
+          <div style={style(userFiles.dataset.errors || fatalErrorState.length > 0)}>
             <p>Dataset: {userFiles.dataset.fileName}</p>
             {userFiles.dataset.errors && <p>Dataset Error: {userFiles.dataset.errors} </p>}
-            {fatalErrorState && config && fatalErrorsText}
+            {fatalErrorState.length > 0 && config && fatalErrorsText}
           </div>
         )}
       </div>

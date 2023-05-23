@@ -1,3 +1,4 @@
+import * as XLSX from "xlsx";
 import parseActivityDataset from "./datasetParseFunctions/parseActivityDataset";
 
 import makeActEdges from "./cyElements/makeActEdges";
@@ -13,24 +14,38 @@ import makeDates from "./datesFunction/makeDates";
 import parseWPDataset from "./datasetParseFunctions/parseWPDataset";
 import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
 
-import getDataset from "./getDataset";
+import workBookPath from "../data/activity_full.xlsx";
 
 export async function makeVisElements(
   prPeriod,
   currentStory,
   completedDisplay,
-  config,
-  excelDataset,
-  actLinks,
-  stLinks,
-  actDataset,
-  wpDataset,
-  stDataset,
-  stWorksheetMissing,
-  datasetError
+  config
+  // { actLinks, stLinks, actDataset, wpDataset, stDataset }
 ) {
+  // stWorksheetMissing
   // ------------------------ FETCH CSV DATA -------------------------
+  const file = await (await fetch(workBookPath)).arrayBuffer();
+  const workBookData = XLSX.read(file); // reads the whole workbook
+  // header: 1 returns array of arrays of csv rows, use for crosstab datasets
+  const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets["activity links"], {
+    header: 1,
+    defval: "",
+    raw: false,
+  }); // TO DO raw false = doesnt convert types (e.g. 1 === "1") need to change as I continue
+  const stLinks = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholder links"], {
+    header: 1,
+    defval: "",
+    raw: false,
+  });
 
+  // convert the csvs to JSON format
+  const actDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["activities"], { defval: "", raw: false });
+  const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["work packages"], { defval: "", raw: false });
+  const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholders"], { defval: "", raw: false });
+  console.log(actDataset);
+
+  // projectMeta.STHOLDERS = stDataset.length === 0 ? false : true; // check if
   //----------------FIND FILEDS SPECIFIED IN CONFIG BUT NOT IN DATASET------------------------------//
   function getMissingFields(dataset, config) {
     const datasetHeaders = Object.keys(dataset[0]);
@@ -47,7 +62,7 @@ export async function makeVisElements(
   const missingStFields = config.INCLUDE_STHOLDERS && getMissingFields(stDataset, config.stFields);
 
   const missingFieldWarning = {
-    ...(stWorksheetMissing.length > 0 && { worksheets: stWorksheetMissing }),
+    // ...(stWorksheetMissing.length > 0 && { worksheets: stWorksheetMissing }),
     ...(missingWpFields.length > 0 && { [config.WORKSHEETS.WORKPACKAGES]: missingWpFields }),
     ...(missingActFields.length > 0 && { [config.WORKSHEETS.ACTIVITIES]: missingActFields }),
     ...(missingStFields.length > 0 && { [config.WORKSHEETS.STAKEHOLDERS]: missingStFields }),
