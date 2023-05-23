@@ -1,50 +1,51 @@
 import * as XLSX from "xlsx";
+import cloneDeep from "lodash.clonedeep";
 export function getDataset(excelDataset, config) {
-  console.log(excelDataset);
+  const configCopy = cloneDeep(config);
+
   // ------------------------ FETCH CSV DATA -------------------------
   const workBookData = XLSX.read(excelDataset);
 
   // header: 1 returns array of arrays of csv rows, use for crosstab datasets
-  const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.ACTIVITY_LINKS], {
+  const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets[configCopy.WORKSHEETS.ACTIVITY_LINKS], {
     header: 1,
     defval: "",
     raw: false,
   }); // TO DO raw false = doesnt convert types (e.g. 1 === "1") need to change as I continue
 
-  console.log(actLinks);
-  const stLinks = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.STAKEHOLDER_LINKS], {
+  const stLinks = XLSX.utils.sheet_to_json(workBookData.Sheets[configCopy.WORKSHEETS.STAKEHOLDER_LINKS], {
     header: 1,
     defval: "",
     raw: false,
   });
 
   // convert the csvs to JSON format
-  const actDataset = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.ACTIVITIES], {
+  const actDataset = XLSX.utils.sheet_to_json(workBookData.Sheets[configCopy.WORKSHEETS.ACTIVITIES], {
     defval: "",
     raw: false,
   });
 
-  const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.WORKPACKAGES], {
+  const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets[configCopy.WORKSHEETS.WORKPACKAGES], {
     defval: "",
     raw: false,
   });
-  const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets[config.WORKSHEETS.STAKEHOLDERS], {
+  const stDataset = XLSX.utils.sheet_to_json(workBookData.Sheets[configCopy.WORKSHEETS.STAKEHOLDERS], {
     defval: "",
     raw: false,
   });
 
   var stWorksheetMissing = [];
   // Removes stakeholders if the stakeholder worksheet is misspelt or has no values
-  // if (stLinks.length === 0) {
-  //   config.INCLUDE_STHOLDERS = false;
-  //   //if value is not null then return the string to display as an error
-  //   config.WORKSHEETS.STAKEHOLDER_LINKS && stWorksheetMissing.push(config.WORKSHEETS.STAKEHOLDER_LINKS);
-  // }
+  if (stLinks.length === 0) {
+    configCopy.INCLUDE_STHOLDERS = false;
+    //if value is not null then return the string to display as an error
+    configCopy.WORKSHEETS.STAKEHOLDER_LINKS && stWorksheetMissing.push(configCopy.WORKSHEETS.STAKEHOLDER_LINKS);
+  }
 
-  // if (stDataset.length === 0) {
-  //   config.INCLUDE_STHOLDERS = false;
-  //   config.WORKSHEETS.STAKEHOLDER_LINKS && stWorksheetMissing.push(config.WORKSHEETS.STAKEHOLDERS);
-  // }
+  if (stDataset.length === 0) {
+    configCopy.INCLUDE_STHOLDERS = false;
+    configCopy.WORKSHEETS.STAKEHOLDER_LINKS && stWorksheetMissing.push(configCopy.WORKSHEETS.STAKEHOLDERS);
+  }
 
   // var errors = [];
   // //error messages if workseets not found --- block updating of local storage

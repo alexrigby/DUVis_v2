@@ -85,8 +85,6 @@ export function App() {
 
   useEffect(() => {
     if (config && excelDataset) {
-      // const { visData, stWorksheetMissing } = getDataset(excelDataset, config);
-
       // setFatalErrorState(fatalErrors); //if there is a fatal error with dataset == true
       // if (!fatalErrors.length > 0) {
       // window.localStorage.setItem("excelDataset", new Uint8Array(excelDataset).toString()); // if no fatal errros then create local storage
@@ -101,15 +99,7 @@ export function App() {
           latestPrPeriod,
           maxEngScore,
           missingFieldWarning,
-        } = await makeVisElements(
-          prPeriod,
-          currentStory,
-          completedDisplay,
-          config,
-          excelDataset
-          // visDatasets
-          // stWorksheetMissing
-        ); //all pre-processing of data
+        } = await makeVisElements(prPeriod, currentStory, completedDisplay, config, excelDataset); //all pre-processing of data
 
         actDataRef.current = activityData; //asigns activity data to ref
         stakeholderDataRef.current = stakeholderData;
@@ -118,7 +108,7 @@ export function App() {
         latestPrPeriodRef.current = latestPrPeriod;
         engagementScoresRef.current = maxEngScore; // gives default maxEngScore
 
-        // setFieldWarning(missingFieldWarning);
+        setFieldWarning(missingFieldWarning);
         setCyState((prevState) => ({
           ...prevState,
           elements: cyElms,
@@ -129,16 +119,7 @@ export function App() {
       addDataToCytoscape();
     }
     // }
-  }, [
-    completedDisplay,
-    cyState.cy,
-    // cyState.elements.length,
-    prPeriod,
-    currentStory,
-    config,
-    excelDataset,
-    // visDatasets,
-  ]);
+  }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory, config, excelDataset]);
 
   //---------------------- STYLE -------------------------------------
 
@@ -160,7 +141,7 @@ export function App() {
       dataset: { fileName: null, errors: null },
     });
   };
-  console.log(cyState);
+
   if (config && excelDataset) {
     return (
       <div className="container">

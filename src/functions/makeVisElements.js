@@ -14,38 +14,20 @@ import makeDates from "./datesFunction/makeDates";
 import parseWPDataset from "./datasetParseFunctions/parseWPDataset";
 import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
 import getDataset from "./getDataset";
+import getMissingFields from "./getMissingFields";
 
-import workBookPath from "../data/activity_full.xlsx";
-
-export async function makeVisElements(
-  prPeriod,
-  currentStory,
-  completedDisplay,
-  config,
-  excelDataset
-  // { actLinks, stLinks, actDataset, wpDataset, stDataset }
-) {
+export async function makeVisElements(prPeriod, currentStory, completedDisplay, config, excelDataset) {
   // ------------------------ FETCH CSV DATA -------------------------
   const { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing } = getDataset(excelDataset, config);
 
-  // projectMeta.STHOLDERS = stDataset.length === 0 ? false : true; // check if
   //----------------FIND FILEDS SPECIFIED IN CONFIG BUT NOT IN DATASET------------------------------//
-  function getMissingFields(dataset, config) {
-    const datasetHeaders = Object.keys(dataset[0]);
-    const { META_FIELDS, CATEGORYS_PROVIDED, ...rest } = config;
-    const configHeaders = [...Object.values(rest), ...META_FIELDS.map((f) => f.name)];
-
-    // if the field is not specified as null then return litst of missing header fields
-    const missingFields = configHeaders.filter((h) => h && !datasetHeaders.includes(h));
-    return missingFields;
-  }
 
   const missingWpFields = getMissingFields(wpDataset, config.wpFields);
   const missingActFields = getMissingFields(actDataset, config.actFields);
   const missingStFields = config.INCLUDE_STHOLDERS && getMissingFields(stDataset, config.stFields);
 
   const missingFieldWarning = {
-    // ...(stWorksheetMissing.length > 0 && { worksheets: stWorksheetMissing }),
+    ...(stWorksheetMissing.length > 0 && { worksheets: stWorksheetMissing }),
     ...(missingWpFields.length > 0 && { [config.WORKSHEETS.WORKPACKAGES]: missingWpFields }),
     ...(missingActFields.length > 0 && { [config.WORKSHEETS.ACTIVITIES]: missingActFields }),
     ...(missingStFields.length > 0 && { [config.WORKSHEETS.STAKEHOLDERS]: missingStFields }),

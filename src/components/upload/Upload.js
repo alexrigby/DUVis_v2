@@ -16,17 +16,17 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
       );
     });
 
-  const fatalErrorsText = fatalErrorState && (
-    <div>
-      <p>FATAL ERROR! Cound not find dataset worksheets: {fatalErrorState.map((err) => `"${err}", `)}</p>
-      <p>Check that config and dataset spellings match (case sensative)</p>
-    </div>
-  );
+  // const fatalErrorsText = fatalErrorState && (
+  //   <div>
+  //     <p>FATAL ERROR! Cound not find dataset worksheets: {fatalErrorState.map((err) => `"${err}", `)}</p>
+  //     <p>Check that config and dataset spellings match (case sensative)</p>
+  //   </div>
+  // );
 
   const style = (expression) => ({
     color: expression ? "red" : "green",
   });
-  console.log(fatalErrorState);
+
   return (
     <div className="dropzoneContainer">
       <MyDropzone userFiles={userFiles} setUserFiles={setUserFiles} setExcelDataset={setExcelDataset} />
@@ -43,10 +43,10 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
           </div>
         )}
         {userFiles.dataset.fileName && (
-          <div style={style(userFiles.dataset.errors || fatalErrorState.length > 0)}>
+          <div style={style(userFiles.dataset.errors)}>
             <p>Dataset: {userFiles.dataset.fileName}</p>
             {userFiles.dataset.errors && <p>Dataset Error: {userFiles.dataset.errors} </p>}
-            {fatalErrorState.length > 0 && config && fatalErrorsText}
+            {/* {fatalErrorState.length > 0 && config && fatalErrorsText} */}
           </div>
         )}
       </div>
