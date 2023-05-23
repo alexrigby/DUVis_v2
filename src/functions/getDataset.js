@@ -34,6 +34,7 @@ export function getDataset(excelDataset, config, setConfig) {
     raw: false,
   });
 
+  //-----------------DEAL WITH MISSING STAKEHOLDER WORKSHEETS--------------------------------
   var stWorksheetMissing = [];
   // Removes stakeholders if the stakeholder worksheet is misspelt or has no values
   if (stLinks.length === 0) {
@@ -49,32 +50,32 @@ export function getDataset(excelDataset, config, setConfig) {
     setConfig((prevState) => (prevState.INCLUDE_STHOLDERS ? { ...prevState, INCLUDE_STHOLDERS: false } : prevState));
   }
 
-  // var errors = [];
-  // //error messages if workseets not found --- block updating of local storage
-  // if (actDataset.length === 0) {
-  //   errors.push(config.WORKSHEETS.ACTIVITIES);
-  //   // alert(`ERROR!! Cound not find the "${config.WORKSHEETS.ACTIVITIES}" worksheet,
-  //   // make sure that the config and dataset spellings match`);
-  //   // localStorage.removeItem("excelDataset");
-  // }
+  var fatalErrors = [];
+  //error messages if workseets not found --- block updating of local storage
+  if (actDataset.length === 0) {
+    fatalErrors.push(configCopy.WORKSHEETS.ACTIVITIES);
+    // alert(`ERROR!! Cound not find the "${config.WORKSHEETS.ACTIVITIES}" worksheet,
+    // make sure that the config and dataset spellings match`);
+    // localStorage.removeItem("excelDataset");
+  }
 
-  // if (wpDataset.length === 0) {
-  //   errors.push(config.WORKSHEETS.WORKPACKAGES);
-  //   // alert(`ERROR!! Cound not find the "${config.WORKSHEETS.WORKPACKAGES}" worksheet,
-  //   // make sure that the config and dataset spellings match`);
-  //   // localStorage.removeItem("excelDataset");
-  // }
+  if (wpDataset.length === 0) {
+    fatalErrors.push(configCopy.WORKSHEETS.WORKPACKAGES);
+    // alert(`ERROR!! Cound not find the "${config.WORKSHEETS.WORKPACKAGES}" worksheet,
+    // make sure that the config and dataset spellings match`);
+    // localStorage.removeItem("excelDataset");
+  }
 
-  // if (actLinks.length === 0) {
-  //   errors.push(config.WORKSHEETS.ACTIVITY_LINKS);
-  //   // alert(`ERROR!! Cound not find the "${config.WORKSHEETS.ACTIVITY_LINKS}" worksheet,
-  //   // make sure that the config and dataset spellings match`);
-  //   // localStorage.removeItem("excelDataset");
-  // }
+  if (actLinks.length === 0) {
+    fatalErrors.push(configCopy.WORKSHEETS.ACTIVITY_LINKS);
+    // alert(`ERROR!! Cound not find the "${config.WORKSHEETS.ACTIVITY_LINKS}" worksheet,
+    // make sure that the config and dataset spellings match`);
+    // localStorage.removeItem("excelDataset");
+  }
 
-  // const fatalErrors = errors;
+  console.log(fatalErrors);
 
-  return { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing };
+  return { visData: { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing }, fatalErrors };
 }
 
 export default getDataset;

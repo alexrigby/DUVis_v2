@@ -39,13 +39,13 @@ export function App() {
     config: { fileName: null, errors: null },
     dataset: { fileName: null, errors: null },
   });
-
+  const [excelDataset, setExcelDataset] = useState(null);
   const [fieldWarning, setFieldWarning] = useState(null);
+  const [visDatasets, setVisDatasets] = useState(null);
   const [warningBarDisplay, setWarningBarDisplay] = useState(true);
 
-  const [excelDataset, setExcelDataset] = useState(null);
+  const [fatalErrorState, setFatalErrorState] = useState([]);
 
-  const [visDatasets, setVisDatasets] = useState(null);
   // ---------------------------USE REFS-------------------------------
   const gantchartDataRef = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
@@ -74,14 +74,15 @@ export function App() {
 
   useEffect(() => {
     if (config && excelDataset) {
-      const visData = getDataset(excelDataset, config, setConfig);
-
+      //gets all datasets
+      const { visData, fatalErrors } = getDataset(excelDataset, config, setConfig);
       setVisDatasets(visData);
+      setFatalErrorState(fatalErrors);
     }
   }, [config, excelDataset, setConfig]);
 
   useEffect(() => {
-    if (config && excelDataset && visDatasets) {
+    if (config && excelDataset && visDatasets && !fatalErrorState.length > 0) {
       async function addDataToCytoscape() {
         const {
           cyElms,
@@ -92,15 +93,7 @@ export function App() {
           latestPrPeriod,
           maxEngScore,
           missingFieldWarning,
-        } = await makeVisElements(
-          prPeriod,
-          currentStory,
-          completedDisplay,
-          config,
-          // excelDataset,
-          // setConfig,
-          visDatasets
-        ); //all pre-processing of data
+        } = await makeVisElements(prPeriod, currentStory, completedDisplay, config, visDatasets); //all pre-processing of data
 
         actDataRef.current = activityData; //asigns activity data to ref
         stakeholderDataRef.current = stakeholderData;
@@ -127,9 +120,9 @@ export function App() {
     prPeriod,
     currentStory,
     config,
-    // excelDataset,
-    // setConfig,
     visDatasets,
+    excelDataset,
+    fatalErrorState.length,
   ]);
 
   //---------------------- STYLE -------------------------------------
@@ -153,7 +146,7 @@ export function App() {
     });
   };
 
-  if (config && excelDataset) {
+  if (visDatasets && !fatalErrorState.length > 0) {
     return (
       <div className="container">
         <div className="Resizer">
@@ -253,7 +246,12 @@ export function App() {
               </div>
 
               {uploadVeiw && (
-                <Upload userFiles={userFiles} setUserFiles={setUserFiles} setExcelDataset={setExcelDataset} />
+                <Upload
+                  userFiles={userFiles}
+                  setUserFiles={setUserFiles}
+                  setExcelDataset={setExcelDataset}
+                  fatalErrorState={fatalErrorState}
+                />
               )}
 
               <div className="zoomButtons">
@@ -278,7 +276,14 @@ export function App() {
       </div>
     );
   } else {
-    return <Upload userFiles={userFiles} setUserFiles={setUserFiles} setExcelDataset={setExcelDataset} />;
+    return (
+      <Upload
+        userFiles={userFiles}
+        setUserFiles={setUserFiles}
+        setExcelDataset={setExcelDataset}
+        fatalErrorState={fatalErrorState}
+      />
+    );
   }
 }
 
