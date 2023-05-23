@@ -16,15 +16,20 @@ import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
 import getDataset from "./getDataset";
 import getMissingFields from "./getMissingFields";
 
-export async function makeVisElements(prPeriod, currentStory, completedDisplay, config, excelDataset) {
+export async function makeVisElements(prPeriod, currentStory, completedDisplay, config, excelDataset, setConfig) {
   // ------------------------ FETCH CSV DATA -------------------------
-  const { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing } = getDataset(excelDataset, config);
+  const { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing } = getDataset(
+    excelDataset,
+    config,
+    setConfig
+  );
 
   //----------------FIND FILEDS SPECIFIED IN CONFIG BUT NOT IN DATASET------------------------------//
 
   const missingWpFields = getMissingFields(wpDataset, config.wpFields);
   const missingActFields = getMissingFields(actDataset, config.actFields);
-  const missingStFields = config.INCLUDE_STHOLDERS && getMissingFields(stDataset, config.stFields);
+  const missingStFields =
+    config.INCLUDE_STHOLDERS && !stWorksheetMissing.length > 0 && getMissingFields(stDataset, config.stFields);
 
   const missingFieldWarning = {
     ...(stWorksheetMissing.length > 0 && { worksheets: stWorksheetMissing }),
@@ -58,10 +63,14 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
   // ----TRIM & FILTER STAKEHOLDERS-------
   // returns the max engagement score for the pr period (regardless of stroy filter)
   const maxEngScore =
-    config.INCLUDE_STHOLDERS && parseStakeholderDataset(stLinks, stDataset, filteredByPr, config).maxEngScore;
+    config.INCLUDE_STHOLDERS &&
+    !stWorksheetMissing.length > 0 &&
+    parseStakeholderDataset(stLinks, stDataset, filteredByPr, config).maxEngScore;
   // creates ealily readable stakeholder object from stData and stLinks to match trimmed activity data
   const stakeholderData =
-    config.INCLUDE_STHOLDERS && parseStakeholderDataset(stLinks, stDataset, trimmedActData, config).stakeholderData;
+    config.INCLUDE_STHOLDERS &&
+    !stWorksheetMissing.length > 0 &&
+    parseStakeholderDataset(stLinks, stDataset, trimmedActData, config).stakeholderData;
 
   //----MAKE VIS ELEMENTS -------------
   const actNodes = makeActNodes(trimmedActData, config);
@@ -69,8 +78,10 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
 
   const wpNodes = makeWpNodes(trimmedWpData, config);
   const wpEdges = makeWpEdges(trimmedWpData, config);
-  const stakeholderNodes = config.INCLUDE_STHOLDERS && makeStakeholerNodes(stakeholderData);
-  const stakeholderEdges = config.INCLUDE_STHOLDERS && makeStakeholderEdges(stakeholderData);
+  const stakeholderNodes =
+    config.INCLUDE_STHOLDERS && !stWorksheetMissing.length > 0 && makeStakeholerNodes(stakeholderData);
+  const stakeholderEdges =
+    config.INCLUDE_STHOLDERS && !stWorksheetMissing.length > 0 && makeStakeholderEdges(stakeholderData);
 
   const gantChartItems =
     config.INCLUDE_DATES &&
@@ -90,7 +101,9 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
   //----ALL CYTOSCAPE ELEMENTS-----
   const cyElms = [...actNodes, ...actEdges.flat(), ...wpNodes, ...wpEdges].flat();
   //if stakeholders are included then add them to cy elements
-  config.INCLUDE_STHOLDERS && cyElms.push(...stakeholderNodes, ...stakeholderEdges.flat(), projectNode);
+  config.INCLUDE_STHOLDERS &&
+    !stWorksheetMissing.length > 0 &&
+    cyElms.push(...stakeholderNodes, ...stakeholderEdges.flat(), projectNode);
 
   return {
     cyElms,

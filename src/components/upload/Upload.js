@@ -4,7 +4,7 @@ import MyDropzone from "./MyDropzone/MyDropzone";
 import ConfigContext from "../../context/ConfigContext";
 import "./Upload.css";
 
-export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorState }) {
+export function Upload({ userFiles, setUserFiles, setExcelDataset }) {
   const { config } = useContext(ConfigContext);
   const configError =
     userFiles.config.errors &&

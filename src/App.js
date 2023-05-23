@@ -45,10 +45,6 @@ export function App() {
 
   const [excelDataset, setExcelDataset] = useState(null);
 
-  const [fatalErrorState, setFatalErrorState] = useState([]);
-
-  const [visDatasets, setVisDatasets] = useState(null);
-
   // ---------------------------USE REFS-------------------------------
   const gantchartDataRef = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
@@ -61,7 +57,7 @@ export function App() {
   currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
 
   //----------------------------------CONFIG-----------------------------------------
-  const { config } = useContext(ConfigContext);
+  const { config, setConfig } = useContext(ConfigContext);
 
   //----------------------- FETCH EXCEL DATA FOR USE IN APP-----------------------------------
   useEffect(() => {
@@ -74,21 +70,9 @@ export function App() {
       setExcelDataset(null);
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (config && excelDataset.file) {
-  //     const { visData } = getDataset(excelDataset, config);
-  //     setVisDatasets(visData);
-  //   }
-  // }, [config, excelDataset]);
-  // console.log(visDatasets);
-
+  console.log("render");
   useEffect(() => {
     if (config && excelDataset) {
-      // setFatalErrorState(fatalErrors); //if there is a fatal error with dataset == true
-      // if (!fatalErrors.length > 0) {
-      // window.localStorage.setItem("excelDataset", new Uint8Array(excelDataset).toString()); // if no fatal errros then create local storage
-      //updates cyytoscape state to include node and edge data and creates gantchart data
       async function addDataToCytoscape() {
         const {
           cyElms,
@@ -99,7 +83,7 @@ export function App() {
           latestPrPeriod,
           maxEngScore,
           missingFieldWarning,
-        } = await makeVisElements(prPeriod, currentStory, completedDisplay, config, excelDataset); //all pre-processing of data
+        } = await makeVisElements(prPeriod, currentStory, completedDisplay, config, excelDataset, setConfig); //all pre-processing of data
 
         actDataRef.current = activityData; //asigns activity data to ref
         stakeholderDataRef.current = stakeholderData;
@@ -119,7 +103,7 @@ export function App() {
       addDataToCytoscape();
     }
     // }
-  }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory, config, excelDataset]);
+  }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory, config, excelDataset, setConfig]);
 
   //---------------------- STYLE -------------------------------------
 
@@ -267,14 +251,7 @@ export function App() {
       </div>
     );
   } else {
-    return (
-      <Upload
-        userFiles={userFiles}
-        setUserFiles={setUserFiles}
-        setExcelDataset={setExcelDataset}
-        fatalErrorState={fatalErrorState}
-      />
-    );
+    return <Upload userFiles={userFiles} setUserFiles={setUserFiles} setExcelDataset={setExcelDataset} />;
   }
 }
 

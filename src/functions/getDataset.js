@@ -1,6 +1,6 @@
 import * as XLSX from "xlsx";
 import cloneDeep from "lodash.clonedeep";
-export function getDataset(excelDataset, config) {
+export function getDataset(excelDataset, config, setConfig) {
   const configCopy = cloneDeep(config);
 
   // ------------------------ FETCH CSV DATA -------------------------
@@ -37,14 +37,16 @@ export function getDataset(excelDataset, config) {
   var stWorksheetMissing = [];
   // Removes stakeholders if the stakeholder worksheet is misspelt or has no values
   if (stLinks.length === 0) {
-    configCopy.INCLUDE_STHOLDERS = false;
     //if value is not null then return the string to display as an error
     configCopy.WORKSHEETS.STAKEHOLDER_LINKS && stWorksheetMissing.push(configCopy.WORKSHEETS.STAKEHOLDER_LINKS);
+    //set stakeholders included to false in config state
+    setConfig((prevState) => (prevState.INCLUDE_STHOLDERS ? { ...prevState, INCLUDE_STHOLDERS: false } : prevState));
   }
 
   if (stDataset.length === 0) {
-    configCopy.INCLUDE_STHOLDERS = false;
     configCopy.WORKSHEETS.STAKEHOLDER_LINKS && stWorksheetMissing.push(configCopy.WORKSHEETS.STAKEHOLDERS);
+
+    setConfig((prevState) => (prevState.INCLUDE_STHOLDERS ? { ...prevState, INCLUDE_STHOLDERS: false } : prevState));
   }
 
   // var errors = [];
