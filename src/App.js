@@ -45,6 +45,7 @@ export function App() {
 
   const [excelDataset, setExcelDataset] = useState(null);
 
+  const [visDatasets, setVisDatasets] = useState(null);
   // ---------------------------USE REFS-------------------------------
   const gantchartDataRef = useRef(null); //stores parsed gantchart data
   const datesRef = useRef(null); //stores dates
@@ -70,9 +71,17 @@ export function App() {
       setExcelDataset(null);
     }
   }, []);
-  console.log("render");
+
   useEffect(() => {
     if (config && excelDataset) {
+      const visData = getDataset(excelDataset, config, setConfig);
+
+      setVisDatasets(visData);
+    }
+  }, [config, excelDataset, setConfig]);
+
+  useEffect(() => {
+    if (config && excelDataset && visDatasets) {
       async function addDataToCytoscape() {
         const {
           cyElms,
@@ -83,7 +92,15 @@ export function App() {
           latestPrPeriod,
           maxEngScore,
           missingFieldWarning,
-        } = await makeVisElements(prPeriod, currentStory, completedDisplay, config, excelDataset, setConfig); //all pre-processing of data
+        } = await makeVisElements(
+          prPeriod,
+          currentStory,
+          completedDisplay,
+          config,
+          // excelDataset,
+          // setConfig,
+          visDatasets
+        ); //all pre-processing of data
 
         actDataRef.current = activityData; //asigns activity data to ref
         stakeholderDataRef.current = stakeholderData;
@@ -103,7 +120,17 @@ export function App() {
       addDataToCytoscape();
     }
     // }
-  }, [completedDisplay, cyState.cy, cyState.elements.length, prPeriod, currentStory, config, excelDataset, setConfig]);
+  }, [
+    completedDisplay,
+    cyState.cy,
+    cyState.elements.length,
+    prPeriod,
+    currentStory,
+    config,
+    // excelDataset,
+    // setConfig,
+    visDatasets,
+  ]);
 
   //---------------------- STYLE -------------------------------------
 

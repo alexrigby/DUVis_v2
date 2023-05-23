@@ -13,16 +13,14 @@ import makeWpEdges from "./cyElements/makeWpEdges";
 import makeDates from "./datesFunction/makeDates";
 import parseWPDataset from "./datasetParseFunctions/parseWPDataset";
 import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
-import getDataset from "./getDataset";
-import getMissingFields from "./getMissingFields";
 
-export async function makeVisElements(prPeriod, currentStory, completedDisplay, config, excelDataset, setConfig) {
-  // ------------------------ FETCH CSV DATA -------------------------
-  const { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing } = getDataset(
-    excelDataset,
-    config,
-    setConfig
-  );
+import getMissingFields from "./getMissingFields";
+import cloneDeep from "lodash.clonedeep";
+
+export async function makeVisElements(prPeriod, currentStory, completedDisplay, config, visDatasets) {
+  // ------------------------ Make a copy of vis Datsets state -------------------------
+
+  const { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing } = cloneDeep(visDatasets);
 
   //----------------FIND FILEDS SPECIFIED IN CONFIG BUT NOT IN DATASET------------------------------//
 
