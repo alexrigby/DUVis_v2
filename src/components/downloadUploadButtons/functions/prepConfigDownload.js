@@ -32,7 +32,7 @@ export function prepConfigDownload(config) {
       : null,
     stories: localStories ? [...config.STORIES, ...localStories] : config.STORIES,
   };
-  console.log(configDownload);
+
   return configDownload;
 }
 

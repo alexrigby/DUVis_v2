@@ -1,4 +1,3 @@
-import * as XLSX from "xlsx";
 import parseActivityDataset from "./datasetParseFunctions/parseActivityDataset";
 
 import makeActEdges from "./cyElements/makeActEdges";

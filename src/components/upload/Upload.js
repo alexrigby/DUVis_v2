@@ -4,7 +4,7 @@ import MyDropzone from "./MyDropzone/MyDropzone";
 import ConfigContext from "../../context/ConfigContext";
 import "./Upload.css";
 
-export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorState }) {
+export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorState, excelDataset }) {
   const { config } = useContext(ConfigContext);
 
   const configError =
@@ -24,12 +24,24 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
     </div>
   );
 
+  const landingText = (
+    <div>
+      <h1>
+        Welcome to Re-Pro-Vis! <i class="fa-regular fa-hand-wave"></i>{" "}
+      </h1>
+      <p>
+        Start visualising your research project by uploading your excel(.xlsx) dataset and config (.json) files here
+      </p>
+    </div>
+  );
+
   const style = (expression) => ({
     color: expression ? "red" : "green",
   });
 
   return (
     <div className="dropzoneContainer">
+      {/* {!config && !excelDataset && landingText} */}
       <MyDropzone userFiles={userFiles} setUserFiles={setUserFiles} setExcelDataset={setExcelDataset} />
 
       <div className="uploadedFile">
