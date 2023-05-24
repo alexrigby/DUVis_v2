@@ -1,13 +1,27 @@
 import React from "react";
+import JSZip from "jszip";
+import FileSaver from "file-saver";
+import cloneDeep from "lodash.clonedeep";
 
-export function DownloadUploadButtons({ excelDataset, setUploadVeiw }) {
-  console.log("hello");
+import prepConfigDownload from "./functions/prepConfigDownload";
+
+import "./DownloadUploadButtons.css";
+
+export function DownloadUploadButtons({ config, excelDataset, setUploadVeiw, userFiles }) {
+  const downloadHandler = (evt) => {
+    const configClone = cloneDeep(config);
+    const configForDownlaod = prepConfigDownload(configClone);
+
+    const zip = new JSZip();
+    zip.file(`${userFiles.config.fileName}`, JSON.stringify(configForDownlaod));
+    zip.file(`${userFiles.dataset.fileName}`, excelDataset);
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      FileSaver.saveAs(content, `${config.NAME} datset and config ${new Date().toISOString().split("T")[0]}`);
+    });
+  };
+
   const openUploadVeiw = (evt) => {
     setUploadVeiw((prevState) => !prevState);
-    // setUserFiles({
-    //   config: { fileName: null, errors: null },
-    //   dataset: { fileName: null, errors: null },
-    // });
   };
 
   return (
@@ -15,20 +29,24 @@ export function DownloadUploadButtons({ excelDataset, setUploadVeiw }) {
       <button onClick={openUploadVeiw}>
         Upload new files <i className="fa fa-upload"></i>
       </button>
-      <a
-        href={URL.createObjectURL(
-          new Blob([excelDataset], {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          })
-        )}
-        download="dataset.xlsx"
-      >
-        <button>
-          Download files <i className="fa fa-download"></i>
-        </button>
-      </a>
+
+      <button onClick={downloadHandler}>
+        Download files <i className="fa fa-download"></i>
+      </button>
     </div>
   );
 }
 
 export default DownloadUploadButtons;
+
+// const excelDatasetDownload = URL.createObjectURL(
+//   new Blob([excelDataset], {
+//     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+//   })
+// );
+
+// const configDownload = URL.createObjectURL(
+//   new Blob([JSON.stringify(config)], {
+//     type: "text/json;charset=utf-8",
+//   })
+// );

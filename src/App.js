@@ -72,8 +72,8 @@ export function App() {
       setExcelDataset(null);
     }
 
+    //finds names and errors of locally stored datasets
     const localUserFiles = window.localStorage.getItem("userFiles");
-    console.log(localUserFiles);
     if (localUserFiles) {
       setUserFiles(JSON.parse(localUserFiles));
     } else {
@@ -84,6 +84,7 @@ export function App() {
     }
   }, []);
 
+  //sets the names of datasets in local storage when user uploads new files
   useEffect(() => {
     window.localStorage.setItem("userFiles", JSON.stringify(userFiles));
   }, [userFiles]);
@@ -149,19 +150,8 @@ export function App() {
 
   const veiwStyle = {
     opacity: uploadVeiw ? 0.2 : 1.0,
-
     pointerEvents: uploadVeiw ? "none" : "all",
   };
-
-  const openUploadVeiw = (evt) => {
-    setUploadVeiw((prevState) => !prevState);
-    // setUserFiles({
-    //   config: { fileName: null, errors: null },
-    //   dataset: { fileName: null, errors: null },
-    // });
-  };
-
-  console.log(excelDataset);
 
   if (visDatasets && !fatalErrorState.length > 0) {
     return (
@@ -271,7 +261,12 @@ export function App() {
                 />
               )}
 
-              <DownloadUploadButtons excelDataset={excelDataset} setUploadVeiw={setUploadVeiw} />
+              <DownloadUploadButtons
+                config={config}
+                excelDataset={excelDataset}
+                setUploadVeiw={setUploadVeiw}
+                userFiles={userFiles}
+              />
             </div>
             <div id="sideP" data-open="false">
               <SidePannel

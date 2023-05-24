@@ -27,7 +27,7 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
   const style = (expression) => ({
     color: expression ? "red" : "green",
   });
-  console.log(userFiles);
+
   return (
     <div className="dropzoneContainer">
       <MyDropzone userFiles={userFiles} setUserFiles={setUserFiles} setExcelDataset={setExcelDataset} />
