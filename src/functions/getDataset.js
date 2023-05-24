@@ -1,5 +1,6 @@
 import * as XLSX from "xlsx";
 import cloneDeep from "lodash.clonedeep";
+
 export function getDataset(excelDataset, config, setConfig) {
   const configCopy = cloneDeep(config);
 
@@ -50,6 +51,7 @@ export function getDataset(excelDataset, config, setConfig) {
     setConfig((prevState) => (prevState.INCLUDE_STHOLDERS ? { ...prevState, INCLUDE_STHOLDERS: false } : prevState));
   }
 
+  //---------------------FATAL ERRORS ------------------------------//
   var fatalErrors = [];
   //error messages if workseets not found --- block updating of local storage
   if (actDataset.length === 0) {
@@ -73,9 +75,11 @@ export function getDataset(excelDataset, config, setConfig) {
     // localStorage.removeItem("excelDataset");
   }
 
-  console.log(fatalErrors);
+  return {
+    visData: { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing },
 
-  return { visData: { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing }, fatalErrors };
+    fatalErrors,
+  };
 }
 
 export default getDataset;

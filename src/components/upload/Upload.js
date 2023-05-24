@@ -5,8 +5,8 @@ import ConfigContext from "../../context/ConfigContext";
 import "./Upload.css";
 
 export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorState }) {
-  console.log(fatalErrorState);
   const { config } = useContext(ConfigContext);
+
   const configError =
     userFiles.config.errors &&
     userFiles.config.errors.map((err, i) => {
@@ -27,7 +27,7 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
   const style = (expression) => ({
     color: expression ? "red" : "green",
   });
-
+  console.log(userFiles);
   return (
     <div className="dropzoneContainer">
       <MyDropzone userFiles={userFiles} setUserFiles={setUserFiles} setExcelDataset={setExcelDataset} />

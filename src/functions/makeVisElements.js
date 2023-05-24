@@ -20,7 +20,7 @@ import cloneDeep from "lodash.clonedeep";
 export async function makeVisElements(prPeriod, currentStory, completedDisplay, config, visDatasets) {
   // ------------------------ Make a copy of vis Datsets state -------------------------
 
-  const { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing } = cloneDeep(visDatasets);
+  const { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing } = cloneDeep(visDatasets); // make a deep copy so state isnt affected directly
 
   //----------------FIND FILEDS SPECIFIED IN CONFIG BUT NOT IN DATASET------------------------------//
 

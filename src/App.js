@@ -11,6 +11,7 @@ import FilterOptions from "./components/FilterOptions/FilterOptions";
 import ToggleButtons from "./components/ToggleButtons/ToggleButtons";
 import Upload from "./components/upload/Upload";
 import WarningBar from "./components/warningBar/WarningBar";
+import DownloadUploadButtons from "./components/downloadUploadButtons/DownloadUploadButtons";
 
 import resetVeiwOnDoubleClick from "./AppFunctions/resetveiwOnDoubleClick";
 import makeVisElements from "./functions/makeVisElements";
@@ -70,11 +71,26 @@ export function App() {
     } else {
       setExcelDataset(null);
     }
+
+    const localUserFiles = window.localStorage.getItem("userFiles");
+    console.log(localUserFiles);
+    if (localUserFiles) {
+      setUserFiles(JSON.parse(localUserFiles));
+    } else {
+      setUserFiles({
+        config: { fileName: null, errors: null },
+        dataset: { fileName: null, errors: null },
+      });
+    }
   }, []);
 
   useEffect(() => {
+    window.localStorage.setItem("userFiles", JSON.stringify(userFiles));
+  }, [userFiles]);
+
+  useEffect(() => {
     if (config && excelDataset) {
-      //gets all datasets
+      //gets arrays of all worksheet data and any errors in config/worksheet
       const { visData, fatalErrors } = getDataset(excelDataset, config, setConfig);
       setVisDatasets(visData);
       setFatalErrorState(fatalErrors);
@@ -112,7 +128,6 @@ export function App() {
 
       addDataToCytoscape();
     }
-    // }
   }, [
     completedDisplay,
     cyState.cy,
@@ -140,11 +155,13 @@ export function App() {
 
   const openUploadVeiw = (evt) => {
     setUploadVeiw((prevState) => !prevState);
-    setUserFiles({
-      config: { fileName: null, errors: null },
-      dataset: { fileName: null, errors: null },
-    });
+    // setUserFiles({
+    //   config: { fileName: null, errors: null },
+    //   dataset: { fileName: null, errors: null },
+    // });
   };
+
+  console.log(excelDataset);
 
   if (visDatasets && !fatalErrorState.length > 0) {
     return (
@@ -254,11 +271,7 @@ export function App() {
                 />
               )}
 
-              <div className="zoomButtons">
-                <button onClick={openUploadVeiw}>
-                  Upload new files <i className="fa fa-upload"></i>
-                </button>
-              </div>
+              <DownloadUploadButtons excelDataset={excelDataset} setUploadVeiw={setUploadVeiw} />
             </div>
             <div id="sideP" data-open="false">
               <SidePannel
