@@ -24,6 +24,7 @@ export function App() {
     cy: null,
     elements: [],
   });
+
   const [selectedNode, setSelectedNode] = useState({ id: "" }); //what node is selected
   const [prPeriod, setPrPeriod] = useState({ pr: null, undefined: true }); // selected prPeriod
   const [currentStory, setCurrentStory] = useState(null); //story IDs
@@ -60,7 +61,6 @@ export function App() {
 
   //----------------------------------CONFIG-----------------------------------------
   const { config, setConfig } = useContext(ConfigContext);
-
   //----------------------- FETCH EXCEL DATA FOR USE IN APP-----------------------------------
   useEffect(() => {
     const fileString = window.localStorage.getItem("excelDataset");
@@ -258,7 +258,7 @@ export function App() {
                   setUserFiles={setUserFiles}
                   setExcelDataset={setExcelDataset}
                   fatalErrorState={fatalErrorState}
-                  // excelDataset={excelDataset}
+                  excelDataset={excelDataset}
                 />
               )}
 
@@ -267,6 +267,7 @@ export function App() {
                 excelDataset={excelDataset}
                 setUploadVeiw={setUploadVeiw}
                 userFiles={userFiles}
+                uploadVeiw={uploadVeiw}
               />
             </div>
             <div id="sideP" data-open="false">
@@ -291,7 +292,7 @@ export function App() {
         setUserFiles={setUserFiles}
         setExcelDataset={setExcelDataset}
         fatalErrorState={fatalErrorState}
-        // excelDataset={excelDataset}
+        excelDataset={excelDataset}
       />
     );
   }

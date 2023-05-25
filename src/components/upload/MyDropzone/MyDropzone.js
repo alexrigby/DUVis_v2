@@ -105,6 +105,7 @@ export function MyDropzone({ userFiles, setUserFiles, setExcelDataset }) {
 
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
     onDrop,
+    multiple: false,
     accept: {
       [fileTypes.JSON]: [".json"],
       [fileTypes.EXCEL]: [".xlsx", ".xls"],

@@ -1,4 +1,4 @@
-.zoomButtons {
+.dataButtons {
   position: absolute;
   bottom: 2px;
   padding-left: 5px;
@@ -7,6 +7,15 @@
   opacity: 1 !important;
 }
 
-.zoomButtons :first-child {
+.dataButtons :first-child {
   margin-right: 5px;
+}
+
+.clearProjectButton {
+  position: absolute;
+  right: 0;
+  margin-right: 5px;
+  bottom: 7px;
+  z-index: 200;
+  opacity: 1 !important;
 }

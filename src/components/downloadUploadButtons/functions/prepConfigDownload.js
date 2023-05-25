@@ -1,6 +1,6 @@
 export function prepConfigDownload(config) {
   const localStories = JSON.parse(window.localStorage.getItem("customStory"));
-  console.log(localStories);
+
   const configDownload = {
     name: config.NAME,
     startDate: config.START_DATE,
