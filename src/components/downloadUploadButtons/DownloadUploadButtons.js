@@ -7,7 +7,15 @@ import prepConfigDownload from "./functions/prepConfigDownload";
 
 import "./DownloadUploadButtons.css";
 
-export function DownloadUploadButtons({ config, excelDataset, setUploadVeiw, userFiles, uploadVeiw }) {
+export function DownloadUploadButtons({
+  config,
+  excelDataset,
+  setUploadVeiw,
+  userFiles,
+  uploadVeiw,
+  setUserFiles,
+  fatalErrorMessage,
+}) {
   const downloadHandler = (evt) => {
     const configClone = cloneDeep(config);
     const configForDownlaod = prepConfigDownload(configClone);
@@ -22,6 +30,9 @@ export function DownloadUploadButtons({ config, excelDataset, setUploadVeiw, use
 
   const openUploadVeiw = (evt) => {
     setUploadVeiw((prevState) => !prevState);
+    //reset config errors as config will not update if there is an error
+    setUserFiles((prevState) => ({ ...prevState, config: { ...prevState.config, errors: null } }));
+    fatalErrorMessage.current = [];
   };
 
   const clearProjectData = (evt) => {

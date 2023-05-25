@@ -42,7 +42,7 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
-export function MyDropzone({ userFiles, setUserFiles, setExcelDataset }) {
+export function MyDropzone({ userFiles, setUserFiles, setExcelDataset, fatalErrorMessage }) {
   const { config, setConfig } = useContext(ConfigContext);
 
   const onDrop = useCallback((acceptedFiles) => {
@@ -76,10 +76,11 @@ export function MyDropzone({ userFiles, setUserFiles, setExcelDataset }) {
             }));
           }
         } else if (file.type === fileTypes.EXCEL) {
+          fatalErrorMessage.current = [];
           try {
             setExcelDataset(reader.result);
             //sets local storage to string representation of excel file array buffer
-            window.localStorage.setItem("excelDataset", new Uint8Array(reader.result).toString());
+            // window.localStorage.setItem("excelDataset", new Uint8Array(reader.result).toString());
             setUserFiles((prevState) => ({
               ...prevState,
               dataset: {

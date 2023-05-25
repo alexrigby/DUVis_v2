@@ -6,7 +6,7 @@ import "./Upload.css";
 
 import GitHub from "../../assets/GitHub_Logo.png";
 
-export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorState, excelDataset }) {
+export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorState, excelDataset, fatalErrorMessage }) {
   const { config } = useContext(ConfigContext);
 
   const configError =
@@ -19,10 +19,11 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
       );
     });
 
-  const fatalErrorsText = fatalErrorState.length > 0 && (
+  const fatalErrorsText = fatalErrorMessage.current.length > 0 && (
     <div>
-      <p>FATAL ERROR! Cound not find dataset worksheets: {fatalErrorState.map((err) => `"${err}", `)}</p>
+      <p>FATAL ERROR! Cound not find dataset worksheets: {fatalErrorMessage.current.map((err) => `"${err}", `)}</p>
       <p>Check that config and dataset spellings match (case sensative)</p>
+      <p>DATASET FILE NOT UPDATED!</p>
     </div>
   );
 
@@ -47,22 +48,27 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
         Find documentation and useful guides on our GitHub
         {/* <img src={GitHub} alt="GitHub logo"></img> */}
       </p>
-      <MyDropzone userFiles={userFiles} setUserFiles={setUserFiles} setExcelDataset={setExcelDataset} />
+      <MyDropzone
+        userFiles={userFiles}
+        setUserFiles={setUserFiles}
+        setExcelDataset={setExcelDataset}
+        fatalErrorMessage={fatalErrorMessage}
+      />
 
       <div className="uploadedFile">
         <div style={style(userFiles.config.errors || !config)}>
           <p>Config: {userFiles.config.fileName}</p>
           {userFiles.config.errors && (
             <>
-              <p>Config error: {configError}</p> <p>FILE NOT UPDATED!</p>
+              <p>Config error: {configError}</p> <p>CONFIG FILE NOT UPDATED!</p>
             </>
           )}
         </div>
         {/* {userFiles.dataset.fileName && ( */}
-        <div style={style(userFiles.dataset.errors || fatalErrorState.length > 0 || !excelDataset)}>
+        <div style={style(userFiles.dataset.errors || fatalErrorMessage.current.length > 0 || !excelDataset)}>
           <p>Dataset: {userFiles.dataset.fileName}</p>
           {userFiles.dataset.errors && <p>Dataset Error: {userFiles.dataset.errors} </p>}
-          {fatalErrorState.length > 0 && config && fatalErrorsText}
+          {fatalErrorMessage.current.length > 0 && config && fatalErrorsText}
         </div>
         {/* )} */}
       </div>

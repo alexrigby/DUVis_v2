@@ -59,22 +59,33 @@ export function App() {
 
   currentActNodeCountRef.current = actDataRef.current && actDataRef.current.length;
 
+  const fatalErrorMessage = useRef([]);
+
   //----------------------------------CONFIG-----------------------------------------
   const { config, setConfig } = useContext(ConfigContext);
-  //----------------------- FETCH EXCEL DATA FOR USE IN APP-----------------------------------
+
+  //----------------------- DOES INITIAL SEARCH FOR LOCAL ITEMS AND SETS TO STATE-----------------------------------
   useEffect(() => {
-    const fileString = window.localStorage.getItem("excelDataset");
-    if (fileString) {
+    const excelFileString = window.localStorage.getItem("excelDataset");
+    if (excelFileString) {
       // sets string repreentation of array buffer to array bufffer
-      const file = new Uint8Array(fileString.split(",")).buffer;
+      const file = new Uint8Array(excelFileString.split(",")).buffer;
       setExcelDataset(file);
     } else {
       setExcelDataset(null);
     }
+
     //finds names and errors of locally stored datasets
     const localUserFiles = window.localStorage.getItem("userFiles");
     if (localUserFiles) {
-      setUserFiles(JSON.parse(localUserFiles));
+      const fileErros = JSON.parse(localUserFiles);
+      //reseting user files if there have been efatal config or dataset errors that mean the local storage has not been updated
+      const resetConfigErrors = {
+        ...fileErros,
+        config: { ...fileErros.config, errors: null },
+        dataset: { ...fileErros.dataset, fileName: excelFileString ? fileErros.dataset.fileName : null },
+      };
+      setUserFiles(resetConfigErrors);
     } else {
       setUserFiles({
         config: { fileName: null, errors: null },
@@ -88,6 +99,7 @@ export function App() {
     window.localStorage.setItem("userFiles", JSON.stringify(userFiles));
   }, [userFiles]);
 
+  //---------------HANDLES MAKING VIS DATASETS FRO THE EXCEL DATASTE AND FINDING FATAL ERRORS------------------------//
   useEffect(() => {
     if (config && excelDataset) {
       //gets arrays of all worksheet data and any errors in config/worksheet
@@ -95,9 +107,28 @@ export function App() {
 
       setVisDatasets(visData);
       setFatalErrorState(fatalErrors);
+      //sets local storage if there are no fatal errors
+      fatalErrors.length === 0 && window.localStorage.setItem("excelDataset", new Uint8Array(excelDataset).toString());
     }
   }, [config, excelDataset, setConfig]);
 
+  //--------HANDLES STORING EXCEL DATA TO LOCAL STORAGE--------------------//
+  useEffect(() => {
+    if (!fatalErrorState.length > 0) {
+      window.localStorage.setItem("excelDataset", new Uint8Array(excelDataset).toString());
+    } else {
+      // if there are fatal errors then fetch excel dataset from local storage and reset exceldata state
+      const localExcelDataset = window.localStorage.getItem("excelDataset");
+      fatalErrorMessage.current = fatalErrorState && fatalErrorState;
+      if (localExcelDataset) {
+        setExcelDataset(new Uint8Array(localExcelDataset.split(",")).buffer);
+      } else {
+        setExcelDataset(null);
+      }
+    }
+  }, [fatalErrorState.length]);
+
+  //--------------DOES ALL PARSING OF DATA AND MAKING VIS ITEMS------------------------//
   useEffect(() => {
     if (config && excelDataset && visDatasets && !fatalErrorState.length > 0) {
       async function addDataToCytoscape() {
@@ -259,6 +290,7 @@ export function App() {
                   setExcelDataset={setExcelDataset}
                   fatalErrorState={fatalErrorState}
                   excelDataset={excelDataset}
+                  fatalErrorMessage={fatalErrorMessage}
                 />
               )}
 
@@ -268,6 +300,8 @@ export function App() {
                 setUploadVeiw={setUploadVeiw}
                 userFiles={userFiles}
                 uploadVeiw={uploadVeiw}
+                setUserFiles={setUserFiles}
+                fatalErrorMessage={fatalErrorMessage}
               />
             </div>
             <div id="sideP" data-open="false">
@@ -293,6 +327,7 @@ export function App() {
         setExcelDataset={setExcelDataset}
         fatalErrorState={fatalErrorState}
         excelDataset={excelDataset}
+        fatalErrorMessage={fatalErrorMessage}
       />
     );
   }
