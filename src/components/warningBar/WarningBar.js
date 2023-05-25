@@ -37,7 +37,7 @@ export function WarningBar({ fieldWarning, setWarningBarDisplay }) {
     if (warning === "parentlessNodes") {
       parentlessNodeText.push(
         <div key={warning}>
-          <h3>Parentless Nodes</h3>
+          <h3>Parentless nodes warning</h3>
           <p>
             Specify a {config.actFields.WP} in the {config.WORKSHEETS.ACTIVITIES} worksheet to dispaly nodes:{" "}
             {fieldWarning[warning].map((s, i) => (i < fieldWarning[warning].length - 1 ? `"${s}", ` : `"${s}"`))}{" "}
@@ -75,7 +75,6 @@ export function WarningBar({ fieldWarning, setWarningBarDisplay }) {
         <i className="fa fa-triangle-exclamation" onClick={expandWarning} title="click to expand"></i> :{" "}
         {!extendedWarning &&
           totalWarnings + " minor errors detected in the config / dataset that may cause unexpected results "}
-        {/* <span onClick={openWarning}>{extendedWarning ? CLOSE : OPEN}</span> */}
         <span>
           <i className="fa fa-window-close" aria-hidden="true" title="click to dismiss" onClick={hideWarningBar}></i>
         </span>
@@ -83,7 +82,7 @@ export function WarningBar({ fieldWarning, setWarningBarDisplay }) {
       {extendedWarning && (
         <div>
           {parentlessNodeText}
-          <h3>Fields</h3>
+          <h3>Field warnings</h3>
 
           <p>The following fields specified in the config file were not detected in the provided dataset. </p>
           <p>If you intended on including these fields, please check for spelling mistakes (case sensative). </p>

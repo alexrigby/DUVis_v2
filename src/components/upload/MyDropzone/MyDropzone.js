@@ -4,6 +4,8 @@ import ConfigContext from "../../../context/ConfigContext";
 
 import configHandler from "../../../grammar/configHandler";
 
+import "./MyDropzone.css";
+
 const fileTypes = {
   JSON: "application/json",
   EXCEL: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -123,10 +125,13 @@ export function MyDropzone({ userFiles, setUserFiles, setExcelDataset }) {
   );
 
   return (
-    <div {...getRootProps({ style })}>
+    <div {...getRootProps({ style })} className="dropzone">
       <input {...getInputProps()} />
       <p>
-        Drop <b>.json</b> and <b>.xlsx</b> files here or click to browse
+        Upload files here <i className="fa fa-upload"></i>
+      </p>
+      <p style={{ fontSize: "10pt" }}>
+        Drag and drop <b>.json</b> and <b>.xlsx</b> files or click to browse
       </p>
     </div>
   );

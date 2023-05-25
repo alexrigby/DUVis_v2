@@ -24,22 +24,33 @@ export function DownloadUploadButtons({ config, excelDataset, setUploadVeiw, use
     setUploadVeiw((prevState) => !prevState);
   };
 
-  const clearProjectButtonStyle = {
-    display: uploadVeiw ? "block" : "none",
+  const clearProjectData = (evt) => {
+    const confirmBox = window.confirm(
+      "WARNING!! Clicking OK will delete your project data, download your files first if you don’t want your data to be lost"
+    );
+    if (confirmBox) {
+      //clears local storage and refreshes the page to clear states
+      window.localStorage.clear();
+      window.location.reload();
+    }
+  };
+
+  const dataButtonStyle = {
+    visibility: uploadVeiw ? "visible" : "hidden",
   };
 
   return (
     <div>
       <div className="dataButtons">
         <button onClick={openUploadVeiw}>
-          Upload new files <i className="fa fa-upload"></i>
+          Manage data <i className="fa fa-floppy-disk"></i>
         </button>
 
-        <button onClick={downloadHandler}>
+        <button onClick={downloadHandler} style={dataButtonStyle}>
           Download files <i className="fa fa-download"></i>
         </button>
       </div>
-      <button style={clearProjectButtonStyle} className="clearProjectButton">
+      <button onClick={clearProjectData} style={dataButtonStyle} className="clearProjectButton">
         Clear project data <i className="fa fa-eraser"></i>
       </button>
     </div>
