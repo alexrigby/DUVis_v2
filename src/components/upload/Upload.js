@@ -21,7 +21,12 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
 
   const fatalErrorsText = fatalErrorMessage.current.length > 0 && (
     <div>
-      <p>FATAL ERROR! Cound not find dataset worksheets: {fatalErrorMessage.current.map((err) => `"${err}", `)}</p>
+      <p>FATAL ERROR! Cound not find dataset worksheets: </p>
+
+      {fatalErrorMessage.current.map((err) => (
+        <li key={err}>{err}</li>
+      ))}
+
       <p>Check that config and dataset spellings match (case sensative)</p>
       <p>DATASET FILE NOT UPDATED!</p>
     </div>
@@ -58,19 +63,23 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
       <div className="uploadedFile">
         <div style={style(userFiles.config.errors || !config)}>
           <p>Config: {userFiles.config.fileName}</p>
-          {userFiles.config.errors && (
-            <>
-              <p>Config error: {configError}</p> <p>CONFIG FILE NOT UPDATED!</p>
-            </>
-          )}
+          <div className="errorMessages">
+            {userFiles.config.errors && (
+              <>
+                <p>FATAL CONFIG ERROR!: {configError}</p> <p>CONFIG FILE NOT UPDATED!</p>
+                <p>Check that your config file inputs match the schema</p>
+              </>
+            )}
+          </div>
         </div>
-        {/* {userFiles.dataset.fileName && ( */}
+
         <div style={style(userFiles.dataset.errors || fatalErrorMessage.current.length > 0 || !excelDataset)}>
           <p>Dataset: {userFiles.dataset.fileName}</p>
-          {userFiles.dataset.errors && <p>Dataset Error: {userFiles.dataset.errors} </p>}
-          {fatalErrorMessage.current.length > 0 && config && fatalErrorsText}
+          <div className="errorMessages">
+            {userFiles.dataset.errors && <p>Dataset Error: {userFiles.dataset.errors} </p>}
+            {fatalErrorMessage.current.length > 0 && config && fatalErrorsText}
+          </div>
         </div>
-        {/* )} */}
       </div>
     </div>
   );
