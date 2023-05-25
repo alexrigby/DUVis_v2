@@ -7,7 +7,7 @@ export function parseActivityDataset(actData, dates, wpData, config) {
 
   //finds what color gned and assignes it to activities, assignes neon red to parentless nodes
   const getColorRef = (wp, color) =>
-    wp ? wpData.filter((record) => record.id === `WP_${wp.trim()}`)[0][color] : "#FF3131";
+    wp !== "" ? wpData.filter((record) => record.id === `WP_${wp.trim()}`)[0][color] : "#FF3131";
 
   const activityData = actData.map((act, i) => {
     // if user specifies additional meta fields (only give name not type)

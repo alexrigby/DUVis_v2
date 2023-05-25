@@ -63,24 +63,24 @@ export function App() {
 
   //----------------------- FETCH EXCEL DATA FOR USE IN APP-----------------------------------
   useEffect(() => {
-    // const fileString = window.localStorage.getItem("excelDataset");
-    // if (fileString) {
-    //   // sets string repreentation of array buffer to array bufffer
-    //   const file = new Uint8Array(fileString.split(",")).buffer;
-    //   setExcelDataset(file);
-    // } else {
-    //   setExcelDataset(null);
-    // }
-    // //finds names and errors of locally stored datasets
-    // const localUserFiles = window.localStorage.getItem("userFiles");
-    // if (localUserFiles) {
-    //   setUserFiles(JSON.parse(localUserFiles));
-    // } else {
-    //   setUserFiles({
-    //     config: { fileName: null, errors: null },
-    //     dataset: { fileName: null, errors: null },
-    //   });
-    // }
+    const fileString = window.localStorage.getItem("excelDataset");
+    if (fileString) {
+      // sets string repreentation of array buffer to array bufffer
+      const file = new Uint8Array(fileString.split(",")).buffer;
+      setExcelDataset(file);
+    } else {
+      setExcelDataset(null);
+    }
+    //finds names and errors of locally stored datasets
+    const localUserFiles = window.localStorage.getItem("userFiles");
+    if (localUserFiles) {
+      setUserFiles(JSON.parse(localUserFiles));
+    } else {
+      setUserFiles({
+        config: { fileName: null, errors: null },
+        dataset: { fileName: null, errors: null },
+      });
+    }
   }, []);
 
   //sets the names of datasets in local storage when user uploads new files
@@ -90,10 +90,9 @@ export function App() {
 
   useEffect(() => {
     if (config && excelDataset) {
-      console.log(excelDataset);
       //gets arrays of all worksheet data and any errors in config/worksheet
       const { visData, fatalErrors } = getDataset(excelDataset, config, setConfig);
-      console.log(visData);
+
       setVisDatasets(visData);
       setFatalErrorState(fatalErrors);
     }
@@ -127,7 +126,7 @@ export function App() {
           display: "block",
         }));
       }
-      console.log(cyState.elements.length);
+
       addDataToCytoscape();
     }
   }, [

@@ -11,7 +11,6 @@ Cytoscape.use(cola);
 
 export const FCOSE = (currentActNodeCount, random) => {
   const nodeRepuslionFactor = 1000;
-
   return {
     name: "fcose",
     animationDuration: 1000,
@@ -27,24 +26,24 @@ export const FCOSE = (currentActNodeCount, random) => {
     },
     idealEdgeLength: function (edge) {
       const sameParent = edge.connectedNodes()[0].data("parent") === edge.connectedNodes()[1].data("parent");
-      if (edge.data("type") === "stakeholderEdge") {
-        return 20;
-      } else {
+      if (edge.data("type") !== "stakeholderEdge") {
         return sameParent ? 100 : 500;
+      } else {
+        return 20;
       }
     },
     edgeElasticity: (edge) => {
-      if (edge.data().type === "stakeholderEdge") {
+      if (edge.data().type !== "stakeholderEdge") {
         return 0.1;
       } else {
         return 0.1;
       }
     },
     tile: (node) => {
-      if (node.data().type === "stakeholderNode") {
-        return false;
-      } else {
+      if (node.data().type !== "stakeholderNode") {
         return true;
+      } else {
+        return false;
       }
     },
     randomize: random,

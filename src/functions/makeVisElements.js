@@ -21,20 +21,6 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
 
   const { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing } = cloneDeep(visDatasets); // make a deep copy so state isnt affected directly
 
-  //----------------FIND FILEDS SPECIFIED IN CONFIG BUT NOT IN DATASET------------------------------//
-
-  const missingWpFields = getMissingFields(wpDataset, config.wpFields);
-  const missingActFields = getMissingFields(actDataset, config.actFields);
-  const missingStFields =
-    config.INCLUDE_STHOLDERS && !stWorksheetMissing.length > 0 && getMissingFields(stDataset, config.stFields);
-
-  const missingFieldWarning = {
-    ...(stWorksheetMissing.length > 0 && { worksheets: stWorksheetMissing }),
-    ...(missingWpFields.length > 0 && { [config.WORKSHEETS.WORKPACKAGES]: missingWpFields }),
-    ...(missingActFields.length > 0 && { [config.WORKSHEETS.ACTIVITIES]: missingActFields }),
-    ...(missingStFields.length > 0 && { [config.WORKSHEETS.STAKEHOLDERS]: missingStFields }),
-  };
-
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
   const startDate = config.START_DATE;
   const endDate = config.END_DATE;
@@ -70,7 +56,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
     parseStakeholderDataset(stLinks, stDataset, trimmedActData, config).stakeholderData;
 
   //----MAKE VIS ELEMENTS -------------
-  const actNodes = makeActNodes(trimmedActData, config);
+  const { actNodes, actNodesParentless } = makeActNodes(trimmedActData, config);
   const actEdges = makeActEdges(links, actNodes);
 
   const wpNodes = makeWpNodes(trimmedWpData, config);
@@ -97,10 +83,29 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
 
   //----ALL CYTOSCAPE ELEMENTS-----
   const cyElms = [...actNodes, ...actEdges.flat(), ...wpNodes, ...wpEdges].flat();
+
+  // actNodesParentless.length > 0 && cyElms.push(...actNodesParentless);
   //if stakeholders are included then add them to cy elements
   config.INCLUDE_STHOLDERS &&
     !stWorksheetMissing.length > 0 &&
     cyElms.push(...stakeholderNodes, ...stakeholderEdges.flat(), projectNode);
+
+  //----------------FIND FILEDS SPECIFIED IN CONFIG BUT NOT IN DATASET AND NODES WITH NO PARENT ------------------------------//
+
+  const missingWpFields = getMissingFields(wpDataset, config.wpFields);
+  const missingActFields = getMissingFields(actDataset, config.actFields);
+  const missingStFields =
+    config.INCLUDE_STHOLDERS && !stWorksheetMissing.length > 0 && getMissingFields(stDataset, config.stFields);
+
+  const noParentNodes = actNodesParentless.map((node) => node.data.id);
+
+  const missingFieldWarning = {
+    ...(noParentNodes.length > 0 && { parentlessNodes: noParentNodes }),
+    ...(stWorksheetMissing.length > 0 && { worksheets: stWorksheetMissing }),
+    ...(missingWpFields.length > 0 && { [config.WORKSHEETS.WORKPACKAGES]: missingWpFields }),
+    ...(missingActFields.length > 0 && { [config.WORKSHEETS.ACTIVITIES]: missingActFields }),
+    ...(missingStFields.length > 0 && { [config.WORKSHEETS.STAKEHOLDERS]: missingStFields }),
+  };
 
   return {
     cyElms,

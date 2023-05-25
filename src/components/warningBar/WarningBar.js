@@ -1,8 +1,9 @@
-import { useState } from "react";
-
+import { useState, useContext } from "react";
+import ConfigContext from "../../context/ConfigContext";
 import "./WarningBar.css";
 
 export function WarningBar({ fieldWarning, setWarningBarDisplay }) {
+  const { config } = useContext(ConfigContext);
   //   const OPEN = <i className="fa fa-angle-down"></i>;
   //   const CLOSE = <i className="fa fa-angle-up"></i>;
 
@@ -19,14 +20,52 @@ export function WarningBar({ fieldWarning, setWarningBarDisplay }) {
   };
 
   //comma seperated list of errors for every worksheet/config file
-  const extWarnText = Object.keys(fieldWarning).map((sheet) => {
+  const extWarnText = Object.keys(fieldWarning).map((warning) => {
     return (
-      <div key={sheet}>
-        <h3>{sheet}</h3>
-        <p>{fieldWarning[sheet].map((s, i) => (i < fieldWarning[sheet].length - 1 ? `"${s}", ` : `"${s}"`))}</p>
+      <div key={warning}>
+        <h3>{warning}</h3>
+        <p>{fieldWarning[warning].map((s, i) => (i < fieldWarning[warning].length - 1 ? `"${s}", ` : `"${s}"`))}</p>
       </div>
     );
   });
+
+  var fieldWarningText = [];
+  var parentlessNodeText = [];
+
+  for (let i = 0; i < Object.keys(fieldWarning).length; i++) {
+    const warning = Object.keys(fieldWarning)[i];
+    if (warning === "parentlessNodes") {
+      parentlessNodeText.push(
+        <div key={warning}>
+          <h3>Parentless Nodes</h3>
+          <p>
+            Specify a {config.actFields.WP} in the {config.WORKSHEETS.ACTIVITIES} worksheet to dispaly nodes:{" "}
+            {fieldWarning[warning].map((s, i) => (i < fieldWarning[warning].length - 1 ? `"${s}", ` : `"${s}"`))}{" "}
+          </p>
+        </div>
+      );
+    } else {
+      fieldWarningText.push(
+        <div key={warning}>
+          <h4
+            style={{
+              fontWeight: 900,
+              fontSize: "9.5pt",
+              display: "inline-block",
+              paddingRight: "5px",
+              paddingTop: "5px",
+              margin: 0,
+            }}
+          >
+            {warning}:{" "}
+          </h4>
+          <p style={{ display: "inline-block" }}>
+            {fieldWarning[warning].map((s, i) => (i < fieldWarning[warning].length - 1 ? `"${s}", ` : `"${s}"`))}
+          </p>
+        </div>
+      );
+    }
+  }
 
   const barStyle = { height: extendedWarning ? "auto" : "17px" };
 
@@ -43,6 +82,9 @@ export function WarningBar({ fieldWarning, setWarningBarDisplay }) {
       </p>
       {extendedWarning && (
         <div>
+          {parentlessNodeText}
+          <h3>Fields</h3>
+
           <p>The following fields specified in the config file were not detected in the provided dataset. </p>
           <p>If you intended on including these fields, please check for spelling mistakes (case sensative). </p>
           <p>
@@ -50,7 +92,7 @@ export function WarningBar({ fieldWarning, setWarningBarDisplay }) {
             If you do not intend to include these fields: for meta fields remove the field from the array, for
             compulsory fields replace the specified value with <b>null</b>
           </p>
-          {extWarnText}
+          {fieldWarningText}
         </div>
       )}
     </div>
