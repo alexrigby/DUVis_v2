@@ -84,7 +84,6 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
   //----ALL CYTOSCAPE ELEMENTS-----
   const cyElms = [...actNodes, ...actEdges.flat(), ...wpNodes, ...wpEdges].flat();
 
-  // actNodesParentless.length > 0 && cyElms.push(...actNodesParentless);
   //if stakeholders are included then add them to cy elements
   config.INCLUDE_STHOLDERS &&
     !stWorksheetMissing.length > 0 &&

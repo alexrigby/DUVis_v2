@@ -1,4 +1,5 @@
 export function makeActEdges(links, nodes) {
+  console.log(nodes);
   //creats array of node in selection
   const nodeId = nodes.map((node) => parseFloat(node.data.id));
   //extractso only the link data for present nodes
