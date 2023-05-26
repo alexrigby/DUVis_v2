@@ -77,5 +77,8 @@ Empty array or array of objects:
 |`type`|one of "category" OR "text"| use "category" for fields that will contain categorical data ( discrete values), use "text" for fields that will contain open text (continuous values)|
 
 ## Excel Dataset
+ReActiVis requires an excel (.xlsx) dataset containing project data to be visualised. The excel workbook can contain 5 worksheets: 
+
+### activities worksheet
 
 
