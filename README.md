@@ -5,6 +5,9 @@ The Research Activity Visualiser (ReActiVis) is the generalised version of [DUVi
 
 ![Dŵr Uisce Work Package Visualiser teaser image](https://github.com/alexrigby/dwr-uisce-vis-react/blob/master/teaser2.png)
 
+## Contents 
+
+[TOC]
 
 ## Config
 
