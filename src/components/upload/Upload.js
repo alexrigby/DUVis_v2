@@ -2,6 +2,8 @@ import { useContext } from "react";
 
 import MyDropzone from "./MyDropzone/MyDropzone";
 import ConfigContext from "../../context/ConfigContext";
+
+import generateExcelFromConfig from "./functions/generateExcelFromConfig";
 import "./Upload.css";
 
 import GitHub from "../../assets/GitHub_Logo.png";
@@ -62,7 +64,12 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
 
       <div className="uploadedFile">
         <div style={style(userFiles.config.errors || !config)}>
-          <p>Config: {userFiles.config.fileName}</p>
+          <p>Config: {userFiles.config.fileName}</p>{" "}
+          {!userFiles.config.errors && config && (
+            <button onClick={() => generateExcelFromConfig(config)}>
+              Generate boilerplate excel from config <i className="fa fa-file-excel"></i>
+            </button>
+          )}
           <div className="errorMessages">
             {userFiles.config.errors && (
               <>

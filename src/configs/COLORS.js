@@ -30,6 +30,6 @@ export const colorPaletBorder = [
   "#967cb9",
   "#f43682",
   "#cc6600",
-  "#17becf",
-  "#8c564b",
+  "#15abba",
+  "#814f45",
 ];
