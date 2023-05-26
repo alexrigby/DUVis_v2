@@ -1,5 +1,4 @@
 export function makeActEdges(links, nodes) {
-  console.log(nodes);
   //creats array of node in selection
   const nodeId = nodes.map((node) => parseFloat(node.data.id));
   //extractso only the link data for present nodes
@@ -9,7 +8,7 @@ export function makeActEdges(links, nodes) {
     act: link.act,
     links: nodeId.filter((id) => link.links.includes(id)),
   }));
-  // console.log(currentLinks);
+
   return currentLinks.map((el, i) => {
     let linkedActivities = currentLinks[i].links;
     //maps each link in i links to its array index (i + 1)

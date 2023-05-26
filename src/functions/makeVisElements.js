@@ -43,20 +43,22 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
     [...new Set(trimmedActData.map((act) => `WP_${act.WP}`))].includes(wp.id)
   );
 
+  const { actNodes, actNodesParentless } = makeActNodes(trimmedActData, config);
+  const noParentNodes = actNodesParentless.map((node) => node.data.id);
   // ----TRIM & FILTER STAKEHOLDERS-------
   // returns the max engagement score for the pr period (regardless of stroy filter)
   const maxEngScore =
     config.INCLUDE_STHOLDERS &&
     !stWorksheetMissing.length > 0 &&
-    parseStakeholderDataset(stLinks, stDataset, filteredByPr, config).maxEngScore;
+    parseStakeholderDataset(stLinks, stDataset, filteredByPr, config, noParentNodes).maxEngScore;
   // creates ealily readable stakeholder object from stData and stLinks to match trimmed activity data
   const stakeholderData =
     config.INCLUDE_STHOLDERS &&
     !stWorksheetMissing.length > 0 &&
-    parseStakeholderDataset(stLinks, stDataset, trimmedActData, config).stakeholderData;
+    parseStakeholderDataset(stLinks, stDataset, trimmedActData, config, noParentNodes).stakeholderData;
 
   //----MAKE VIS ELEMENTS -------------
-  const { actNodes, actNodesParentless } = makeActNodes(trimmedActData, config);
+
   const actEdges = makeActEdges(links, actNodes);
 
   const wpNodes = makeWpNodes(trimmedWpData, config);
@@ -95,8 +97,6 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
   const missingActFields = getMissingFields(actDataset, config.actFields);
   const missingStFields =
     config.INCLUDE_STHOLDERS && !stWorksheetMissing.length > 0 && getMissingFields(stDataset, config.stFields);
-
-  const noParentNodes = actNodesParentless.map((node) => node.data.id);
 
   const missingFieldWarning = {
     ...(noParentNodes.length > 0 && { parentlessNodes: noParentNodes }),

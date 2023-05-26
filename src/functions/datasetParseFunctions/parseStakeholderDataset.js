@@ -1,4 +1,4 @@
-export function parseStakeholderDataset(stLinks, stData, trimmedActData, config) {
+export function parseStakeholderDataset(stLinks, stData, trimmedActData, config, noParentNodes) {
   //----------------CONFIG------
   const actFields = config.actFields;
   const stFields = config.stFields;
@@ -40,7 +40,9 @@ export function parseStakeholderDataset(stLinks, stData, trimmedActData, config)
             act: row
               .map(
                 (el, j) =>
-                  (el === "1" || el === "2" || el === "3" || el === "4") && {
+                  (el === "1" || el === "2" || el === "3" || el === "4") &&
+                  // removes activity nodes that have no parent
+                  !noParentNodes.includes(newActIds[j]) && {
                     actID: newActIds[j],
                     engagement: el,
                   }

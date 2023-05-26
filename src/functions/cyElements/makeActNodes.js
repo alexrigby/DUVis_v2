@@ -49,7 +49,6 @@ export function makeActNodes(data, config) {
       : `Activity ${act[actFields.ID]}`; // name with id in front
 
     if (act[actFields.WP] !== "") {
-      console.log(act[actFields.WP]);
       actNodes.push({
         group: "nodes",
         data: {
