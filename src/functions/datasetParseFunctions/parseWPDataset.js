@@ -1,8 +1,9 @@
 import { colorPaletBg, colorPaletBorder } from "../../configs/COLORS";
 
-export function parseWPDataset(data) {
+export function parseWPDataset(data, config) {
   const wpData = data.map((wp, i) => ({
     ...wp,
+    [config.wpFields.ID]: `WP_${wp[config.wpFields.ID]}`,
     bgColor: colorPaletBg[i],
     borderColor: colorPaletBorder[i],
   }));

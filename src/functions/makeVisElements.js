@@ -28,7 +28,7 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay, 
 
   //-----------------PARSE DATA ----------
   // if no months are provided then dont add dates to data
-  const wpData = parseWPDataset(wpDataset);
+  const wpData = parseWPDataset(wpDataset, config);
   const activityData = parseActivityDataset(actDataset, dates, wpData, config);
 
   const links = linksMatrixToArray(actLinks);

@@ -3,7 +3,8 @@ export function parseStakeholderDataset(stLinks, stData, trimmedActData, config)
   const actFields = config.actFields;
   const stFields = config.stFields;
 
-  const stIDs = stLinks.slice(1, stLinks.length).flatMap((s) => s.slice(0, 1)); //return array of stakeholder ids
+  const stDataNewIds = stData.map((s) => ({ ...s, [stFields.ID]: `S_${s[stFields.ID]}` })); // adds S_ to stakeholder IDS
+  const stIDs = stLinks.slice(1, stLinks.length).flatMap((s) => `S_${s.slice(0, 1)}`); //return array of stakeholder ids and adds S_to ids
   const actIDs = stLinks[0].slice(1); //gets activity ids present in stakeholder matrix (so no stakeholders with no links are included)
   const trimmedActIDs = trimmedActData.map((act) => act[actFields.ID]); // gets ids present in trimmed act data (for when filters are applied)
 
@@ -26,7 +27,8 @@ export function parseStakeholderDataset(stLinks, stData, trimmedActData, config)
     ? newMatrix
         .map((row, i) => {
           //returns coresponding info from stakeholder file
-          const stakeholderData = stData.filter((record) => record[stFields.ID] === stIDs[i])[0];
+          const stakeholderData = stDataNewIds.filter((record) => record[stFields.ID] === stIDs[i])[0];
+
           // for each user specified meta field create an object {meta_filed : field value}
           const meta_fields = stFields.META_FIELDS.reduce((a, b) => ({ ...a, [b.name]: stakeholderData[b.name] }), {});
 
