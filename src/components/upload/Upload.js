@@ -67,7 +67,7 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
           <p>Config: {userFiles.config.fileName}</p>{" "}
           {!userFiles.config.errors && config && (
             <button onClick={() => generateExcelFromConfig(config)}>
-              Generate boilerplate excel from config <i className="fa fa-file-excel"></i>
+              Generate excel template from config <i className="fa fa-file-excel"></i>
             </button>
           )}
           <div className="errorMessages">
