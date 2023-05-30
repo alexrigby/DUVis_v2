@@ -40,6 +40,9 @@ The Research Activity Visualiser (ReActiVis) is the generalised version of [DUVi
 * External stakeholders can be included (or excluded) by specifying in the [Config](#config)
 * Temporal features can be included (or excluded) by defining (or excluding) a start and end date from the [Config](#config).
 
+### Interface instructions 
+* For full instructions on interface feature usage please refere to the [documentation](https://github.com/alexrigby/ReActiVis/blob/master/ReActiPro%20interface%20instructions.pdf)
+
 ***Important**: ReActiVis is in development, although efforts have been made to handle dataset and config errors we cannot guarantee that all errors will be caught. Therefore please take care to format your files correctly to avoid unexpected results.*
 
 ## Inputs
@@ -65,6 +68,10 @@ The activities worksheet has 2 required fields: `ID` and `parent work package`.
 | ----------- | ----------- | ----------- |
 |`ID`|integer|A numerical identifier, unique within the activities worksheet (e.g. "1", "55", "200")|
 |`parent work package`|integer|A numerical identifier pointing to the activities parent workpackage (e.g."1", "12")|
+
+If the `startDate` or `endDate` fields are included the format must be "yyyy-mm-dd"
+
+To include [`UN sustainable development goals`](https://sdgs.un.org/goals), record the SGDs addressed by the activity as a comma separated  list of IDs ranging from 1-17 (e.g., 1,5,17) 
 
 #### Activity links worksheet (required)
 The activity links worksheet is a correlation matrix where links between activities are recored. All links are non-directional. Links should be marked with a "1" in the corresponding cell.
@@ -105,7 +112,7 @@ For example, in the following table stakeholder 1 engaged with activity 34 at an
 
 
 ### [Config](#config)
-The config tells ReActiVis where in the excel dataset to find relivant information. Define custom `meta-fields` to included additional information in the visualisation. If you dont have software that allows you to edit JSON files installed then you can use an online editor (https://jsoneditoronline.org/#left=local.riyiqo)
+The config tells ReActiVis where in the excel dataset to find relivant information. Define custom `meta-fields` to included additional information in the visualisation. If you dont have software that allows you to edit JSON files installed then you can use an online editor (https://jsoneditoronline.org/#left=local.riyiqo). 
 
 ***Important**: As a minimum the config must include all the keys outlined in this section. If you wish to omit a value from the visualisation please specify as null (or an empty array for `stories` and `meta-fields`).*
 
@@ -118,7 +125,7 @@ The config tells ReActiVis where in the excel dataset to find relivant informati
 | [`worksheets`](#worksheets)   | object |  | Name of each excel worksheet as they appear in the excel workbook |
 | [`activities`](#activities)   | object |  | Field names as they appear in the activities worksheet |
 | [`workPackages`](#workPackages)   | object |  | Field names as they appear in the work packages worksheet |
-| [`stakeholders`](#stakeholders)   | object |  | Field names as they appear in the work stakeholders worksheet |
+| [`stakeholders`](#stakeholders)   | object OR null|  | Field names as they appear in the work stakeholders worksheet |
 | [`stories`](#stories)   | array of objects OR empty array |  | Names and activity ids peresnt in data stories {name: 'story name', ids: [1 , 2, 3, 4,]} |
 
 #### [`worksheets`](#worksheets)
@@ -128,8 +135,8 @@ The config tells ReActiVis where in the excel dataset to find relivant informati
 | `activities` | string  |   Name of the activites worksheet as it appears in the excel workbook |
 | `activityLinks` | string  |   Name of the activity links worksheet as it appears in the excel workbook |
 | `workPackages` | string  |  Name of the workpackages worksheet as it appears in the excel workbook |
-| `stakeholders` | string  |   Name of the stakeholders worksheet as it apears in the excel workbook |
-| `stakeholderLinks` | string  |   Name of the stakeholder links worksheet as it apears in the excel workbook |
+| `stakeholders` | string OR null  |   Name of the stakeholders worksheet as it apears in the excel workbook |
+| `stakeholderLinks` | string OR null |   Name of the stakeholder links worksheet as it apears in the excel workbook |
 
 #### [`activities`](#activities)
 
@@ -170,9 +177,9 @@ e.g.,
 {
 ...,
   "stories": [
-                  { "name": "my first data story", "activityIds": [1, 3, 5, 34, 23] }, 
-                  { "name": ",y second data story", "activityIds": [99, 1, 67, 4, 3 ,6 , 87] }
-                ], 
+                { "name": "my first data story", "activityIds": [1, 3, 5, 34, 23] }, 
+                { "name": "my second data story", "activityIds": [99, 1, 67, 4, 3 ,6 , 87] }
+             ], 
 ...
 }
 ```
