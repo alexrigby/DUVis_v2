@@ -8,6 +8,24 @@ The Research Activity Visualiser (ReActiVis) is the generalised version of [DUVi
 ## Contents 
 
 - [Basic Usage](#basic-usage)
+  - [Getting started](#getting-started)
+  - [Visualisation options](#visualisation-options)
+- [Inputs](#inputs)
+  - [Excel Dataset](#excel-dataset)
+    - [Workpackage worksheet (required)](#workpackage-worksheet-required)
+    - [Activities worksheet (required)](#activities-worksheet-required)
+    - [Activity links worksheet (required)](#activity-links-worksheet-required)
+    - [Stakeholders worksheet (optional)](#stakeholders-worksheet-optional)
+    - [Stakeholder links worksheet (optional)](#stakeholder-links-worksheet-optional)
+  - [Config](#config)
+    - [worksheets](#worksheets)
+    - [activities](#activities)
+    - [workPackages](#workpackages)
+    - [stakeholders](#stakeholders)
+    - [stories](#stories)
+    - [metaFields](#metafields)
+  
+
 
 ## Basic Usage
 ### Getting started
@@ -23,12 +41,12 @@ The Research Activity Visualiser (ReActiVis) is the generalised version of [DUVi
 
 ***Important**: ReActiVis is in development, although efforts have been made to handle dataset and config errors we cannot guarantee that all errors will be caught. Therefore please take care to format your files correctly to avoid unexpected results.*
 
+## Inputs
 
-
-## Excel Dataset
+### Excel Dataset
 ReActiVis requires an excel (.xlsx) workbook containing project data to be visualised. 5 worksheets are used for visualisation. Although additional worksheets and data fields can be included for record keeping, to improve performance it is recommended to keep additional information to a minimum. 
 
-### Workpackage worksheet (required)
+#### Workpackage worksheet (required)
 The workpackage worksheet should contain information regarding the project workpackages with each row representing a unique workpackage. 
 The workpackage worksheet has 1 required field: `ID`
 
@@ -38,7 +56,7 @@ The workpackage worksheet has 1 required field: `ID`
 
 ***Important**: ReActiVis currently supports a maximum of 10 work packages*
 
-### Activities worksheet (required)
+#### Activities worksheet (required)
 The activities worksheet should contain information regarding activities undertaken as part of the project. Each row represents a single activity. 
 The activities worksheet has 2 required fields: `ID` and `parent work package`.
 
@@ -47,8 +65,8 @@ The activities worksheet has 2 required fields: `ID` and `parent work package`.
 |`ID`|integer|A numerical identifier, unique within the activities worksheet (e.g. "1", "55", "200")|
 |`parent work package`|integer|A numerical identifier pointing to the activities parent workpackage (e.g."1", "12")|
 
-### Activity link worksheet (required)
-The activity link worksheet is a correlation matrix where links between activities are recored. All links are non-directional. Links should be marked with a "1" in the corresponding cell.
+#### Activity links worksheet (required)
+The activity links worksheet is a correlation matrix where links between activities are recored. All links are non-directional. Links should be marked with a "1" in the corresponding cell.
 For example, in the following table the linked activities are: 1 & 4, 2 & 6, 3 & 1, 5 & 7 
 
 |`ID`|1|2|3|4|5|6|7|
@@ -62,7 +80,7 @@ For example, in the following table the linked activities are: 1 & 4, 2 & 6, 3 &
 |7| | | | | 1| | | 
 
 
-### Stakeholders worksheet (optional)
+#### Stakeholders worksheet (optional)
 The stakeholders worksheet should contain information regarding external stakeholders who have engaged with activities within the project. Each row represents a single external stakeholder. If you would like to include external stakeholders in the visualization then this worksheet is required. 
 The stakeholders worksheet has one required field: `ID`
 
@@ -70,8 +88,8 @@ The stakeholders worksheet has one required field: `ID`
 | ----------- | ----------- | ----------- |
 |`ID`|integer|A numerical identifier, unique within the stakeholders worksheet (e.g. "1", "55", "200")|
 
-### Stakeholder link worksheet (optional)
-The stakeholder link worksheet is a correlation matrix where links and their engagement level recorded between external stakeholders and activities. If you would like to include external stakeholders in the visualization, then this worksheet is required. Links should be marked with number ranging from 1(low)-4(high) indicating the degree to which the stakeholder engaged with the activity.
+#### Stakeholder links worksheet (optional)
+The stakeholder links worksheet is a correlation matrix where links and their engagement level recorded between external stakeholders and activities. If you would like to include external stakeholders in the visualization, then this worksheet is required. Links should be marked with number ranging from 1(low)-4(high) indicating the degree to which the stakeholder engaged with the activity.
 
 For example, in the following table stakeholder 1 engaged with activity 34 at an engagement level of 4, stakeholder 2 with activity 22 at level 1, stakeholder 3 with activity 1 at level 2, and stakeholder 4 with activity 17 at level 3.
 
@@ -85,7 +103,7 @@ For example, in the following table stakeholder 1 engaged with activity 34 at an
 
 
 
-## [Config](#config)
+### [Config](#config)
 The config tells ReActiVis where in the excel dataset to find relivant information. Define custom `meta-fields` to included additional information in the visualisation. 
 
 ***Important**: As a minimum the config must include all the keys outlined in this section. If you wish to omit a value from the visualisation please specify as null (or an empty array for `stories` and `meta-fields`).*
@@ -102,7 +120,7 @@ The config tells ReActiVis where in the excel dataset to find relivant informati
 | [`stakeholders`](#stakeholders)   | object |  | Field names as they appear in the work stakeholders worksheet |
 | [`stories`](#stories)   | array of objects OR empty array |  | Names and activity ids peresnt in data stories {name: 'story name', ids: [1 , 2, 3, 4,]} |
 
-### [`worksheets`](#worksheets)
+#### [`worksheets`](#worksheets)
 
 | Key       | Type        | Desctiption |
 | ----------- | ----------- | ----------- |
@@ -112,7 +130,7 @@ The config tells ReActiVis where in the excel dataset to find relivant informati
 | `stakeholders` | string  |   Name of the stakeholders worksheet as it apears in the excel workbook |
 | `stakeholderLinks` | string  |   Name of the stakeholder links worksheet as it apears in the excel workbook |
 
-### [`activities`](#activities)
+#### [`activities`](#activities)
 
 | Key       | Type        | Desctiption |
 | ----------- | ----------- | ----------- |
@@ -124,21 +142,21 @@ The config tells ReActiVis where in the excel dataset to find relivant informati
 |`sustainableDevelopmentGoals`|string OR null|The activity UN Sustainable Development Goals field as it appears in the excel worksheet|
 |[`metaFields`](#metaFields)|array of objects OR empty array|Names and types of optional addional meta fields in format {name: 'meta field name', type: 'category OR text'}|
 
-### [`workPackages`](#workPackages)
+#### [`workPackages`](#workPackages)
 | Key       | Type        | Desctiption |
 | ----------- | ----------- | ----------- |
 |`id`|string|The work package id field heading as it appears in the excel worksheet|
 |`name`|string OR null|The work package name field as it appears in the excel worksheet|
 |[`metaFields`](#metaFields)|array of objects OR empty array|Names and types of optional addional meta fields in format {name: 'meta field name', type: 'category OR text'}|
 
-### [`stakeholders`](#stakeholders)
+#### [`stakeholders`](#stakeholders)
 | Key       | Type        | Desctiption |
 | ----------- | ----------- | ----------- |
 |`id`|string|The stakeholder id field heading as it appears in the excel worksheet|
 |`name`|string OR null|The stakeholder name field as it appears in the excel worksheet|
 |[`metaFields`](#metaFields)|array of objects OR empty array|Names and types of optional addional meta fields in format {name: 'meta field name', type: 'category OR text'}|
 
-### [`stories`](#stories)
+#### [`stories`](#stories)
 Empty array or array of objects:
 
 | Key       | Type        | Desctiption |
