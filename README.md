@@ -1,5 +1,6 @@
 # ReActiVis
 
+
 The Research Activity Visualiser (ReActiVis) is the generalised version of [DUVis](https://github.com/DwrUisce/DUVis). ReActiVis allows users to interactivley visualize the interaction between activities, workpackages and external stakeholders in their research projects.
 
 
@@ -164,6 +165,18 @@ Empty array or array of objects:
 |`name`|string| Name of data story|
 |`activityIds`|array of integers| Array of ids to include in the 'data story' e.g. [1, 2, 3, 4]|
 
+e.g.,
+```javascript
+{
+...,
+  "stories": [
+                  { "name": "my first data story", "activityIds": [1, 3, 5, 34, 23] }, 
+                  { "name": ",y second data story", "activityIds": [99, 1, 67, 4, 3 ,6 , 87] }
+                ], 
+...
+}
+```
+
 
 #### [`metaFields`](#metaFields)
 Empty array or array of objects:
@@ -172,3 +185,15 @@ Empty array or array of objects:
 | ----------- | ----------- | ----------- |
 |`name`|string| Name of meta field as it appears in the excel worksheet|
 |`type`|one of "category" OR "text"| Use "category" for fields that will contain categorical data ( discrete values), use "text" for fields that will contain open text (continuous values)|
+
+e.g.,
+```javascript
+{
+...,
+  "metaFields": [
+                  { "name": "field 1", "type": "text" }, 
+                  { "name": "field 2", "type": "category" }
+                ], 
+...
+}
+````
