@@ -10,10 +10,16 @@ The Research Activity Visualiser (ReActiVis) is the generalised version of [DUVi
 [TOC]
 
 ## Basic Usage
+### Getting started
 * Open the link and follow the instructions on the landing page to upload your JSON config file and Excel dataset.
-* If required, you can generate an excel template from the config you supply.
+* If required, you can generate an excel template from your config.
 * Your files are saved to local storage so will be rembered in your browser. To transfere the same files to another user you can download your files from the `manage data` tab. 
 * To update the config or dataset simply re-upload your updated files in the `manage data` tab.
+
+### Visualisation options
+* Each excel worksheet has required fields. Additional meta fields can be included in the visualisation by defining them in the [Config](#config).
+* External stakeholders can be included (or excluded) by specifying in the [Config](#config)
+* Temporal features can be included (or excluded) by defining (or excluding) a start and end date from the [Config](#config).
 
 ***Important**: ReActiVis is in development, although efforts have been made to handle dataset and config errors we cannot guarantee that all errors will be caught. Therefore please take care to format your files correctly to avoid unexpected results.*
 
@@ -23,7 +29,7 @@ The Research Activity Visualiser (ReActiVis) is the generalised version of [DUVi
 ReActiVis requires an excel (.xlsx) workbook containing project data to be visualised. 5 worksheets are used for visualisation. Although additional worksheets and data fields can be included for record keeping, to improve performance it is recommended to keep additional information to a minimum. 
 
 ### Workpackage worksheet (required)
-The workpackage worksheet should contain information regarding the project workpackage with each row representing a unique workpackage. 
+The workpackage worksheet should contain information regarding the project workpackages with each row representing a unique workpackage. 
 The workpackage worksheet has 1 required field: `ID`
 
 | Field       | Value        | Desctiption |
@@ -82,7 +88,8 @@ For example, in the following table stakeholder 1 engaged with activity 34 at an
 
 
 
-## Config
+## [Config](#config)
+The config tells ReActiVis where in the excel dataset to find relivant information. Custom `meta-fields` defined and included in the visualisation. 
 
 | Key       |  Type        | Format      | Desctiption |
 | ----------- | ----------- | ----------- |----------- |
