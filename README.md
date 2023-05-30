@@ -7,7 +7,7 @@ The Research Activity Visualiser (ReActiVis) is the generalised version of [DUVi
 
 ## Contents 
 
-[TOC]
+- [Basic Usage](#basic-usage)
 
 ## Basic Usage
 ### Getting started
@@ -85,13 +85,10 @@ For example, in the following table stakeholder 1 engaged with activity 34 at an
 
 
 
-
-
-
 ## [Config](#config)
 The config tells ReActiVis where in the excel dataset to find relivant information. Define custom `meta-fields` to included additional information in the visualisation. 
 
-***Important**: As a minimum the config must include all the keys outlined in this section. If you wish to omit a value from the visualisation please specify as null (or an empty array for `stories` and `meta-fields`).
+***Important**: As a minimum the config must include all the keys outlined in this section. If you wish to omit a value from the visualisation please specify as null (or an empty array for `stories` and `meta-fields`).*
 
 | Key       |  Type        | Format      | Desctiption |
 | ----------- | ----------- | ----------- |----------- |
