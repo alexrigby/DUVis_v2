@@ -1,0 +1,54 @@
+{
+  "name": "Template config file",
+  "startDate": "2016-09-01",
+  "endDate": "today",
+  "progressReportPeriod": 6,
+  "worksheets": {
+    "activities": "activities",
+    "activityLinks": "activity links",
+    "workPackages": "work packages",
+    "stakeholders": "stakeholders",
+    "stakeholderLinks": "stakeholder links"
+  },
+  "activities": {
+    "id": "ID",
+    "workPackage": "WP",
+    "name": "Activity Name",
+    "startDate": "start date",
+    "endDate": "end date",
+    "sustainableDevelopmentGoals": "SDGs",
+    "metaFields": [
+      { "name": "Activity Category", "type": "category" },
+      { "name": "Activity description", "type": "text" },
+      { "name": "Research questions", "type": "text" },
+      { "name": "Methodology category", "type": "category" },
+      { "name": "Methodology", "type": "text" },
+      { "name": "Discipline", "type": "category" },
+      { "name": "Researcher Name", "type": "category" }
+    ]
+  },
+  "workPackages": {
+    "id": "id",
+    "name": "WP name",
+    "metaFields": [
+      { "name": "WP Category", "type": "category" },
+      { "name": "description", "type": "text" }
+    ]
+  },
+  "stakeholders": {
+    "id": "S_ID",
+    "name": "stakeholder name",
+    "metaFields": [
+      { "name": "Stakeholder Category", "type": "category" },
+      { "name": "description", "type": "text" }
+    ]
+  },
+  "stories": [
+    {
+      "name": "Hydropower Energy Recovery",
+      "activityIds": [1, 2, 3, 4, 5, 6, 7, 8, 25, 27, 31, 42, 51, 52, 53, 54, 55, 80]
+    },
+    { "name": "Drain Water Heat Recovery", "activityIds": [9, 10, 11, 12, 14, 15, 16, 43, 50] },
+    { "name": "Water-Energy Efficiency Audit", "activityIds": [36, 37, 38, 39, 40, 41, 56, 57, 58, 59] }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": null,
+  "startDate": null,
+  "endDate": null,
+  "progressReportPeriod": null,
+  "worksheets": {
+    "activities": "activities",
+    "activityLinks": "activity links",
+    "workPackages": "work packages",
+    "stakeholders": null,
+    "stakeholderLinks": null
+  },
+  "activities": {
+    "id": "ID",
+    "workPackage": "WP",
+    "name": null,
+    "startDate": null,
+    "endDate": null,
+    "sustainableDevelopmentGoals": null,
+    "metaFields": []
+  },
+  "workPackages": {
+    "id": "id",
+    "name": null,
+    "metaFields": []
+  },
+  "stakeholders": null,
+  "stories": []
+}
