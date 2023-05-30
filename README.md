@@ -69,7 +69,9 @@ The activities worksheet has 2 required fields: `ID` and `parent work package`.
 |`ID`|integer|A numerical identifier, unique within the activities worksheet (e.g. "1", "55", "200")|
 |`parent work package`|integer|A numerical identifier pointing to the activities parent workpackage (e.g."1", "12")|
 
-if the `startDate` or `endDate` fields are included the format must be "yyyy-mm-dd"
+If the `startDate` or `endDate` fields are included the format must be "yyyy-mm-dd"
+
+To include [`UN sustainable development goals`](https://sdgs.un.org/goals), record the SGDs addressed by the activity as a comma separated  list of IDs ranging from 1-17 (e.g., 1,5,17) 
 
 #### Activity links worksheet (required)
 The activity links worksheet is a correlation matrix where links between activities are recored. All links are non-directional. Links should be marked with a "1" in the corresponding cell.
