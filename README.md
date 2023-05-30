@@ -74,11 +74,61 @@ Empty array or array of objects:
 | Key       | Type        | Desctiption |
 | ----------- | ----------- | ----------- |
 |`name`|string| Name of meta field as it appears in the excel worksheet|
-|`type`|one of "category" OR "text"| use "category" for fields that will contain categorical data ( discrete values), use "text" for fields that will contain open text (continuous values)|
+|`type`|one of "category" OR "text"| Use "category" for fields that will contain categorical data ( discrete values), use "text" for fields that will contain open text (continuous values)|
 
 ## Excel Dataset
-ReActiVis requires an excel (.xlsx) dataset containing project data to be visualised. The excel workbook can contain 5 worksheets: 
+ReActiVis requires an excel (.xlsx) workbook containing project data to be visualised. The excel workbook can contain 5 worksheets: 
 
-### activities worksheet
+### Workpackage worksheet (required)
+The workpackage worksheet should contain information regarding the project workpackage with each row representing a unique workpackage. 
+The workpackage worksheet has 1 required field: `ID`
+
+| Field       | Value        | Desctiption |
+| ----------- | ----------- | ----------- |
+|`ID`|integer|A numerical identifier, unique within the workpackages worksheet|
+
+### Activities worksheet (required)
+The activities worksheet should contain information regarding activities undertaken as part of the project. Each row represents a single activity. 
+The activities worksheet has 2 required fields: `ID` and `parent work package`.
+
+| Field       | Value        | Desctiption |
+| ----------- | ----------- | ----------- |
+|`ID`|integer|A numerical identifier, unique within the activities worksheet|
+|`parent work package`|integer|A numerical identifier pointing to the activities parent workpackage|
+
+### Activity link worksheet (required)
+The activity link worksheet is a correlation matrix where links between activities are recored. All links are non-directional. Links should be marked with a "1" in the corresponding cell. For example, in the following table the linked activities are: 1 & 4, 2 & 6, 3 & 1, 5 & 7 
+
+|`ID`|1|2|3|4|5|6|7|
+|-|-|-|-|-|-|-|-|
+|1| | | |1| | | |
+|2| | | | | |1 | |
+|3|1 | | | | | | |
+|4|1| | | | | | | 
+|5| | | | | | |1 |
+|6| |1 | | | | | |
+|7| | | | | 1| | | 
+
+
+### Stakeholders worksheet (optional)
+The stakeholders worksheet should contain information regarding external stakeholders who have engaged with activities within the project. Each row represents a single external stakeholder. If you would like to include external stakeholders in the visualization then this worksheet is required. 
+The stakeholders worksheet has one required field: `ID`
+
+| Field       | Value        | Desctiption |
+| ----------- | ----------- | ----------- |
+|`ID`|integer|A numerical identifier, unique within the stakeholders worksheet|
+
+### Stakeholder link worksheet (optional)
+The stakeholder link worksheet is a correlation matrix where links and their engagement level recorded between external stakeholders and activities. If you would like to include external stakeholders in the visualization, then this worksheet is required. Links should be marked with number ranging from 1(low)-4(high) indicating the degree to which the stakeholder engaged with the activity. For example, in the following table stakeholder 1 engaged with activity 34 at an engagement level of 4, stakeholder 2 with activity 22 at level 1, stakeholder 3 with activity 1 at level 2, and stakeholder 4 with activity 17 at level 3.
+
+|`S_ID/Act_ID`|1|24|32|34|17|22|6|
+|-|-|-|-|-|-|-|-|
+|1| | | |4| | | |
+|2| | | | | |1| |
+|3|2| | | | | | |
+|4| | | | |3| | | 
+
+
+
 
 
