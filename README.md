@@ -97,7 +97,8 @@ The activities worksheet has 2 required fields: `ID` and `parent work package`.
 |`parent work package`|integer|A numerical identifier pointing to the activities parent workpackage|
 
 ### Activity link worksheet (required)
-The activity link worksheet is a correlation matrix where links between activities are recored. All links are non-directional. Links should be marked with a "1" in the corresponding cell. For example, in the following table the linked activities are: 1 & 4, 2 & 6, 3 & 1, 5 & 7 
+The activity link worksheet is a correlation matrix where links between activities are recored. All links are non-directional. Links should be marked with a "1" in the corresponding cell.
+For example, in the following table the linked activities are: 1 & 4, 2 & 6, 3 & 1, 5 & 7 
 
 |`ID`|1|2|3|4|5|6|7|
 |-|-|-|-|-|-|-|-|
@@ -119,7 +120,8 @@ The stakeholders worksheet has one required field: `ID`
 |`ID`|integer|A numerical identifier, unique within the stakeholders worksheet|
 
 ### Stakeholder link worksheet (optional)
-The stakeholder link worksheet is a correlation matrix where links and their engagement level recorded between external stakeholders and activities. If you would like to include external stakeholders in the visualization, then this worksheet is required. Links should be marked with number ranging from 1(low)-4(high) indicating the degree to which the stakeholder engaged with the activity. For example, in the following table stakeholder 1 engaged with activity 34 at an engagement level of 4, stakeholder 2 with activity 22 at level 1, stakeholder 3 with activity 1 at level 2, and stakeholder 4 with activity 17 at level 3.
+The stakeholder link worksheet is a correlation matrix where links and their engagement level recorded between external stakeholders and activities. If you would like to include external stakeholders in the visualization, then this worksheet is required. Links should be marked with number ranging from 1(low)-4(high) indicating the degree to which the stakeholder engaged with the activity.
+For example, in the following table stakeholder 1 engaged with activity 34 at an engagement level of 4, stakeholder 2 with activity 22 at level 1, stakeholder 3 with activity 1 at level 2, and stakeholder 4 with activity 17 at level 3.
 
 |`S_ID/Act_ID`|1|24|32|34|17|22|6|
 |-|-|-|-|-|-|-|-|
