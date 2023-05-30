@@ -1,3 +1,6 @@
+import { useContext } from "react";
+
+import ConfigContext from "../../context/ConfigContext";
 import { FCOSE } from "../cytoscape/functions/LAYOUTS";
 
 import "./ToggleButtons.css";
@@ -12,7 +15,6 @@ export function ToggleButtons({
   cyState,
   setNetworkVeiw,
   networkVeiw,
-  activityEdgeDisplay,
   completedDisplay,
   stakeholdersDisplay,
   selectedNode,
@@ -20,6 +22,12 @@ export function ToggleButtons({
   setEngeScoreVeiw,
   setCustomStoryDisplay,
 }) {
+  // --------------CONFIG------------------
+  const { config } = useContext(ConfigContext);
+  const INCLUDE_DATES = config.INCLUDE_DATES;
+  const CATEGORYS_PROVIDED = config.actFields.CATEGORYS_PROVIDED;
+  const INCLUDE_STHOLDERS = config.INCLUDE_STHOLDERS;
+
   // TOGGLE CONTROLS /////////////
   function changeLayout() {
     !networkVeiw && cyState.cy.layout(FCOSE(currentActNodeCountRef.current, true)).run();
@@ -57,6 +65,12 @@ export function ToggleButtons({
     const target = event.currentTarget.id;
     setSelectedBottomVis((prevState) => (prevState === target ? "" : target)); //if the same button is  clicked twice set state to ""
   };
+
+  const centerGraph = (event) => {
+    setTimeout(() => {
+      cyState.cy.fit();
+    }, 1);
+  };
   // TOGGLE CONTROLS /////////////
 
   //STYLING //////////////////////
@@ -67,14 +81,19 @@ export function ToggleButtons({
 
   //STYLING //////////////////////
   return (
-    <div className="displayButtons">
-      <div className="cytoscapeButtons">
-        <button onClick={changeLayout} title="rearrange node positions">
-          Layout <i className="fa fa-repeat"></i>
-        </button>
-        <button onClick={toggleEdges} title="toggle connection types">
-          Connections <i className="fa fa-diagram-project"></i>
-        </button>
+    <div className="toggleButtons">
+      <button onClick={changeLayout} title="rearrange node positions">
+        Layout <i className="fa fa-repeat"></i>
+      </button>
+
+      <button title="center graph" onClick={centerGraph}>
+        Recenter <i className="fa fa-crosshairs"></i>
+      </button>
+
+      <button onClick={toggleEdges} title="toggle connection types">
+        Connections <i className="fa fa-diagram-project"></i>
+      </button>
+      {INCLUDE_DATES && (
         <button
           onClick={toggleCompleted}
           style={style(completedDisplay)}
@@ -82,14 +101,18 @@ export function ToggleButtons({
         >
           Toggle completed <i className="fa fa-check"></i>
         </button>
-      </div>
-      <div className="toggleButtons">
-        <button style={style(networkVeiw)} onClick={toggleNetworkVeiw} title="display network of the selected node">
-          Network <i className="fa fa-circle-nodes"></i>
-        </button>
+      )}
+
+      <button style={style(networkVeiw)} onClick={toggleNetworkVeiw} title="display network of the selected node">
+        Network <i className="fa fa-circle-nodes"></i>
+      </button>
+      {/* if stakeholderds are included then allow stakeholder toggling */}
+      {INCLUDE_STHOLDERS && (
         <button style={style(engScoreVeiw)} onClick={toggleEngScoreVeiw} title="display stakeholder engagement ranking">
           Engagement <i className="fa fa-link"></i>
         </button>
+      )}
+      {INCLUDE_STHOLDERS && (
         <button
           onClick={toggleStakeholders}
           style={style(stakeholdersDisplay)}
@@ -97,8 +120,9 @@ export function ToggleButtons({
         >
           Stakeholders <i className="fa fa-handshake-simple"></i>
         </button>
-      </div>
-      <div className="toggleButtons">
+      )}
+
+      {INCLUDE_DATES && (
         <button
           id="gantChartButton"
           onClick={toggleBottomPannelDisplay}
@@ -107,6 +131,8 @@ export function ToggleButtons({
         >
           Gantt Chart <i className="fa fa-chart-gantt"></i>
         </button>
+      )}
+      {CATEGORYS_PROVIDED && (
         <button
           id="vegaAnalyticsButton"
           onClick={toggleBottomPannelDisplay}
@@ -115,9 +141,7 @@ export function ToggleButtons({
         >
           Analytics <i className="fa fa-chart-column"></i>
         </button>
-      </div>
-
-      {/* <div className="bottomPannelButtons"></div> */}
+      )}
     </div>
   );
 }

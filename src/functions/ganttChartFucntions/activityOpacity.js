@@ -1,7 +1,8 @@
 import statusOpacity from "../../configs/statusOpacity";
 
 export function activityOpacity(act, latestPrPeriod, prPeriod) {
-  const undefOrOngoing = act.endPrPeriod === "undefined" || act.endPrPeriod === "onGoing" || act.endPrPeriod === "";
+  // console.log(act.endPrPeriod);
+  const undefOrOngoing = act.endPrPeriod === "undefined" || act.endPrPeriod === "ongoing" || act.endPrPeriod === "";
   const beforeLatestPr = act.endPrPeriod < latestPrPeriod ? statusOpacity.completed : statusOpacity.onGoing;
   const beforeSelectedPr = act.endPrPeriod < prPeriod.pr ? statusOpacity.completed : statusOpacity.onGoing;
 

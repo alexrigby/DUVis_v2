@@ -1,35 +1,64 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { VegaLite } from "react-vega";
 import { Handler } from "vega-tooltip";
-
+import ConfigContext from "../../../context/ConfigContext";
 import VegaSelect from "./VegaSelect";
 
 import vegaSpec from "./functions/vegaSpec";
+import vegaSpecNoDate from "./functions/vegaSpecNoDate";
 import parseVegaData from "./functions/parseVegaData";
+import getTypeOptionsArray from "../../../AppFunctions/getTypeOptionsArray";
+
 import "./VegaAnalytics.css";
 
 export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPeriod, setSelectedBottomVis }) {
-  const dates = datesRef.current;
-  const actData = actDataRef.current;
+  const { config } = useContext(ConfigContext);
+  const actFields = config.actFields;
+
+  // ------------------------- SET STATE -----------------------------------------------------------//
+  const categoryArray = getTypeOptionsArray(actFields.META_FIELDS, "category"); //all categorical fileds
+
+  const [brushRange, setBrushRange] = useState(""); // BRUSH RANGE STATE (ONLY USED IF DATE IS SUPPLIED)
+  const [selectedMetric, setSelectedMetric] = useState(categoryArray[0]);
+
+  const closeVegaPannel = (event) => {
+    setSelectedBottomVis("");
+  };
+
+  //------------------------USEFUL VARIABLES---------------------------------------------//
+  const DATES = datesRef.current;
+  var ACT_DATA = actDataRef.current && [...actDataRef.current]; //create copy so not to modify origional ref
+
+  //make "" values "undefined"
+  if (ACT_DATA) {
+    for (var i = 0; i < ACT_DATA.length; i++) {
+      for (var j = 0; j < categoryArray.length; j++) {
+        if (ACT_DATA[i][categoryArray[j]] === "") {
+          ACT_DATA[i][categoryArray[j]] = "undefined";
+        }
+      }
+    }
+  }
+
+  const options =
+    ACT_DATA && [...new Set(ACT_DATA.map((act) => act[selectedMetric]))].map((op) => (op === "" ? "undefined" : op)); //unique category names for the selected metric
 
   const trimmedDates =
-    dates !== null && prPeriod.pr !== null ? dates.filter((date) => date.prPeriod <= prPeriod.pr) : dates; //trimes dates data down to pr period
+    DATES !== null && prPeriod.pr !== null ? DATES.filter((date) => date.prPeriod <= prPeriod.pr) : DATES; //trims dates object to match pr period
 
-  const [brushRange, setBrushRange] = useState("");
-
-  const [selectedMetric, setSelectedMetric] = useState("Activity Category");
   //sets brush range to full extent of project once the initial data is parsed
   useEffect(() => {
-    if (dates !== null) {
+    if (DATES !== null && config.INCLUDE_DATES) {
       setBrushRange({
         start: new Date(trimmedDates[0].date).getTime(),
         end: new Date(trimmedDates[trimmedDates.length - 1].date).getTime(),
       });
     }
-  }, [dates]);
+  }, [DATES]);
 
-  //once brush range is set generate component
-  if (brushRange !== "") {
+  //-------------------------IF USER SUPPLIES DATES-----------------------------------//
+  //if brush range is set AND Dates are provided by the user generate both charts
+  if (brushRange !== "" && config.INCLUDE_DATES) {
     const fullRange = {
       start: new Date(trimmedDates[0].date).getTime(),
       end: new Date(trimmedDates[trimmedDates.length - 1].date).getTime(),
@@ -59,11 +88,7 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
       setBrushRange(fullRange);
     };
 
-    const closeVegaPannel = (event) => {
-      setSelectedBottomVis("");
-    };
-
-    const { vegaData, options } = parseVegaData(actData, trimmedDates, brushRange, selectedMetric);
+    const vegaData = parseVegaData(ACT_DATA, trimmedDates, brushRange, selectedMetric, options, categoryArray);
     const spec = vegaSpec(options, brushRange, selectedMetric);
 
     const title =
@@ -85,6 +110,27 @@ export function VegaAnalytics({ selectedBottomVis, actDataRef, datesRef, prPerio
             tooltip={new Handler().call}
             signalListeners={signalListeners}
           />
+        </div>
+      );
+    }
+    //----------------------IF NO DATE IS SUPPLIED BY USER THEN ONLY GENERATE BAR CHART-------------------------------------------//
+  } else if (!config.INCLUDE_DATES && ACT_DATA) {
+    const noDateSpec = vegaSpecNoDate(selectedMetric);
+    const noDateVegaData = {
+      vegaData: options.map((ops) => ({
+        [selectedMetric]: ops,
+        count: ACT_DATA.filter((act) => act[selectedMetric] === ops).length,
+      })),
+    };
+
+    if (selectedBottomVis === "vegaAnalyticsButton") {
+      return (
+        <div className="vegaAnalytics">
+          <VegaSelect setSelectedMetric={setSelectedMetric} />
+          <p className="exitVega" onClick={closeVegaPannel} title="close analytics panel">
+            <i className="fa fa-xmark"></i>
+          </p>
+          <VegaLite data={noDateVegaData} spec={noDateSpec} actions={false} tooltip={new Handler().call} />
         </div>
       );
     }

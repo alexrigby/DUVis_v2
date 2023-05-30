@@ -1,14 +1,16 @@
+import { useContext } from "react";
 import Select from "react-select";
-
-import vegaMetricFields from "../../../configs/vegaMetricFields";
+import ConfigContext from "../../../context/ConfigContext";
 
 import "./VegaAnalytics.css";
 
 export function VegaSelect({ setSelectedMetric }) {
-  //maps over values from vegametricFields config file to create select options
-  const options = vegaMetricFields.map((field) => ({
-    value: field,
-    label: field,
+  const { config } = useContext(ConfigContext);
+  const actFields = config.actFields;
+  //maps over values from user defined categorical meta_fileds  to create select options
+  const options = actFields.META_FIELDS.filter((f) => f.type === "category").map((field) => ({
+    value: field.name,
+    label: field.name,
   }));
 
   const optionSelectHandler = (selected) => {

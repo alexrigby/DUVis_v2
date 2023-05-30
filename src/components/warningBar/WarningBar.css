@@ -1,0 +1,29 @@
+.warningBar {
+  background-color: #ede902;
+  padding: 0 10px;
+  font-size: 8pt;
+  border: 1.5px solid #d4d117;
+  border-top: none;
+  /* width: 100%; */
+  line-height: 17px;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 600;
+  pointer-events: all;
+}
+
+.warningBar .fa {
+  color: #ff5f15;
+  cursor: pointer;
+}
+
+.warningBar p {
+  margin: 0;
+}
+
+.warningBar span {
+  float: right;
+}
+
+.warningBar h3 {
+  margin: 5px 0 0 0;
+}

@@ -1,9 +1,0 @@
-id	name	category	SDG_1	SDG_2	SDG_3	SDG_4	SDG_5	SDG_6	SDG_7	SDG_8	SDG_9	SDG_10	SDG_11	SDG_12	SDG_13	SDG_14	SDG_15	SDG_16	SDG_17
-wp1	Micro-hydro power	Technology platfroms						1	1	1	1		1						1
-wp2	Drain Water Heat Recovery	Technology platfroms						1	1	1	1			1					1
-wp3	Smart Network Control 	Technology platfroms						1	1		1		1						
-wp4	Economic and Environmental Impact Assessment	Policy Support and Guidance						1	1	1	1		1	1		1	1		1
-wp5	Benchmarking of Energy Efficiency Measures	Policy Support and Guidance						1	1	1	1								
-wp6	Energy Auditing and Rating	Policy Support and Guidance						1	1	1	1		1	1					1
-wp7	Climate Change Impacts and Adaptation	Policy Support and Guidance						1	1						1				
-wp8	Smart Specialisation Cluster 	Dissemination and Collaboration				1		1	1			1			1	1	1		1

@@ -1,0 +1,47 @@
+.dropzoneContainer {
+  margin: 0;
+
+  position: absolute;
+  top: 40%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.uploadedFile {
+  padding: 0 20px;
+  font-weight: 600;
+
+  color: rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+.uploadedFile div {
+  padding-bottom: 5px;
+}
+
+.landingText {
+  text-align: center;
+  margin: 1em;
+}
+
+.landingText h1 {
+  font-size: 18pt;
+}
+
+.landingText p {
+  opacity: 0.7;
+  font-size: 11pt;
+  font-weight: 600;
+}
+
+.linkText {
+  opacity: 0.7;
+  font-size: 11pt;
+  font-weight: 600;
+  text-align: center;
+}
+
+.errorMessages {
+  font-size: 9pt;
+}

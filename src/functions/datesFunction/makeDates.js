@@ -1,7 +1,7 @@
-export function makeDates(startDate, today) {
+export function makeDates(startDate, endDate, config) {
   // largley taken from stackOverflow: Rob M. 's answer here https://stackoverflow.com/questions/30464628/javascript-get-all-months-between-two-dates
   const start = startDate.split("-");
-  const end = today.split("-");
+  const end = endDate.split("-");
   const startYear = parseInt(start[0]);
   const endYear = parseInt(end[0]);
   const months = [];
@@ -21,7 +21,7 @@ export function makeDates(startDate, today) {
   var progressReport = 0;
   const dateObj = months.map((m, i) => {
     //every 6 months increas progress report period by 1
-    i % 6 === 0 && progressReport++;
+    i % config.PR_PERIOD === 0 && progressReport++;
     return {
       date: m,
       month: String(i + 1),

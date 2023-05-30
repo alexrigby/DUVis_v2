@@ -1,29 +1,33 @@
-import { useState } from "react";
-import { BG } from "../../configs/COLORS";
-import SDG_ICONS from "../../assets/sdg_icons/index";
-import engLevelWording from "../../configs/engLevelWording";
+import { useState, useContext } from "react";
 
-import nodeNavigationHandler from "./functions/nodeNavigationHandler";
-import hilightOnLiHover from "./functions/hilightOnLiHover";
+import ConfigContext from "../../context/ConfigContext";
+import engLevelWording from "../../configs/engLevelWording";
+import listLinks from "./functions/listLinks";
+import capitalizeEachWord from "./functions/capitalizeEachWord";
+import getTypeOptionsArray from "../../AppFunctions/getTypeOptionsArray";
+import makeSDGList from "./functions/makeSDGList";
 
 export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setStakeholdersDisplay }) {
-  const open = <i className="fa fa-angle-down"></i>;
-  const close = <i className="fa fa-angle-up"></i>;
+  //-------------CONFIG----------------
+  const { config } = useContext(ConfigContext);
+  const INCLUDE_STHOLDERS = config.INCLUDE_STHOLDERS;
+  const wpFields = config.wpFields;
+  const actFields = config.actFields;
 
-  const engCount = Array.from(Array(engLevelWording.length).keys()); // add or remove numbers if engement level chnages
-  const subSections = ["activity", "stakeholder", "SDGs"]; // add or remove subsections
-
-  const engObj = engCount.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
-  const subSectionObj = subSections.reduce((p, c) => ({ ...p, [c]: false }), {}); // each subsection to onject- false
-
-  const [wpAccordion, setWPAccordion] = useState({ ...subSectionObj, ...engObj }); //add all sunsections to state
-
+  // --------------------------------------USEFULL VARS---------------------------------------------------//
+  const OPEN = <i className="fa fa-angle-down"></i>;
+  const CLOSE = <i className="fa fa-angle-up"></i>;
+  const ENG_COUNT = Array.from(Array(engLevelWording.length).keys());
+  const CATEGORICAL_SUBSECTIONS = getTypeOptionsArray(wpFields.META_FIELDS, "category");
+  const TEXT_SUBSECTIONS = getTypeOptionsArray(wpFields.META_FIELDS, "text");
   const wpActivities = cyState.cy.nodes(`[id = "${selectedNode.id}"]`).children(); //gets all activities in wp
 
-  const activitiesList = listLinks(wpActivities, setSelectedNode, cyState, setStakeholdersDisplay); // makes list of acctivitis
+  //-------------------------------------ACCORDION STATE---------------------------------------------------//
+  const engObj = ENG_COUNT.reduce((p, c) => ({ ...p, [`eng${c}`]: false }), {}); //adds each engement level to object {eng(n): false}
+  const subSectionObj = TEXT_SUBSECTIONS.reduce((p, c) => ({ ...p, [c]: false }), {}); // each subsection to onject- false
+  const sdgSectionObj = { SDGs: false };
 
-  const wpStakeholdersList = []; // JSX list of stakeholders and headings
-  const wpStakeholders = []; // list of all stakehlders (to get total count)
+  const [wpAccordion, setWPAccordion] = useState({ sdgSectionObj, ...subSectionObj, ...engObj }); //add all sunsections to state
 
   const openAccordion = (event, key) => {
     setWPAccordion((prevState) => ({
@@ -32,8 +36,77 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
     }));
   };
 
+  // -----------------------------------------------STYLE--------------------------------------------//
+  const style = (key) => ({ display: wpAccordion[key] ? "block" : "none" });
+
+  //------------------------------PANNEL TEXT-----------------------------------------------------//
+  //----------------USER DEFINED CATEGORICAL META FIELDS----------
+
+  const categoricalMetaSection = CATEGORICAL_SUBSECTIONS.length > 0 && (
+    <div className="metaSection">
+      {CATEGORICAL_SUBSECTIONS.map((field, i) => {
+        var caps = capitalizeEachWord(field);
+
+        return (
+          <div key={field}>
+            <h2 style={{ display: "inline" }}>
+              {caps}:{"  "}
+            </h2>
+            <p style={{ display: "inline" }}>{selectedNode.meta[field] ? selectedNode.meta[field] : "Undefined"}</p>
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  //-----------------SDGS FROM CHILDREN NODES--------------------------
+  //unique array of all sdgs contined by wp chilldren nodes also handles if none are defined
+  const sdgList = [
+    ...new Set(
+      wpActivities
+        .filter((act) => act.data("SDGs")) // filter acts with no sdgs
+        .reduce((a, b) => {
+          return [...a, ...b.data("SDGs")];
+        }, [])
+    ),
+  ];
+
+  const sdgIcons = sdgList.length > 0 && (
+    <div className="metaSection">
+      <h1>
+        {actFields.SDGs}
+        <span onClick={() => openAccordion("click", "SDGs")}>{wpAccordion["SDGs"] ? CLOSE : OPEN} </span>
+      </h1>
+      <div style={style("SDGs")}>{makeSDGList(sdgList)}</div>
+    </div>
+  );
+  //-------------------USER DEFINED TEXT META FIELDS TO AD TO ACCORDION------------------
+
+  const textMetaSections =
+    TEXT_SUBSECTIONS.length > 0 &&
+    TEXT_SUBSECTIONS.map((field, i) => {
+      var caps = capitalizeEachWord(field);
+
+      return (
+        <div className="metaSection" key={field}>
+          <h1>
+            {caps}: <span onClick={() => openAccordion("click", field)}>{wpAccordion[field] ? CLOSE : OPEN}</span>
+          </h1>
+          <p style={style(field)}>{selectedNode.meta[field] ? selectedNode.meta[field] : "Undefined"}</p>
+        </div>
+      );
+    });
+
+  //--------------------ACTIVITIES LIST ----------------------
+
+  const activitiesList = listLinks(wpActivities, setSelectedNode, cyState, setStakeholdersDisplay); // makes JSX list of acctivitis
+
+  //---------------- STAKEHOLDER LIST-----------------
+  const wpStakeholdersList = []; // JSX list of stakeholders and headings
+  const wpStakeholders = []; // list of all stakehlders (to get total count)
+
   //loop over once for every level of engagemnt
-  for (let i = 0; i < engCount.length; i++) {
+  for (let i = 0; i < ENG_COUNT.length; i++) {
     const stakeholderList = [];
     //loop over alll wp activities and return there connected stakeholders by engement (1-4)
     for (let j = 0; j < wpActivities.length; j++) {
@@ -56,7 +129,7 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
         <div className="metaSection" key={i}>
           <h2 title={engLevelWording[i][1]}>
             Engagement level {i + 1} ({engLevelWording[i][0]}):
-            <span onClick={() => openAccordion("click", `eng${i}`)}>{wpAccordion[`eng${i}`] ? close : open}</span>
+            <span onClick={() => openAccordion("click", `eng${i}`)}>{wpAccordion[`eng${i}`] ? CLOSE : OPEN}</span>
           </h2>
           <h2>count: {uniqueStakeholders.length}</h2>
           <div style={style}>
@@ -67,117 +140,39 @@ export function WpNodeMetaSection({ selectedNode, cyState, setSelectedNode, setS
     }
   }
 
-  const sdgIconStyle = { width: "92px", height: "92px", paddingRight: "4px" };
-
-  const sdgList = selectedNode.SDGs.map((sdg) => (
-    <a href={`${SDG_ICONS[sdg].link}`} key={sdg} to="route" target="_blank" rel="noopener noreferrer">
-      <img
-        src={SDG_ICONS[sdg].icon}
-        alt={`${SDG_ICONS[sdg].description}`}
-        title={`${SDG_ICONS[sdg].description}`}
-        style={sdgIconStyle}
-      />
-    </a>
-  ));
-
   const stakeholderCount = wpStakeholders.flat().length;
-
-  const acivitiesListStyle = {
-    display: !wpAccordion.activity ? "none" : "block",
-  };
-
-  const sdgListStyle = {
-    display: !wpAccordion.SDGs ? "none" : "block",
-  };
-
-  const stakeholderListDisplay = {
-    display: !wpAccordion.stakeholder ? "none" : "block",
-  };
 
   return (
     <div>
       <div className="metaSection">
-        <h1 style={{ backgroundColor: BG[selectedNode.id] }}>WP: {selectedNode.id.slice(2)}</h1>
+        <h1 style={{ backgroundColor: selectedNode.bgColor }}>WP: {selectedNode.label}</h1>
         <h1>{selectedNode.name}</h1>
-        <h2>Category:</h2>
-        <p>{selectedNode.category}</p>
       </div>
+      <div>{categoricalMetaSection}</div>
+      <div>{sdgIcons}</div>
+      <div>{textMetaSections}</div>
       <div className="metaSection">
         <div className="metaSectionHead">
           <h1>
-            UN SDGs: <span onClick={() => openAccordion("click", "SDGs")}>{wpAccordion.SDGs ? close : open} </span>
-          </h1>
-        </div>
-        <div style={sdgListStyle}>{sdgList}</div>
-      </div>
-      <div className="metaSection">
-        <div className="metaSectionHead">
-          <h1>
-            ACTIVITIES{" "}
-            <span onClick={() => openAccordion("click", "activity")}>{wpAccordion.activity ? close : open}</span>
+            Activities
+            <span onClick={() => openAccordion("click", "activity")}>{wpAccordion.activity ? CLOSE : OPEN}</span>
           </h1>
         </div>
         <h2>count: {activitiesList.length}</h2>
-        <ul style={acivitiesListStyle}>{activitiesList}</ul>
+        <ul style={style("activity")}>{activitiesList}</ul>
       </div>
-      <div className="metaSectionHead metaSection">
-        <h1>
-          LINKED STAKEHOLDERS{" "}
-          <span onClick={() => openAccordion("click", "stakeholder")}>{wpAccordion.stakeholder ? close : open}</span>
-        </h1>
-        <h2>count: {stakeholderCount}</h2>
-      </div>
-      <div style={stakeholderListDisplay}>{wpStakeholdersList}</div>
+      {INCLUDE_STHOLDERS && (
+        <div className="metaSectionHead metaSection">
+          <h1>
+            Stakeholders
+            <span onClick={() => openAccordion("click", "stakeholder")}>{wpAccordion.stakeholder ? CLOSE : OPEN}</span>
+          </h1>
+          <h2>count: {stakeholderCount}</h2>
+        </div>
+      )}
+      {INCLUDE_STHOLDERS && <div style={style("stakeholder")}>{wpStakeholdersList}</div>}
     </div>
   );
 }
 
 export default WpNodeMetaSection;
-
-function listLinks(nodes, setSelectedNode, cyState, setStakeholdersDisplay) {
-  return nodes.map((act) => (
-    <li
-      key={act.id()}
-      onClick={() => nodeNavigationHandler(act.id(), setSelectedNode, cyState, setStakeholdersDisplay)}
-      onMouseOver={() => hilightOnLiHover(act.id(), cyState)}
-      onMouseOut={() => hilightOnLiHover(act.id(), cyState)}
-    >
-      {act.id()}. {act.data().name}
-    </li>
-  ));
-}
-
-//   <div className="metaSection">
-//     <h2>
-//       Level 1 engagement:
-//       <span>{/* {accordion? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>} */}</span>
-//     </h2>
-//     <h2>count: {wpStakeholders[0].length}</h2>
-//     {wpStakeholdersList[0]}
-//   </div>
-//   <div className="metaSection">
-//     <h2>
-//       Level 2 engagement:
-//       <span>{/* {accordion? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>} */}</span>
-//     </h2>
-//     <h2>count: {wpStakeholders[1].length}</h2>
-//     {wpStakeholdersList[1]}
-//   </div>
-//   <div className="metaSection">
-//     <h2>
-//       Level 3 engagement:
-//       <span>{/* {accordion? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>} */}</span>
-//     </h2>
-//     <h2>count: {wpStakeholders[2].length}</h2>
-//     {wpStakeholdersList[2]}
-//   </div>
-//   <div className="metaSection">
-//     <h2>
-//       Level 4 engagement:
-//       <span>{/* {accordion? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"></i>} */}</span>
-//     </h2>
-//     <h2>count: {wpStakeholders[3].length}</h2>
-//     {wpStakeholdersList[3]}
-//   </div>
-//   {/* <div style={stakeholderListDisplay}>{wpStakeholdersList}</div> */}
-// </div>

@@ -1,4 +1,5 @@
-export function linksMatrixToArray(linksArray) {
+export function linksMatrixToArray(actLinks) {
+  var linksArray = [...actLinks];
   //remove first row (ID) and first and "ID" to get ids of the collumns
   const collumnIds = linksArray.shift().slice(1);
 
@@ -14,6 +15,7 @@ export function linksMatrixToArray(linksArray) {
       act: Number(rowIds[i]),
       links: [],
     };
+
     // if there is an entry relating 2 ids then the id is pushed to links object
     for (let j = 0; j < linksArray[i].length; j++) {
       if (linksArray[i][j] !== "") {

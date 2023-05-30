@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import STORIES from "../../configs/stories";
-
+import { useEffect, useState, useContext } from "react";
+import ConfigContext from "../../context/ConfigContext";
 import CustomStory from "./customStory/CustomStory";
 import PRScroll from "./PRScroll/PRScroll";
 
@@ -18,6 +17,11 @@ export function FilterOptions({
   customStoryDisplay,
   setCustomStoryDisplay,
 }) {
+  //----------------------CONFIG--------------------------
+  const { config } = useContext(ConfigContext);
+  const INCLUDE_DATES = config.INCLUDE_DATES;
+  const STORIES = config.STORIES;
+
   const [filterOptionsDisplay, setFilterOptionsDisplay] = useState(false);
   const [prSectionDisplay, setPrSectionDisplay] = useState(false);
   const [storySectionDisplay, setStorySectionDisplay] = useState(false);
@@ -25,11 +29,10 @@ export function FilterOptions({
 
   const [stories, setStories] = useState(STORIES);
   const [customFilter, setCustomFilter] = useState([{ field: "", values: [] }]);
-  const [customStory, setCustomStory] = useState({ name: "", ids: [], filter: [], custom: true });
+  const [customStory, setCustomStory] = useState({ name: "", activityIds: [], filter: [], custom: true });
 
   const localStories = JSON.parse(window.localStorage.getItem("customStory"));
   const currentPr = datesRef.current && datesRef.current[datesRef.current.length - 1].prPeriod;
-  // findCurrentPrperiod(prOptions, datesRef);
 
   //runs fist time component is loaded - checks for data in local storage and adds it to the stories state
   useEffect(() => {
@@ -94,7 +97,7 @@ export function FilterOptions({
     setCurrentStory(null);
     setPrSectionDisplay(false); //hides open prperiod optons when filter optiosn is clicked
     setStorySectionDisplay(false);
-    setCustomStory({ name: "", ids: [], custom: true });
+    setCustomStory({ name: "", activityIds: [], custom: true });
     setCustomFilter([{ field: "", values: [] }]);
   };
 
@@ -102,7 +105,10 @@ export function FilterOptions({
     setNetworkVeiw(false); // prevents network being created with no nodes
     setCustomStoryDisplay(false);
     //set stte to array of id inn that story
-    setCurrentStory({ ids: event.target.dataset.ids.split(",").map((i) => Number(i)), name: event.target.title });
+    setCurrentStory({
+      activityIds: event.target.dataset.ids.split(",").map((i) => i),
+      name: event.target.title,
+    });
   };
 
   const deleteCustomStory = (event) => {
@@ -122,7 +128,12 @@ export function FilterOptions({
   const storyOptions = stories.map((story, i) => {
     return (
       <div key={story.name}>
-        <p title={story.name} data-ids={story.ids} style={selectedStoryStyle(story.name)} onClick={storyClickHandler}>
+        <p
+          title={story.name}
+          data-ids={story.activityIds}
+          style={selectedStoryStyle(story.name)}
+          onClick={storyClickHandler}
+        >
           {i + 1}. {story.name}
         </p>{" "}
         {story.custom === true && ( //arrow for more info on story filter
@@ -169,20 +180,22 @@ export function FilterOptions({
           Reset
         </button>
       </div>
-      <div style={optionsStyle}>
-        <button onClick={displayPrOptions} className="filterOptionButton">
-          Progress Report Period
-          {prSectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
-        </button>
-        <PRScroll
-          setPrPeriod={setPrPeriod}
-          currentPr={currentPr}
-          prPeriod={prPeriod}
-          datesRef={datesRef}
-          prSectionDisplay={prSectionDisplay}
-          cyState={cyState}
-        />
-      </div>
+      {INCLUDE_DATES && (
+        <div style={optionsStyle}>
+          <button onClick={displayPrOptions} className="filterOptionButton">
+            Progress Report Period
+            {prSectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
+          </button>
+          <PRScroll
+            setPrPeriod={setPrPeriod}
+            currentPr={currentPr}
+            prPeriod={prPeriod}
+            datesRef={datesRef}
+            prSectionDisplay={prSectionDisplay}
+            cyState={cyState}
+          />
+        </div>
+      )}
       <div style={optionsStyle} className="stories">
         <button onClick={displayStoryOptions} className="filterOptionButton">
           Stories {storySectionDisplay ? <i className="fa fa-angle-up"></i> : <i className="fa fa-angle-down"> </i>}
@@ -193,12 +206,6 @@ export function FilterOptions({
             <button className="customStoryButton" onClick={displayCustomStoryOptions}>
               Custom Story <i className="fa fa-pencil"></i>
             </button>
-            {/* <a href={"data:text/csv;charset=utf-8," + escape(convertToCSV(stories))} download="stories"> */}
-            {/* allows stories to be downloaded as csv*/}
-            {/* <button className="customStoryButton">
-                Export Stories <i className="fa fa-download"></i>
-              </button>
-            </a> */}
           </div>
           <CustomStory
             stories={stories}

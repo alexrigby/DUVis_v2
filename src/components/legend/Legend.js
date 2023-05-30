@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import { ENGAGEMENT, BORDER, BG, ENGRANK, EDGE } from "../../configs/COLORS";
+import { ENGAGEMENT, ENGRANK, EDGE } from "../../configs/COLORS";
 import engLevelWording from "../../configs/engLevelWording";
-
-// import iconByCategory from "../cytoscape/functions/iconByCategory";
 
 import "./Legend.css";
 
@@ -46,6 +44,7 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
       </div>
     );
 
+  // ----------------------------Making work package legend-------------------------------
   useEffect(() => {
     const workPackages = cyState.cy.nodes("[type = 'wp']").map((wp) => wp.data());
 
@@ -71,18 +70,14 @@ export function Legend({ cyState, networkVeiw, selectedNode, networkVeiwEls, eng
       return a.id.slice(2) - b.id.slice(2);
     });
 
-    const wpLegendItems = wps.map((wp) => (
-      <div key={wp.id} className="boxContainer">
-        <div
-          className="box"
-          title={`Category: ${wp.category}`}
-          style={{ backgroundColor: BG[wp.id], borderColor: BORDER[wp.id] }}
-        ></div>
-        <p className="legendLable" title={`Category: ${wp.category}`}>
-          {wp.id}: {wp.name}
-        </p>
-      </div>
-    ));
+    const wpLegendItems = wps.map((wp) => {
+      return (
+        <div key={wp.id} className="boxContainer">
+          <div className="box" style={{ backgroundColor: wp.bgColor, borderColor: wp.borderColor }}></div>
+          <p className="legendLable">{wp.displayName}</p>
+        </div>
+      );
+    });
     legendData.current = { wps: wpLegendItems };
   }, [cyState.cy, cyState.elements.length, cyState, networkVeiw, networkVeiwEls, selectedNode]);
 
@@ -117,7 +112,7 @@ function styleEngLegend(eng) {
     ? { backgroundColor: ENGAGEMENT[2], height: "6px" }
     : eng === "4"
     ? { backgroundColor: ENGAGEMENT[3], height: "8px" }
-    : BORDER.other;
+    : EDGE;
 }
 
 // // returns unique array of activity categorys

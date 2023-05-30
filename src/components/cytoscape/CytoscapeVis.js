@@ -101,7 +101,7 @@ export function CytoscapeVis({
       cy={(cy) => {
         cyState.cy = cy;
         cy.on("resize", (_evt) => {
-          renderCounter.current === 1 && cy.layout(FCOSE(currentActNodeCountRef.current, false)).run();
+          renderCounter.current === 1 && cy.layout(FCOSE(currentActNodeCountRef.current, true)).run();
         });
       }}
       elements={cyState.elements}

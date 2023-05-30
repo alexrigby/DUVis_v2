@@ -1,59 +1,39 @@
-export function trimActData(actData, prPeriod, currentStory) {
+export function trimActData(actData, prPeriod, currentStory, config) {
+  const actFields = config.actFields;
   const filterByStory = currentStory !== null && prPeriod.pr === null;
   const filterByPr = currentStory === null && prPeriod.pr !== null;
   const filterByBoth = currentStory !== null && prPeriod.pr !== null;
 
   const filterByPrPeriod = (act) => act.startPrPeriod <= prPeriod.pr;
-  let filteredData = actData;
+  let filteredData = actData; //truly filtered data to use for nodes and gantt chart
+  let filteredByPr = actData; // only filrtered by pr to be able to get max engagement level
 
   if (!filterByStory && !filterByPr && !filterByBoth) {
     filteredData = actData;
+    filteredByPr = actData;
   } else if (filterByStory) {
-    filteredData = filterStoryData(filteredData, currentStory.ids);
+    filteredData = filterStoryData(filteredData, currentStory.activityIds, actFields);
+    filteredByPr = actData;
   } else if (filterByPr) {
     filteredData = filteredData.filter(filterByPrPeriod);
+    filteredByPr = filteredData.filter(filterByPrPeriod);
   } else if (filterByBoth) {
+    filteredByPr = filteredData.filter(filterByPrPeriod);
     //first filter by story
-    filteredData = filterStoryData(filteredData, currentStory.ids);
+    filteredData = filterStoryData(filteredData, currentStory.activityIds, actFields);
     //then filter that story data by prperiod
     filteredData = filteredData.filter(filterByPrPeriod);
   }
 
-  return filteredData;
+  return { trimmedActData: filteredData, filteredByPr };
 }
 export default trimActData;
 
 // d = dataset, s = array of story activity ids
-export function filterStoryData(d, s) {
+export function filterStoryData(d, s, actFields) {
   let sd = [];
   for (let i = 0; i < s.length; i++) {
-    sd.push(d.filter((record) => record.ID == s[i]));
+    sd.push(d.filter((record) => record[actFields.ID] === s[i]));
   }
   return sd.flat();
 }
-
-// export function trimActData(actData, prPeriod, currentStory) {
-//   //if no filter then return whole dataset
-//   if (currentStory === null && prPeriod.pr === null) {
-//     return actData;
-//     //if story is selected but no pr return whole story
-//   } else if (currentStory !== null && prPeriod.pr === null) {
-//     return filterStoryData(actData, currentStory.ids);
-//   }
-//   //if no story is selected but a pr is selected then return progress report
-//   else if (currentStory === null && prPeriod.pr !== null) {
-//     if (prPeriod.undefined === true) {
-//       return actData.filter((act) => act.startPrPeriod <= prPeriod.pr || act.startPrPeriod === "undefined");
-//     } else {
-//       return actData.filter((act) => act.startPrPeriod <= prPeriod.pr);
-//     }
-//     //if story and progress report are seleted return both
-//   } else {
-//     let story = filterStoryData(actData, currentStory.ids);
-//     if (prPeriod.undefined === true) {
-//       return story.filter((act) => act.startPrPeriod <= prPeriod.pr || act.startPrPeriod === "undefined");
-//     } else {
-//       return story.filter((act) => act.startPrPeriod <= prPeriod.pr);
-//     }
-//   }
-// }

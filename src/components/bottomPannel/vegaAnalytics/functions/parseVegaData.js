@@ -1,40 +1,20 @@
-import vegaMetricFields from "../../../../configs/vegaMetricFields";
+export function parseVegaData(actData, dates, brushRange, selectedMetric, options, categoryArray) {
+  // var actData = [...actData];
 
-export function parseVegaData(actData, dates, brushRange, selectedMetric) {
-  function handleNonDates(date, startOrEnd) {
-    if (date === "onGoing" || date === "undefined") {
-      return startOrEnd === "start"
-        ? new Date(dates[0].date).getTime()
-        : new Date(dates[dates.length - 1].date).getTime();
-    } else {
-      return new Date(date).getTime();
-    }
-  }
-
-  //handles dates "onGoing" and "undefined"
-  var numericDate = actData.map((act) => ({
-    ...act,
-    startDate: handleNonDates(act.startDate, "start"),
-    endDate: handleNonDates(act.endDate, "end"),
-  }));
-
-  // updates numeric date object so any blanks in vegafeilds are chnaged to "undefined"
-  for (var i = 0; i < numericDate.length; i++) {
-    for (var j = 0; j < vegaMetricFields.length; j++) {
-      if (numericDate[i][vegaMetricFields[j]] === "") {
-        numericDate[i][vegaMetricFields[j]] = "undefined";
-      }
-    }
-  }
-
-  //unique category names
-  const options = [...new Set(numericDate.map((act) => act[selectedMetric]))];
+  // // updates actData object so any blanks in selected vegafeilds are chnaged to create an "undefined" category
+  // for (var i = 0; i < actData.length; i++) {
+  //   for (var j = 0; j < categoryArray.length; j++) {
+  //     if (actData[i][categoryArray[j]] === "") {
+  //       actData[i][categoryArray[j]] = "undefined";
+  //     }
+  //   }
+  // }
 
   //get groups of each activities in category
-  const activityByOption = options.map((ops) => numericDate.filter((act) => act[selectedMetric] === ops));
+  const activityByOption = options.map((ops) => actData.filter((act) => act[selectedMetric] === ops));
 
   //finds all activitys whos start or end date extends into the brush range
-  const withinBrushRange = numericDate.filter(
+  const withinBrushRange = actData.filter(
     (act) =>
       (brushRange.start < new Date(act.startDate) || brushRange.start < new Date(act.endDate)) &&
       (brushRange.end > new Date(act.endDate) || brushRange.end > new Date(act.startDate))
@@ -47,15 +27,18 @@ export function parseVegaData(actData, dates, brushRange, selectedMetric) {
   }));
 
   //add option count per month to date array
-  const optionPerDate = activityByOption.map((opAct) =>
-    dates.map((date) => ({
+  const optionPerDate = activityByOption.map((opAct) => {
+    // console.log(opAct);
+    return dates.map((date) => ({
       [opAct[0][selectedMetric]]: opAct.filter(
-        (act) => new Date(date.date) >= new Date(act.startDate) && new Date(date.date) <= new Date(act.endDate)
+        (act) =>
+          new Date(date.date).getTime() >= new Date(act.startDate).getTime() &&
+          new Date(date.date).getTime() <= new Date(act.endDate).getTime()
       ).length,
       date: new Date(date.date).getTime(),
       // ...date,
-    }))
-  );
+    }));
+  });
 
   //flatten array or arrays and merge based on date collumn
   let plotData = {};
@@ -63,9 +46,7 @@ export function parseVegaData(actData, dates, brushRange, selectedMetric) {
   plotData = Object.values(plotData);
 
   //combines both bar and line plot data to use concat on vega veiws
-  const vegaData = { vegaData: [...plotData, ...barData] };
-
-  return { vegaData: vegaData, options: options };
+  return { vegaData: [...plotData, ...barData] };
 }
 
 export default parseVegaData;

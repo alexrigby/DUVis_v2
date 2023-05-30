@@ -1,39 +1,66 @@
-// import getTsvData from "./getTsvData";
-// import tsvToJson from "./TsvToJson";
-import convertMonthsToDates from "../datesFunction/convertMonthsToDates";
 import giveActivityPrPeriod from "../datesFunction/giveActivtyPrPeriod";
 
-export function parseActivityDataset(data, dates) {
-  // const { dataset, headers } = await getTsvData(url);
+export function parseActivityDataset(actData, dates, wpData, config) {
+  //------------CONFIG-----------------
+  const actFields = config.actFields;
+  const projectConfig = config;
 
-  // const data = tsvToJson(dataset, headers);
-  // console.log(data);
+  //finds what color gned and assignes it to activities, assignes neon red to parentless nodes
+  const getColorRef = (wp, color) =>
+    wp !== "" ? wpData.filter((record) => record.id === `WP_${wp.trim()}`)[0][color] : "#FF3131";
 
-  const activityData = data.map((act, i) => ({
-    ...act,
-    startDate: convertMonthsToDates(act, dates, "start"),
-    endDate: convertMonthsToDates(act, dates, "end"),
-    startPrPeriod: giveActivityPrPeriod(act, dates, "start"),
-    endPrPeriod: giveActivityPrPeriod(act, dates, "end"),
-  }));
+  const activityData = actData.map((act, i) => {
+    // if user specifies additional meta fields (only give name not type)
+    const meta_fields = actFields.META_FIELDS.reduce((a, b) => ({ ...a, [b.name]: act[b.name] }), {});
 
-  // ------ USE TO ANNONYMISE THE TOOL ____________________
-  const researchers = [...new Set(activityData.map((act) => act.Name))];
-
-  const researcherID = researchers.map((r, i) => {
-    return { name: r, ID: `Researcher ${i + 1}` };
+    if (config.INCLUDE_DATES) {
+      return {
+        ...act,
+        bgColor: getColorRef(act[actFields.WP], "bgColor"),
+        borderColor: getColorRef(act[actFields.WP], "borderColor"),
+        startDate: dateIsValid(new Date(act[actFields.START_DATE]))
+          ? act[actFields.START_DATE]
+          : projectConfig.START_DATE,
+        endDate: dateIsValid(new Date(act[actFields.END_DATE])) ? act[actFields.END_DATE] : projectConfig.END_DATE,
+        startPrPeriod: giveActivityPrPeriod(act, dates, "start", actFields),
+        endPrPeriod: giveActivityPrPeriod(act, dates, "end", actFields),
+        meta: meta_fields,
+        ...(act[actFields.SDGs] && { SDGs: [...new Set(act[actFields.SDGs].trim().split(","))] }), // split comma seperated list of SDGs into unique array of sdgs if provided
+      };
+    } else {
+      return {
+        ...act,
+        meta: meta_fields,
+        bgColor: getColorRef(act[actFields.WP], "bgColor"),
+        borderColor: getColorRef(act[actFields.WP], "borderColor"),
+        ...(act[actFields.SDGs] && { SDGs: [...new Set(act[actFields.SDGs].trim().split(","))] }), // split comma seperated list of SDGs into unique array of sdgs if provided
+      };
+    }
   });
 
-  const annonomusActData = activityData.map((act) => {
-    const ID = researcherID.find((el) => el.name === act.Name);
+  function dateIsValid(date) {
+    //Check if the date is an instance of the Date object.
+    //Check if passing the date to the isNaN() function returns false.
+    return date instanceof Date && !isNaN(date);
+  }
 
-    return { ...act, Name: ID.ID };
-  });
+  // // ------ USE TO ANNONYMISE THE TOOL ____________________
+  // const researchers = [...new Set(activityData.map((act) => act.Name))];
+
+  // const researcherID = researchers.map((r, i) => {
+  //   return { name: r, ID: `Researcher ${i + 1}` };
+  // });
+
+  // const annonomusActData = activityData.map((act) => {
+  //   const ID = researcherID.find((el) => el.name === act.Name);
+
+  //   return { ...act, Name: ID.ID };
+  // });
 
   // console.log(annonomusActData);
 
-  return annonomusActData;
-  // return activityData;
+  // return annonomusActData;
+  return activityData;
 }
 
 export default parseActivityDataset;

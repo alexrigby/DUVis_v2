@@ -116,7 +116,7 @@ export function vegaSpec(options, brushRange, selectedMetric) {
         symbolStrokeColor: "grey",
         title: "",
         fillColor: "white",
-        labelFontSize: 12,
+        // labelFontSize: 12,
         symbolStrokeWidth: 10,
         direction: "horizontal",
         orient: "top",
@@ -129,28 +129,3 @@ export function vegaSpec(options, brushRange, selectedMetric) {
 }
 
 export default vegaSpec;
-
-//PREVIOUSLY MADE LAYERS FOR EACH ITEM< NOW I HAVE USED "transfor: fold" ----- ALLOWS PARAM BINDING
-
-// const timeSeriesLayers = categorys.map((cat, i) => ({
-//   mark: { type: "line", strokeWidth: 3, interpolate: "monotone" },
-//   params: [
-//     {
-//       name: `param-${i}`,
-//       select: { type: "point", fields: ["category"] },
-//       bind: "legend",
-//     },
-//   ],
-//   encoding: {
-//     x: { timeUnit: "yearmonth", field: "date", title: "date", type: "temporal", axis: { title: "Date" } },
-//     y: { field: cat, type: "quantitative", axis: { title: "", tickMinStep: 1 } },
-//     color: {
-//       field: "category",
-//       datum: cat,
-//     },
-//     opacity: {
-//       condition: { param: `param-${i}`, value: 1 },
-//       value: 0.2,
-//     },
-//   },
-// }));

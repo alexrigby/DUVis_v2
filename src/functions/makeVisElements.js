@@ -1,7 +1,5 @@
-import * as XLSX from "xlsx";
-
 import parseActivityDataset from "./datasetParseFunctions/parseActivityDataset";
-import parseLinks from "./datasetParseFunctions/parseLinks";
+
 import makeActEdges from "./cyElements/makeActEdges";
 import makeActNodes from "./cyElements/makeActNodes";
 import makeGantchartItems from "./ganttChartFucntions/makeGantchartItems";
@@ -15,65 +13,70 @@ import makeDates from "./datesFunction/makeDates";
 import parseWPDataset from "./datasetParseFunctions/parseWPDataset";
 import linksMatrixToArray from "./datasetParseFunctions/linksMatrixToArray";
 
-// import actDataset from "../data/activity_matrix.txt";
-// import actLinks from "../data/links.txt";
-// import wpDataset from "../data/wp_names.txt";
-// import tdrDataset from "../data/stakeholder_matrix.txt";
-import workBook from "../data/activity_data.xlsx";
+import getMissingFields from "./getMissingFields";
+import cloneDeep from "lodash.clonedeep";
 
-export async function makeVisElements(prPeriod, currentStory, completedDisplay) {
-  // ------------------------ FETCH CSV DATA -------------------------
-  const file = await (await fetch(workBook)).arrayBuffer();
-  const workBookData = XLSX.read(file);
-  // header: 1 returns array of arrays of csv rows, use for crosstab datasets
-  const actLinks = XLSX.utils.sheet_to_json(workBookData.Sheets["links"], { header: 1, defval: "" });
-  const tdr = XLSX.utils.sheet_to_json(workBookData.Sheets["stakeholders"], { header: 1, defval: "", raw: false });
-  // convert the csvs to JSON format
-  const actDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["Activities"], { defval: "", raw: false });
-  const wpDataset = XLSX.utils.sheet_to_json(workBookData.Sheets["work packages"], { defval: "", raw: false });
+export async function makeVisElements(prPeriod, currentStory, completedDisplay, config, visDatasets) {
+  // ------------------------ Make a copy of vis Datsets state -------------------------
+
+  const { actLinks, stLinks, actDataset, wpDataset, stDataset, stWorksheetMissing } = cloneDeep(visDatasets); // make a deep copy so state isnt affected directly
 
   //-----------------MAKE DATES AND MONTHS ARRAY-----//
-  const startDate = "2016-09-01";
-  const todaysDate = new Date().toISOString().split("T")[0];
-  const dates = makeDates(startDate, todaysDate);
+  const startDate = config.START_DATE;
+  const endDate = config.END_DATE;
+  const dates = config.INCLUDE_DATES && makeDates(startDate, endDate, config);
 
   //-----------------PARSE DATA ----------
-  const activityData = parseActivityDataset(actDataset, dates);
-  const links = linksMatrixToArray(actLinks);
-  const wpData = parseWPDataset(wpDataset);
+  // if no months are provided then dont add dates to data
+  const wpData = parseWPDataset(wpDataset, config);
+  const activityData = parseActivityDataset(actDataset, dates, wpData, config);
 
-  //-------------TRIM DATA TO FILTER SPECIFICATION ----------------
-  const latestPrPeriod = dates[dates.length - 1].prPeriod;
-  const trimmedActData = trimActData(activityData, prPeriod, currentStory);
+  const links = linksMatrixToArray(actLinks);
+
+  //-------------TRIM ACT DATA TO FILTER SPECIFICATION ----------------
+  const latestPrPeriod = config.INCLUDE_DATES && dates[dates.length - 1].prPeriod;
+  //trimmedActData === current filter, filteredByPr === all data in curent pr period regardless of story filter
+  const { trimmedActData, filteredByPr } = trimActData(activityData, prPeriod, currentStory, config);
+
+  //only return wps that are present in actdataset
   const trimmedWpData = wpData.filter((wp) =>
-    [...new Set(trimmedActData.map((act) => act.WP))].includes(wp.id.slice(2))
+    [...new Set(trimmedActData.map((act) => `WP_${act.WP}`))].includes(wp.id)
   );
 
+  const { actNodes, actNodesParentless } = makeActNodes(trimmedActData, config);
+  const noParentNodes = actNodesParentless.map((node) => node.data.id);
   // ----TRIM & FILTER STAKEHOLDERS-------
-  const stakeholderData = parseStakeholderDataset(tdr, trimmedActData);
+  // returns the max engagement score for the pr period (regardless of stroy filter)
+  const maxEngScore =
+    config.INCLUDE_STHOLDERS &&
+    !stWorksheetMissing.length > 0 &&
+    parseStakeholderDataset(stLinks, stDataset, filteredByPr, config, noParentNodes).maxEngScore;
+  // creates ealily readable stakeholder object from stData and stLinks to match trimmed activity data
+  const stakeholderData =
+    config.INCLUDE_STHOLDERS &&
+    !stWorksheetMissing.length > 0 &&
+    parseStakeholderDataset(stLinks, stDataset, trimmedActData, config, noParentNodes).stakeholderData;
 
   //----MAKE VIS ELEMENTS -------------
-  const actNodes = makeActNodes(trimmedActData);
+
   const actEdges = makeActEdges(links, actNodes);
-  const wpNodes = makeWpNodes(trimmedWpData);
-  const wpEdges = makeWpEdges(trimmedWpData);
-  const stakeholderNodes = makeStakeholerNodes(stakeholderData);
-  const stakeholderEdges = makeStakeholderEdges(stakeholderData);
-  const gantChartItems = makeGantchartItems(
-    trimmedActData,
-    trimmedWpData,
-    prPeriod,
-    completedDisplay,
-    latestPrPeriod,
-    dates
-  );
+
+  const wpNodes = makeWpNodes(trimmedWpData, config);
+  const wpEdges = makeWpEdges(trimmedWpData, config);
+  const stakeholderNodes =
+    config.INCLUDE_STHOLDERS && !stWorksheetMissing.length > 0 && makeStakeholerNodes(stakeholderData);
+  const stakeholderEdges =
+    config.INCLUDE_STHOLDERS && !stWorksheetMissing.length > 0 && makeStakeholderEdges(stakeholderData);
+
+  const gantChartItems =
+    config.INCLUDE_DATES &&
+    makeGantchartItems(trimmedActData, trimmedWpData, prPeriod, completedDisplay, latestPrPeriod, config);
 
   //node to hold all other nodes, prevents stakeholder nodes entering center of graph
   const projectNode = {
     group: "nodes",
     grabbable: false,
     data: {
-      parent: "t",
       id: "project",
       type: "project",
       label: "",
@@ -81,23 +84,37 @@ export async function makeVisElements(prPeriod, currentStory, completedDisplay) 
   };
 
   //----ALL CYTOSCAPE ELEMENTS-----
-  const cyElms = [
-    actNodes,
-    stakeholderNodes,
-    actEdges.flat(),
-    stakeholderEdges.flat(),
-    wpNodes,
-    projectNode,
-    wpEdges,
-  ].flat();
+  const cyElms = [...actNodes, ...actEdges.flat(), ...wpNodes, ...wpEdges].flat();
+
+  //if stakeholders are included then add them to cy elements
+  config.INCLUDE_STHOLDERS &&
+    !stWorksheetMissing.length > 0 &&
+    cyElms.push(...stakeholderNodes, ...stakeholderEdges.flat(), projectNode);
+
+  //----------------FIND FILEDS SPECIFIED IN CONFIG BUT NOT IN DATASET AND NODES WITH NO PARENT ------------------------------//
+
+  const missingWpFields = getMissingFields(wpDataset, config.wpFields);
+  const missingActFields = getMissingFields(actDataset, config.actFields);
+  const missingStFields =
+    config.INCLUDE_STHOLDERS && !stWorksheetMissing.length > 0 && getMissingFields(stDataset, config.stFields);
+
+  const missingFieldWarning = {
+    ...(noParentNodes.length > 0 && { parentlessNodes: noParentNodes }),
+    ...(stWorksheetMissing.length > 0 && { worksheets: stWorksheetMissing }),
+    ...(missingWpFields.length > 0 && { [config.WORKSHEETS.WORKPACKAGES]: missingWpFields }),
+    ...(missingActFields.length > 0 && { [config.WORKSHEETS.ACTIVITIES]: missingActFields }),
+    ...(missingStFields.length > 0 && { [config.WORKSHEETS.STAKEHOLDERS]: missingStFields }),
+  };
 
   return {
     cyElms,
     gantChartItems,
-    activityData,
+    activityData: trimmedActData,
     dates,
     stakeholderData,
     latestPrPeriod,
+    maxEngScore,
+    missingFieldWarning,
   };
 }
 

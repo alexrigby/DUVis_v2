@@ -1,4 +1,4 @@
-import { BG, BORDER, ENGAGEMENT, ENGRANK, EDGE } from "../../../configs/COLORS";
+import { ENGAGEMENT, ENGRANK, EDGE, STAKEHOLDER } from "../../../configs/COLORS";
 import activityOpacity from "../../../functions/ganttChartFucntions/activityOpacity";
 import statusOpacity from "../../../configs/statusOpacity";
 import wpEdgeStyle from "./wpEdgeStyle";
@@ -43,13 +43,13 @@ export function stylesheet(
       style: {
         "border-width": 4,
         "background-opacity": completedDisplay
-          ? (ele) => activityOpacity(ele.data().meta, latestPrPeriodRef.current, prPeriod)
+          ? (ele) => activityOpacity(ele.data().dates, latestPrPeriodRef.current, prPeriod)
           : statusOpacity.onGoing,
         "border-opacity": completedDisplay
-          ? (ele) => activityOpacity(ele.data().meta, latestPrPeriodRef.current, prPeriod)
+          ? (ele) => activityOpacity(ele.data().dates, latestPrPeriodRef.current, prPeriod)
           : statusOpacity.onGoing,
-        "background-color": (ele) => BG[ele.data("colorRef")],
-        "border-color": (ele) => BORDER[ele.data("colorRef")],
+        "background-color": (ele) => ele.data("bgColor"),
+        "border-color": (ele) => ele.data("borderColor"),
         //width and height displayed in accepted bubble area scale 'D2 = D1 * SQRT(X2/X1)' https://infonewt.com/circles/
         //+1 gives value to nodes with no connecting edges,
         width: (ele) =>
@@ -64,9 +64,7 @@ export function stylesheet(
         "border-width": 0,
         label: "",
         "background-opacity": 0.3,
-        "background-color": function (ele) {
-          return BG[ele.id()];
-        },
+        "background-color": "data(bgColor)",
       },
     },
     {
@@ -84,15 +82,10 @@ export function stylesheet(
           ? (ele) => stakeholderOpacity(ele, latestPrPeriodRef, prPeriod, cyState)
           : statusOpacity.onGoing,
         "background-color": engScoreVeiw
-          ? `mapData(weight, 0, ${
-              prPeriod.pr !== null
-                ? engagementScoresRef.current[prPeriod.pr - 1].maxEngScore
-                : engagementScoresRef.current[engagementScoresRef.current.length - 1].maxEngScore
-            }, ${ENGRANK.low}, ${ENGRANK.high})`
-          : BG.stakeholder,
-        "border-color": BORDER.stakeholder,
+          ? `mapData(weight, 0, ${engagementScoresRef.current}, ${ENGRANK.low}, ${ENGRANK.high})`
+          : STAKEHOLDER.bg,
+        "border-color": STAKEHOLDER.border,
         width: (ele) => 1 * Math.sqrt(ele.connectedEdges().connectedNodes().length + 1 / 1) * 20,
-        // heigth:
         height: (ele) => 1 * Math.sqrt(ele.connectedEdges().connectedNodes().length + 1 / 1) * 20,
       },
     },
