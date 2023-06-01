@@ -6,8 +6,6 @@ import ConfigContext from "../../context/ConfigContext";
 import generateExcelFromConfig from "./functions/generateExcelFromConfig";
 import "./Upload.css";
 
-import GitHub from "../../assets/GitHub_Logo.png";
-
 export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorState, excelDataset, fatalErrorMessage }) {
   const { config } = useContext(ConfigContext);
 
@@ -52,8 +50,10 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
     <div className="dropzoneContainer">
       {(!config || !excelDataset) && landingText}
       <p className="linkText">
-        Find documentation and useful guides on our GitHub
-        {/* <img src={GitHub} alt="GitHub logo"></img> */}
+        Find documentation and useful guides on our{" "}
+        <a href="https://github.com/alexrigby/ReActiVis" rel="noreferrer" target="_blank">
+          GitHub
+        </a>
       </p>
       <MyDropzone
         userFiles={userFiles}
