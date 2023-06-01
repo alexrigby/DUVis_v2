@@ -3,6 +3,7 @@
 
 The Research Activity Visualiser (ReActiVis) is the generalised version of [DUVis](https://github.com/DwrUisce/DUVis). ReActiVis allows users to interactivley visualize the interaction between activities, workpackages and external stakeholders in their research projects.
 
+Live version: https://alexrigby.github.io/ReActiVis/
 
 ![Dŵr Uisce Work Package Visualiser teaser image](https://github.com/alexrigby/dwr-uisce-vis-react/blob/master/teaser2.png)
 
@@ -30,7 +31,7 @@ The Research Activity Visualiser (ReActiVis) is the generalised version of [DUVi
 
 ## Basic Usage
 ### Getting started
-* Open the link and follow the instructions on the landing page to upload your JSON config file and Excel dataset.
+* Open the [link](https://alexrigby.github.io/ReActiVis/) and follow the instructions on the landing page to upload your JSON config file and Excel dataset.
 * If required, you can generate an excel template from your config.
 * Your files are saved to local storage so will be rembered in your browser. To transfere the same files to another user you can download your files from the `manage data` tab. 
 * To update the config or dataset simply re-upload your updated files in the `manage data` tab.
