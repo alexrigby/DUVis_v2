@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.css": "/ReActiVis/static/css/main.e0ba5f82.css",
+    "main.js": "/ReActiVis/static/js/main.90c4d34f.js",
+    "static/media/SDG_17.png": "/ReActiVis/static/media/SDG_17.f970e7c36c351b30a49c.png",
+    "static/media/SDG_12.png": "/ReActiVis/static/media/SDG_12.d3360baf5738c38a86e2.png",
+    "static/media/SDG_9.png": "/ReActiVis/static/media/SDG_9.81355d6f8caa71f0977b.png",
+    "static/media/SDG_16.png": "/ReActiVis/static/media/SDG_16.d9da1670c4b52ac89d90.png",
+    "static/media/SDG_13.png": "/ReActiVis/static/media/SDG_13.a5a81d4d076ace73c0f7.png",
+    "static/media/SDG_7.png": "/ReActiVis/static/media/SDG_7.2ec0d1a25cbc81fdfadb.png",
+    "static/media/SDG_3.png": "/ReActiVis/static/media/SDG_3.f6b9f9379bff6be75230.png",
+    "static/media/SDG_1.png": "/ReActiVis/static/media/SDG_1.2869a96997aa1ed3009d.png",
+    "static/media/SDG_8.png": "/ReActiVis/static/media/SDG_8.11c4c71e570b9b125e6f.png",
+    "static/media/SDG_14.png": "/ReActiVis/static/media/SDG_14.7e925148d030fbe8ad95.png",
+    "static/media/SDG_6.png": "/ReActiVis/static/media/SDG_6.74efcd0f1d51a5a3f0ab.png",
+    "static/media/SDG_11.png": "/ReActiVis/static/media/SDG_11.884c794e2a3bb6b91812.png",
+    "static/media/SDG_2.png": "/ReActiVis/static/media/SDG_2.610a1339a8adb1ddf548.png",
+    "static/media/SDG_4.png": "/ReActiVis/static/media/SDG_4.f8a53f9bfef979a9796c.png",
+    "static/media/SDG_15.png": "/ReActiVis/static/media/SDG_15.8458faf644fdf5afe6c6.png",
+    "static/media/SDG_5.png": "/ReActiVis/static/media/SDG_5.2f81f05072595bdf2e59.png",
+    "static/media/SDG_10.png": "/ReActiVis/static/media/SDG_10.a7817c5e3b1c3e6b1eba.png",
+    "index.html": "/ReActiVis/index.html",
+    "main.e0ba5f82.css.map": "/ReActiVis/static/css/main.e0ba5f82.css.map",
+    "main.90c4d34f.js.map": "/ReActiVis/static/js/main.90c4d34f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e0ba5f82.css",
+    "static/js/main.90c4d34f.js"
+  ]
+}
