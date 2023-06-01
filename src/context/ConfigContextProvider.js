@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import ConfigContext from "./ConfigContext";
 import configHandler from "../grammar/configHandler";
-import _config from "../grammar/config.json";
 
 export function ConfigContextProvider({ children }) {
   const [config, setConfig] = useState(null);
@@ -11,7 +10,7 @@ export function ConfigContextProvider({ children }) {
 
     //adding the config details to state
     if (localConfig) {
-      const { configObj, errors } = configHandler(localConfig);
+      const { configObj } = configHandler(localConfig);
 
       setConfig(configObj);
     } else {
