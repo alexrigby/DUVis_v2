@@ -46,6 +46,7 @@ The Research Activity Visualiser (ReActiVis) is the generalised version of [DUVi
 ***Important**: ReActiVis is in development, although efforts have been made to handle dataset and config errors we cannot guarantee that all errors will be caught. Therefore please take care to format your files correctly to avoid unexpected results.*
 
 ## Inputs
+Excample and template inputs can be found in the [templates folder](https://github.com/alexrigby/ReActiVis/tree/master/templates)
 
 ### Excel Dataset
 ReActiVis requires an excel (.xlsx) workbook containing project data to be visualised. 5 worksheets are used for visualisation. Although additional worksheets and data fields can be included for record keeping, to improve performance it is recommended to keep additional information to a minimum. 
