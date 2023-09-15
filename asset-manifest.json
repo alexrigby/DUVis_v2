@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/ReActiVis/static/css/main.e0ba5f82.css",
-    "main.js": "/ReActiVis/static/js/main.90c4d34f.js",
+    "main.js": "/ReActiVis/static/js/main.343fc59a.js",
     "static/media/SDG_17.png": "/ReActiVis/static/media/SDG_17.f970e7c36c351b30a49c.png",
     "static/media/SDG_12.png": "/ReActiVis/static/media/SDG_12.d3360baf5738c38a86e2.png",
     "static/media/SDG_9.png": "/ReActiVis/static/media/SDG_9.81355d6f8caa71f0977b.png",
@@ -21,10 +21,10 @@
     "static/media/SDG_10.png": "/ReActiVis/static/media/SDG_10.a7817c5e3b1c3e6b1eba.png",
     "index.html": "/ReActiVis/index.html",
     "main.e0ba5f82.css.map": "/ReActiVis/static/css/main.e0ba5f82.css.map",
-    "main.90c4d34f.js.map": "/ReActiVis/static/js/main.90c4d34f.js.map"
+    "main.343fc59a.js.map": "/ReActiVis/static/js/main.343fc59a.js.map"
   },
   "entrypoints": [
     "static/css/main.e0ba5f82.css",
-    "static/js/main.90c4d34f.js"
+    "static/js/main.343fc59a.js"
   ]
 }
