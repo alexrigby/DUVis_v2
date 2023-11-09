@@ -3,7 +3,7 @@
 
 VisTRAM (Visualizing Transdiciplinary Research Activities and Metadata) is the generalised version of [DUVis](https://github.com/DwrUisce/DUVis). VisTRAM allows users to interactivley visualize the interaction between activities, workpackages and external stakeholders in their research projects.
 
-Live version: https://alexrigby.github.io/ReActiVis/
+Live version: https://alexrigby.github.io/vistram/
 
 ![Dŵr Uisce Work Package Visualiser teaser image](https://github.com/alexrigby/dwr-uisce-vis-react/blob/master/teaser2.png)
 
@@ -31,7 +31,7 @@ Live version: https://alexrigby.github.io/ReActiVis/
 
 ## Basic Usage
 ### Getting started
-* Open the [link](https://alexrigby.github.io/ReActiVis/) and follow the instructions on the landing page to upload your JSON config file and Excel dataset.
+* Open the [link](https://alexrigby.github.io/vistram/) and follow the instructions on the landing page to upload your JSON config file and Excel dataset.
 * If required, you can generate an excel template from your config.
 * Your files are saved to local storage so will be rembered in your browser. To transfere the same files to another user you can download your files from the `manage data` tab. 
 * To update the config or dataset simply re-upload your updated files in the `manage data` tab.
@@ -42,12 +42,12 @@ Live version: https://alexrigby.github.io/ReActiVis/
 * Temporal features can be included (or excluded) by defining (or excluding) a start and end date from the [Config](#config).
 
 ### Interface instructions 
-* For full instructions on interface feature usage please refere to the [documentation](https://github.com/alexrigby/ReActiVis/blob/master/ReActiPro%20interface%20instructions.pdf)
+* For full instructions on interface feature usage please refere to the [documentation](https://github.com/alexrigby/vistram/blob/master/ReActiPro%20interface%20instructions.pdf)
 
 ***Important**: VisTRAM is in development, although efforts have been made to handle dataset and config errors we cannot guarantee that all errors will be caught. Therefore please take care to format your files correctly to avoid unexpected results.*
 
 ## Inputs
-Excample and template inputs can be found in the [templates folder](https://github.com/alexrigby/ReActiVis/tree/master/templates)
+Excample and template inputs can be found in the [templates folder](https://github.com/alexrigby/vistram/tree/master/templates)
 
 ### Excel Dataset
 VisTRAM requires an excel (.xlsx) workbook containing project data to be visualised. 5 worksheets are used for visualisation. Although additional worksheets and data fields can be included for record keeping, to improve performance it is recommended to keep additional information to a minimum. 
