@@ -29,7 +29,7 @@ export function generateExcelFromConfig(config) {
   }
 
   //---------------download workbook------------------------------
-  XLSX.writeFile(workbook, `${configClone.NAME} ReActiVis dataset.xlsx`);
+  XLSX.writeFile(workbook, `${configClone.NAME} VisTRAM dataset.xlsx`);
 }
 
 export default generateExcelFromConfig;

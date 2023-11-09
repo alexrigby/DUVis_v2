@@ -34,7 +34,7 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
 
   const landingText = (
     <div className="landingText">
-      <h1>Welcome to ReActiVis!</h1>
+      <h1>Welcome to VisTRAM!</h1>
       <p>
         Start visualising your research project by uploading your excel (.xlsx) dataset and config (.json) files{" "}
         <i className="fa-regular fa-hand-point-down"></i>
@@ -51,7 +51,7 @@ export function Upload({ userFiles, setUserFiles, setExcelDataset, fatalErrorSta
       {(!config || !excelDataset) && landingText}
       <p className="linkText">
         Find documentation and useful guides on our{" "}
-        <a href="https://github.com/alexrigby/ReActiVis" rel="noreferrer" target="_blank">
+        <a href="https://github.com/alexrigby/VisTRAM" rel="noreferrer" target="_blank">
           GitHub
         </a>
       </p>
