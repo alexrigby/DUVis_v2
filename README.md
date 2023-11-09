@@ -3,7 +3,7 @@
 
 VisTRAM (Visualizing Transdiciplinary Research Activities and Metadata) is the generalised version of [DUVis](https://github.com/DwrUisce/DUVis). VisTRAM allows users to interactivley visualize the interaction between activities, workpackages and external stakeholders in their research projects.
 
-Live version: https://alexrigby.github.io/vistram/
+Live version: https://alexrigby.github.io/VisTRAM/
 
 ![Dŵr Uisce Work Package Visualiser teaser image](https://github.com/alexrigby/dwr-uisce-vis-react/blob/master/teaser2.png)
 
