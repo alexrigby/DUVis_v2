@@ -1,7 +1,7 @@
-# ReActiVis
+# VisTRAM
 
 
-The Research Activity Visualiser (ReActiVis) is the generalised version of [DUVis](https://github.com/DwrUisce/DUVis). ReActiVis allows users to interactivley visualize the interaction between activities, workpackages and external stakeholders in their research projects.
+VisTRAM (Visualizing Transdiciplinary Research Activities and Metadata) is the generalised version of [DUVis](https://github.com/DwrUisce/DUVis). VisTRAM allows users to interactivley visualize the interaction between activities, workpackages and external stakeholders in their research projects.
 
 Live version: https://alexrigby.github.io/ReActiVis/
 
@@ -44,13 +44,13 @@ Live version: https://alexrigby.github.io/ReActiVis/
 ### Interface instructions 
 * For full instructions on interface feature usage please refere to the [documentation](https://github.com/alexrigby/ReActiVis/blob/master/ReActiPro%20interface%20instructions.pdf)
 
-***Important**: ReActiVis is in development, although efforts have been made to handle dataset and config errors we cannot guarantee that all errors will be caught. Therefore please take care to format your files correctly to avoid unexpected results.*
+***Important**: VisTRAM is in development, although efforts have been made to handle dataset and config errors we cannot guarantee that all errors will be caught. Therefore please take care to format your files correctly to avoid unexpected results.*
 
 ## Inputs
 Excample and template inputs can be found in the [templates folder](https://github.com/alexrigby/ReActiVis/tree/master/templates)
 
 ### Excel Dataset
-ReActiVis requires an excel (.xlsx) workbook containing project data to be visualised. 5 worksheets are used for visualisation. Although additional worksheets and data fields can be included for record keeping, to improve performance it is recommended to keep additional information to a minimum. 
+VisTRAM requires an excel (.xlsx) workbook containing project data to be visualised. 5 worksheets are used for visualisation. Although additional worksheets and data fields can be included for record keeping, to improve performance it is recommended to keep additional information to a minimum. 
 
 #### Workpackage worksheet (required)
 The workpackage worksheet should contain information regarding the project workpackages with each row representing a unique workpackage. 
@@ -60,7 +60,7 @@ The workpackage worksheet has 1 required field: `ID`
 | ----------- | ----------- | ----------- |
 |`ID`|integer|A numerical identifier, unique within the workpackages worksheet (e.g. "1", "9")|
 
-***Important**: ReActiVis currently supports a maximum of 10 work packages*
+***Important**: VisTRAM currently supports a maximum of 10 work packages*
 
 #### Activities worksheet (required)
 The activities worksheet should contain information regarding activities undertaken as part of the project. Each row represents a single activity. 
@@ -114,7 +114,7 @@ For example, in the following table stakeholder 1 engaged with activity 34 at an
 
 
 ### [Config](#config)
-The config tells ReActiVis where in the excel dataset to find relivant information. Define custom `meta-fields` to included additional information in the visualisation. If you dont have software that allows you to edit JSON files installed then you can use an online editor (https://jsoneditoronline.org/#left=local.riyiqo). 
+The config tells VisTRAM where in the excel dataset to find relivant information. Define custom `meta-fields` to included additional information in the visualisation. If you dont have software that allows you to edit JSON files installed then you can use an online editor (https://jsoneditoronline.org/#left=local.riyiqo). 
 
 ***Important**: As a minimum the config must include all the keys outlined in this section. If you wish to omit a value from the visualisation please specify as null (or an empty array for `stories` and `meta-fields`).*
 
